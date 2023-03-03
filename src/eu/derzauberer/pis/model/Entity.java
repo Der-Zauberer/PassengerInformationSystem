@@ -1,4 +1,4 @@
-package de.derzauberer.pis.model;
+package eu.derzauberer.pis.model;
 
 import java.util.Objects;
 

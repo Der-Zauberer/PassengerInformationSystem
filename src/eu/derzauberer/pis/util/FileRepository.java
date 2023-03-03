@@ -1,4 +1,4 @@
-package de.derzauberer.pis.util;
+package eu.derzauberer.pis.util;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.derzauberer.pis.model.Entity;
+import eu.derzauberer.pis.model.Entity;
 
 public class FileRepository<T extends Entity<I>, I> {
 	

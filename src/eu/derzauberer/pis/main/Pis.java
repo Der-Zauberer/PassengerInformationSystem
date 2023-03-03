@@ -6,6 +6,8 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.context.annotation.ComponentScan;
 
 import eu.derzauberer.pis.model.Station;
+import eu.derzauberer.pis.model.TrainOperator;
+import eu.derzauberer.pis.model.TrainType;
 import eu.derzauberer.pis.util.FileRepository;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
@@ -13,6 +15,8 @@ import eu.derzauberer.pis.util.FileRepository;
 public class Pis {
 	
 	private static final FileRepository<Station, String> stationRepository = new FileRepository<>("stations", Station.class);
+	private static final FileRepository<TrainType, String> typeRepository = new FileRepository<>("type", TrainType.class);
+	private static final FileRepository<TrainOperator, String> operatorRepository = new FileRepository<>("operator", TrainOperator.class);
 	
 	public static void main(String[] args) {
 		SpringApplication.run(Pis.class, args);
@@ -20,6 +24,14 @@ public class Pis {
 	
 	public static FileRepository<Station, String> getStationRepository() {
 		return stationRepository;
+	}
+	
+	public static FileRepository<TrainType, String> getTypeRepository() {
+		return typeRepository;
+	}
+	
+	public static FileRepository<TrainOperator, String> getOperatorRepository() {
+		return operatorRepository;
 	}
 
 }

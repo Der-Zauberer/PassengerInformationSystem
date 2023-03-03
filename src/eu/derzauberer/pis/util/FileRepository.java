@@ -4,16 +4,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import eu.derzauberer.pis.model.Entity;
 
 public class FileRepository<T extends Entity<I>, I> {
@@ -26,6 +24,11 @@ public class FileRepository<T extends Entity<I>, I> {
 	
 	private static final ObjectMapper MAPPER = new ObjectMapper();
 	private static final Logger LOGGER = LoggerFactory.getLogger(FileRepository.class);
+	
+	static {
+		LOGGER.info("Loading data...");
+		MAPPER.setSerializationInclusion(Include.NON_EMPTY);
+	}
 	
 	public FileRepository(String name, Class<T> type) {
 		this.name = name;
@@ -43,7 +46,7 @@ public class FileRepository<T extends Entity<I>, I> {
 					exception.printStackTrace();
 				}
 			}
-			LOGGER.info("Loaded {} {}.", counter, name);
+			LOGGER.info("Loaded {} {}", counter, name);
 		} catch (IOException exception) {
 			exception.printStackTrace();
 		}
@@ -54,7 +57,7 @@ public class FileRepository<T extends Entity<I>, I> {
 		try {
 			final Path path = Paths.get(DIRECTORY, name, entity.getId().toString() + FILE_TYPE);
 			final String content = MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(entity);
-			Files.writeString(path, content, StandardOpenOption.CREATE);
+			Files.writeString(path, content);
 		} catch (IOException exception) {
 			exception.printStackTrace();
 		}

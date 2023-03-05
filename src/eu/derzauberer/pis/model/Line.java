@@ -1,15 +1,24 @@
 package eu.derzauberer.pis.model;
 
+import java.beans.ConstructorProperties;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+
+@JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
+@JsonPropertyOrder({"id", "type", "number", "operator", "driver", "cancelled"})
 public class Line implements Entity<Long>{
 
 	private final Long id;
-	private String type;
+	private TrainType type;
 	private int number;
 	private String operator;
 	private String driver;
 	private boolean cancelled;
 	
-	public Line(Long id, String type, int number) {
+	@ConstructorProperties({"id", "type", "number"})
+	public Line(Long id, TrainType type, int number) {
 		this.id = id;
 		this.type = type;
 		this.number = number;
@@ -22,14 +31,14 @@ public class Line implements Entity<Long>{
 	
 	@Override
 	public String getName() {
-		return type + number;
+		return type.getToken() + number;
 	}
 
-	public String getType() {
+	public TrainType getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(TrainType type) {
 		this.type = type;
 	}
 

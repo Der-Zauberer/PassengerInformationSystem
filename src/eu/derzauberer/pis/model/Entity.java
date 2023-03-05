@@ -1,34 +1,18 @@
 package eu.derzauberer.pis.model;
 
-import java.util.Objects;
-
-public abstract class Entity<T> {
+public interface Entity<T> {
 	
-	private T id;
-	private String name;
+	T getId();
+	String getName();
 	
-	public Entity(T id) {
-		this.id = id;
-		this.name = "Unnamed";
+	static String nameToId(String name) {
+		return name.toLowerCase()
+				.replaceAll("(", "")
+				.replace(")", "")
+				.replace(" ", "_")
+				.replace("ä", "ae")
+				.replace("ö", "oe")
+				.replace("ü", "ue");
 	}
 	
-	public Entity(T id, String name) {
-		Objects.requireNonNull(id);
-		this.id = id;
-		this.name = name;
-	}
-	
-	public T getId() {
-		return id;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-
 }

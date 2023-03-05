@@ -1,7 +1,8 @@
 package eu.derzauberer.pis.model;
 
-public class Line extends Entity<Long>{
+public class Line implements Entity<Long>{
 
+	private final Long id;
 	private String type;
 	private int number;
 	private String operator;
@@ -9,8 +10,19 @@ public class Line extends Entity<Long>{
 	private boolean cancelled;
 	
 	public Line(Long id, String type, int number) {
-		super(id);
-		setName(type + number);
+		this.id = id;
+		this.type = type;
+		this.number = number;
+	}
+	
+	@Override
+	public Long getId() {
+		return id;
+	}
+	
+	@Override
+	public String getName() {
+		return type + number;
 	}
 
 	public String getType() {

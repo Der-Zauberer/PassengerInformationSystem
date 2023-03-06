@@ -7,8 +7,8 @@ public interface Entity<T> {
 	
 	static String nameToId(String name) {
 		return name.toLowerCase()
-				.replaceAll("(", "")
-				.replace(")", "")
+				.replaceAll("\\(", "")
+				.replace("\\)", "")
 				.replace(" ", "_")
 				.replace("ä", "ae")
 				.replace("ö", "oe")

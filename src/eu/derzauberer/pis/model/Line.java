@@ -8,11 +8,6 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
-import eu.derzauberer.pis.serialization.DateDeserializer;
-import eu.derzauberer.pis.serialization.DateSerializer;
 
 @JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
 @JsonPropertyOrder({"id", "type", "number", "date", "operator", "driver", "cancelled", "position", "stops"})
@@ -21,8 +16,6 @@ public class Line implements Entity<Long>{
 	private final Long id;
 	private TrainType type;
 	private int number;
-	@JsonSerialize(using = DateSerializer.class)
-	@JsonDeserialize(using = DateDeserializer.class)
 	private LocalDate date;
 	private String operator;
 	private String driver;

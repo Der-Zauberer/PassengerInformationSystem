@@ -1,6 +1,5 @@
 package eu.derzauberer.pis.main;
 
-import java.time.LocalTime;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -8,7 +7,6 @@ import org.springframework.context.annotation.ComponentScan;
 import eu.derzauberer.pis.model.Line;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.model.TrainOperator;
-import eu.derzauberer.pis.model.TrainStop;
 import eu.derzauberer.pis.model.TrainType;
 import eu.derzauberer.pis.util.FileRepository;
 

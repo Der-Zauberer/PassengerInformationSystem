@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -11,8 +13,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import eu.derzauberer.pis.model.Entity;
+import eu.derzauberer.pis.serialization.DateDeserializer;
+import eu.derzauberer.pis.serialization.DateSerializer;
+import eu.derzauberer.pis.serialization.TimeDeserializer;
+import eu.derzauberer.pis.serialization.TimeSerializer;
 
 public class FileRepository<T extends Entity<I>, I> {
 	
@@ -27,6 +34,12 @@ public class FileRepository<T extends Entity<I>, I> {
 	
 	static {
 		LOGGER.info("Loading data...");
+		SimpleModule module = new SimpleModule();
+		module.addSerializer(LocalTime.class, new TimeSerializer());
+		module.addDeserializer(LocalTime.class, new TimeDeserializer());
+		module.addSerializer(LocalDate.class, new DateSerializer());
+		module.addDeserializer(LocalDate.class, new DateDeserializer());
+		MAPPER.registerModule(module);
 		MAPPER.setSerializationInclusion(Include.NON_EMPTY);
 	}
 	

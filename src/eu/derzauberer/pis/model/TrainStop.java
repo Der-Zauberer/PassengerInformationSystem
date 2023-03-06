@@ -5,11 +5,6 @@ import java.time.LocalTime;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
-import eu.derzauberer.pis.serialization.TimeDeserializer;
-import eu.derzauberer.pis.serialization.TimeSerializer;
 
 @JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
 @JsonPropertyOrder({"station", "platform", "platfromArea", "arrival", "departure", "cancelled", "delay", "changedPlatform", "changedPlatfromArea"})
@@ -18,11 +13,7 @@ public class TrainStop {
 	private final String station;
 	private int platform;
 	private String platfromArea;
-	@JsonSerialize(using = TimeSerializer.class)
-	@JsonDeserialize(using = TimeDeserializer.class)
 	private LocalTime arrival;
-	@JsonSerialize(using = TimeSerializer.class)
-	@JsonDeserialize(using = TimeDeserializer.class)
 	private LocalTime departure;
 	private boolean cancelled;
 	private int delay;
@@ -39,7 +30,7 @@ public class TrainStop {
 		this.changedPlatform = 0;
 	}
 	
-	@ConstructorProperties({"station", "arrival", "departure"})
+	@ConstructorProperties({"station", "platform", "arrival", "departure"})
 	public TrainStop(String station, int platform, LocalTime arrival, LocalTime departure) {
 		this.station = station;
 		this.platform = platform;

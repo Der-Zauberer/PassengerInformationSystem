@@ -15,8 +15,8 @@ import eu.derzauberer.pis.util.FileRepository;
 public class Pis {
 	
 	private static final FileRepository<Station, String> stationRepository = new FileRepository<>("stations", Station.class);
-	private static final FileRepository<TrainType, String> typeRepository = new FileRepository<>("type", TrainType.class);
-	private static final FileRepository<TrainOperator, String> operatorRepository = new FileRepository<>("operator", TrainOperator.class);
+	private static final FileRepository<TrainType, String> typeRepository = new FileRepository<>("types", TrainType.class);
+	private static final FileRepository<TrainOperator, String> operatorRepository = new FileRepository<>("operators", TrainOperator.class);
 	
 	public static void main(String[] args) {
 		SpringApplication.run(Pis.class, args);

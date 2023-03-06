@@ -9,7 +9,6 @@ import java.util.Optional;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.derzauberer.pis.model.Entity;
@@ -38,9 +37,7 @@ public class FileRepository<T extends Entity<I>, I> {
 			int counter = 0;
 			for (Path path : Files.list(Paths.get(DIRECTORY, name)).toList()) {
 				try {
-					final String content = Files.readString(path);
-					final T entity = MAPPER.readValue(content, type);
-					entities.add(entity.getId());
+					registerEntity(path);
 					counter++;
 				} catch (IOException exception) {
 					exception.printStackTrace();
@@ -48,18 +45,16 @@ public class FileRepository<T extends Entity<I>, I> {
 			}
 			LOGGER.info("Loaded {} {}", counter, name);
 		} catch (IOException exception) {
-			exception.printStackTrace();
+			LOGGER.error("Couldn't load {}: ", name, exception.getMessage());
 		}
 	}
 	
 	public void add(T entity) {
 		entities.add(entity.getId());
 		try {
-			final Path path = Paths.get(DIRECTORY, name, entity.getId().toString() + FILE_TYPE);
-			final String content = MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(entity);
-			Files.writeString(path, content);
+			saveEntity(entity);
 		} catch (IOException exception) {
-			exception.printStackTrace();
+			LOGGER.warn("Couldn't save entity {} from {}: {}", name, entity.getId(), exception.getMessage());
 		}
 	}
 	
@@ -72,26 +67,41 @@ public class FileRepository<T extends Entity<I>, I> {
 		try {
 			Files.deleteIfExists(Paths.get(DIRECTORY, name, id.toString() + FILE_TYPE));
 		} catch (IOException exception) {
-			exception.printStackTrace();
+			LOGGER.error("Couldn't remove entity {} from {}: !", name, id, exception.getMessage());
 		}
 	}
 	
 	public Optional<T> get(I id) {
-		final Path path = Paths.get(DIRECTORY, name, id.toString() + FILE_TYPE);
-		if (entities.contains(id) && Files.exists(path)) {
-			try {
-				final String content = Files.readString(path);
-				final T entity = MAPPER.readValue(content, type);
-				return Optional.of(entity);
-			} catch (IOException exception) {
-				exception.printStackTrace();
-			}
+		try {
+			return loadEntity(id);
+		} catch (IOException exception) {
+			LOGGER.error("Couldn't load entity {} from {}: ", name, id, exception.getMessage());
+			return Optional.empty();
 		}
-		return Optional.empty();
 	}
 	
 	public boolean contains(I id) {
 		return entities.contains(id);
+	}
+	
+	private void registerEntity(Path path) throws IOException {
+		final String content = Files.readString(path);
+		final T entity = MAPPER.readValue(content, type);
+		entities.add(entity.getId());
+	}
+	
+	private Optional<T> loadEntity(I id) throws IOException {
+		final Path path = Paths.get(DIRECTORY, name, id.toString() + FILE_TYPE);
+		if (!entities.contains(id) || !Files.exists(path)) return Optional.empty();
+		final String content = Files.readString(path);
+		final T entity = MAPPER.readValue(content, type);
+		return Optional.of(entity);
+	}
+	
+	private void saveEntity(T entity) throws IOException {
+		final Path path = Paths.get(DIRECTORY, name, entity.getId().toString() + FILE_TYPE);
+		final String content = MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(entity);
+		Files.writeString(path, content);
 	}
 
 }

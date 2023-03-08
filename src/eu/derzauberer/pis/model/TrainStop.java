@@ -2,11 +2,8 @@ package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
 import java.time.LocalTime;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 
-@JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
 @JsonPropertyOrder({"station", "platform", "platfromArea", "arrival", "departure", "cancelled", "delay", "changedPlatform", "changedPlatfromArea"})
 public class TrainStop {
 

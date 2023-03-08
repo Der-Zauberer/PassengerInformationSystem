@@ -1,10 +1,7 @@
 package eu.derzauberer.pis.model;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 
-@JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
 @JsonPropertyOrder({"parking", "bicycleParking", "localPublicTransport", "publicFacilities", "taxiRank", "hasCarRental", "lockerSystem", "travelNecessities", "barrierFree", "wifi", "travelCenter", "railwayMission"})
 public class StationServices {
 	

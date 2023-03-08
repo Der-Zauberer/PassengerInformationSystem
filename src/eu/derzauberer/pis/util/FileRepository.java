@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Optional;
@@ -12,12 +13,15 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import eu.derzauberer.pis.model.Entity;
 import eu.derzauberer.pis.serialization.DateDeserializer;
 import eu.derzauberer.pis.serialization.DateSerializer;
+import eu.derzauberer.pis.serialization.DateTimeDeserializer;
+import eu.derzauberer.pis.serialization.DateTimeSerializer;
 import eu.derzauberer.pis.serialization.TimeDeserializer;
 import eu.derzauberer.pis.serialization.TimeSerializer;
 
@@ -39,8 +43,11 @@ public class FileRepository<T extends Entity<I>, I> {
 		module.addDeserializer(LocalTime.class, new TimeDeserializer());
 		module.addSerializer(LocalDate.class, new DateSerializer());
 		module.addDeserializer(LocalDate.class, new DateDeserializer());
+		module.addSerializer(LocalDateTime.class, new DateTimeSerializer());
+		module.addDeserializer(LocalDateTime.class, new DateTimeDeserializer());
 		MAPPER.registerModule(module);
 		MAPPER.setSerializationInclusion(Include.NON_EMPTY);
+		MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	}
 	
 	public FileRepository(String name, Class<T> type) {

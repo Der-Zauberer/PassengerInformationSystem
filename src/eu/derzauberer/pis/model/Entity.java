@@ -7,12 +7,14 @@ public interface Entity<T> {
 	
 	static String nameToId(String name) {
 		return name.toLowerCase()
+				.replaceAll("/", "_")
 				.replaceAll("\\(", "")
-				.replace("\\)", "")
-				.replace(" ", "_")
-				.replace("ä", "ae")
-				.replace("ö", "oe")
-				.replace("ü", "ue");
+				.replaceAll("\\)", "")
+				.replaceAll(" ", "_")
+				.replaceAll("ä", "ae")
+				.replaceAll("ö", "oe")
+				.replaceAll("ü", "ue")
+				.replaceAll("ß", "ue");
 	}
 	
 }

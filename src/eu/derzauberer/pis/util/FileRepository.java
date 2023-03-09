@@ -82,7 +82,7 @@ public class FileRepository<T extends Entity<I>, I> {
 		try {
 			saveEntity(entity);
 		} catch (IOException exception) {
-			LOGGER.warn("Couldn't save entity {} from {}: {}", name, entity.getId(), exception.getMessage());
+			LOGGER.warn("Couldn't save entity {} from {}: {}", entity.getId(), name, exception.getMessage());
 		}
 	}
 	
@@ -95,7 +95,7 @@ public class FileRepository<T extends Entity<I>, I> {
 		try {
 			Files.deleteIfExists(Paths.get(DIRECTORY, name, id.toString() + FILE_TYPE));
 		} catch (IOException exception) {
-			LOGGER.error("Couldn't remove entity {} from {}: !", name, id, exception.getMessage());
+			LOGGER.error("Couldn't remove entity {} from {}: !", id, name, exception.getMessage());
 		}
 	}
 	
@@ -103,7 +103,7 @@ public class FileRepository<T extends Entity<I>, I> {
 		try {
 			return loadEntity(id);
 		} catch (IOException exception) {
-			LOGGER.error("Couldn't load entity {} from {}: ", name, id, exception.getMessage());
+			LOGGER.error("Couldn't load entity {} from {}: ", id, name, exception.getMessage());
 			return Optional.empty();
 		}
 	}

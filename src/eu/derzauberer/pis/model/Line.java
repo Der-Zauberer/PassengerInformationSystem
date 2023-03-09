@@ -18,7 +18,7 @@ public class Line implements Entity<Long>{
 	private String driver;
 	private boolean cancelled;
 	private Integer position;
-	private final List<TrainStop> stops = new ArrayList<>();
+	private final List<LineStop> stops = new ArrayList<>();
 	
 	@ConstructorProperties({"id", "type", "number"})
 	public Line(Long id, TrainType type, int number) {
@@ -94,7 +94,7 @@ public class Line implements Entity<Long>{
 		this.position = trainPosition;
 	}
 	
-	public List<TrainStop> getStops() {
+	public List<LineStop> getStops() {
 		return stops;
 	}
 

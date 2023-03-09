@@ -4,8 +4,8 @@ import java.beans.ConstructorProperties;
 import java.time.LocalTime;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({"station", "platform", "platfromArea", "arrival", "departure", "cancelled", "delay", "changedPlatform", "changedPlatfromArea"})
-public class TrainStop {
+@JsonPropertyOrder({"station", "platform", "platfromArea", "arrival", "departure", "cancelled", "delay", "changedPlatform", "changedPlatfromArea", "information"})
+public class LineStop {
 
 	private final String station;
 	private int platform;
@@ -16,8 +16,9 @@ public class TrainStop {
 	private int delay;
 	private int changedPlatform;
 	private String changedPlatfromArea;
+	private String information;
 	
-	public TrainStop(String station, int platform, LocalTime departure) {
+	public LineStop(String station, int platform, LocalTime departure) {
 		this.station = station;
 		this.platform = platform;
 		this.arrival = departure;
@@ -28,7 +29,7 @@ public class TrainStop {
 	}
 	
 	@ConstructorProperties({"station", "platform", "arrival", "departure"})
-	public TrainStop(String station, int platform, LocalTime arrival, LocalTime departure) {
+	public LineStop(String station, int platform, LocalTime arrival, LocalTime departure) {
 		this.station = station;
 		this.platform = platform;
 		this.arrival = arrival;
@@ -104,6 +105,14 @@ public class TrainStop {
 
 	public String getStation() {
 		return station;
+	}
+	
+	public String getInformation() {
+		return information;
+	}
+	
+	public void setInformation(String information) {
+		this.information = information;
 	}
 	
 }

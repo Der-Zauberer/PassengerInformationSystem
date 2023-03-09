@@ -12,6 +12,7 @@ public class Station implements Entity<String> {
 	private final String name;
 	private final ArrayList<Integer> platforms = new ArrayList<>();
 	private final Adress adress = new Adress();
+	private final Location location = new Location(0, 0);
 	private final StationServices services = new StationServices();
 
 	public Station(String name) {
@@ -40,6 +41,10 @@ public class Station implements Entity<String> {
 	
 	public Adress getAdress() {
 		return adress;
+	}
+	
+	public Location getLocation() {
+		return location;
 	}
 	
 	public StationServices getServices() {

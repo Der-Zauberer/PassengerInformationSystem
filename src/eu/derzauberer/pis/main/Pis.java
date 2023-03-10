@@ -1,5 +1,7 @@
 package eu.derzauberer.pis.main;
 
+import java.util.Arrays;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -10,11 +12,14 @@ import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.model.TrainOperator;
 import eu.derzauberer.pis.model.TrainType;
 import eu.derzauberer.pis.model.User;
+import eu.derzauberer.pis.util.Command;
 import eu.derzauberer.pis.util.FileRepository;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 @ComponentScan(basePackages = {"eu.derzauberer.pis.util"})
 public class Pis {
+	
+	private static final Command command = new Command("pis");
 	
 	private static final FileRepository<User, String> userRepository = new FileRepository<>("users", User.class);
 	private static final FileRepository<Station, String> stationRepository = new FileRepository<>("stations", Station.class);
@@ -23,7 +28,16 @@ public class Pis {
 	private static final FileRepository<Line, Long> lineRepository = new FileRepository<>("lines", Line.class);
 	
 	public static void main(String[] args) {
+		registerCommands();
+		if (args.length != 0) {
+			command.executeCommand(command.getName(), args);
+			return;
+		}
 		SpringApplication.run(Pis.class, args);
+	}
+	
+	private static void registerCommands() {
+		command.setAction(args -> System.out.println("Command: " + Arrays.toString(args)));
 	}
 	
 	public static FileRepository<User, String> getUserRepository() {

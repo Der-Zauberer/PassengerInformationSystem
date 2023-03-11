@@ -27,6 +27,86 @@ public class Command {
 		this.minArguments = 0;
 	}
 	
+	public void executeCommand(String label, String args[]) {
+		if (args.length > 0) {
+			final Command command = commands.get(args[0]);
+			if (command != null) {
+				command.executeCommand(args[0], Arrays.copyOfRange(args, 1, args.length));
+				return;
+			} else if (Arrays.asList(args).contains("-h")) {
+				printCommandHelp();
+				return;
+			} else if (action == null) {
+				consoleOut("Error: Command option " + args[0] + " does not exist!");
+				return;
+			}
+		}
+		if (args.length < minArguments) {
+			consoleOut("Error: Not enough arguments for command " + label + "!");
+			return;
+		}
+		action.accept(args);
+	}
+	
+	private void printCommandHelp() {
+		final StringBuilder string = new StringBuilder("Command " + getName() + ": ");
+		if (description != null) string.append(description);
+		if (usage != null) string.append("\n" + usage);
+		final List<Command> sortedCommands = commands.values()
+				.stream()
+				.sorted((command1, command2) -> command1.getName().compareToIgnoreCase(command2.getName()))
+				.toList();
+		final List<Entry<String, String>> sortedFlags = flags.entrySet()
+				.stream()
+				.sorted((entry1, entry2) -> entry1.getKey().compareToIgnoreCase(entry2.getKey()))
+				.toList();
+		for (Command entries : sortedCommands) {
+			string.append("\n" + entries.getName() + (entries.description != null ? "\t\t" + entries.getDescription() : ""));
+		}
+		for (Entry<String, String> entries : sortedFlags) {
+			string.append("\n" + entries.getKey() + (entries.getValue() != null ? "\t\t" + entries.getValue() : ""));
+		}
+		consoleOut(string.toString());
+	}
+	
+	public static void consoleOut(String message) {
+		outputObserver.forEach(observer -> observer.accept(message));
+		System.out.println(message);
+	}
+	
+	public void executeCommand(String input) {
+		if (input.isBlank()) return;
+		final ArrayList<String> strings = new ArrayList<>();
+		final StringBuilder builder = new StringBuilder();
+		char lastCharacter = ' ';
+		boolean enclosed = false;
+		for (char character : input.toCharArray()) {
+			if (character == ' ' && !enclosed) {
+				if (builder.length() != 0) {
+					strings.add(builder.toString().replace("\\\"", "\""));
+					builder.setLength(0);
+				}
+			} else if (character == '"' && lastCharacter != '\\') {
+				if (!enclosed) {
+					enclosed = true;
+				} else {
+					strings.add(builder.toString().replace("\\\"", "\""));
+					builder.setLength(0);
+					enclosed = false;
+				}
+			} else {
+				builder.append(character);
+			}
+			lastCharacter = character;
+		}
+		if (builder.length() != 0) strings.add(builder.toString().replace("\\\"", "\""));
+		final String[] args = new String[strings.size() - 1];
+		for (int i = 1; i < args.length; i++) {
+			args[i] = strings.get(i);
+		}
+		executeCommand(strings.get(0), args);
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -75,88 +155,8 @@ public class Command {
 		commands.put(command.getName(), command);
 	}
 	
-	public void executeCommand(String label, String args[]) {
-		if (args.length > 0) {
-			final Command command = commands.get(args[0]);
-			if (command != null) {
-				command.executeCommand(args[0], Arrays.copyOfRange(args, 1, args.length));
-				return;
-			} else if (Arrays.asList(args).contains("-h")) {
-				printCommandHelp();
-				return;
-			} else if (action == null) {
-				consoleOut("Error: Command option " + args[0] + " does not exist!");
-				return;
-			}
-		}
-		if (args.length < minArguments) {
-			consoleOut("Error: Not enough arguments for command " + label + "!");
-			return;
-		}
-		action.accept(args);
-	}
-	
-	public void executeCommand(String input) {
-		if (input.isBlank()) return;
-		final ArrayList<String> strings = new ArrayList<>();
-		final StringBuilder builder = new StringBuilder();
-		char lastCharacter = ' ';
-		boolean enclosed = false;
-		for (char character : input.toCharArray()) {
-			if (character == ' ' && !enclosed) {
-				if (builder.length() != 0) {
-					strings.add(builder.toString().replace("\\\"", "\""));
-					builder.setLength(0);
-				}
-			} else if (character == '"' && lastCharacter != '\\') {
-				if (!enclosed) {
-					enclosed = true;
-				} else {
-					strings.add(builder.toString().replace("\\\"", "\""));
-					builder.setLength(0);
-					enclosed = false;
-				}
-			} else {
-				builder.append(character);
-			}
-			lastCharacter = character;
-		}
-		if (builder.length() != 0) strings.add(builder.toString().replace("\\\"", "\""));
-		final String[] args = new String[strings.size() - 1];
-		for (int i = 1; i < args.length; i++) {
-			args[i] = strings.get(i);
-		}
-		executeCommand(strings.get(0), args);
-	}
-	
 	public static ArrayList<Consumer<String>> getOutputObserver() {
 		return outputObserver;
-	}
-	
-	public static void consoleOut(String message) {
-		outputObserver.forEach(observer -> observer.accept(message));
-		System.out.println(message);
-	}
-	
-	private void printCommandHelp() {
-		final StringBuilder string = new StringBuilder("Command " + getName() + ": ");
-		if (description != null) string.append(description);
-		if (usage != null) string.append("\n" + usage);
-		final List<Command> sortedCommands = commands.values()
-				.stream()
-				.sorted((command1, command2) -> command1.getName().compareToIgnoreCase(command2.getName()))
-				.toList();
-		final List<Entry<String, String>> sortedFlags = flags.entrySet()
-				.stream()
-				.sorted((entry1, entry2) -> entry1.getKey().compareToIgnoreCase(entry2.getKey()))
-				.toList();
-		for (Command entries : sortedCommands) {
-			string.append("\n" + entries.getName() + (entries.description != null ? "\t\t" + entries.getDescription() : ""));
-		}
-		for (Entry<String, String> entries : sortedFlags) {
-			string.append("\n" + entries.getKey() + (entries.getValue() != null ? "\t\t" + entries.getValue() : ""));
-		}
-		consoleOut(string.toString());
 	}
 	
 }

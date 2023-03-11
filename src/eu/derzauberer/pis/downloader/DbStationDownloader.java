@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import eu.derzauberer.pis.main.Pis;
 import eu.derzauberer.pis.model.Station;
 
 public class DbStationDownloader extends DataDownloader {
@@ -33,7 +32,7 @@ public class DbStationDownloader extends DataDownloader {
 						station.getLocation().setLatitude(location.get(1).asDouble());
 					}
 				}
-				Pis.getStationRepository().add(station);
+				//Pis.getStationRepository().add(station);
 			}
 		});
 	}

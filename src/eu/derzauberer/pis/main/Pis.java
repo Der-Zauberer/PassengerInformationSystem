@@ -24,25 +24,27 @@ import eu.derzauberer.pis.util.SpringConfiguration;
 @ComponentScan(basePackages = {"eu.derzauberer.pis.util"})
 public class Pis {
 	
-	private static final SpringConfiguration factory = new SpringConfiguration();
 	private static final Command command = new Command("pis");
-	
-	private static final FileRepository<User, String> userRepository = new FileRepository<>("users", User.class);
-	private static final FileRepository<Station, String> stationRepository = new FileRepository<>("stations", Station.class);
-	private static final FileRepository<TrainType, String> typeRepository = new FileRepository<>("types", TrainType.class);
-	private static final FileRepository<TrainOperator, String> operatorRepository = new FileRepository<>("operators", TrainOperator.class);
-	private static final FileRepository<Line, Long> lineRepository = new FileRepository<>("lines", Line.class);
-	
+	private static final SpringConfiguration springConfiguration = new SpringConfiguration();
 	private static final Map<String, FileRepository<?, ?>> repositories = new HashMap<>();
 	
 	public static void main(String[] args) {
-		registerCommands();
 		registerRepositories();
+		registerCommands();
 		if (args.length != 0) {
 			command.executeCommand(command.getName(), args);
 			return;
 		}
+		repositories.values().forEach(repository -> repository.initialize());
 		SpringApplication.run(Pis.class, args);
+	}
+	
+	private static void registerRepositories() {
+		repositories.put("users", new FileRepository<>("users", User.class));
+		repositories.put("stations", new FileRepository<>("stations", Station.class));
+		repositories.put("types", new FileRepository<>("types", TrainType.class));
+		repositories.put("operators", new FileRepository<>("operators", TrainOperator.class));
+		repositories.put("lines", new FileRepository<>("lines", Line.class));
 	}
 	
 	private static void registerCommands() {
@@ -50,40 +52,12 @@ public class Pis {
 		command.registerSubCommand(new PackageCommand());
 	}
 	
-	private static void registerRepositories() {
-		repositories.put("users", userRepository);
-		repositories.put("stations", stationRepository);
-		repositories.put("types", typeRepository);
-		repositories.put("operators", operatorRepository);
-		repositories.put("lines", lineRepository);
-	}
-	
-	public static SpringConfiguration getFactory() {
-		return factory;
-	}
-	
 	public static Command getCommand() {
 		return command;
 	}
 	
-	public static FileRepository<User, String> getUserRepository() {
-		return userRepository;
-	}
-	
-	public static FileRepository<Station, String> getStationRepository() {
-		return stationRepository;
-	}
-	
-	public static FileRepository<TrainType, String> getTypeRepository() {
-		return typeRepository;
-	}
-	
-	public static FileRepository<TrainOperator, String> getOperatorRepository() {
-		return operatorRepository;
-	}
-	
-	public static FileRepository<Line, Long> getLineRepository() {
-		return lineRepository;
+	public static SpringConfiguration getSpringConfiguration() {
+		return springConfiguration;
 	}
 	
 	public static Map<String, FileRepository<?, ?>> getRepositories() {

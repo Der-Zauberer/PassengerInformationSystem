@@ -27,7 +27,7 @@ public class FileRepository<T extends Entity<I>, I> {
 	private final Class<T> type;
 	private final Set<I> entities = new HashSet<>();
 	
-	private static final ObjectMapper MAPPER = Pis.getFactory().getJsonMapperBuilder().build();
+	private static final ObjectMapper MAPPER = Pis.getSpringConfiguration().getJsonMapperBuilder().build();
 	private static final Logger LOGGER = LoggerFactory.getLogger(FileRepository.class.getSimpleName());
 	
 	static {
@@ -37,6 +37,17 @@ public class FileRepository<T extends Entity<I>, I> {
 	public FileRepository(String name, Class<T> type) {
 		this.name = name;
 		this.type = type;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public Class<T> getType() {
+		return type;
+	}
+	
+	public void initialize() {
 		try {
 			Files.createDirectories(Paths.get(DIRECTORY, name));
 			int counter = 0;
@@ -52,14 +63,6 @@ public class FileRepository<T extends Entity<I>, I> {
 		} catch (IOException exception) {
 			LOGGER.error("Couldn't load {}: {} {}", name, exception.getClass().getSimpleName(), exception.getMessage());
 		}
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public Class<T> getType() {
-		return type;
 	}
 	
 	public void add(T entity) {

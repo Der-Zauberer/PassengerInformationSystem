@@ -9,6 +9,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import eu.derzauberer.pis.commands.ExtractCommand;
+
 public class Command {
 	
 	private final String name;
@@ -19,7 +24,7 @@ public class Command {
 	private Consumer<String[]> action;
 	private final Map<String, Command> commands;
 	
-	private static final ArrayList<Consumer<String>> outputObserver = new ArrayList<>();
+	private static final Logger LOGGER = LoggerFactory.getLogger(ExtractCommand.class.getSimpleName());
 	
 	public Command(String name) {
 		this.name = name;
@@ -37,12 +42,12 @@ public class Command {
 				printCommandHelp();
 				return;
 			} else if (action == null) {
-				consoleOut("Error: Command option " + args[0] + " does not exist!");
+				LOGGER.error("Command option {} does not exist!", args[0]);
 				return;
 			}
 		}
 		if (args.length < minArguments) {
-			consoleOut("Error: Not enough arguments for command " + label + "!");
+			LOGGER.error("Not enough arguments for command {}!", label);
 			return;
 		}
 		action.accept(args);
@@ -66,12 +71,7 @@ public class Command {
 		for (Entry<String, String> entries : sortedFlags) {
 			string.append("\n" + entries.getKey() + (entries.getValue() != null ? "\t\t" + entries.getValue() : ""));
 		}
-		consoleOut(string.toString());
-	}
-	
-	public static void consoleOut(String message) {
-		outputObserver.forEach(observer -> observer.accept(message));
-		System.out.println(message);
+		System.out.println(string.toString());
 	}
 	
 	public void executeCommand(String input) {
@@ -153,10 +153,6 @@ public class Command {
 	
 	public void registerSubCommand(Command command) {
 		commands.put(command.getName(), command);
-	}
-	
-	public static ArrayList<Consumer<String>> getOutputObserver() {
-		return outputObserver;
 	}
 	
 }

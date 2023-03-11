@@ -1,8 +1,8 @@
 package eu.derzauberer.pis.main;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -60,8 +60,14 @@ public class Pis {
 		return springConfiguration;
 	}
 	
-	public static Map<String, FileRepository<?, ?>> getRepositories() {
-		return Collections.unmodifiableMap(repositories);
+	public static Set<String> getRepositories() {
+		return repositories.keySet();
+	}
+	
+	public static FileRepository<?, ?> getRepository(String string) {
+		final FileRepository<?, ?> repository = repositories.get(string);
+		if (repository != null && !repository.isInitiaized()) repository.initialize();
+		return repository;
 	}
 
 }

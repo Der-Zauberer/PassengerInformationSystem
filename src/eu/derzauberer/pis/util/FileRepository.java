@@ -25,18 +25,16 @@ public class FileRepository<T extends Entity<I>, I> {
 	private final String FILE_TYPE = ".json";
 	private final String name;
 	private final Class<T> type;
+	private boolean initiaized;
 	private final Set<I> entities = new HashSet<>();
 	
 	private static final ObjectMapper MAPPER = Pis.getSpringConfiguration().getJsonMapperBuilder().build();
 	private static final Logger LOGGER = LoggerFactory.getLogger(FileRepository.class.getSimpleName());
 	
-	static {
-		LOGGER.info("Loading data...");
-	}
-	
 	public FileRepository(String name, Class<T> type) {
 		this.name = name;
 		this.type = type;
+		this.initiaized = false;
 	}
 	
 	public String getName() {
@@ -47,7 +45,13 @@ public class FileRepository<T extends Entity<I>, I> {
 		return type;
 	}
 	
+	public boolean isInitiaized() {
+		return initiaized;
+	}
+	
 	public void initialize() {
+		if (initiaized) return;
+		initiaized = true;
 		try {
 			Files.createDirectories(Paths.get(DIRECTORY, name));
 			int counter = 0;
@@ -81,9 +85,10 @@ public class FileRepository<T extends Entity<I>, I> {
 	public void remove(I id) {
 		entities.remove(id);
 		try {
-			Files.deleteIfExists(Paths.get(DIRECTORY, name, id.toString() + FILE_TYPE));
+			if (Files.deleteIfExists(Paths.get(DIRECTORY, name, id.toString() + FILE_TYPE))) {
+			}
 		} catch (IOException exception) {
-			LOGGER.error("Couldn't remove entity {} from {}: {} {}!", id, name, exception.getClass().getSimpleName(), exception.getMessage());
+			LOGGER.error("Couldn't remove {} from {}: {} {}!", id, name, exception.getClass().getSimpleName(), exception.getMessage());
 		}
 	}
 	
@@ -91,7 +96,7 @@ public class FileRepository<T extends Entity<I>, I> {
 		try {
 			return loadEntity(id);
 		} catch (IOException exception) {
-			LOGGER.error("Couldn't load entity {} from {}: {} {}", id, name, exception.getClass().getSimpleName(), exception.getMessage());
+			LOGGER.error("Couldn't load {} from {}: {} {}", id, name, exception.getClass().getSimpleName(), exception.getMessage());
 			return Optional.empty();
 		}
 	}
@@ -110,8 +115,10 @@ public class FileRepository<T extends Entity<I>, I> {
 	
 	public void packageEntities(Path path) {
 		try {
-			final String content = MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(getAll());
+			final List<T> entities = getAll();
+			final String content = MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(entities);
 			Files.writeString(path, content);
+			LOGGER.info("Extracted {} {}", entities.size(), name);
 		} catch (IOException exception) {
 			LOGGER.error("Couldn't package {}: {} {}",  name, exception.getClass().getSimpleName(), exception.getMessage());
 		}
@@ -122,6 +129,7 @@ public class FileRepository<T extends Entity<I>, I> {
 			final String content = Files.readString(path);
 			final List<T> entities = MAPPER.readValue(content, new TypeReference<ArrayList<T>>() {});
 			entities.forEach(this::add);
+			LOGGER.info("Extracted {} {}", entities.size(), name);
 		} catch (IOException exception) {
 			LOGGER.error("Couldn't extract {}: {} {}",  name, exception.getClass().getSimpleName(), exception.getMessage());
 		}

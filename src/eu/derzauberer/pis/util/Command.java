@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
@@ -141,13 +142,21 @@ public class Command {
 		final StringBuilder string = new StringBuilder("Command " + getName() + ": ");
 		if (description != null) string.append(description);
 		if (usage != null) string.append("\n" + usage);
-		for (Command entries : commands.values()) {
+		final List<Command> sortedCommands = commands.values()
+				.stream()
+				.sorted((command1, command2) -> command1.getName().compareToIgnoreCase(command2.getName()))
+				.toList();
+		final List<Entry<String, String>> sortedFlags = flags.entrySet()
+				.stream()
+				.sorted((entry1, entry2) -> entry1.getKey().compareToIgnoreCase(entry2.getKey()))
+				.toList();
+		for (Command entries : sortedCommands) {
 			string.append("\n" + entries.getName() + (entries.description != null ? "\t\t" + entries.getDescription() : ""));
 		}
-		for (Entry<String, String> entries : flags.entrySet()) {
+		for (Entry<String, String> entries : sortedFlags) {
 			string.append("\n" + entries.getKey() + (entries.getValue() != null ? "\t\t" + entries.getValue() : ""));
 		}
 		consoleOut(string.toString());
 	}
-
+	
 }

@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 
+import eu.derzauberer.pis.commands.ExtractCommand;
 import eu.derzauberer.pis.commands.PackageCommand;
 import eu.derzauberer.pis.model.Line;
 import eu.derzauberer.pis.model.Station;
@@ -45,6 +46,7 @@ public class Pis {
 	}
 	
 	private static void registerCommands() {
+		command.registerSubCommand(new ExtractCommand());
 		command.registerSubCommand(new PackageCommand());
 	}
 	

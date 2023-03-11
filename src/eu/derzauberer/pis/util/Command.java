@@ -2,16 +2,21 @@ package eu.derzauberer.pis.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
 
 public class Command {
 	
 	private final String name;
-	private final Map<String, Command> commands;
+	private String description;
+	private String usage;
+	private final Map<String, String> flags = new HashMap<>();
 	private int minArguments;
 	private Consumer<String[]> action;
+	private final Map<String, Command> commands;
 	
 	private static final ArrayList<Consumer<String>> outputObserver = new ArrayList<>();
 	
@@ -25,16 +30,36 @@ public class Command {
 		return name;
 	}
 	
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public String getUsage() {
+		return usage;
+	}
+	
+	public void addFlag(String flag, String description) {
+		flags.put(flag, description);
+	}
+	
+	public Map<String, String> getFlags() {
+		return Collections.unmodifiableMap(flags);
+	}
+	
+	public void setUsage(String usage) {
+		this.usage = usage;
+	}
+	
 	public int getMinArguments() {
 		return minArguments;
 	}
 	
 	public void setMinArguments(int minArguments) {
 		this.minArguments = minArguments;
-	}
-	
-	public void registerSubCommand(Command command) {
-		commands.put(command.getName(), command);
 	}
 	
 	public Consumer<String[]> getAction() {
@@ -45,14 +70,31 @@ public class Command {
 		this.action = action;
 	}
 	
-	public void executeCommand(String label, String args[]) {	
+	public void registerSubCommand(Command command) {
+		commands.put(command.getName(), command);
+	}
+	
+	public void executeCommand(String label, String args[]) {
 		if (args.length > 0) {
 			final Command command = commands.get(args[0]);
 			if (command != null) {
 				command.executeCommand(args[0], Arrays.copyOfRange(args, 1, args.length));
 				return;
+			} else if (Arrays.asList(args).contains("-h")) {
+				final StringBuilder string = new StringBuilder("Command " + getName() + ": ");
+				if (description != null) string.append(description);
+				if (usage != null) string.append("\n" + usage);
+				for (Command entries : commands.values()) {
+					string.append("\n" + entries.getName() + (entries.description != null ? "\t\t" + entries.getDescription() : ""));
+				}
+				for (Entry<String, String> entries : flags.entrySet()) {
+					string.append("\n" + entries.getKey() + (entries.getValue() != null ? "\t\t" + entries.getValue() : ""));
+				}
+				consoleOut(string.toString());
+				return;
 			} else if (action == null) {
-				consoleOut("Error: Command option " + label + " does not exist!");
+				consoleOut("Error: Command option " + args[0] + " does not exist!");
+				return;
 			}
 		}
 		if (args.length < minArguments) {

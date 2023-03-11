@@ -1,6 +1,5 @@
 package eu.derzauberer.pis.main;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 
+import eu.derzauberer.pis.commands.PackageCommand;
 import eu.derzauberer.pis.model.Line;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.model.TrainOperator;
@@ -45,14 +45,14 @@ public class Pis {
 	}
 	
 	private static void registerCommands() {
-		command.setAction(args -> System.out.println("Command: " + Arrays.toString(args)));
+		command.registerSubCommand(new PackageCommand());
 	}
 	
 	private static void registerRepositories() {
-		repositories.put("users", lineRepository);
-		repositories.put("stations", lineRepository);
-		repositories.put("types", lineRepository);
-		repositories.put("operators", lineRepository);
+		repositories.put("users", userRepository);
+		repositories.put("stations", stationRepository);
+		repositories.put("types", typeRepository);
+		repositories.put("operators", operatorRepository);
 		repositories.put("lines", lineRepository);
 	}
 	

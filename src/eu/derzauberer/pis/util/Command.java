@@ -11,7 +11,6 @@ public class Command {
 	private final String name;
 	private final Map<String, Command> commands;
 	private int minArguments;
-	private int maxArguments;
 	private Consumer<String[]> action;
 	
 	private static final ArrayList<Consumer<String>> outputObserver = new ArrayList<>();
@@ -20,7 +19,6 @@ public class Command {
 		this.name = name;
 		this.commands = new HashMap<>();
 		this.minArguments = 0;
-		this.maxArguments = 100;
 	}
 	
 	public String getName() {
@@ -35,14 +33,6 @@ public class Command {
 		this.minArguments = minArguments;
 	}
 	
-	public int getMaxArguments() {
-		return maxArguments;
-	}
-	
-	public void setMaxArguments(int maxArguments) {
-		this.maxArguments = maxArguments;
-	}
-	
 	public void registerSubCommand(Command command) {
 		commands.put(command.getName(), command);
 	}
@@ -55,24 +45,21 @@ public class Command {
 		this.action = action;
 	}
 	
-	public void executeCommand(String label, String args[]) {
-		final Command command = commands.get(label);
-		if (command != null && args.length != 0) {
-			command.executeCommand(args[0], Arrays.copyOfRange(args, 1, args.length));
-		} else {
-			if (command == null && action == null) {
+	public void executeCommand(String label, String args[]) {	
+		if (args.length > 0) {
+			final Command command = commands.get(args[0]);
+			if (command != null) {
+				command.executeCommand(args[0], Arrays.copyOfRange(args, 1, args.length));
+				return;
+			} else if (action == null) {
 				consoleOut("Error: Command option " + label + " does not exist!");
-				return;
-			} else if (args.length < minArguments) {
-				consoleOut("Error: Not enough arguments!");
-				return;
-			} else if (args.length > maxArguments) {
-				consoleOut("Error: To many arguments!");
-				return;
 			}
-				
-			action.accept(args);
 		}
+		if (args.length < minArguments) {
+			consoleOut("Error: Not enough arguments for command " + label + "!");
+			return;
+		}
+		action.accept(args);
 	}
 	
 	public void executeCommand(String input) {
@@ -112,9 +99,9 @@ public class Command {
 		return outputObserver;
 	}
 	
-	public static void consoleOut(String string) {
-		outputObserver.forEach(observer -> observer.accept(string));
-		System.out.println(string);
+	public static void consoleOut(String message) {
+		outputObserver.forEach(observer -> observer.accept(message));
+		System.out.println(message);
 	}
 
 }

@@ -4,28 +4,20 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 
+import eu.derzauberer.pis.main.Pis;
 import eu.derzauberer.pis.model.Entity;
-import eu.derzauberer.pis.serialization.DateDeserializer;
-import eu.derzauberer.pis.serialization.DateSerializer;
-import eu.derzauberer.pis.serialization.DateTimeDeserializer;
-import eu.derzauberer.pis.serialization.DateTimeSerializer;
-import eu.derzauberer.pis.serialization.TimeDeserializer;
-import eu.derzauberer.pis.serialization.TimeSerializer;
 
 public class FileRepository<T extends Entity<I>, I> {
 	
@@ -35,26 +27,11 @@ public class FileRepository<T extends Entity<I>, I> {
 	private final Class<T> type;
 	private final Set<I> entities = new HashSet<>();
 	
-	private static final ObjectMapper MAPPER = new ObjectMapper();
-	private static final Logger LOGGER = LoggerFactory.getLogger(FileRepository.class);
+	private static final ObjectMapper MAPPER = Pis.getFactory().getJsonMapperBuilder().build();
+	private static final Logger LOGGER = LoggerFactory.getLogger(FileRepository.class.getSimpleName());
 	
 	static {
 		LOGGER.info("Loading data...");
-		SimpleModule module = new SimpleModule();
-		module.addSerializer(LocalTime.class, new TimeSerializer());
-		module.addDeserializer(LocalTime.class, new TimeDeserializer());
-		module.addSerializer(LocalDate.class, new DateSerializer());
-		module.addDeserializer(LocalDate.class, new DateDeserializer());
-		module.addSerializer(LocalDateTime.class, new DateTimeSerializer());
-		module.addDeserializer(LocalDateTime.class, new DateTimeDeserializer());
-		MAPPER.registerModule(module);
-		MAPPER.setSerializationInclusion(Include.NON_EMPTY);
-		MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		MAPPER.setVisibility(MAPPER.getSerializationConfig().getDefaultVisibilityChecker()
-                .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
-                .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
-                .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
-                .withCreatorVisibility(JsonAutoDetect.Visibility.ANY));
 	}
 	
 	public FileRepository(String name, Class<T> type) {
@@ -73,8 +50,16 @@ public class FileRepository<T extends Entity<I>, I> {
 			}
 			LOGGER.info("Loaded {} {}", counter, name);
 		} catch (IOException exception) {
-			LOGGER.error("Couldn't load {}: ", name, exception.getMessage());
+			LOGGER.error("Couldn't load {}: {} {}", name, exception.getClass().getSimpleName(), exception.getMessage());
 		}
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public Class<T> getType() {
+		return type;
 	}
 	
 	public void add(T entity) {
@@ -82,7 +67,7 @@ public class FileRepository<T extends Entity<I>, I> {
 		try {
 			saveEntity(entity);
 		} catch (IOException exception) {
-			LOGGER.warn("Couldn't save entity {} from {}: {}", entity.getId(), name, exception.getMessage());
+			LOGGER.warn("Couldn't save entity {} from {}: {} {}", entity.getId(), name, exception.getClass().getSimpleName(), exception.getMessage());
 		}
 	}
 	
@@ -95,7 +80,7 @@ public class FileRepository<T extends Entity<I>, I> {
 		try {
 			Files.deleteIfExists(Paths.get(DIRECTORY, name, id.toString() + FILE_TYPE));
 		} catch (IOException exception) {
-			LOGGER.error("Couldn't remove entity {} from {}: !", id, name, exception.getMessage());
+			LOGGER.error("Couldn't remove entity {} from {}: {} {}!", id, name, exception.getClass().getSimpleName(), exception.getMessage());
 		}
 	}
 	
@@ -103,13 +88,40 @@ public class FileRepository<T extends Entity<I>, I> {
 		try {
 			return loadEntity(id);
 		} catch (IOException exception) {
-			LOGGER.error("Couldn't load entity {} from {}: ", id, name, exception.getMessage());
+			LOGGER.error("Couldn't load entity {} from {}: {} {}", id, name, exception.getClass().getSimpleName(), exception.getMessage());
 			return Optional.empty();
 		}
 	}
 	
+	public List<T> getAll() {
+		final List<T> entities = new ArrayList<>();
+		for (I id : this.entities) {
+			get(id).ifPresent(entities::add);
+		}
+		return entities;
+	}
+	
 	public boolean contains(I id) {
 		return entities.contains(id);
+	}
+	
+	public void packageEntities(Path path) {
+		try {
+			final String content = MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(getAll());
+			Files.writeString(path, content);
+		} catch (IOException exception) {
+			LOGGER.error("Couldn't package {}: {} {}",  name, exception.getClass().getSimpleName(), exception.getMessage());
+		}
+	}
+	
+	public void extractEntities(Path path) {
+		try {
+			final String content = Files.readString(path);
+			final List<T> entities = MAPPER.readValue(content, new TypeReference<ArrayList<T>>() {});
+			entities.forEach(this::add);
+		} catch (IOException exception) {
+			LOGGER.error("Couldn't extract {}: {} {}",  name, exception.getClass().getSimpleName(), exception.getMessage());
+		}
 	}
 	
 	private void registerEntity(Path path) throws IOException {

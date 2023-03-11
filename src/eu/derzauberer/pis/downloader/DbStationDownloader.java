@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import eu.derzauberer.pis.main.Pis;
 import eu.derzauberer.pis.model.Station;
 
 public class DbStationDownloader extends DataDownloader {
@@ -15,9 +16,9 @@ public class DbStationDownloader extends DataDownloader {
 	private static final String URL = "https://apis.deutschebahn.com/db-api-marketplace/apis/station-data/v2/stations";
 	
 	public DbStationDownloader() {
-		super("stations");
-		header.put("DB-Client-Id", "----");
-		header.put("DB-Api-Key", "----");
+		super("db/stada");
+		header.put("DB-Client-Id", Pis.getUserConfig().getDbClientId());
+		header.put("DB-Api-Key", Pis.getUserConfig().getDbApiKey());
 		download(URL, parameters, header).ifPresent(json -> {
 			for (JsonNode node : json.withArray("result")) {
 				final Station station = new Station(node.get("name").asText());
@@ -32,7 +33,7 @@ public class DbStationDownloader extends DataDownloader {
 						station.getLocation().setLatitude(location.get(1).asDouble());
 					}
 				}
-				//Pis.getStationRepository().add(station);
+				//Pis.getRepository("stations").add(station);
 			}
 		});
 	}

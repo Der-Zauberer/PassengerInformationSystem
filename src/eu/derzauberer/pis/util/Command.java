@@ -81,16 +81,7 @@ public class Command {
 				command.executeCommand(args[0], Arrays.copyOfRange(args, 1, args.length));
 				return;
 			} else if (Arrays.asList(args).contains("-h")) {
-				final StringBuilder string = new StringBuilder("Command " + getName() + ": ");
-				if (description != null) string.append(description);
-				if (usage != null) string.append("\n" + usage);
-				for (Command entries : commands.values()) {
-					string.append("\n" + entries.getName() + (entries.description != null ? "\t\t" + entries.getDescription() : ""));
-				}
-				for (Entry<String, String> entries : flags.entrySet()) {
-					string.append("\n" + entries.getKey() + (entries.getValue() != null ? "\t\t" + entries.getValue() : ""));
-				}
-				consoleOut(string.toString());
+				printCommandHelp();
 				return;
 			} else if (action == null) {
 				consoleOut("Error: Command option " + args[0] + " does not exist!");
@@ -144,6 +135,19 @@ public class Command {
 	public static void consoleOut(String message) {
 		outputObserver.forEach(observer -> observer.accept(message));
 		System.out.println(message);
+	}
+	
+	private void printCommandHelp() {
+		final StringBuilder string = new StringBuilder("Command " + getName() + ": ");
+		if (description != null) string.append(description);
+		if (usage != null) string.append("\n" + usage);
+		for (Command entries : commands.values()) {
+			string.append("\n" + entries.getName() + (entries.description != null ? "\t\t" + entries.getDescription() : ""));
+		}
+		for (Entry<String, String> entries : flags.entrySet()) {
+			string.append("\n" + entries.getKey() + (entries.getValue() != null ? "\t\t" + entries.getValue() : ""));
+		}
+		consoleOut(string.toString());
 	}
 
 }

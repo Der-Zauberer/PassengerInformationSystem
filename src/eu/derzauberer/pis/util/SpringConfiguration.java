@@ -1,0 +1,46 @@
+package eu.derzauberer.pis.util;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+
+import eu.derzauberer.pis.serialization.DateDeserializer;
+import eu.derzauberer.pis.serialization.DateSerializer;
+import eu.derzauberer.pis.serialization.DateTimeDeserializer;
+import eu.derzauberer.pis.serialization.DateTimeSerializer;
+import eu.derzauberer.pis.serialization.TimeDeserializer;
+import eu.derzauberer.pis.serialization.TimeSerializer;
+
+@Configuration
+public class SpringConfiguration {
+
+	@Bean
+	public Jackson2ObjectMapperBuilder getJsonMapperBuilder() {
+		SimpleModule module = new SimpleModule();
+		module.addSerializer(LocalTime.class, new TimeSerializer());
+		module.addDeserializer(LocalTime.class, new TimeDeserializer());
+		module.addSerializer(LocalDate.class, new DateSerializer());
+		module.addDeserializer(LocalDate.class, new DateDeserializer());
+		module.addSerializer(LocalDateTime.class, new DateTimeSerializer());
+		module.addDeserializer(LocalDateTime.class, new DateTimeDeserializer());
+		Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
+		builder.modules(module);
+		builder.failOnUnknownProperties(false);
+		builder.serializationInclusion(Include.NON_NULL);
+		builder.visibility(PropertyAccessor.FIELD, Visibility.ANY);
+		builder.visibility(PropertyAccessor.GETTER, Visibility.NONE);
+		builder.visibility(PropertyAccessor.SETTER, Visibility.NONE);
+		builder.visibility(PropertyAccessor.CREATOR, Visibility.ANY);
+	    return builder;
+	}
+	
+}

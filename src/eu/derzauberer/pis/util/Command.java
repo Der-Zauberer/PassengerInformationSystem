@@ -10,15 +10,37 @@ public class Command {
 	
 	private final String name;
 	private final Map<String, Command> commands;
+	private int minArguments;
+	private int maxArguments;
 	private Consumer<String[]> action;
+	
+	private static final ArrayList<Consumer<String>> outputObserver = new ArrayList<>();
 	
 	public Command(String name) {
 		this.name = name;
 		this.commands = new HashMap<>();
+		this.minArguments = 0;
+		this.maxArguments = 100;
 	}
 	
 	public String getName() {
 		return name;
+	}
+	
+	public int getMinArguments() {
+		return minArguments;
+	}
+	
+	public void setMinArguments(int minArguments) {
+		this.minArguments = minArguments;
+	}
+	
+	public int getMaxArguments() {
+		return maxArguments;
+	}
+	
+	public void setMaxArguments(int maxArguments) {
+		this.maxArguments = maxArguments;
 	}
 	
 	public void registerSubCommand(Command command) {
@@ -38,6 +60,17 @@ public class Command {
 		if (command != null && args.length != 0) {
 			command.executeCommand(args[0], Arrays.copyOfRange(args, 1, args.length));
 		} else {
+			if (command == null && action == null) {
+				consoleOut("Error: Command option " + label + " does not exist!");
+				return;
+			} else if (args.length < minArguments) {
+				consoleOut("Error: Not enough arguments!");
+				return;
+			} else if (args.length > maxArguments) {
+				consoleOut("Error: To many arguments!");
+				return;
+			}
+				
 			action.accept(args);
 		}
 	}
@@ -73,6 +106,15 @@ public class Command {
 			args[i] = strings.get(i);
 		}
 		executeCommand(strings.get(0), args);
+	}
+	
+	public static ArrayList<Consumer<String>> getOutputObserver() {
+		return outputObserver;
+	}
+	
+	public static void consoleOut(String string) {
+		outputObserver.forEach(observer -> observer.accept(string));
+		System.out.println(string);
 	}
 
 }

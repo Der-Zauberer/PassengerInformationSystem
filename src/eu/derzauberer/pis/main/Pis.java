@@ -1,6 +1,9 @@
 package eu.derzauberer.pis.main;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,11 +17,13 @@ import eu.derzauberer.pis.model.TrainType;
 import eu.derzauberer.pis.model.User;
 import eu.derzauberer.pis.util.Command;
 import eu.derzauberer.pis.util.FileRepository;
+import eu.derzauberer.pis.util.SpringConfiguration;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 @ComponentScan(basePackages = {"eu.derzauberer.pis.util"})
 public class Pis {
 	
+	private static final SpringConfiguration factory = new SpringConfiguration();
 	private static final Command command = new Command("pis");
 	
 	private static final FileRepository<User, String> userRepository = new FileRepository<>("users", User.class);
@@ -27,8 +32,11 @@ public class Pis {
 	private static final FileRepository<TrainOperator, String> operatorRepository = new FileRepository<>("operators", TrainOperator.class);
 	private static final FileRepository<Line, Long> lineRepository = new FileRepository<>("lines", Line.class);
 	
+	private static final Map<String, FileRepository<?, ?>> repositories = new HashMap<>();
+	
 	public static void main(String[] args) {
 		registerCommands();
+		registerRepositories();
 		if (args.length != 0) {
 			command.executeCommand(command.getName(), args);
 			return;
@@ -38,6 +46,22 @@ public class Pis {
 	
 	private static void registerCommands() {
 		command.setAction(args -> System.out.println("Command: " + Arrays.toString(args)));
+	}
+	
+	private static void registerRepositories() {
+		repositories.put("users", lineRepository);
+		repositories.put("stations", lineRepository);
+		repositories.put("types", lineRepository);
+		repositories.put("operators", lineRepository);
+		repositories.put("lines", lineRepository);
+	}
+	
+	public static SpringConfiguration getFactory() {
+		return factory;
+	}
+	
+	public static Command getCommand() {
+		return command;
 	}
 	
 	public static FileRepository<User, String> getUserRepository() {
@@ -58,6 +82,10 @@ public class Pis {
 	
 	public static FileRepository<Line, Long> getLineRepository() {
 		return lineRepository;
+	}
+	
+	public static Map<String, FileRepository<?, ?>> getRepositories() {
+		return Collections.unmodifiableMap(repositories);
 	}
 
 }

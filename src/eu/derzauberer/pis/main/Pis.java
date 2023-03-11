@@ -19,14 +19,16 @@ import eu.derzauberer.pis.model.User;
 import eu.derzauberer.pis.util.Command;
 import eu.derzauberer.pis.util.FileRepository;
 import eu.derzauberer.pis.util.SpringConfiguration;
+import eu.derzauberer.pis.util.UserConfiguration;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 @ComponentScan(basePackages = {"eu.derzauberer.pis.util"})
 public class Pis {
 	
-	private static final Command command = new Command("pis");
-	private static final SpringConfiguration springConfiguration = new SpringConfiguration();
+	private static final SpringConfiguration springConfig = new SpringConfiguration();
+	private static final UserConfiguration userConfig = new UserConfiguration();
 	private static final Map<String, FileRepository<?, ?>> repositories = new HashMap<>();
+	private static final Command command = new Command("pis");
 	
 	public static void main(String[] args) {
 		registerRepositories();
@@ -52,12 +54,12 @@ public class Pis {
 		command.registerSubCommand(new PackageCommand());
 	}
 	
-	public static Command getCommand() {
-		return command;
+	public static SpringConfiguration getSpringConfig() {
+		return springConfig;
 	}
 	
-	public static SpringConfiguration getSpringConfiguration() {
-		return springConfiguration;
+	public static UserConfiguration getUserConfig() {
+		return userConfig;
 	}
 	
 	public static Set<String> getRepositories() {
@@ -68,6 +70,10 @@ public class Pis {
 		final FileRepository<?, ?> repository = repositories.get(string);
 		if (repository != null && !repository.isInitiaized()) repository.initialize();
 		return repository;
+	}
+	
+	public static Command getCommand() {
+		return command;
 	}
 
 }

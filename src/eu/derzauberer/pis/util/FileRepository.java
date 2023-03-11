@@ -28,7 +28,7 @@ public class FileRepository<T extends Entity<I>, I> {
 	private boolean initiaized;
 	private final Set<I> entities = new HashSet<>();
 	
-	private static final ObjectMapper MAPPER = Pis.getSpringConfiguration().getJsonMapperBuilder().build();
+	private static final ObjectMapper MAPPER = Pis.getSpringConfig().getJsonMapperBuilder().build();
 	private static final Logger LOGGER = LoggerFactory.getLogger(FileRepository.class.getSimpleName());
 	
 	public FileRepository(String name, Class<T> type) {

@@ -2,6 +2,7 @@ package eu.derzauberer.pis.downloader;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -56,12 +57,32 @@ public class DbStationDownloader extends Downloader {
 			} else {
 				LOGGER.warn("Station {} does not contain geo-coordinates and an eva-number!", station.getId());
 			}
+			station.getServices().setParking(extractBoolean(node, "hasParking"));
+			station.getServices().setBicycleParking(extractBoolean(node, "hasBicycleParking"));
+			station.getServices().setLocalPublicTransport(extractBoolean(node, "hasLocalPublicTransport"));
+			station.getServices().setPublicFacilities(extractBoolean(node, "hasPublicFacilities"));
+			station.getServices().setLockerSystem(extractBoolean(node, "hasLockerSystem"));
+			station.getServices().setTaxiRank(extractBoolean(node, "hasTaxiRank"));
+			station.getServices().setTravelNecessities(extractBoolean(node, "hasTravelNecessities"));
+			station.getServices().setBarrierFree(extractBoolean(node, "hasSteplessAccess"));
+			station.getServices().setWifi(extractBoolean(node, "hasWiFi"));
+			station.getServices().setTravelCenter(extractBoolean(node, "hasTravelCenter"));
+			station.getServices().setRailwayMission(extractBoolean(node, "hasRailwayMission"));
+			station.getServices().setHasCarRental(extractBoolean(node, "hasCarRental"));
 			station.getApiIds().put("stada", node.get("number").asLong());
 			station.getApiSources().add(URL);
 			counter++;
 			repository.add(station);
 		}
 		LOGGER.info("Downloaded {} stations from {}", counter, NAME, URL);
+	}
+	
+	private boolean extractBoolean(JsonNode node, String name) {
+		return Optional.ofNullable(node.get(name)).map(entry -> {
+			if (entry.isBoolean()) return entry.asBoolean();
+			else if (entry.isTextual() && entry.asText().equalsIgnoreCase("yes")) return true;
+			return false;
+		}).orElse(false);
 	}
 	
 	public static String getName() {

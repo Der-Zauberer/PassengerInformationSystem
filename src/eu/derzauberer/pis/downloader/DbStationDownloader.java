@@ -44,7 +44,9 @@ public class DbStationDownloader extends Downloader {
 			station.getAdress().setCity(node.at("/mailingAddress/city").asText());
 			station.getAdress().setCountry("Germany");
 			if (!node.get("evaNumbers").isEmpty() && !node.get("evaNumbers").get(0).isEmpty()) {
-				final JsonNode location = node.get("evaNumbers").get(0).at("/geographicCoordinates/coordinates");
+				JsonNode eva = node.get("evaNumbers").get(0);
+				station.getApiIds().put("eva", eva.get("number").asLong());
+				final JsonNode location = eva.at("/geographicCoordinates/coordinates");
 				if (!location.isEmpty()) {
 					station.getLocation().setLongitude(location.get(0).asDouble());
 					station.getLocation().setLatitude(location.get(1).asDouble());
@@ -52,8 +54,10 @@ public class DbStationDownloader extends Downloader {
 					LOGGER.warn("Station {} does not contain geo-coordinates!", station.getId());
 				}
 			} else {
-				LOGGER.warn("Station {} does not contain geo-coordinates!", station.getId());
+				LOGGER.warn("Station {} does not contain geo-coordinates and an eva-number!", station.getId());
 			}
+			station.getApiIds().put("stada", node.get("number").asLong());
+			station.getApiSources().add(URL);
 			counter++;
 			repository.add(station);
 		}

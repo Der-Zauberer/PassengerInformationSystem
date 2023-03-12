@@ -2,6 +2,10 @@ package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class Station implements Entity<String> {
 	
@@ -11,6 +15,8 @@ public class Station implements Entity<String> {
 	private final Adress adress = new Adress();
 	private final Location location = new Location(0, 0);
 	private final StationServices services = new StationServices();
+	private final Map<String, Object> apiIds = new HashMap<>();
+	private final Set<String> apiSources = new HashSet<>();
 
 	public Station(String name) {
 		this(Entity.nameToId(name), name);
@@ -46,6 +52,14 @@ public class Station implements Entity<String> {
 	
 	public StationServices getServices() {
 		return services;
+	}
+	
+	public Map<String, Object> getApiIds() {
+		return apiIds;
+	}
+	
+	public Set<String> getApiSources() {
+		return apiSources;
 	}
 
 }

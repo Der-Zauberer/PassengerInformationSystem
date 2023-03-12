@@ -1,6 +1,9 @@
 package eu.derzauberer.pis.commands;
 
-import eu.derzauberer.pis.main.Pis;
+import java.util.HashMap;
+import java.util.Map;
+
+import eu.derzauberer.pis.downloader.DbStationDownloader;
 import eu.derzauberer.pis.util.Command;
 import eu.derzauberer.pis.util.Downloader;
 
@@ -12,7 +15,9 @@ public class DownloadCommand extends Command {
 		setUsage("<api>");
 		setMinArguments(1);
 		setAction(args -> {
-			final Downloader downloader = Pis.getDownloader(args[0]);
+			final Map<String, Downloader> downloaderMap = new HashMap<>();
+			downloaderMap.put(DbStationDownloader.getName(), new DbStationDownloader());
+			final Downloader downloader = downloaderMap.get(args[0]);
 			if (downloader == null) {
 				LOGGER.error("The downloader {} does not exist!", args[0]);
 				return;

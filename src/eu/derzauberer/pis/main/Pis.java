@@ -32,14 +32,12 @@ public class Pis {
 	private static final SpringConfiguration springConfig = new SpringConfiguration();
 	private static final UserConfiguration userConfig = new UserConfiguration();
 	private static final Map<String, Repository<?, ?>> repositories = new HashMap<>();
-	private static final Map<String, Downloader> downloader = new HashMap<>();
 	private static final Command command = new Command("pis");
 	
 	public static void main(String[] args) {
 		registerRepositories();
-		registerCommands();
-		registerDownloader();
 		if (args.length != 0) {
+			registerCommands();
 			command.executeCommand(command.getName(), args);
 			return;
 		}
@@ -59,10 +57,6 @@ public class Pis {
 		command.registerSubCommand(new DownloadCommand());
 		command.registerSubCommand(new ExtractCommand());
 		command.registerSubCommand(new PackageCommand());
-	}
-	
-	public static void registerDownloader() {
-		downloader.put(DbStationDownloader.getName(), new DbStationDownloader());
 	}
 	
 	public static SpringConfiguration getSpringConfig() {
@@ -88,15 +82,6 @@ public class Pis {
 		final Repository<T, I> repository = (Repository<T, I>) repositories.get(name);
 		if (repository != null && !repository.isInitiaized()) repository.initialize();
 		return repository;
-	}
-	
-	
-	public static Set<String> getDownloader() {
-		return downloader.keySet();
-	}
-	
-	public static Downloader getDownloader(String name) {
-		return downloader.get(name);
 	}
 	
 	public static Command getCommand() {

@@ -12,8 +12,6 @@ import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.derzauberer.pis.commands.ExtractCommand;
-
 public class Command {
 	
 	private final String name;
@@ -24,7 +22,7 @@ public class Command {
 	private Consumer<String[]> action;
 	private final Map<String, Command> commands;
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(ExtractCommand.class.getSimpleName());
+	protected static final Logger LOGGER = LoggerFactory.getLogger(Command.class.getSimpleName());
 	
 	public Command(String name) {
 		this.name = name;

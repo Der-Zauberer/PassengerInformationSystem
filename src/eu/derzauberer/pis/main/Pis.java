@@ -9,15 +9,19 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 
+import eu.derzauberer.pis.commands.DownloadCommand;
 import eu.derzauberer.pis.commands.ExtractCommand;
 import eu.derzauberer.pis.commands.PackageCommand;
+import eu.derzauberer.pis.downloader.DbStationDownloader;
+import eu.derzauberer.pis.model.Entity;
 import eu.derzauberer.pis.model.Line;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.model.TrainOperator;
 import eu.derzauberer.pis.model.TrainType;
 import eu.derzauberer.pis.model.User;
 import eu.derzauberer.pis.util.Command;
-import eu.derzauberer.pis.util.FileRepository;
+import eu.derzauberer.pis.util.Downloader;
+import eu.derzauberer.pis.util.Repository;
 import eu.derzauberer.pis.util.SpringConfiguration;
 import eu.derzauberer.pis.util.UserConfiguration;
 
@@ -27,12 +31,14 @@ public class Pis {
 	
 	private static final SpringConfiguration springConfig = new SpringConfiguration();
 	private static final UserConfiguration userConfig = new UserConfiguration();
-	private static final Map<String, FileRepository<?, ?>> repositories = new HashMap<>();
+	private static final Map<String, Repository<?, ?>> repositories = new HashMap<>();
+	private static final Map<String, Downloader> downloader = new HashMap<>();
 	private static final Command command = new Command("pis");
 	
 	public static void main(String[] args) {
 		registerRepositories();
 		registerCommands();
+		registerDownloader();
 		if (args.length != 0) {
 			command.executeCommand(command.getName(), args);
 			return;
@@ -42,16 +48,21 @@ public class Pis {
 	}
 	
 	private static void registerRepositories() {
-		repositories.put("users", new FileRepository<>("users", User.class));
-		repositories.put("stations", new FileRepository<>("stations", Station.class));
-		repositories.put("types", new FileRepository<>("types", TrainType.class));
-		repositories.put("operators", new FileRepository<>("operators", TrainOperator.class));
-		repositories.put("lines", new FileRepository<>("lines", Line.class));
+		repositories.put("users", new Repository<>("users", User.class));
+		repositories.put("stations", new Repository<>("stations", Station.class));
+		repositories.put("types", new Repository<>("types", TrainType.class));
+		repositories.put("operators", new Repository<>("operators", TrainOperator.class));
+		repositories.put("lines", new Repository<>("lines", Line.class));
 	}
 	
 	private static void registerCommands() {
+		command.registerSubCommand(new DownloadCommand());
 		command.registerSubCommand(new ExtractCommand());
 		command.registerSubCommand(new PackageCommand());
+	}
+	
+	public static void registerDownloader() {
+		downloader.put(DbStationDownloader.getName(), new DbStationDownloader());
 	}
 	
 	public static SpringConfiguration getSpringConfig() {
@@ -66,10 +77,26 @@ public class Pis {
 		return repositories.keySet();
 	}
 	
-	public static FileRepository<?, ?> getRepository(String string) {
-		final FileRepository<?, ?> repository = repositories.get(string);
+	public static Repository<?, ?> getRepository(String name) {
+		final Repository<?, ?> repository = repositories.get(name);
 		if (repository != null && !repository.isInitiaized()) repository.initialize();
 		return repository;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T extends Entity<I>, I> Repository<T, I> getRepository(String name, Class<T> type, Class<I> idType) {
+		final Repository<T, I> repository = (Repository<T, I>) repositories.get(name);
+		if (repository != null && !repository.isInitiaized()) repository.initialize();
+		return repository;
+	}
+	
+	
+	public static Set<String> getDownloader() {
+		return downloader.keySet();
+	}
+	
+	public static Downloader getDownloader(String name) {
+		return downloader.get(name);
 	}
 	
 	public static Command getCommand() {

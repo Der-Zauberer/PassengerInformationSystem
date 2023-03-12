@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.derzauberer.pis.main.Pis;
 import eu.derzauberer.pis.model.Entity;
 
-public class FileRepository<T extends Entity<I>, I> {
+public class Repository<T extends Entity<I>, I> {
 	
 	private final String DIRECTORY = "data";
 	private final String FILE_TYPE = ".json";
@@ -29,9 +29,9 @@ public class FileRepository<T extends Entity<I>, I> {
 	private final Set<I> entities = new HashSet<>();
 	
 	private static final ObjectMapper MAPPER = Pis.getSpringConfig().getJsonMapperBuilder().build();
-	private static final Logger LOGGER = LoggerFactory.getLogger(FileRepository.class.getSimpleName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(Repository.class.getSimpleName());
 	
-	public FileRepository(String name, Class<T> type) {
+	public Repository(String name, Class<T> type) {
 		this.name = name;
 		this.type = type;
 		this.initiaized = false;

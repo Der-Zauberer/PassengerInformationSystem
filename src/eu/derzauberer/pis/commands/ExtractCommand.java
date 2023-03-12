@@ -4,16 +4,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import eu.derzauberer.pis.main.Pis;
 import eu.derzauberer.pis.util.Command;
-import eu.derzauberer.pis.util.FileRepository;
+import eu.derzauberer.pis.util.Repository;
 
 public class ExtractCommand extends Command {
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(ExtractCommand.class.getSimpleName());
 
 	public ExtractCommand() {
 		super("extract");
@@ -21,7 +16,7 @@ public class ExtractCommand extends Command {
 		setUsage("extract <type> <file>");
 		setMinArguments(2);
 		setAction(args -> {
-			final FileRepository<?, ?> repository = Pis.getRepository(args[0]);
+			final Repository<?, ?> repository = Pis.getRepository(args[0]);
 			Path path;
 			if (repository == null) {
 				LOGGER.error("The repository {} does not exist!", args[0]);

@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.downloader;
+package eu.derzauberer.pis.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,31 +14,29 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-public abstract class DataDownloader {
+public abstract class Downloader {
 	
 	private final String name;
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(DataDownloader.class);
+	protected static final Logger LOGGER = LoggerFactory.getLogger(Downloader.class.getSimpleName());
 	
-	public DataDownloader(String name) {
+	public Downloader(String name) {
 		this.name = name;
 	}
 	
-	public Optional<JsonNode> download(String url, Map<String, String> parameters, Map<String, String> header) {
-		LOGGER.info("Downloading " + name + " from " + url);
+	public abstract void download();
+	
+	protected Optional<ObjectNode> download(String url, Map<String, String> parameters, Map<String, String> header) {
 		try {
 			final HttpURLConnection connection = connect(url, parameters, header);
 			final String response = readResponse(connection);
 			connection.disconnect();
-			LOGGER.info("Processing " + name + " from " + url);
 			return Optional.of(new ObjectMapper().readValue(response.toString(), ObjectNode.class));
 		} catch (IOException exception) {
-			exception.printStackTrace();
-			LOGGER.info("Failed to download " + name + " from " + url);
+			LOGGER.error("Failed to download {} from {}: {} {}!", name, url, exception.getClass().getSimpleName(), exception.getMessage());
 			return Optional.empty();
 		}
 	}
@@ -76,10 +74,6 @@ public abstract class DataDownloader {
 		}
 		input.close();
 		return response.toString();
-	}
-	
-	public String getName() {
-		return name;
 	}
 	
 }

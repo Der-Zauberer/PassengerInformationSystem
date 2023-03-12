@@ -42,7 +42,7 @@ public abstract class Downloader {
 	}
 	
 	private String getParameterString(Map<String, String> parameters) throws UnsupportedEncodingException {
-		StringBuilder result = new StringBuilder();
+		StringBuilder result = new StringBuilder(parameters.isEmpty() ? "" : "?");
 		for (Map.Entry<String, String> entry : parameters.entrySet()) {
 			result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
 			result.append("=");

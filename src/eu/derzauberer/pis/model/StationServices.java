@@ -1,8 +1,5 @@
 package eu.derzauberer.pis.model;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-@JsonPropertyOrder({"parking", "bicycleParking", "localPublicTransport", "publicFacilities", "taxiRank", "hasCarRental", "lockerSystem", "travelNecessities", "barrierFree", "wifi", "travelCenter", "railwayMission"})
 public class StationServices {
 	
 	private boolean parking = false;

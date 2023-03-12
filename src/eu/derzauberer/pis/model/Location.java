@@ -2,9 +2,6 @@ package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-@JsonPropertyOrder({"latitude", "longitude"})
 public class Location {
 	
 	private double latitude;

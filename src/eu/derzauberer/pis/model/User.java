@@ -5,9 +5,6 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-@JsonPropertyOrder({"email", "name", "password", "disabled", "forcePasswordChange", "created", "lastLogin", "permissions"})
 public class User implements Entity<String> {
 	
 	private final String email;

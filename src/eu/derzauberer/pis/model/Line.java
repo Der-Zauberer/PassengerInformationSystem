@@ -5,9 +5,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-@JsonPropertyOrder({"id", "type", "number", "date", "operator", "driver", "cancelled", "position", "stops"})
 public class Line implements Entity<Long>{
 
 	private final Long id;

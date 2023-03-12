@@ -2,9 +2,6 @@ package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-@JsonPropertyOrder({"id", "name", "primaryColor", "secondaryColor", "adress"})
 public class TrainOperator implements Entity<String> {
 
 	private final String id;

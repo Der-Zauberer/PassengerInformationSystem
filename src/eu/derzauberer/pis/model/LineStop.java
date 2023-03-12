@@ -2,9 +2,7 @@ package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
 import java.time.LocalTime;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({"station", "platform", "platfromArea", "arrival", "departure", "cancelled", "delay", "changedPlatform", "changedPlatfromArea", "information"})
 public class LineStop {
 
 	private final String station;

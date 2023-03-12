@@ -3,9 +3,6 @@ package eu.derzauberer.pis.model;
 import java.beans.ConstructorProperties;
 import java.util.ArrayList;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-@JsonPropertyOrder({"id", "name", "platforms", "adress", "services"})
 public class Station implements Entity<String> {
 	
 	private final String id;

@@ -29,7 +29,7 @@ public class Repository<T extends Entity> {
 	private boolean initiaized;
 	private final Map<String, T> entities = new HashMap<>();
 	
-	private static final ObjectMapper MAPPER = Pis.getSpringConfig().getJsonMapperBuilder().build();
+	private static final ObjectMapper MAPPER = Pis.getSpringConfig().getObjectMapper();
 	private static final Logger LOGGER = LoggerFactory.getLogger(Repository.class.getSimpleName());
 	
 	public Repository(String name, Class<T> type) {

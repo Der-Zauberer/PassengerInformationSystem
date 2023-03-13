@@ -11,6 +11,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import eu.derzauberer.pis.serialization.DateDeserializer;
@@ -22,6 +23,8 @@ import eu.derzauberer.pis.serialization.TimeSerializer;
 
 @Configuration
 public class SpringConfiguration {
+	
+	private static ObjectMapper MAPPER;
 
 	@Bean
 	public Jackson2ObjectMapperBuilder getJsonMapperBuilder() {
@@ -41,6 +44,14 @@ public class SpringConfiguration {
 		builder.visibility(PropertyAccessor.SETTER, Visibility.NONE);
 		builder.visibility(PropertyAccessor.CREATOR, Visibility.ANY);
 	    return builder;
+	}
+	
+	public ObjectMapper getObjectMapper() {
+		if (MAPPER == null) {
+			MAPPER = getJsonMapperBuilder().build();
+			MAPPER.setDefaultPrettyPrinter(new PrettyPrinter());
+		}
+		return MAPPER;
 	}
 	
 }

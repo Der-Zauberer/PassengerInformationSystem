@@ -21,7 +21,7 @@ public class UserConfiguration {
 	private static final String DB_CLIENT_ID = "db-client-id";
 	private static final String DB_API_KEY = "db-api-key";
 	
-	private static final ObjectMapper MAPPER = Pis.getSpringConfig().getJsonMapperBuilder().build();
+	private static final ObjectMapper MAPPER = Pis.getSpringConfig().getObjectMapper();
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserConfiguration.class.getSimpleName());
 	
 	public UserConfiguration() {

@@ -18,7 +18,7 @@ public class DbStationDownloader extends Downloader {
 	private static final String NAME = "db/stada";
 	private static final String URL = "https://apis.deutschebahn.com/db-api-marketplace/apis/station-data/v2/stations";
 	
-	private Repository<Station, String> repository;
+	private Repository<Station> repository;
 	
 	public DbStationDownloader() {
 		super(NAME);
@@ -30,7 +30,7 @@ public class DbStationDownloader extends Downloader {
 		final Map<String, String> header = new HashMap<>();
 		header.put("DB-Client-Id", Pis.getUserConfig().getDbClientId());
 		header.put("DB-Api-Key", Pis.getUserConfig().getDbApiKey());
-		repository = Pis.getRepository("stations", Station.class, String.class);
+		repository = Pis.getRepository("stations", Station.class);
 		LOGGER.info("Downloading {} from {}", NAME, URL);
 		download(URL, parameters, header).ifPresent(this::proccess);
 	}

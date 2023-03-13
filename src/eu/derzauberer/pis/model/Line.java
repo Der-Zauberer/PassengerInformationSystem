@@ -5,9 +5,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Line implements Entity<Long>{
+public class Line implements Entity{
 
-	private final Long id;
+	private final String id;
 	private TrainType type;
 	private int number;
 	private LocalDate date;
@@ -18,7 +18,7 @@ public class Line implements Entity<Long>{
 	private final List<LineStop> stops = new ArrayList<>();
 	
 	@ConstructorProperties({"id", "type", "number"})
-	public Line(Long id, TrainType type, int number) {
+	public Line(String id, TrainType type, int number) {
 		this.id = id;
 		this.type = type;
 		this.number = number;
@@ -26,7 +26,7 @@ public class Line implements Entity<Long>{
 	}
 	
 	@Override
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 	

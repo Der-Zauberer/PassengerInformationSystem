@@ -29,7 +29,7 @@ public class Pis {
 	
 	private static final SpringConfiguration springConfig = new SpringConfiguration();
 	private static final UserConfiguration userConfig = new UserConfiguration();
-	private static final Map<String, Repository<?, ?>> repositories = new HashMap<>();
+	private static final Map<String, Repository<?>> repositories = new HashMap<>();
 	private static final Command command = new Command("pis");
 	
 	public static void main(String[] args) {
@@ -69,15 +69,15 @@ public class Pis {
 		return repositories.keySet();
 	}
 	
-	public static Repository<?, ?> getRepository(String name) {
-		final Repository<?, ?> repository = repositories.get(name);
+	public static Repository<?> getRepository(String name) {
+		final Repository<?> repository = repositories.get(name);
 		if (repository != null && !repository.isInitiaized()) repository.initialize();
 		return repository;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static <T extends Entity<I>, I> Repository<T, I> getRepository(String name, Class<T> type, Class<I> idType) {
-		final Repository<T, I> repository = (Repository<T, I>) repositories.get(name);
+	public static <T extends Entity> Repository<T> getRepository(String name, Class<T> type) {
+		final Repository<T> repository = (Repository<T>) repositories.get(name);
 		if (repository != null && !repository.isInitiaized()) repository.initialize();
 		return repository;
 	}

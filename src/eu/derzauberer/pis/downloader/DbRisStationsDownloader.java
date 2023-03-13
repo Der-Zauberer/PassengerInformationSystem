@@ -17,7 +17,7 @@ public class DbRisStationsDownloader extends Downloader {
 	private static final String NAME = "db/ris::stations";
 	private static final String URL = "https://apis.deutschebahn.com/db-api-marketplace/apis/ris-stations/v1/stations";
 
-	private Repository<Station, String> repository;
+	private Repository<Station> repository;
 	
 	public DbRisStationsDownloader() {
 		super(NAME);
@@ -30,7 +30,7 @@ public class DbRisStationsDownloader extends Downloader {
 		parameters.put("limit","10000");
 		header.put("DB-Client-Id", Pis.getUserConfig().getDbClientId());
 		header.put("DB-Api-Key", Pis.getUserConfig().getDbApiKey());
-		repository = Pis.getRepository("stations", Station.class, String.class);
+		repository = Pis.getRepository("stations", Station.class);
 		LOGGER.info("Downloading {} from {}", NAME, URL);
 		download(URL, parameters, header).ifPresent(this::proccess);
 	}

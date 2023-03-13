@@ -1,8 +1,8 @@
 package eu.derzauberer.pis.model;
 
-public interface Entity<T> {
+public interface Entity {
 	
-	T getId();
+	String getId();
 	String getName();
 	
 	static String nameToId(String name) {

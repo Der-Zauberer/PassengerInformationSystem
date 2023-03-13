@@ -2,7 +2,7 @@ package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
 
-public class TrainType implements Entity<String> {
+public class TrainType implements Entity {
 
 	private final String id;
 	private final String name;

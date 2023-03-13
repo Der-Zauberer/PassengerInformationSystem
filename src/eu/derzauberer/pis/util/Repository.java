@@ -5,10 +5,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,14 +20,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.derzauberer.pis.main.Pis;
 import eu.derzauberer.pis.model.Entity;
 
-public class Repository<T extends Entity<I>, I> {
+public class Repository<T extends Entity> {
 	
 	private final String DIRECTORY = "data";
 	private final String FILE_TYPE = ".json";
 	private final String name;
 	private final Class<T> type;
 	private boolean initiaized;
-	private final Set<I> entities = new HashSet<>();
+	private final Map<String, T> entities = new HashMap<>();
 	
 	private static final ObjectMapper MAPPER = Pis.getSpringConfig().getJsonMapperBuilder().build();
 	private static final Logger LOGGER = LoggerFactory.getLogger(Repository.class.getSimpleName());
@@ -57,7 +58,7 @@ public class Repository<T extends Entity<I>, I> {
 			int counter = 0;
 			for (Path path : Files.list(Paths.get(DIRECTORY, name)).toList()) {
 				try {
-					registerEntity(path);
+					loadEntity(path);
 					counter++;
 				} catch (IOException exception) {
 					exception.printStackTrace();
@@ -70,7 +71,7 @@ public class Repository<T extends Entity<I>, I> {
 	}
 	
 	public void add(T entity) {
-		entities.add(entity.getId());
+		entities.put(entity.getId(), entity);
 		try {
 			saveEntity(entity);
 		} catch (IOException exception) {
@@ -82,7 +83,7 @@ public class Repository<T extends Entity<I>, I> {
 		remove(entity.getId());
 	}
 	
-	public void remove(I id) {
+	public void remove(String id) {
 		entities.remove(id);
 		try {
 			if (Files.deleteIfExists(Paths.get(DIRECTORY, name, id.toString() + FILE_TYPE))) {
@@ -92,30 +93,21 @@ public class Repository<T extends Entity<I>, I> {
 		}
 	}
 	
-	public Optional<T> get(I id) {
-		try {
-			return loadEntity(id);
-		} catch (IOException exception) {
-			LOGGER.error("Couldn't load {} from {}: {} {}", id, name, exception.getClass().getSimpleName(), exception.getMessage());
-			return Optional.empty();
-		}
+	public Optional<T> get(String id) {
+		return Optional.ofNullable(entities.get(id));
 	}
 	
-	public List<T> getAll() {
-		final List<T> entities = new ArrayList<>();
-		for (I id : this.entities) {
-			get(id).ifPresent(entities::add);
-		}
-		return entities;
+	public Collection<T> getAll() {
+		return entities.values();
 	}
 	
-	public boolean contains(I id) {
-		return entities.contains(id);
+	public boolean contains(String id) {
+		return entities.containsKey(id);
 	}
 	
 	public void packageEntities(Path path) {
 		try {
-			final List<T> entities = getAll();
+			final Collection<T> entities = getAll();
 			final String content = MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(entities);
 			Files.writeString(path, content);
 			LOGGER.info("Extracted {} {}", entities.size(), name);
@@ -135,18 +127,10 @@ public class Repository<T extends Entity<I>, I> {
 		}
 	}
 	
-	private void registerEntity(Path path) throws IOException {
+	private void loadEntity(Path path) throws IOException {
 		final String content = Files.readString(path);
 		final T entity = MAPPER.readValue(content, type);
-		entities.add(entity.getId());
-	}
-	
-	private Optional<T> loadEntity(I id) throws IOException {
-		final Path path = Paths.get(DIRECTORY, name, id.toString() + FILE_TYPE);
-		if (!entities.contains(id) || !Files.exists(path)) return Optional.empty();
-		final String content = Files.readString(path);
-		final T entity = MAPPER.readValue(content, type);
-		return Optional.of(entity);
+		entities.put(entity.getId(), entity);
 	}
 	
 	private void saveEntity(T entity) throws IOException {

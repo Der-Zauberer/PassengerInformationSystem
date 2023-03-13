@@ -22,7 +22,7 @@ public class ExtractCommand extends Command {
 				printList(Pis.getRepositories());
 				return;
 			}
-			final Repository<?, ?> repository = Pis.getRepository(args[0]);
+			final Repository<?> repository = Pis.getRepository(args[0]);
 			Path path;
 			if (repository == null) {
 				LOGGER.error("The repository {} does not exist!", args[0]);

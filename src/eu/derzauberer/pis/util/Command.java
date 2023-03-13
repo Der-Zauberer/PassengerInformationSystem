@@ -2,6 +2,7 @@ package eu.derzauberer.pis.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -51,7 +52,7 @@ public class Command {
 		action.accept(args);
 	}
 	
-	private void printCommandHelp() {
+	public void printCommandHelp() {
 		final StringBuilder string = new StringBuilder("Command " + getName() + ": ");
 		if (description != null) string.append(description);
 		if (usage != null) string.append("\n" + usage);
@@ -70,6 +71,16 @@ public class Command {
 			string.append("\n" + entries.getKey() + (entries.getValue() != null ? "\t\t" + entries.getValue() : ""));
 		}
 		System.out.println(string.toString());
+	}
+	
+	public void printList(Collection<String> list) {
+		final List<String> sortedNames = list.stream().sorted().toList();
+		final StringBuilder string = new StringBuilder();
+		for (String name : sortedNames) {
+			string.append(name + "\n");
+		}
+		if (string.length() != 0) string.deleteCharAt(string.length() - 1);
+		System.out.println(string);
 	}
 	
 	public void executeCommand(String input) {

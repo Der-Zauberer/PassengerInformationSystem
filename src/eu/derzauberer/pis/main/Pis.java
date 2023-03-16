@@ -44,11 +44,11 @@ public class Pis {
 	}
 	
 	private static void registerRepositories() {
-		repositories.put("users", new Repository<>("users", User.class));
-		repositories.put("stations", new Repository<>("stations", Station.class));
-		repositories.put("types", new Repository<>("types", TrainType.class));
-		repositories.put("operators", new Repository<>("operators", TrainOperator.class));
-		repositories.put("lines", new Repository<>("lines", Line.class));
+		repositories.put("users", new Repository<>("users", User.class, false));
+		repositories.put("stations", new Repository<>("stations", Station.class, false));
+		repositories.put("types", new Repository<>("types", TrainType.class, false));
+		repositories.put("operators", new Repository<>("operators", TrainOperator.class, false));
+		repositories.put("lines", new Repository<>("lines", Line.class, true));
 	}
 	
 	private static void registerCommands() {

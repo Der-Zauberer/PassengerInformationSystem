@@ -32,7 +32,7 @@ public class Line implements Entity{
 	
 	@Override
 	public String getName() {
-		return type.getToken() + number;
+		return type.getId() + number;
 	}
 
 	public TrainType getType() {

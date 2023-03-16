@@ -39,7 +39,7 @@ public class DbRisStationsDownloader extends Downloader {
 		int counter = 0;
 		for (JsonNode node : json.withArray("stations")) {
 			final String name = node.at("/names/DE/name").asText();
-			final Station station = repository.get(Entity.nameToId(name)).orElse(new Station(name));
+			final Station station = repository.getById(Entity.nameToId(name)).orElse(new Station(name));
 			if (node.at("/owner/name").asText().equalsIgnoreCase("DB S&S")) {
 				station.getAdress().setName("DB Station&Service AG");
 			} else {

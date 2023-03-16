@@ -19,6 +19,7 @@ import eu.derzauberer.pis.model.TrainOperator;
 import eu.derzauberer.pis.model.TrainType;
 import eu.derzauberer.pis.model.User;
 import eu.derzauberer.pis.util.Command;
+import eu.derzauberer.pis.util.FileRepository;
 import eu.derzauberer.pis.util.Repository;
 import eu.derzauberer.pis.util.SpringConfiguration;
 import eu.derzauberer.pis.util.UserConfiguration;
@@ -33,22 +34,21 @@ public class Pis {
 	private static final Command command = new Command("pis");
 	
 	public static void main(String[] args) {
-		registerRepositories();
 		if (args.length != 0) {
+			registerRepositories();
 			registerCommands();
 			command.executeCommand(command.getName(), args);
 			return;
 		}
-		repositories.values().forEach(repository -> repository.initialize());
 		SpringApplication.run(Pis.class, args);
 	}
 	
 	private static void registerRepositories() {
-		repositories.put("users", new Repository<>("users", User.class, false));
-		repositories.put("stations", new Repository<>("stations", Station.class, false));
-		repositories.put("types", new Repository<>("types", TrainType.class, false));
-		repositories.put("operators", new Repository<>("operators", TrainOperator.class, false));
-		repositories.put("lines", new Repository<>("lines", Line.class, true));
+		repositories.put("users", new FileRepository<>("users", User.class));
+		repositories.put("stations", new FileRepository<>("stations", Station.class));
+		repositories.put("types", new FileRepository<>("types", TrainType.class));
+		repositories.put("operators", new FileRepository<>("operators", TrainOperator.class));
+		repositories.put("lines", new FileRepository<>("lines", Line.class));
 	}
 	
 	private static void registerCommands() {
@@ -71,14 +71,12 @@ public class Pis {
 	
 	public static Repository<?> getRepository(String name) {
 		final Repository<?> repository = repositories.get(name);
-		if (repository != null && !repository.isInitiaized()) repository.initialize();
 		return repository;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public static <T extends Entity> Repository<T> getRepository(String name, Class<T> type) {
 		final Repository<T> repository = (Repository<T>) repositories.get(name);
-		if (repository != null && !repository.isInitiaized()) repository.initialize();
 		return repository;
 	}
 	

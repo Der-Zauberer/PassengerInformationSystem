@@ -6,9 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -20,24 +18,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.derzauberer.pis.main.Pis;
 import eu.derzauberer.pis.model.Entity;
 
-public class Repository<T extends Entity> {
+public abstract class Repository<T extends Entity> {
 	
-	private final String DIRECTORY = "data";
-	private final String FILE_TYPE = ".json";
 	private final String name;
 	private final Class<T> type;
-	private final boolean lazy;
-	private boolean initialized;
-	private final Map<String, T> entities = new HashMap<>();
 	
-	private static final ObjectMapper MAPPER = Pis.getSpringConfig().getObjectMapper();
-	private static final Logger LOGGER = LoggerFactory.getLogger(Repository.class.getSimpleName());
+	protected static final String DIRECTORY = "data";
+	protected static final String FILE_TYPE = ".json";
+	protected static final ObjectMapper MAPPER = Pis.getSpringConfig().getObjectMapper();
+	protected static final Logger LOGGER = LoggerFactory.getLogger(MemoryRepository.class.getSimpleName());
 	
-	public Repository(String name, Class<T> type, boolean lazy) {
+	public Repository(String name, Class<T> type) {
 		this.name = name;
 		this.type = type;
-		this.lazy = lazy;
-		this.initialized = false;
+		try {
+			Files.createDirectories(Paths.get(DIRECTORY, name));
+		} catch (IOException exception) {
+			LOGGER.error("Couldn't create directory {}: {} {}", DIRECTORY + "/" + name, exception.getClass().getSimpleName(), exception.getMessage());
+		}
 	}
 	
 	public String getName() {
@@ -48,84 +46,17 @@ public class Repository<T extends Entity> {
 		return type;
 	}
 	
-	public boolean isInitiaized() {
-		return initialized;
-	}
+	public abstract void add(T entity);
 	
-	public void initialize() {
-		if (initialized) return;
-		initialized = true;
-		try {
-			Files.createDirectories(Paths.get(DIRECTORY, name));
-			int counter = 0;
-			for (Path path : Files.list(Paths.get(DIRECTORY, name)).toList()) {
-				try {
-					final String content = Files.readString(path);
-					final T entity = MAPPER.readValue(content, type);
-					if (lazy) entities.put(entity.getId(), null);
-					else entities.put(entity.getId(), entity);
-					counter++;
-				} catch (IOException exception) {
-					exception.printStackTrace();
-				}
-			}
-			LOGGER.info("Loaded {} {}", counter, name);
-		} catch (IOException exception) {
-			LOGGER.error("Couldn't load {}: {} {}", name, exception.getClass().getSimpleName(), exception.getMessage());
-		}
-	}
+	public abstract void remove(String id);
 	
-	public void add(T entity) {
-		entities.put(entity.getId(), entity);
-		try {
-			saveEntity(entity);
-		} catch (IOException exception) {
-			LOGGER.warn("Couldn't save entity {} from {}: {} {}", entity.getId(), name, exception.getClass().getSimpleName(), exception.getMessage());
-		}
-	}
+	public abstract void remove(T entity);
 	
-	public void remove(T entity) {
-		remove(entity.getId());
-	}
+	public abstract boolean containsById(String id);
 	
-	public void remove(String id) {
-		entities.remove(id);
-		try {
-			if (Files.deleteIfExists(Paths.get(DIRECTORY, name, id.toString() + FILE_TYPE))) {
-			}
-		} catch (IOException exception) {
-			LOGGER.error("Couldn't remove {} from {}: {} {}!", id, name, exception.getClass().getSimpleName(), exception.getMessage());
-		}
-	}
+	public abstract Optional<T> getById(String id);
 	
-	public Optional<T> get(String id) {
-		final T entity = entities.get(id);
-		if (entity != null) return Optional.of(entity);
-		try {
-			return loadEntity(id);
-		} catch (IOException exception) {
-			LOGGER.error("Couldn't load {} from {}: {} {}!", id, name, exception.getClass().getSimpleName(), exception.getMessage());
-			return Optional.empty();
-		}
-	}
-	
-	public Collection<T> getAll() {
-		if (!lazy) return entities.values();
-		final Collection<T> collection = new ArrayList<>();
-		try {
-			for (String id : entities.keySet()) {
-				loadEntity(id).ifPresent(collection::add);
-			}
-		} catch (IOException exception) {
-			LOGGER.error("Couldn't load  {}: {} {}!", name, exception.getClass().getSimpleName(), exception.getMessage());
-			return new ArrayList<>();
-		}
-		return collection;
-	}
-	
-	public boolean contains(String id) {
-		return entities.containsKey(id);
-	}
+	public abstract Collection<T> getAll();
 	
 	public void packageEntities(Path path) {
 		try {
@@ -149,18 +80,57 @@ public class Repository<T extends Entity> {
 		}
 	}
 	
-	private Optional<T> loadEntity(String id) throws IOException {
-		final Path path = Paths.get(DIRECTORY, name, id.toString() + FILE_TYPE);
-		if (!entities.containsKey(id)) return Optional.empty();
-		final String content = Files.readString(path);
-		final T entity = MAPPER.readValue(content, type);
-		return Optional.of(entity);
+	protected List<T> loadEntities() {
+		try {
+			final List<T> entities = new ArrayList<>();
+			for (Path path : Files.list(Paths.get(DIRECTORY, name)).toList()) {
+				if (!Files.exists(path)) continue;
+				final String content = Files.readString(path);
+				final T entity = MAPPER.readValue(content, type);
+				entities.add(entity);
+			}
+			return entities;
+		} catch (IOException exception) {
+			LOGGER.error("Couldn't load entities {}: {} {}!", getName(), exception.getClass().getSimpleName(), exception.getMessage());
+			return new ArrayList<>();
+		}
 	}
 	
-	private void saveEntity(T entity) throws IOException {
-		final Path path = Paths.get(DIRECTORY, name, entity.getId().toString() + FILE_TYPE);
-		final String content = MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(entity);
-		Files.writeString(path, content);
+	protected boolean containsEntity(String id) {
+		final Path path = Paths.get(DIRECTORY, name, id.toString() + FILE_TYPE);
+		return Files.exists(path);
 	}
-
+	
+	protected Optional<T> loadEntity(String id) {
+		try {
+			final Path path = Paths.get(DIRECTORY, name, id.toString() + FILE_TYPE);
+			if (Files.exists(path)) return Optional.empty();
+			final String content = Files.readString(path);
+			final T entity = MAPPER.readValue(content, type);
+			return Optional.of(entity);
+		} catch (IOException exception) {
+			LOGGER.error("Couldn't load entity {} from {}: {} {}!", id, getName(), exception.getClass().getSimpleName(), exception.getMessage());
+			return Optional.empty();
+		}
+	}
+	
+	protected void saveEntity(T entity) {
+		try {
+			final Path path = Paths.get(DIRECTORY, name, entity.getId().toString() + FILE_TYPE);
+			final String content = MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(entity);
+			Files.writeString(path, content);
+		} catch (IOException exception) {
+			LOGGER.warn("Couldn't save entity {} from {}: {} {}", entity.getId(), getName(), exception.getClass().getSimpleName(), exception.getMessage());
+		}
+		
+	}
+	
+	protected void deleteEnity(String id) {
+		try {
+			Files.deleteIfExists(Paths.get(DIRECTORY, name, id + FILE_TYPE));
+		} catch (IOException exception) {
+			LOGGER.warn("Couldn't delete entity {} from {}: {} {}", id, getName(), exception.getClass().getSimpleName(), exception.getMessage());
+		}
+	}
+	
 }

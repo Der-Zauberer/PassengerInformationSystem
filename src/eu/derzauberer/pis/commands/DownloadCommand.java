@@ -14,7 +14,7 @@ public class DownloadCommand extends Command {
 	public DownloadCommand() {
 		super("download");
 		setDescription("Downloads entities from an api to the data directory. Download an existing entity will only update the downloaded fields instead of overwriting the whole entity.");
-		setUsage("<downloader>");
+		setUsage("download <downloader>");
 		addFlag("-l", "List all availible downloader");
 		setMinArguments(1);
 		setAction(args -> {

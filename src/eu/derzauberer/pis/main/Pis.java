@@ -13,14 +13,13 @@ import eu.derzauberer.pis.commands.DownloadCommand;
 import eu.derzauberer.pis.commands.ExtractCommand;
 import eu.derzauberer.pis.commands.PackageCommand;
 import eu.derzauberer.pis.model.Entity;
-import eu.derzauberer.pis.model.Line;
-import eu.derzauberer.pis.model.Station;
-import eu.derzauberer.pis.model.TrainOperator;
-import eu.derzauberer.pis.model.TrainType;
-import eu.derzauberer.pis.model.User;
+import eu.derzauberer.pis.service.LineService;
+import eu.derzauberer.pis.service.OperatorService;
+import eu.derzauberer.pis.service.StationService;
+import eu.derzauberer.pis.service.TypeService;
+import eu.derzauberer.pis.service.UserService;
 import eu.derzauberer.pis.util.Command;
-import eu.derzauberer.pis.util.FileRepository;
-import eu.derzauberer.pis.util.Repository;
+import eu.derzauberer.pis.util.Service;
 import eu.derzauberer.pis.util.SpringConfiguration;
 import eu.derzauberer.pis.util.UserConfiguration;
 
@@ -30,7 +29,7 @@ public class Pis {
 	
 	private static final SpringConfiguration springConfig = new SpringConfiguration();
 	private static final UserConfiguration userConfig = new UserConfiguration();
-	private static final Map<String, Repository<?>> repositories = new HashMap<>();
+	private static final Map<String, Service<?>> services = new HashMap<>();
 	private static final Command command = new Command("pis");
 	
 	public static void main(String[] args) {
@@ -44,11 +43,11 @@ public class Pis {
 	}
 	
 	private static void registerRepositories() {
-		repositories.put("users", new FileRepository<>("users", User.class));
-		repositories.put("stations", new FileRepository<>("stations", Station.class));
-		repositories.put("types", new FileRepository<>("types", TrainType.class));
-		repositories.put("operators", new FileRepository<>("operators", TrainOperator.class));
-		repositories.put("lines", new FileRepository<>("lines", Line.class));
+		services.put("lines", new LineService());
+		services.put("operators", new OperatorService());
+		services.put("stations", new StationService());
+		services.put("types", new TypeService());
+		services.put("users", new UserService());
 	}
 	
 	private static void registerCommands() {
@@ -65,19 +64,19 @@ public class Pis {
 		return userConfig;
 	}
 	
-	public static Set<String> getRepositories() {
-		return repositories.keySet();
+	public static Set<String> getServices() {
+		return services.keySet();
 	}
 	
-	public static Repository<?> getRepository(String name) {
-		final Repository<?> repository = repositories.get(name);
-		return repository;
+	public static Service<?> getService(String name) {
+		final Service<?> service = services.get(name);
+		return service;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static <T extends Entity> Repository<T> getRepository(String name, Class<T> type) {
-		final Repository<T> repository = (Repository<T>) repositories.get(name);
-		return repository;
+	public static <T extends Entity> Service<T> getService(String name, Class<T> type) {
+		final Service<T> service = (Service<T>) services.get(name);
+		return service;
 	}
 	
 	public static Command getCommand() {

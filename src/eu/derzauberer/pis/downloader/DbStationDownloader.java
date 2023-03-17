@@ -10,15 +10,15 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import eu.derzauberer.pis.main.Pis;
 import eu.derzauberer.pis.model.Entity;
 import eu.derzauberer.pis.model.Station;
+import eu.derzauberer.pis.service.StationService;
 import eu.derzauberer.pis.util.Downloader;
-import eu.derzauberer.pis.util.Repository;
 
 public class DbStationDownloader extends Downloader {
 	
 	private static final String NAME = "db/stada";
 	private static final String URL = "https://apis.deutschebahn.com/db-api-marketplace/apis/station-data/v2/stations";
 	
-	private Repository<Station> repository;
+	private StationService service;
 	
 	public DbStationDownloader() {
 		super(NAME);
@@ -30,7 +30,7 @@ public class DbStationDownloader extends Downloader {
 		final Map<String, String> header = new HashMap<>();
 		header.put("DB-Client-Id", Pis.getUserConfig().getDbClientId());
 		header.put("DB-Api-Key", Pis.getUserConfig().getDbApiKey());
-		repository = Pis.getRepository("stations", Station.class);
+		service = (StationService) Pis.getService("stations", Station.class);
 		LOGGER.info("Downloading {} from {}", NAME, URL);
 		download(URL, parameters, header).ifPresent(this::proccess);
 	}
@@ -39,7 +39,7 @@ public class DbStationDownloader extends Downloader {
 		int counter = 0;
 		for (JsonNode node : json.withArray("result")) {
 			final String name = node.get("name").asText();
-			final Station station = repository.getById(Entity.nameToId(name)).orElse(new Station(name));
+			final Station station = service.getById(Entity.nameToId(name)).orElse(new Station(name));
 			station.getAdress().setStreet(node.at("/mailingAddress/street").asText());
 			station.getAdress().setPostalCode(node.at("/mailingAddress/zipcode").asInt());
 			station.getAdress().setCity(node.at("/mailingAddress/city").asText());
@@ -72,7 +72,7 @@ public class DbStationDownloader extends Downloader {
 			station.getApiIds().put("stada", node.get("number").asLong());
 			station.getApiSources().add(URL);
 			counter++;
-			repository.add(station);
+			service.add(station);
 		}
 		LOGGER.info("Downloaded {} stations from {}", counter, NAME, URL);
 	}

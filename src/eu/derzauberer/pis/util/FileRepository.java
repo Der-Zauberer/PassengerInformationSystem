@@ -1,5 +1,6 @@
 package eu.derzauberer.pis.util;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -9,6 +10,7 @@ public class FileRepository<T extends Entity> extends Repository<T> {
 
 	public FileRepository(String name, Class<T> type) {
 		super(name, type);
+		LOGGER.info("Loaded {} {}", size(), name);
 	}
 
 	@Override
@@ -34,6 +36,11 @@ public class FileRepository<T extends Entity> extends Repository<T> {
 	@Override
 	public Collection<T> getAll() {
 		return loadEntities();
+	}
+	
+	@Override
+	public int size() {
+		return new File(DIRECTORY, getName()).list().length;
 	}
 
 }

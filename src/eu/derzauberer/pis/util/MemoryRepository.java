@@ -14,10 +14,11 @@ public class MemoryRepository<T extends Entity> extends Repository<T>{
 	
 	public MemoryRepository(String name, Class<T> type) {
 		super(name, type);
-		final List<T> entities = loadEntities();
+		final List<T> entities = loadEntities(true);
 		for (T entity : entities) {
 			this.entities.put(entity.getId(), entity);
 		}
+		LOGGER.info("Loaded {} {}", size(), name);
 	}
 	
 	@Override
@@ -45,6 +46,11 @@ public class MemoryRepository<T extends Entity> extends Repository<T>{
 	@Override
 	public Collection<T> getAll() {
 		return entities.values();
+	}
+
+	@Override
+	public int size() {
+		return entities.size();
 	}
 
 }

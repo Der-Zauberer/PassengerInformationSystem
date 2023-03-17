@@ -1,5 +1,6 @@
 package eu.derzauberer.pis.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -56,6 +57,8 @@ public abstract class Repository<T extends Entity> {
 	
 	public abstract Collection<T> getAll();
 	
+	public abstract int size();
+	
 	public void packageEntities(Path path) {
 		try {
 			final Collection<T> entities = getAll();
@@ -79,14 +82,29 @@ public abstract class Repository<T extends Entity> {
 	}
 	
 	protected List<T> loadEntities() {
+		return loadEntities(false);
+	}
+	
+	protected List<T> loadEntities(boolean progress) {
 		try {
 			final List<T> entities = new ArrayList<>();
+			final long size = new File(DIRECTORY, getName()).list().length;
+			final long percent = size / 100;
+			long counter = 0;
+			int amount = 0;
 			for (Path path : Files.list(Paths.get(DIRECTORY, name)).toList()) {
 				if (!Files.exists(path)) continue;
 				final String content = Files.readString(path);
 				final T entity = MAPPER.readValue(content, type);
-				entities.add(entity);
+				if (progress && size > 200) {
+					entities.add(entity);
+					if (counter++ > percent) {
+						counter = 0;
+						System.out.print("Loading " + getName() + ": " + ++amount + "%\r");
+					}
+				}
 			}
+			if (progress && size > 200) System.out.print("Loading " + getName() + ": 100%\r");
 			return entities;
 		} catch (IOException exception) {
 			LOGGER.error("Couldn't load entities {}: {} {}!", getName(), exception.getClass().getSimpleName(), exception.getMessage());

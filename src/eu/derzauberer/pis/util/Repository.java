@@ -48,7 +48,7 @@ public abstract class Repository<T extends Entity> {
 	
 	public abstract void add(T entity);
 	
-	public abstract void remove(String id);
+	public abstract void removeById(String id);
 	
 	public abstract boolean containsById(String id);
 	

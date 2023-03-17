@@ -17,7 +17,7 @@ public class FileRepository<T extends Entity> extends Repository<T> {
 	}
 
 	@Override
-	public void remove(String id) {
+	public void removeById(String id) {
 		deleteEnity(id);
 	}
 

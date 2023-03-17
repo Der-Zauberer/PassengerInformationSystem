@@ -27,7 +27,7 @@ public class MemoryRepository<T extends Entity> extends Repository<T>{
 	}
 	
 	@Override
-	public void remove(String id) {
+	public void removeById(String id) {
 		entities.remove(id);
 		deleteEnity(id);
 	}

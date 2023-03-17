@@ -22,11 +22,6 @@ public class FileRepository<T extends Entity> extends Repository<T> {
 	}
 
 	@Override
-	public void remove(T entity) {
-		deleteEnity(entity.getId());
-	}
-
-	@Override
 	public boolean containsById(String id) {
 		return containsEntity(id);
 	}

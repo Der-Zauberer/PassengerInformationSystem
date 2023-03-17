@@ -26,7 +26,7 @@ public abstract class Repository<T extends Entity> {
 	protected static final String DIRECTORY = "data";
 	protected static final String FILE_TYPE = ".json";
 	protected static final ObjectMapper MAPPER = Pis.getSpringConfig().getObjectMapper();
-	protected static final Logger LOGGER = LoggerFactory.getLogger(MemoryRepository.class.getSimpleName());
+	protected static final Logger LOGGER = LoggerFactory.getLogger(Repository.class.getSimpleName());
 	
 	public Repository(String name, Class<T> type) {
 		this.name = name;
@@ -49,8 +49,6 @@ public abstract class Repository<T extends Entity> {
 	public abstract void add(T entity);
 	
 	public abstract void remove(String id);
-	
-	public abstract void remove(T entity);
 	
 	public abstract boolean containsById(String id);
 	

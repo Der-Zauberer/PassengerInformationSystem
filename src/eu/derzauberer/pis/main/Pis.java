@@ -33,8 +33,8 @@ public class Pis {
 	private static final Command command = new Command("pis");
 	
 	public static void main(String[] args) {
+		registerRepositories();
 		if (args.length != 0) {
-			registerRepositories();
 			registerCommands();
 			command.executeCommand(command.getName(), args);
 			return;

@@ -7,6 +7,8 @@ import java.time.LocalTime;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -44,6 +46,11 @@ public class SpringConfiguration {
 		builder.visibility(PropertyAccessor.SETTER, Visibility.NONE);
 		builder.visibility(PropertyAccessor.CREATOR, Visibility.ANY);
 	    return builder;
+	}
+	
+	@Bean 
+	public PasswordEncoder getPasswordEncoder() {
+	    return new BCryptPasswordEncoder();
 	}
 	
 	public ObjectMapper getObjectMapper() {

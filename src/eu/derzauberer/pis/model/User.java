@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class User implements Entity {
 	
-	private final String email;
+	private final String username;
 	private String name;
 	private String password;
 	private boolean disabled = false;
@@ -16,10 +16,10 @@ public class User implements Entity {
 	private LocalDateTime lastLogin;
 	private final Set<String> permissions;
 	
-	@ConstructorProperties({"email", "name", "password"})
-	public User(String email, String username, String password) {
-		this.email = email;
-		this.name = username;
+	@ConstructorProperties({"username", "name", "password"})
+	public User(String username, String name, String password) {
+		this.username = username;
+		this.name = name;
 		this.password = password;
 		this.disabled = false;
 		this.forcePasswordChange = false;
@@ -29,11 +29,11 @@ public class User implements Entity {
 	
 	@Override
 	public String getId() {
-		return email;
+		return username;
 	}
 	
-	public String getEmail() {
-		return email;
+	public String getUserName() {
+		return username;
 	}
 	
 	@Override

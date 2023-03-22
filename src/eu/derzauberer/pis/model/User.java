@@ -9,18 +9,18 @@ public class User implements Entity {
 	
 	private final String username;
 	private String name;
-	private String password;
+	private String passwordHash;
 	private boolean disabled = false;
 	private boolean forcePasswordChange;
 	private LocalDateTime created;
 	private LocalDateTime lastLogin;
 	private final Set<String> permissions;
 	
-	@ConstructorProperties({"username", "name", "password"})
-	public User(String username, String name, String password) {
+	@ConstructorProperties({"username", "name", "passwordHash"})
+	public User(String username, String name, String passwordHash) {
 		this.username = username;
 		this.name = name;
-		this.password = password;
+		this.passwordHash = passwordHash;
 		this.disabled = false;
 		this.forcePasswordChange = false;
 		created = LocalDateTime.now();
@@ -45,12 +45,12 @@ public class User implements Entity {
 		this.name = name;
 	}
 	
-	public String getPassword() {
-		return password;
+	public String getPasswordHash() {
+		return passwordHash;
 	}
 	
-	public void setPassword(String password) {
-		this.password = password;
+	public void setPasswordHash(String passwordHash) {
+		this.passwordHash = passwordHash;
 	}
 	
 	public boolean isDisabled() {

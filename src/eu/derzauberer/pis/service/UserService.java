@@ -18,11 +18,11 @@ public class UserService extends Service<User> {
 	}
 	
 	public Optional<User> login(String username, String password) {
-		return getById(username).filter(user -> ENCODER.matches(password, user.getPassword()));
+		return getById(username).filter(user -> ENCODER.matches(password, user.getPasswordHash()));
 	}
 	
-	public void hashPassword(User user, String password) {
-		user.setPassword(ENCODER.encode(password));
+	public String hashPassword(String password) {
+		return ENCODER.encode(password);
 	}
 	
 }

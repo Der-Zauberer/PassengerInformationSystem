@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 import eu.derzauberer.pis.main.Pis;
 import eu.derzauberer.pis.util.Command;
-import eu.derzauberer.pis.util.Service;
+import eu.derzauberer.pis.util.Repository;
 
 public class ExtractCommand extends Command {
 
@@ -19,10 +19,10 @@ public class ExtractCommand extends Command {
 		setMinArguments(2);
 		setAction(args -> {
 			if (Arrays.asList(args).contains("-l")) {
-				printList(Pis.getServices());
+				printList(Pis.getRepositories());
 				return;
 			}
-			final Service<?> service = Pis.getService(args[0]);
+			final Repository<?> service = Pis.getRepository(args[0]);
 			Path path;
 			if (service == null) {
 				LOGGER.error("The repository {} does not exist!", args[0]);

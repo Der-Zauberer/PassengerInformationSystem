@@ -4,6 +4,7 @@ import eu.derzauberer.pis.model.TrainOperator;
 import eu.derzauberer.pis.util.MemoryRepository;
 import eu.derzauberer.pis.util.Service;
 
+@org.springframework.stereotype.Service
 public class OperatorService extends Service<TrainOperator> {
 
 	public OperatorService() {

@@ -26,7 +26,7 @@ import eu.derzauberer.pis.util.SpringConfiguration;
 import eu.derzauberer.pis.util.UserConfiguration;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
-@ComponentScan(basePackages = {"eu.derzauberer.pis.util"})
+@ComponentScan(basePackages = {"eu.derzauberer.pis"})
 public class Pis {
 	
 	private static final SpringConfiguration springConfig = new SpringConfiguration();

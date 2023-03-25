@@ -4,6 +4,7 @@ import eu.derzauberer.pis.model.TrainType;
 import eu.derzauberer.pis.util.MemoryRepository;
 import eu.derzauberer.pis.util.Service;
 
+@org.springframework.stereotype.Service
 public class TypeService extends Service<TrainType> {
 
 	public TypeService() {

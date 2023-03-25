@@ -6,8 +6,8 @@ public class TrainOperator implements Entity {
 
 	private final String id;
 	private String name;
-	private int primaryColor;
-	private int secondaryColor;
+	private int backgorundColor;
+	private int textColor;
 	private final Adress adress = new Adress();
 	
 	public TrainOperator(String name) {
@@ -18,8 +18,8 @@ public class TrainOperator implements Entity {
 	public TrainOperator(String id, String name) {
 		this.id = id;
 		this.name = name;
-		this.primaryColor = 0;
-		this.secondaryColor = 0;
+		this.backgorundColor = 0x000000;
+		this.textColor = 0xffffff;
 	}
 	
 	@Override
@@ -41,19 +41,19 @@ public class TrainOperator implements Entity {
 	}
 	
 	public int getPrimaryColor() {
-		return primaryColor;
+		return backgorundColor;
 	}
 	
 	public void setPrimaryColor(int primaryColor) {
-		this.primaryColor = primaryColor;
+		this.backgorundColor = primaryColor;
 	}
 	
 	public int getSecondaryColor() {
-		return secondaryColor;
+		return textColor;
 	}
 	
 	public void setSecondaryColor(int secondaryColor) {
-		this.secondaryColor = secondaryColor;
+		this.textColor = secondaryColor;
 	}
 
 }

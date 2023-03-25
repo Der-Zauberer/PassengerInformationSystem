@@ -27,7 +27,8 @@ import eu.derzauberer.pis.serialization.TimeSerializer;
 @Configuration
 public class SpringConfiguration {
 	
-	private static ObjectMapper MAPPER;
+	private static ObjectMapper OBJECT_MAPPER;
+	private static ModelMapper MODEL_MAPPER;
 
 	@Bean
 	public Jackson2ObjectMapperBuilder getJsonMapperBuilder() {
@@ -50,18 +51,20 @@ public class SpringConfiguration {
 	}
 	
 	public ObjectMapper getObjectMapper() {
-		if (MAPPER == null) {
-			MAPPER = getJsonMapperBuilder().build();
-			MAPPER.setDefaultPrettyPrinter(new PrettyPrinter());
+		if (OBJECT_MAPPER == null) {
+			OBJECT_MAPPER = getJsonMapperBuilder().build();
+			OBJECT_MAPPER.setDefaultPrettyPrinter(new PrettyPrinter());
 		}
-		return MAPPER;
+		return OBJECT_MAPPER;
 	}
 	
 	@Bean
 	public ModelMapper getModelMapper() {
-		final ModelMapper mapper = new ModelMapper();
-		mapper.getConfiguration().setSkipNullEnabled(true);
-		return mapper;
+		if (MODEL_MAPPER == null) {
+			MODEL_MAPPER  = new ModelMapper();
+			MODEL_MAPPER.getConfiguration().setSkipNullEnabled(true);
+		}
+		return MODEL_MAPPER;
 	}
 	
 	@Bean 

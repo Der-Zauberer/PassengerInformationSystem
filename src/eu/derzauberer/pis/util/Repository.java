@@ -17,7 +17,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import eu.derzauberer.pis.main.Pis;
-import eu.derzauberer.pis.model.Entity;
 
 public abstract class Repository<T extends Entity<?>> {
 	
@@ -26,7 +25,7 @@ public abstract class Repository<T extends Entity<?>> {
 	
 	protected static final String DIRECTORY = "data";
 	protected static final String FILE_TYPE = ".json";
-	protected static final ObjectMapper MAPPER = Pis.getSpringConfig().getObjectMapper();
+	protected static final ObjectMapper OBJECT_MAPPER = Pis.getSpringConfig().getObjectMapper();
 	protected static final Logger LOGGER = LoggerFactory.getLogger(Repository.class.getSimpleName());
 	
 	public Repository(String name, Class<T> type) {
@@ -62,7 +61,7 @@ public abstract class Repository<T extends Entity<?>> {
 	public void packageEntities(Path path) {
 		try {
 			final Collection<T> entities = getList();
-			final String content = MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(entities);
+			final String content = OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(entities);
 			Files.writeString(path, content);
 			LOGGER.info("Extracted {} {}", entities.size(), name);
 		} catch (IOException exception) {
@@ -73,7 +72,7 @@ public abstract class Repository<T extends Entity<?>> {
 	public void extractEntities(Path path) {
 		try {
 			final String content = Files.readString(path);
-			final List<T> entities = MAPPER.readValue(content, new TypeReference<ArrayList<T>>() {});
+			final List<T> entities = OBJECT_MAPPER.readValue(content, new TypeReference<ArrayList<T>>() {});
 			entities.forEach(this::add);
 			LOGGER.info("Extracted {} {}", entities.size(), name);
 		} catch (IOException exception) {
@@ -95,7 +94,7 @@ public abstract class Repository<T extends Entity<?>> {
 			for (Path path : Files.list(Paths.get(DIRECTORY, name)).toList()) {
 				if (!Files.exists(path)) continue;
 				final String content = Files.readString(path);
-				final T entity = MAPPER.readValue(content, type);
+				final T entity = OBJECT_MAPPER.readValue(content, type);
 				if (progress && size > 200) {
 					entities.add(entity);
 					if (counter++ > percent) {
@@ -122,7 +121,7 @@ public abstract class Repository<T extends Entity<?>> {
 			final Path path = Paths.get(DIRECTORY, name, id.toString() + FILE_TYPE);
 			if (Files.exists(path)) return Optional.empty();
 			final String content = Files.readString(path);
-			final T entity = MAPPER.readValue(content, type);
+			final T entity = OBJECT_MAPPER.readValue(content, type);
 			return Optional.of(entity);
 		} catch (IOException exception) {
 			LOGGER.error("Couldn't load entity {} from {}: {} {}!", id, getName(), exception.getClass().getSimpleName(), exception.getMessage());
@@ -133,7 +132,7 @@ public abstract class Repository<T extends Entity<?>> {
 	protected void saveEntity(T entity) {
 		try {
 			final Path path = Paths.get(DIRECTORY, name, entity.getId().toString() + FILE_TYPE);
-			final String content = MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(entity);
+			final String content = OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(entity);
 			Files.writeString(path, content);
 		} catch (IOException exception) {
 			LOGGER.warn("Couldn't save entity {} from {}: {} {}", entity.getId(), getName(), exception.getClass().getSimpleName(), exception.getMessage());

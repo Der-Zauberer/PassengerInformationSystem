@@ -7,9 +7,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.derzauberer.pis.model.Entity;
-
-public abstract class Service<T extends Entity<?>> {
+public abstract class Service<T extends Entity<T>> {
 	
 	private final String name;
 	private Repository<T> repository;

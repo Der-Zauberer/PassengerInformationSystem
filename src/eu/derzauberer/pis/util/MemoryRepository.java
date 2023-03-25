@@ -6,11 +6,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import eu.derzauberer.pis.model.Entity;
+import org.modelmapper.ModelMapper;
 
-public class MemoryRepository<T extends Entity<?>> extends Repository<T>{
+import eu.derzauberer.pis.main.Pis;
+
+public class MemoryRepository<T extends Entity<T>> extends Repository<T>{
 	
 	private final Map<String, T> entities = new HashMap<>();
+	private static final ModelMapper MODEL_MAPPER = Pis.getSpringConfig().getModelMapper();
 	
 	public MemoryRepository(String name, Class<T> type) {
 		super(name, type);
@@ -21,10 +24,12 @@ public class MemoryRepository<T extends Entity<?>> extends Repository<T>{
 		LOGGER.info("Loaded {} {}", size(), name);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void add(T entity) {
-		entities.put(entity.getId(), entity);
-		saveEntity(entity);
+		final T copy = (T) MODEL_MAPPER.map(entity, entity.getClass());
+		entities.put(entity.getId(), copy);
+		saveEntity(copy);
 	}
 	
 	@Override
@@ -41,8 +46,11 @@ public class MemoryRepository<T extends Entity<?>> extends Repository<T>{
 	}
 	
 	@Override
+	@SuppressWarnings("unchecked")
 	public Optional<T> getById(String id) {
-		return Optional.ofNullable(entities.get(id));
+		final T entity = entities.get(id);
+		if (entity == null) return Optional.empty();
+		return Optional.of((T) MODEL_MAPPER.map(entities.get(id), entity.getClass()));
 	}
 	
 	@Override

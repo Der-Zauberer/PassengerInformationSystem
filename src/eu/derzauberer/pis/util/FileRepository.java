@@ -5,9 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import eu.derzauberer.pis.model.Entity;
-
-public class FileRepository<T extends Entity<?>> extends Repository<T> {
+public class FileRepository<T extends Entity<T>> extends Repository<T> {
 
 	public FileRepository(String name, Class<T> type) {
 		super(name, type);

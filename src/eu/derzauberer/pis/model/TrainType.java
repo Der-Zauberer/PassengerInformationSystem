@@ -2,6 +2,8 @@ package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
 
+import eu.derzauberer.pis.util.Entity;
+
 public class TrainType implements Entity<TrainType> {
 	
 	public enum TrainClassifican {

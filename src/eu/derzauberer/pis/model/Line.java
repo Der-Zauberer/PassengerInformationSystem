@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import eu.derzauberer.pis.util.Entity;
+
 public class Line implements Entity<Line> {
 
 	private final String id;

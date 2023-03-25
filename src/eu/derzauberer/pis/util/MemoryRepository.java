@@ -28,9 +28,11 @@ public class MemoryRepository<T extends Entity<?>> extends Repository<T>{
 	}
 	
 	@Override
-	public void removeById(String id) {
+	public boolean removeById(String id) {
+		final boolean exist = entities.containsKey(id);
 		entities.remove(id);
 		deleteEnity(id);
+		return exist;
 	}
 	
 	@Override

@@ -20,8 +20,10 @@ public class FileRepository<T extends Entity<?>> extends Repository<T> {
 	}
 
 	@Override
-	public void removeById(String id) {
+	public boolean removeById(String id) {
+		final boolean exists = containsById(id);
 		deleteEnity(id);
+		return exists;
 	}
 
 	@Override

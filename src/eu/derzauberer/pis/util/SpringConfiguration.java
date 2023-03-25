@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
@@ -48,17 +49,24 @@ public class SpringConfiguration {
 	    return builder;
 	}
 	
-	@Bean 
-	public PasswordEncoder getPasswordEncoder() {
-	    return new BCryptPasswordEncoder();
-	}
-	
 	public ObjectMapper getObjectMapper() {
 		if (MAPPER == null) {
 			MAPPER = getJsonMapperBuilder().build();
 			MAPPER.setDefaultPrettyPrinter(new PrettyPrinter());
 		}
 		return MAPPER;
+	}
+	
+	@Bean
+	public ModelMapper getModelMapper() {
+		final ModelMapper mapper = new ModelMapper();
+		mapper.getConfiguration().setSkipNullEnabled(true);
+		return mapper;
+	}
+	
+	@Bean 
+	public PasswordEncoder getPasswordEncoder() {
+	    return new BCryptPasswordEncoder();
 	}
 	
 }

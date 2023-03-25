@@ -25,8 +25,8 @@ public abstract class Service<T extends Entity<?>> {
 		repository.add(entity);
 	}
 	
-	public void removeById(String id) {
-		repository.removeById(id);
+	public boolean removeById(String id) {
+		return repository.removeById(id);
 	}
 	
 	public boolean containsById(String id) {

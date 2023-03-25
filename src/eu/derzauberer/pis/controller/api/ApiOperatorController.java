@@ -5,18 +5,28 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import eu.derzauberer.pis.dto.ListDto;
 import eu.derzauberer.pis.model.TrainOperator;
 import eu.derzauberer.pis.service.OperatorService;
 
 @RestController
-@RequestMapping("/api/operator")
+@RequestMapping("/api/operators")
 public class ApiOperatorController {
 	
 	@Autowired
 	private OperatorService operatorService;
+	
+	@GetMapping
+	public ListDto<TrainOperator> getOperators(
+			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
+			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
+			) {
+		return new ListDto<>(offset, limit , operatorService.getList());
+	}
 	
 	@GetMapping("{id}")
 	public TrainOperator getOperator(@PathVariable("id") String id) {

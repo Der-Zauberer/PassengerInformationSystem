@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Line implements Entity{
+public class Line implements Entity<Line> {
 
 	private final String id;
 	private TrainType type;

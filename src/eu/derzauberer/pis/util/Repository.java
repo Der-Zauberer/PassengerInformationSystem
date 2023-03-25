@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.derzauberer.pis.main.Pis;
 import eu.derzauberer.pis.model.Entity;
 
-public abstract class Repository<T extends Entity> {
+public abstract class Repository<T extends Entity<?>> {
 	
 	private final String name;
 	private final Class<T> type;
@@ -55,13 +55,13 @@ public abstract class Repository<T extends Entity> {
 	
 	public abstract Optional<T> getById(String id);
 	
-	public abstract Collection<T> getAll();
+	public abstract List<T> getList();
 	
 	public abstract int size();
 	
 	public void packageEntities(Path path) {
 		try {
-			final Collection<T> entities = getAll();
+			final Collection<T> entities = getList();
 			final String content = MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(entities);
 			Files.writeString(path, content);
 			LOGGER.info("Extracted {} {}", entities.size(), name);

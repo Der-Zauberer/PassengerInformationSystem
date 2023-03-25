@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-public class User implements Entity {
+public class User implements Entity<User> {
 	
 	private final String username;
 	private String name;

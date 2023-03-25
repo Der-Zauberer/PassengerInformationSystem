@@ -76,7 +76,7 @@ public class Pis {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static <T extends Entity> Repository<T> getRepository(String name, Class<T> type) {
+	public static <T extends Entity<?>> Repository<T> getRepository(String name, Class<T> type) {
 		final Repository<T> repository = (Repository<T>) repositories.get(name).get();
 		return repository;
 	}

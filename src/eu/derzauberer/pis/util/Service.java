@@ -1,7 +1,7 @@
 package eu.derzauberer.pis.util;
 
 import java.nio.file.Path;
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import eu.derzauberer.pis.model.Entity;
 
-public abstract class Service<T extends Entity> {
+public abstract class Service<T extends Entity<?>> {
 	
 	private final String name;
 	private Repository<T> repository;
@@ -37,8 +37,12 @@ public abstract class Service<T extends Entity> {
 		return repository.getById(id);
 	}
 	
-	public Collection<T> getAll() {
-		return repository.getAll();
+	public List<T> getList() {
+		return repository.getList();
+	}
+	
+	public int size() {
+		return repository.size();
 	}
 	
 	public void packageEntities(Path path) {

@@ -1,6 +1,6 @@
 package eu.derzauberer.pis.util;
 
-import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,7 +8,7 @@ import java.util.Optional;
 
 import eu.derzauberer.pis.model.Entity;
 
-public class MemoryRepository<T extends Entity> extends Repository<T>{
+public class MemoryRepository<T extends Entity<?>> extends Repository<T>{
 	
 	private final Map<String, T> entities = new HashMap<>();
 	
@@ -44,8 +44,8 @@ public class MemoryRepository<T extends Entity> extends Repository<T>{
 	}
 	
 	@Override
-	public Collection<T> getAll() {
-		return entities.values();
+	public List<T> getList() {
+		return Collections.unmodifiableList(entities.values().stream().sorted().toList());
 	}
 
 	@Override

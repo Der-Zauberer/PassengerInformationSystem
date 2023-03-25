@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class Station implements Entity {
+public class Station implements Entity<Station> {
 	
 	private final String id;
 	private final String name;

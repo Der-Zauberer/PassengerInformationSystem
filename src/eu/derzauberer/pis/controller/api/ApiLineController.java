@@ -37,7 +37,7 @@ public class ApiLineController {
 	
 	@GetMapping("{id}")
 	public Line getLine(@PathVariable("id") String id) {
-		return lineService.getById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		return lineService.getById(id).orElseThrow(() -> getNotFoundException(id));
 	}
 	
 	@PostMapping
@@ -48,14 +48,18 @@ public class ApiLineController {
 	
 	@PutMapping
 	public Line updateLine(Line line) {
-		final Line existingLine = lineService.getById(line.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		final Line existingLine = lineService.getById(line.getId()).orElseThrow(() -> getNotFoundException(line.getId()));
 		modelMapper.map(line, existingLine);
 		return existingLine;
 	}
 	
 	@DeleteMapping("{id}")
 	public void deleteLine(@PathVariable("id") String id) {
-		if (!lineService.removeById(id)) new ResponseStatusException(HttpStatus.NOT_FOUND);
+		if (!lineService.removeById(id)) throw getNotFoundException(id);
+	}
+	
+	private ResponseStatusException getNotFoundException(String id) {
+		return new ResponseStatusException(HttpStatus.NOT_FOUND, "Line with id " + id + " does not exist!");
 	}
 
 }

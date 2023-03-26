@@ -37,7 +37,7 @@ public class ApiStationController {
 	
 	@GetMapping("{id}")
 	public Station getStation(@PathVariable("id") String id) {
-		return stationService.getById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		return stationService.getById(id).orElseThrow(() -> getNotFoundException(id));
 	}
 	
 	@PostMapping
@@ -48,14 +48,18 @@ public class ApiStationController {
 	
 	@PutMapping
 	public Station updateStation(Station station) {
-		final Station existingStation = stationService.getById(station.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		final Station existingStation = stationService.getById(station.getId()).orElseThrow(() -> getNotFoundException(station.getId()));
 		modelMapper.map(station, existingStation);
 		return existingStation;
 	}
 	
 	@DeleteMapping("{id}")
 	public void deleteStation(@PathVariable("id") String id) {
-		if (!stationService.removeById(id)) new ResponseStatusException(HttpStatus.NOT_FOUND);
+		if (!stationService.removeById(id)) throw getNotFoundException(id);
 	}
 
+	private ResponseStatusException getNotFoundException(String id) {
+		return new ResponseStatusException(HttpStatus.NOT_FOUND, "Station with id " + id + " does not exist!");
+	}
+	
 }

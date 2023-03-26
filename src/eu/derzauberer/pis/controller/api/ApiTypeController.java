@@ -37,7 +37,7 @@ public class ApiTypeController {
 
 	@GetMapping("{id}")
 	public TrainType getTrainType(@PathVariable("id") String id) {
-		return typeService.getById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		return typeService.getById(id).orElseThrow(() -> getNotFoundException(id));
 	}
 	
 	@PostMapping
@@ -48,14 +48,18 @@ public class ApiTypeController {
 	
 	@PutMapping
 	public TrainType updateType(TrainType type) {
-		final TrainType existingType = typeService.getById(type.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		final TrainType existingType = typeService.getById(type.getId()).orElseThrow(() -> getNotFoundException(type.getId()));
 		modelMapper.map(type, existingType);
 		return existingType;
 	}
 	
 	@DeleteMapping("{id}")
 	public void deleteType(@PathVariable("id") String id) {
-		if (!typeService.removeById(id)) new ResponseStatusException(HttpStatus.NOT_FOUND);
+		if (!typeService.removeById(id)) throw getNotFoundException(id);
+	}
+	
+	private ResponseStatusException getNotFoundException(String id) {
+		return new ResponseStatusException(HttpStatus.NOT_FOUND, "Type with id " + id + " does not exist!");
 	}
 	
 }

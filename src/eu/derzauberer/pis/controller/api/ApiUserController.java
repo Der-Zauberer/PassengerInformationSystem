@@ -37,7 +37,7 @@ public class ApiUserController {
 	
 	@GetMapping("{id}")
 	public User getUser(@PathVariable("id") String id) {
-		return userService.getById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		return userService.getById(id).orElseThrow(() -> getNotFoundException(id));
 	}
 	
 	@PostMapping
@@ -48,14 +48,18 @@ public class ApiUserController {
 	
 	@PutMapping
 	public User updateUser(User user) {
-		final User existingUser = userService.getById(user.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		final User existingUser = userService.getById(user.getId()).orElseThrow(() -> getNotFoundException(user.getId()));
 		modelMapper.map(user, existingUser);
 		return existingUser;
 	}
 	
 	@DeleteMapping("{id}")
 	public void deleteUser(@PathVariable("id") String id) {
-		if (!userService.removeById(id)) new ResponseStatusException(HttpStatus.NOT_FOUND);
+		if (!userService.removeById(id)) throw getNotFoundException(id);
+	}
+	
+	private ResponseStatusException getNotFoundException(String id) {
+		return new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id " + id + " does not exist!");
 	}
 
 }

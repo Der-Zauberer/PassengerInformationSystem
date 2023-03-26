@@ -37,7 +37,7 @@ public class ApiOperatorController {
 	
 	@GetMapping("{id}")
 	public TrainOperator getOperator(@PathVariable("id") String id) {
-		return operatorService.getById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		return operatorService.getById(id).orElseThrow(() -> getNotFoundException(id));
 	}
 	
 	@PostMapping
@@ -48,14 +48,18 @@ public class ApiOperatorController {
 	
 	@PutMapping
 	public TrainOperator updateOperator(TrainOperator operator) {
-		final TrainOperator existingOperator = operatorService.getById(operator.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		final TrainOperator existingOperator = operatorService.getById(operator.getId()).orElseThrow(() -> getNotFoundException(operator.getId()));
 		modelMapper.map(operator, existingOperator);
 		return existingOperator;
 	}
 	
 	@DeleteMapping("{id}")
 	public void deleteOperator(@PathVariable("id") String id) {
-		if (!operatorService.removeById(id)) new ResponseStatusException(HttpStatus.NOT_FOUND);
+		if (!operatorService.removeById(id)) throw getNotFoundException(id);
+	}
+	
+	private ResponseStatusException getNotFoundException(String id) {
+		return new ResponseStatusException(HttpStatus.NOT_FOUND, "Operator with id " + id + " does not exist!");
 	}
 
 }

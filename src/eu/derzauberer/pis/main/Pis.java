@@ -2,6 +2,7 @@ package eu.derzauberer.pis.main;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -29,6 +30,7 @@ import eu.derzauberer.pis.util.UserConfiguration;
 @ComponentScan(basePackages = {"eu.derzauberer.pis"})
 public class Pis {
 	
+	private static final SpringApplication springApplication = new SpringApplication(Pis.class);
 	private static final SpringConfiguration springConfig = new SpringConfiguration();
 	private static final UserConfiguration userConfig = new UserConfiguration();
 	private static final Map<String, Supplier<Repository<?>>> repositories = new HashMap<>();
@@ -41,7 +43,14 @@ public class Pis {
 			command.executeCommand(command.getName(), args);
 			return;
 		}
-		SpringApplication.run(Pis.class, args);
+		configureSpring();
+		springApplication.run();
+	}
+	
+	private static void configureSpring() {
+		final Properties properties = new Properties();
+		properties.put("server.error.include-message", "always");
+		springApplication.setDefaultProperties(properties);
 	}
 	
 	private static void registerRepositories() {

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import eu.derzauberer.pis.downloader.DbRisPlatformsDownloader;
 import eu.derzauberer.pis.downloader.DbRisStationsDownloader;
 import eu.derzauberer.pis.downloader.DbStationDownloader;
 import eu.derzauberer.pis.util.Command;
@@ -21,6 +22,7 @@ public class DownloadCommand extends Command {
 			final Map<String, Downloader> downloaderMap = new HashMap<>();
 			downloaderMap.put(DbStationDownloader.getName(), new DbStationDownloader());
 			downloaderMap.put(DbRisStationsDownloader.getName(), new DbRisStationsDownloader());
+			downloaderMap.put(DbRisPlatformsDownloader.getName(), new DbRisPlatformsDownloader());
 			if (Arrays.asList(args).contains("-l")) {
 				printList(downloaderMap.keySet());
 				return;

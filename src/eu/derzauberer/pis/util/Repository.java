@@ -95,12 +95,10 @@ public abstract class Repository<T extends Entity<?>> {
 				if (!Files.exists(path)) continue;
 				final String content = Files.readString(path);
 				final T entity = OBJECT_MAPPER.readValue(content, type);
-				if (progress && size > 200) {
-					entities.add(entity);
-					if (counter++ > percent) {
-						counter = 0;
-						System.out.print("Loading " + getName() + ": " + ++amount + "%\r");
-					}
+				entities.add(entity);
+				if (progress && size > 200 && counter++ > percent) {
+					counter = 0;
+					System.out.print("Loading " + getName() + ": " + ++amount + "%\r");
 				}
 			}
 			if (progress && size > 200) System.out.print("Loading " + getName() + ": 100%\r");

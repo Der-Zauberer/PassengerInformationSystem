@@ -1,11 +1,11 @@
 package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import eu.derzauberer.pis.util.Entity;
 
@@ -13,7 +13,7 @@ public class Station implements Entity<Station> {
 	
 	private final String id;
 	private final String name;
-	private final ArrayList<Integer> platforms = new ArrayList<>();
+	private final TreeSet<Platform> platforms = new TreeSet<>();
 	private final Adress adress = new Adress();
 	private final Location location = new Location(0, 0);
 	private final StationServices services = new StationServices();
@@ -40,7 +40,7 @@ public class Station implements Entity<Station> {
 		return name;
 	}
 	
-	public ArrayList<Integer> getPlatforms() {
+	public Set<Platform> getPlatforms() {
 		return platforms;
 	}
 	

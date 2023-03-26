@@ -12,9 +12,9 @@ public class PackageCommand extends Command {
 	
 	public PackageCommand() {
 		super("package");
-		setDescription("Puts all existing entities of one type in a single file");
 		setUsage("package <type> <file>");
-		addFlag("-l", "List all availible types");
+		setDescription("Puts all existing entities of one type in a single file");
+		addBranch("-l", "List all availible <type>s");
 		setMinArguments(2);
 		setAction(args -> {
 			if (Arrays.asList(args).contains("-l")) {

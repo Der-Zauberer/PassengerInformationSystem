@@ -16,9 +16,9 @@ import org.slf4j.LoggerFactory;
 public class Command {
 	
 	private final String name;
-	private String description;
 	private String usage;
-	private final Map<String, String> flags = new HashMap<>();
+	private String description;
+	private final Map<String, String> branches = new HashMap<>();
 	private int minArguments;
 	private Consumer<String[]> action;
 	private final Map<String, Command> commands;
@@ -29,6 +29,7 @@ public class Command {
 		this.name = name;
 		this.commands = new HashMap<>();
 		this.minArguments = 0;
+		addBranch("-h", "Display help for every command branch");
 	}
 	
 	public void executeCommand(String label, String args[]) {
@@ -53,22 +54,22 @@ public class Command {
 	}
 	
 	public void printCommandHelp() {
-		final StringBuilder string = new StringBuilder("Command " + getName() + ": ");
-		if (description != null) string.append(description);
-		if (usage != null) string.append("\n" + usage);
+		final StringBuilder string = new StringBuilder();
+		if (usage != null) string.append(usage);
+		if (description != null) string.append("\n" + description);
 		final List<Command> sortedCommands = commands.values()
 				.stream()
 				.sorted((command1, command2) -> command1.getName().compareToIgnoreCase(command2.getName()))
 				.toList();
-		final List<Entry<String, String>> sortedFlags = flags.entrySet()
+		final List<Entry<String, String>> sortedBranches = branches.entrySet()
 				.stream()
 				.sorted((entry1, entry2) -> entry1.getKey().compareToIgnoreCase(entry2.getKey()))
 				.toList();
 		for (Command entries : sortedCommands) {
-			string.append("\n" + entries.getName() + (entries.description != null ? "\t\t" + entries.getDescription() : ""));
+			string.append("\n\n" + entries.getName() + (entries.description != null ? "\n" + entries.getDescription() : ""));
 		}
-		for (Entry<String, String> entries : sortedFlags) {
-			string.append("\n" + entries.getKey() + (entries.getValue() != null ? "\t\t" + entries.getValue() : ""));
+		for (Entry<String, String> entries : sortedBranches) {
+			string.append("\n\n" + entries.getKey() + (entries.getValue() != null ? "\n" + entries.getValue() : ""));
 		}
 		System.out.println(string.toString());
 	}
@@ -120,6 +121,14 @@ public class Command {
 		return name;
 	}
 	
+	public String getUsage() {
+		return usage;
+	}
+	
+	public void setUsage(String usage) {
+		this.usage = usage;
+	}
+	
 	public String getDescription() {
 		return description;
 	}
@@ -128,20 +137,12 @@ public class Command {
 		this.description = description;
 	}
 	
-	public String getUsage() {
-		return usage;
+	public void addBranch(String flag, String description) {
+		branches.put(flag, description);
 	}
 	
-	public void addFlag(String flag, String description) {
-		flags.put(flag, description);
-	}
-	
-	public Map<String, String> getFlags() {
-		return Collections.unmodifiableMap(flags);
-	}
-	
-	public void setUsage(String usage) {
-		this.usage = usage;
+	public Map<String, String> getBranches() {
+		return Collections.unmodifiableMap(branches);
 	}
 	
 	public int getMinArguments() {

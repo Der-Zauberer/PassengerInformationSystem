@@ -13,9 +13,9 @@ public class ExtractCommand extends Command {
 
 	public ExtractCommand() {
 		super("extract");
-		setDescription("Adds all entities from a single file");
 		setUsage("extract <type> <file>");
-		addFlag("-l", "List all availible types");
+		setDescription("Adds all entities from a single file");
+		addBranch("-l", "List all availible <type>s");
 		setMinArguments(2);
 		setAction(args -> {
 			if (Arrays.asList(args).contains("-l")) {

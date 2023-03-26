@@ -12,9 +12,9 @@ import eu.derzauberer.pis.util.Downloader;
 public class DownloadCommand extends Command {
 
 	public DownloadCommand() {
-		super("download");
-		setUsage("download <downloader>");
-		setDescription("Downloads entities from an api to the data directory. Download an existing entity will only\nupdate the downloaded fields instead of overwriting the whole entity.");
+		super("download", "pis download");
+		setDescription("Downloads entities from an api to the data directory");
+		addBranch("<downloader>", "Downloads entities from an api to the data directory. Download an existing entity will only\nupdate the downloaded fields instead of overwriting the whole entity.");
 		addBranch("-l", "List all availible <downloader>");
 		setMinArguments(1);
 		setAction(args -> {

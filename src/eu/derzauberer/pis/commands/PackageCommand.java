@@ -11,9 +11,9 @@ import eu.derzauberer.pis.util.Repository;
 public class PackageCommand extends Command {
 	
 	public PackageCommand() {
-		super("package");
-		setUsage("package <type> <file>");
+		super("package", "pis package");
 		setDescription("Puts all existing entities of one type in a single file");
+		addBranch("<type> <file>", "Puts all existing entities of one type in a single file");
 		addBranch("-l", "List all availible <type>s");
 		setMinArguments(2);
 		setAction(args -> {

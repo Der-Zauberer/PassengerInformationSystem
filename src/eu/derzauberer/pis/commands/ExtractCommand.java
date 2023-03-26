@@ -12,9 +12,9 @@ import eu.derzauberer.pis.util.Repository;
 public class ExtractCommand extends Command {
 
 	public ExtractCommand() {
-		super("extract");
-		setUsage("extract <type> <file>");
+		super("extract", "pis extract");
 		setDescription("Adds all entities from a single file");
+		addBranch("<type> <file>", "Adds all entities from a single file");
 		addBranch("-l", "List all availible <type>s");
 		setMinArguments(2);
 		setAction(args -> {

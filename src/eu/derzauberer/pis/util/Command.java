@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 public class Command {
 	
 	private final String name;
-	private String usage;
+	private String path;
 	private String description;
 	private final Map<String, String> branches = new HashMap<>();
 	private int minArguments;
@@ -25,8 +25,9 @@ public class Command {
 	
 	protected static final Logger LOGGER = LoggerFactory.getLogger(Command.class.getSimpleName());
 	
-	public Command(String name) {
+	public Command(String name, String path) {
 		this.name = name;
+		this.path = path;
 		this.commands = new HashMap<>();
 		this.minArguments = 0;
 		addBranch("-h", "Display help for every command branch");
@@ -54,9 +55,8 @@ public class Command {
 	}
 	
 	public void printCommandHelp() {
-		final StringBuilder string = new StringBuilder();
-		if (usage != null) string.append(usage);
-		if (description != null) string.append("\n" + description);
+		final StringBuilder string = new StringBuilder("Help for: " + path);
+		
 		final List<Command> sortedCommands = commands.values()
 				.stream()
 				.sorted((command1, command2) -> command1.getName().compareToIgnoreCase(command2.getName()))
@@ -66,10 +66,10 @@ public class Command {
 				.sorted((entry1, entry2) -> entry1.getKey().compareToIgnoreCase(entry2.getKey()))
 				.toList();
 		for (Command entries : sortedCommands) {
-			string.append("\n\n" + entries.getName() + (entries.description != null ? "\n" + entries.getDescription() : ""));
+			string.append("\n\n" + path + " " + entries.getName() + (entries.description != null ? "\n" + entries.getDescription() : ""));
 		}
 		for (Entry<String, String> entries : sortedBranches) {
-			string.append("\n\n" + entries.getKey() + (entries.getValue() != null ? "\n" + entries.getValue() : ""));
+			string.append("\n\n" + path + " " + entries.getKey() + (entries.getValue() != null ? "\n" + entries.getValue() : ""));
 		}
 		System.out.println(string.toString());
 	}
@@ -120,13 +120,9 @@ public class Command {
 	public String getName() {
 		return name;
 	}
-	
-	public String getUsage() {
-		return usage;
-	}
-	
-	public void setUsage(String usage) {
-		this.usage = usage;
+
+	public String getPath() {
+		return path;
 	}
 	
 	public String getDescription() {

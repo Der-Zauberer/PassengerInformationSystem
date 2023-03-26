@@ -34,7 +34,7 @@ public class Pis {
 	private static final SpringConfiguration springConfig = new SpringConfiguration();
 	private static final UserConfiguration userConfig = new UserConfiguration();
 	private static final Map<String, Supplier<Repository<?>>> repositories = new HashMap<>();
-	private static final Command command = new Command("pis");
+	private static final Command command = new Command("pis", "pis");
 	
 	public static void main(String[] args) {
 		if (args.length != 0) {

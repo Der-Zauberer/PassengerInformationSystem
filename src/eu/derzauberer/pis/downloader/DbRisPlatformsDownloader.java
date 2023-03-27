@@ -18,17 +18,18 @@ public class DbRisPlatformsDownloader extends Downloader {
 	private static final String NAME = "db/ris::platforms";
 	private static final String URL = "https://apis.deutschebahn.com/db-api-marketplace/apis/ris-stations/v1/platforms/by-key";
 
+	private static final Map<String, String> header = new HashMap<>();
+	
 	private Repository<Station> repository;
 	
 	public DbRisPlatformsDownloader() {
 		super(NAME);
+		header.put("DB-Client-Id", Pis.getUserConfig().getDbClientId());
+		header.put("DB-Api-Key", Pis.getUserConfig().getDbApiKey());
 	}
 
 	@Override
 	public void download() {
-		final Map<String, String> header = new HashMap<>();
-		header.put("DB-Client-Id", Pis.getUserConfig().getDbClientId());
-		header.put("DB-Api-Key", Pis.getUserConfig().getDbApiKey());
 		repository = (Repository<Station>) Pis.getRepository("stations", Station.class);
 		LOGGER.info("Downloading {} from {}", NAME, URL);
 		int counter = 0;

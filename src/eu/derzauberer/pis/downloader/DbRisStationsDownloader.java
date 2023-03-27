@@ -10,6 +10,7 @@ import eu.derzauberer.pis.main.Pis;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.util.Downloader;
 import eu.derzauberer.pis.util.Entity;
+import eu.derzauberer.pis.util.ProgressStatus;
 import eu.derzauberer.pis.util.Repository;
 
 public class DbRisStationsDownloader extends Downloader {
@@ -37,6 +38,7 @@ public class DbRisStationsDownloader extends Downloader {
 	}
 	
 	private void proccess(ObjectNode json) {
+		final ProgressStatus progress = new ProgressStatus(getName(), json.withArray("stations").size());
 		int counter = 0;
 		for (JsonNode node : json.withArray("stations")) {
 			final String name = node.at("/names/DE/name").asText();
@@ -60,6 +62,7 @@ public class DbRisStationsDownloader extends Downloader {
 			station.getLocation().setLatitude(node.at("/position/latitude").asDouble());
 			station.getApiIds().put("stada", node.get("stationID").asLong());
 			station.getApiSources().add(URL);
+			progress.count();
 			counter++;
 			repository.add(station);
 		}

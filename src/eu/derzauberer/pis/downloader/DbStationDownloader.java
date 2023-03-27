@@ -1,6 +1,8 @@
 package eu.derzauberer.pis.downloader;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -11,6 +13,7 @@ import eu.derzauberer.pis.main.Pis;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.util.Downloader;
 import eu.derzauberer.pis.util.Entity;
+import eu.derzauberer.pis.util.ProgressStatus;
 import eu.derzauberer.pis.util.Repository;
 
 public class DbStationDownloader extends Downloader {
@@ -37,6 +40,8 @@ public class DbStationDownloader extends Downloader {
 	}
 	
 	private void proccess(ObjectNode json) {
+		final List<String> warns = new ArrayList<>();
+		final ProgressStatus progress = new ProgressStatus(getName(), json.withArray("result").size());
 		int counter = 0;
 		for (JsonNode node : json.withArray("result")) {
 			final String name = node.get("name").asText();
@@ -53,10 +58,10 @@ public class DbStationDownloader extends Downloader {
 					station.getLocation().setLongitude(location.get(0).asDouble());
 					station.getLocation().setLatitude(location.get(1).asDouble());
 				} else {
-					LOGGER.warn("Station {} does not contain geo-coordinates!", station.getId());
+					warns.add("Station " + station.getId() + " does not contain geo-coordinates!");
 				}
 			} else {
-				LOGGER.warn("Station {} does not contain geo-coordinates and an eva-number!", station.getId());
+				warns.add("Station " + station.getId() + " does not contain geo-coordinates and an eva-number!");
 			}
 			station.getServices().setParking(extractBoolean(node, "hasParking"));
 			station.getServices().setBicycleParking(extractBoolean(node, "hasBicycleParking"));
@@ -72,8 +77,12 @@ public class DbStationDownloader extends Downloader {
 			station.getServices().setHasCarRental(extractBoolean(node, "hasCarRental"));
 			station.getApiIds().put("stada", node.get("number").asLong());
 			station.getApiSources().add(URL);
+			progress.count();
 			counter++;
 			repository.add(station);
+		}
+		for (String warn : warns) {
+			LOGGER.warn(warn);
 		}
 		LOGGER.info("Downloaded {} stations from {}", counter, NAME, URL);
 	}

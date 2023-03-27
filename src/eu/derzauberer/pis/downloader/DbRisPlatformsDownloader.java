@@ -11,6 +11,7 @@ import eu.derzauberer.pis.main.Pis;
 import eu.derzauberer.pis.model.Platform;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.util.Downloader;
+import eu.derzauberer.pis.util.ProgressStatus;
 import eu.derzauberer.pis.util.Repository;
 
 public class DbRisPlatformsDownloader extends Downloader {
@@ -35,6 +36,7 @@ public class DbRisPlatformsDownloader extends Downloader {
 		int counter = 0;
 		final List<Station> stations = repository.getList().stream().filter(station -> station.getApiIds().containsKey("eva")).toList();
 		long millis = System.currentTimeMillis();
+		final ProgressStatus progress = new ProgressStatus(getName(), stations.size());
 		for (Station station : stations) {
 			final Map<String, String> parameters = new HashMap<>();
 			parameters.put("keyType", "EVA");
@@ -45,6 +47,7 @@ public class DbRisPlatformsDownloader extends Downloader {
 			} catch (InterruptedException exception) {}
 			millis = System.currentTimeMillis();
 			download(URL, parameters, header).ifPresent(json -> proccess(station, json));
+			progress.count(station.getId());
 			counter++;
 		}
 		LOGGER.info("Downloaded {} stations platforms from {}", counter, NAME, URL);

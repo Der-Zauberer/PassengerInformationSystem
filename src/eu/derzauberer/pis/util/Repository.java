@@ -87,21 +87,14 @@ public abstract class Repository<T extends Entity<?>> {
 	protected List<T> loadEntities(boolean progress) {
 		try {
 			final List<T> entities = new ArrayList<>();
-			final long size = new File(DIRECTORY, getName()).list().length;
-			final long percent = size / 100;
-			long counter = 0;
-			int amount = 0;
+			final ProgressStatus progressStatus = new ProgressStatus(name, new File(DIRECTORY, getName()).list().length);
 			for (Path path : Files.list(Paths.get(DIRECTORY, name)).toList()) {
 				if (!Files.exists(path)) continue;
 				final String content = Files.readString(path);
 				final T entity = OBJECT_MAPPER.readValue(content, type);
 				entities.add(entity);
-				if (progress && size > 200 && counter++ > percent) {
-					counter = 0;
-					System.out.print("Loading " + getName() + ": " + ++amount + "%\r");
-				}
+				if (progress) progressStatus.count();
 			}
-			if (progress && size > 200) System.out.print("Loading " + getName() + ": 100%\r");
 			return entities;
 		} catch (IOException exception) {
 			LOGGER.error("Couldn't load entities {}: {} {}!", getName(), exception.getClass().getSimpleName(), exception.getMessage());

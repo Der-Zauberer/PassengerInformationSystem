@@ -31,7 +31,7 @@ public class FileRepository<T extends Entity<T>> extends Repository<T> {
 
 	@Override
 	public Optional<T> getById(String id) {
-		return Optional.empty();
+		return loadEntity(id);
 	}
 
 	@Override

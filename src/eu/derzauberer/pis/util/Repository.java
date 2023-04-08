@@ -110,7 +110,7 @@ public abstract class Repository<T extends Entity<?>> {
 	protected Optional<T> loadEntity(String id) {
 		try {
 			final Path path = Paths.get(DIRECTORY, name, id.toString() + FILE_TYPE);
-			if (Files.exists(path)) return Optional.empty();
+			if (!Files.exists(path)) return Optional.empty();
 			final String content = Files.readString(path);
 			final T entity = OBJECT_MAPPER.readValue(content, type);
 			return Optional.of(entity);

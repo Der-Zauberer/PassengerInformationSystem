@@ -8,35 +8,55 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-public abstract class Downloader {
+public class HttpRequest {
 	
-	private final String name;
+	private String url;
+	private final Map<String, String> parameter = new HashMap<>();
+	private final Map<String, String> header = new HashMap<>();
+	private Consumer<IOException> exceptionAction;
 	
-	protected static final Logger LOGGER = LoggerFactory.getLogger(Downloader.class.getSimpleName());
-	
-	public Downloader(String name) {
-		this.name = name;
+	public String getUrl() {
+		return url;
 	}
 	
-	public abstract void download();
+	public void setUrl(String url) {
+		this.url = url;
+	}
 	
-	protected Optional<ObjectNode> download(String url, Map<String, String> parameters, Map<String, String> header) {
+	public Map<String, String> getParameter() {
+		return parameter;
+	}
+	
+	public Map<String, String> getHeader() {
+		return header;
+	}
+	
+	public Consumer<IOException> getExceptionAction() {
+		return exceptionAction;
+	}
+	
+	public void setExceptionAction(Consumer<IOException> exceptionAction) {
+		this.exceptionAction = exceptionAction;
+	}
+	
+	public Optional<String> request() {
+		if (url == null) throw new IllegalArgumentException("The url is required to make a request!");
 		try {
-			final HttpURLConnection connection = connect(url, parameters, header);
+			final HttpURLConnection connection = connect(url, parameter, header);
 			final String response = readResponse(connection);
 			connection.disconnect();
-			return Optional.of(new ObjectMapper().readValue(response.toString(), ObjectNode.class));
+			return Optional.of(response);
 		} catch (IOException exception) {
-			LOGGER.error("Failed to download {} from {}: {} {}!", name, url, exception.getClass().getSimpleName(), exception.getMessage());
+			if (exceptionAction != null) exceptionAction.accept(exception);
 			return Optional.empty();
 		}
 	}
@@ -53,8 +73,8 @@ public abstract class Downloader {
 		return resultString.length() > 0 ? resultString.substring(0, resultString.length() - 1) : resultString;
 	}
 	
-	private HttpURLConnection connect(String url, Map<String, String> parameters, Map<String, String> header) throws MalformedURLException, IOException {
-		final String fullUrl = url + getParameterString(parameters);
+	private HttpURLConnection connect(String url, Map<String, String> parameter, Map<String, String> header) throws MalformedURLException, IOException {
+		final String fullUrl = url + getParameterString(parameter);
 		final HttpURLConnection connection = (HttpURLConnection) new URL(fullUrl).openConnection();
 		connection.setRequestMethod("GET");
 		header.forEach((key, value) -> {
@@ -76,4 +96,13 @@ public abstract class Downloader {
 		return response.toString();
 	}
 	
+	public static ObjectNode mapToJson(String string) {
+		try {
+			return new ObjectMapper().readValue(string, ObjectNode.class);
+		} catch (JsonProcessingException exception) {
+			exception.printStackTrace();
+			return null;
+		}
+	}
+
 }

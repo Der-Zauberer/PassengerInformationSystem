@@ -3,12 +3,12 @@ package eu.derzauberer.pis.commands;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import eu.derzauberer.pis.downloader.DbRisPlatformsDownloader;
 import eu.derzauberer.pis.downloader.DbRisStationsDownloader;
-import eu.derzauberer.pis.downloader.DbStationDownloader;
+import eu.derzauberer.pis.downloader.DbStadaStationDownloader;
 import eu.derzauberer.pis.util.Command;
-import eu.derzauberer.pis.util.Downloader;
 
 public class DownloadCommand extends Command {
 
@@ -19,20 +19,20 @@ public class DownloadCommand extends Command {
 		addBranch("-l", "List all availible <downloader>");
 		setMinArguments(1);
 		setAction(args -> {
-			final Map<String, Downloader> downloaderMap = new HashMap<>();
-			downloaderMap.put(DbStationDownloader.getName(), new DbStationDownloader());
-			downloaderMap.put(DbRisStationsDownloader.getName(), new DbRisStationsDownloader());
-			downloaderMap.put(DbRisPlatformsDownloader.getName(), new DbRisPlatformsDownloader());
+			final Map<String, Consumer<String[]>> downloaderMap = new HashMap<>();
+			downloaderMap.put(DbStadaStationDownloader.getName(), (donwloaderArgs) -> new DbStadaStationDownloader());
+			downloaderMap.put(DbRisStationsDownloader.getName(), (donwloaderArgs) -> new DbRisStationsDownloader());
+			downloaderMap.put(DbRisPlatformsDownloader.getName(), (donwloaderArgs) -> new DbRisPlatformsDownloader());
 			if (Arrays.asList(args).contains("-l")) {
 				printList(downloaderMap.keySet());
 				return;
 			}
-			final Downloader downloader = downloaderMap.get(args[0]);
+			final Consumer<String[]> downloader = downloaderMap.get(args[0]);
 			if (downloader == null) {
 				LOGGER.error("The downloader {} does not exist!", args[0]);
 				return;
 			}
-			downloader.download();
+			downloader.accept(new String[] {});
 		});
 	}
 

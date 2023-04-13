@@ -1,47 +1,40 @@
 package eu.derzauberer.pis.downloader;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import eu.derzauberer.pis.main.Pis;
 import eu.derzauberer.pis.model.Station;
-import eu.derzauberer.pis.util.Downloader;
 import eu.derzauberer.pis.util.Entity;
+import eu.derzauberer.pis.util.HttpRequest;
 import eu.derzauberer.pis.util.ProgressStatus;
 import eu.derzauberer.pis.util.Repository;
 
-public class DbStationDownloader extends Downloader {
+public class DbStadaStationDownloader {
 	
 	private static final String NAME = "db/stada";
 	private static final String URL = "https://apis.deutschebahn.com/db-api-marketplace/apis/station-data/v2/stations";
+	private static final Logger LOGGER = LoggerFactory.getLogger("Downloader");
+	private final Repository<Station> repository = (Repository<Station>) Pis.getRepository("stations", Station.class);
 	
-	private static final Map<String, String> parameters = new HashMap<>();
-	private static final Map<String, String> header = new HashMap<>();
-	
-	private Repository<Station> repository;
-	
-	public DbStationDownloader() {
-		super(NAME);
-		header.put("DB-Client-Id", Pis.getUserConfig().getDbClientId());
-		header.put("DB-Api-Key", Pis.getUserConfig().getDbApiKey());
-	}
-	
-	@Override
-	public void download() {
-		repository = (Repository<Station>) Pis.getRepository("stations", Station.class);
+	public DbStadaStationDownloader() {
 		LOGGER.info("Downloading {} from {}", NAME, URL);
-		download(URL, parameters, header).ifPresent(this::proccess);
+		final HttpRequest request = new HttpRequest();
+		request.setUrl(URL);
+		request.getHeader().put("DB-Client-Id", Pis.getUserConfig().getDbClientId());
+		request.getHeader().put("DB-Api-Key", Pis.getUserConfig().getDbApiKey());
+		request.request().map(HttpRequest::mapToJson).ifPresent(this::saveAll);
 	}
 	
-	private void proccess(ObjectNode json) {
+	private void saveAll(ObjectNode json) {
 		final List<String> warns = new ArrayList<>();
-		final ProgressStatus progress = new ProgressStatus(getName(), json.withArray("result").size());
+		final ProgressStatus progress = new ProgressStatus(NAME, json.withArray("result").size());
 		int counter = 0;
 		for (JsonNode node : json.withArray("result")) {
 			final String name = node.get("name").asText();
@@ -97,10 +90,6 @@ public class DbStationDownloader extends Downloader {
 	
 	public static String getName() {
 		return NAME;
-	}
-	
-	public static String getUrl() {
-		return URL;
 	}
 
 }

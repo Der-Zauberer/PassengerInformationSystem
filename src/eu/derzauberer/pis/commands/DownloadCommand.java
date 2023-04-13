@@ -32,7 +32,8 @@ public class DownloadCommand extends Command {
 				LOGGER.error("The downloader {} does not exist!", args[0]);
 				return;
 			}
-			downloader.accept(new String[] {});
+			final String[] downloaderArgs = args.length == 0 ? new String[0] : Arrays.copyOfRange(args, 1, args.length);
+			downloader.accept(downloaderArgs);
 		});
 	}
 

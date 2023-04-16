@@ -128,7 +128,6 @@ public abstract class Repository<T extends Entity<?>> {
 		} catch (IOException exception) {
 			LOGGER.warn("Couldn't save entity {} from {}: {} {}", entity.getId(), getName(), exception.getClass().getSimpleName(), exception.getMessage());
 		}
-		
 	}
 	
 	protected void deleteEnity(String id) {

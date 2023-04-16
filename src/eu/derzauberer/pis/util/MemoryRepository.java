@@ -36,7 +36,7 @@ public class MemoryRepository<T extends Entity<T>> extends Repository<T>{
 	@Override
 	public void add(T entity) {
 		if (lastTimeUpdated.get(entity.getId()) != getLastUpdated(entity.getId())) {
-			throw new ConcurrentModificationException("The entity {} with id {} has already changed!");
+			throw new ConcurrentModificationException("The entity " + getName()+ " with id " + entity.getId() + " has already changed!");
 		}
 		final T copy = (T) MODEL_MAPPER.map(entity, entity.getClass());
 		entities.put(entity.getId(), copy);

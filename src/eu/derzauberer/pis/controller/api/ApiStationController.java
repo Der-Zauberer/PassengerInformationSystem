@@ -29,10 +29,10 @@ public class ApiStationController {
 	
 	@GetMapping
 	public ListDto<Station> getStations(
-			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
-			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
+			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit,
+			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset
 			) {
-		return new ListDto<>(offset, limit , stationService.getList());
+		return new ListDto<>(stationService.getList(), limit == -1 ? stationService.size() : limit, offset);
 	}
 	
 	@GetMapping("{id}")

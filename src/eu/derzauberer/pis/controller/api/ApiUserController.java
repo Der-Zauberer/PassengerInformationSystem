@@ -29,10 +29,10 @@ public class ApiUserController {
 	
 	@GetMapping
 	public ListDto<User> getUsers(
-			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
-			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
+			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit,
+			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset
 			) {
-		return new ListDto<>(offset, limit , userService.getList());
+		return new ListDto<>(userService.getList(), limit == -1 ? userService.size() : limit, offset);
 	}
 	
 	@GetMapping("{id}")

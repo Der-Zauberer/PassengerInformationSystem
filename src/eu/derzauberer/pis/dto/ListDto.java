@@ -9,10 +9,18 @@ public class ListDto<T> {
     private final int limit;
     private final int total;
     private final ArrayList<T> results;
+    
+    public ListDto(List<T> list) {
+    	this(list, list.size(), 0);
+    }
+    
+    public ListDto(List<T> list, int limit) {
+    	this(list, limit, 0);
+    }
 	
-	public ListDto(int offset, int limit, List<T> list) {
+	public ListDto(List<T> list, int limit, int offset) {
 		this.offset = offset;
-		this.limit = limit >= 0 ? limit : list.size();
+		this.limit = limit;
 		this.total = list.size();
 		this.results = new ArrayList<>();
 		final int max = this.offset + this.limit;

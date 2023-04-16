@@ -3,14 +3,15 @@ package eu.derzauberer.pis.service;
 import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.main.Pis;
 import eu.derzauberer.pis.model.User;
+import eu.derzauberer.pis.util.EntityService;
 import eu.derzauberer.pis.util.MemoryRepository;
-import eu.derzauberer.pis.util.Service;
 
-@org.springframework.stereotype.Service
-public class UserService extends Service<User> {
+@Service
+public class UserService extends EntityService<User> {
 	
 	private static final PasswordEncoder ENCODER = Pis.getSpringConfig().getPasswordEncoder();
 

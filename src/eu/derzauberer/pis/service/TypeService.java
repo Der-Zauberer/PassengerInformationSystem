@@ -1,11 +1,13 @@
 package eu.derzauberer.pis.service;
 
-import eu.derzauberer.pis.model.TrainType;
-import eu.derzauberer.pis.util.MemoryRepository;
-import eu.derzauberer.pis.util.Service;
+import org.springframework.stereotype.Service;
 
-@org.springframework.stereotype.Service
-public class TypeService extends Service<TrainType> {
+import eu.derzauberer.pis.model.TrainType;
+import eu.derzauberer.pis.util.EntityService;
+import eu.derzauberer.pis.util.MemoryRepository;
+
+@Service
+public class TypeService extends EntityService<TrainType> {
 
 	public TypeService() {
 		super("types", new MemoryRepository<>("types", TrainType.class));

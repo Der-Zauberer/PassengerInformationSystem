@@ -1,11 +1,13 @@
 package eu.derzauberer.pis.service;
 
-import eu.derzauberer.pis.model.TrainOperator;
-import eu.derzauberer.pis.util.MemoryRepository;
-import eu.derzauberer.pis.util.Service;
+import org.springframework.stereotype.Service;
 
-@org.springframework.stereotype.Service
-public class OperatorService extends Service<TrainOperator> {
+import eu.derzauberer.pis.model.TrainOperator;
+import eu.derzauberer.pis.util.EntityService;
+import eu.derzauberer.pis.util.MemoryRepository;
+
+@Service
+public class OperatorService extends EntityService<TrainOperator> {
 
 	public OperatorService() {
 		super("operators", new MemoryRepository<>("operators", TrainOperator.class));

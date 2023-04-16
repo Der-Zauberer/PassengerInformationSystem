@@ -7,14 +7,14 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class Service<T extends Entity<T>> {
+public abstract class EntityService<T extends Entity<T>> {
 	
 	private final String name;
 	private final Repository<T> repository;
 	
-	protected static final Logger LOGGER = LoggerFactory.getLogger(Service.class.getSimpleName());
+	protected static final Logger LOGGER = LoggerFactory.getLogger(EntityService.class.getSimpleName());
 
-	public Service(String name, Repository<T> repository) {
+	public EntityService(String name, Repository<T> repository) {
 		this.name = name;
 		this.repository = repository;
 	}

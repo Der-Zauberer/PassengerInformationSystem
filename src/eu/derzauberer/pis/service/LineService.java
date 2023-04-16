@@ -1,11 +1,13 @@
 package eu.derzauberer.pis.service;
 
-import eu.derzauberer.pis.model.Line;
-import eu.derzauberer.pis.util.FileRepository;
-import eu.derzauberer.pis.util.Service;
+import org.springframework.stereotype.Service;
 
-@org.springframework.stereotype.Service
-public class LineService extends Service<Line> {
+import eu.derzauberer.pis.model.Line;
+import eu.derzauberer.pis.util.EntityService;
+import eu.derzauberer.pis.util.FileRepository;
+
+@Service
+public class LineService extends EntityService<Line> {
 
 	public LineService() {
 		super("lines", new FileRepository<>("lines", Line.class));

@@ -40,6 +40,14 @@ public class ApiStationController {
 		return stationService.getById(id).orElseThrow(() -> getNotFoundException(id));
 	}
 	
+	@GetMapping("/search")
+	public ListDto<String> searchStation(@RequestParam("query") String query,
+			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit,
+			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset
+			) {
+		return new ListDto<>(stationService.search(query).stream().map(Station::getName).toList(), limit == -1 ? 10 : limit, offset);
+	}
+	
 	@PostMapping
 	public Station setStation(Station station) {
 		stationService.add(station);

@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 public abstract class Service<T extends Entity<T>> {
 	
 	private final String name;
-	private Repository<T> repository;
+	private final Repository<T> repository;
 	
 	protected static final Logger LOGGER = LoggerFactory.getLogger(Service.class.getSimpleName());
 
@@ -53,6 +53,10 @@ public abstract class Service<T extends Entity<T>> {
 	
 	public String getName() {
 		return name;
+	}
+	
+	public Repository<T> getRepository() {
+		return repository;
 	}
 	
 }

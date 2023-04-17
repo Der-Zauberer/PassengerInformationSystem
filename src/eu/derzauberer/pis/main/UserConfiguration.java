@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.util;
+package eu.derzauberer.pis.main;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,8 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import eu.derzauberer.pis.main.Pis;
 
 public class UserConfiguration {
 	

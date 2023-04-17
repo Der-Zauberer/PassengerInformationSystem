@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.util;
+package eu.derzauberer.pis.main;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,6 +23,7 @@ import eu.derzauberer.pis.serialization.DateTimeDeserializer;
 import eu.derzauberer.pis.serialization.DateTimeSerializer;
 import eu.derzauberer.pis.serialization.TimeDeserializer;
 import eu.derzauberer.pis.serialization.TimeSerializer;
+import eu.derzauberer.pis.util.PrettyPrinter;
 
 @Configuration
 public class SpringConfiguration {

@@ -23,8 +23,6 @@ import eu.derzauberer.pis.util.Command;
 import eu.derzauberer.pis.util.Entity;
 import eu.derzauberer.pis.util.FileRepository;
 import eu.derzauberer.pis.util.Repository;
-import eu.derzauberer.pis.util.SpringConfiguration;
-import eu.derzauberer.pis.util.UserConfiguration;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 @ComponentScan(basePackages = {"eu.derzauberer.pis"})

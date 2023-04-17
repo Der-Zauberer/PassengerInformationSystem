@@ -10,7 +10,8 @@ public class TrainOperator implements Entity<TrainOperator> {
 	private String name;
 	private int backgorundColor;
 	private int textColor;
-	private final Adress adress = new Adress();
+	private Adress adress;
+	private ApiInformation api;
 	
 	public TrainOperator(String name) {
 		this(Entity.nameToId(name), name);
@@ -56,6 +57,14 @@ public class TrainOperator implements Entity<TrainOperator> {
 	
 	public void setSecondaryColor(int secondaryColor) {
 		this.textColor = secondaryColor;
+	}
+	
+	public ApiInformation getApi() {
+		return api;
+	}
+	
+	public void setAdress(Adress adress) {
+		this.adress = adress;
 	}
 
 }

@@ -1,5 +1,8 @@
 package eu.derzauberer.pis.downloader;
 
+import java.util.HashMap;
+import java.util.HashSet;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -7,6 +10,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import eu.derzauberer.pis.main.Pis;
+import eu.derzauberer.pis.model.Adress;
+import eu.derzauberer.pis.model.ApiInformation;
+import eu.derzauberer.pis.model.Location;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.util.Entity;
 import eu.derzauberer.pis.util.HttpRequest;
@@ -27,6 +33,7 @@ public class DbRisStationsDownloader {
 		request.getParameter().put("limit","10000");
 		request.getHeader().put("DB-Client-Id", Pis.getUserConfig().getDbClientId());
 		request.getHeader().put("DB-Api-Key", Pis.getUserConfig().getDbApiKey());
+		request.setExceptionAction(exception -> LOGGER.error("Downloading {} from {} failed: {} {}", repository.getName(), NAME, exception.getClass().getSimpleName(), exception.getMessage()));
 		request.request().map(HttpRequest::mapToJson).ifPresent(this::saveAll);
 	}
 	
@@ -36,6 +43,7 @@ public class DbRisStationsDownloader {
 		for (JsonNode node : json.withArray("stations")) {
 			final String name = node.at("/names/DE/name").asText();
 			final Station station = repository.getById(Entity.nameToId(name)).orElse(new Station(name));
+			if (station.getAdress() == null) station.setAdress(new Adress());
 			if (node.at("/owner/name").asText().equalsIgnoreCase("DB S&S")) {
 				station.getAdress().setName("DB Station&Service AG");
 			} else {
@@ -51,10 +59,15 @@ public class DbRisStationsDownloader {
 			} else {
 				station.getAdress().setCountry(node.at("/address/country").asText());
 			}
+			if (station.getLocation() == null) station.setLocation(new Location(0, 0));
 			station.getLocation().setLongitude(node.at("/position/longitude").asDouble());
 			station.getLocation().setLatitude(node.at("/position/latitude").asDouble());
-			station.getApiIds().put("stada", node.get("stationID").asLong());
-			station.getApiSources().add(URL);
+			if (station.getApi() == null) station.setApi(new ApiInformation());
+			if (station.getApi().getIds() == null) station.getApi().setIds(new HashMap<>());
+			if (station.getApi().getSources() == null) station.getApi().setSources(new HashSet<>());
+			station.getApi().getIds().put("stada", node.get("stationID").asLong());
+			station.getApi().getSources().add(URL);
+			station.getApi().setLastUpdatedNow();
 			progress.count();
 			counter++;
 			repository.add(station);

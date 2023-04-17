@@ -18,6 +18,7 @@ public class Line implements Entity<Line> {
 	private boolean cancelled;
 	private Integer position;
 	private final List<LineStop> stops = new ArrayList<>();
+	private ApiInformation api;
 	
 	@ConstructorProperties({"id", "type", "number"})
 	public Line(String id, TrainType type, int number) {
@@ -95,6 +96,14 @@ public class Line implements Entity<Line> {
 	
 	public List<LineStop> getStops() {
 		return stops;
+	}
+	
+	public ApiInformation getApi() {
+		return api;
+	}
+	
+	public void setApi(ApiInformation api) {
+		this.api = api;
 	}
 
 }

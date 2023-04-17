@@ -1,9 +1,6 @@
 package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -14,11 +11,10 @@ public class Station implements Entity<Station> {
 	private final String id;
 	private final String name;
 	private final TreeSet<Platform> platforms = new TreeSet<>();
-	private final Adress adress = new Adress();
-	private final Location location = new Location(0, 0);
-	private final StationServices services = new StationServices();
-	private final Map<String, Object> apiIds = new HashMap<>();
-	private final Set<String> apiSources = new HashSet<>();
+	private Adress adress;
+	private Location location;
+	private StationServices services;
+	private ApiInformation api;
 
 	public Station(String name) {
 		this(Entity.nameToId(name), name);
@@ -48,20 +44,32 @@ public class Station implements Entity<Station> {
 		return adress;
 	}
 	
+	public void setAdress(Adress adress) {
+		this.adress = adress;
+	}
+	
 	public Location getLocation() {
 		return location;
+	}
+	
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 	
 	public StationServices getServices() {
 		return services;
 	}
 	
-	public Map<String, Object> getApiIds() {
-		return apiIds;
+	public void setServices(StationServices services) {
+		this.services = services;
 	}
 	
-	public Set<String> getApiSources() {
-		return apiSources;
+	public ApiInformation getApi() {
+		return api;
+	}
+	
+	public void setApi(ApiInformation api) {
+		this.api = api;
 	}
 
 }

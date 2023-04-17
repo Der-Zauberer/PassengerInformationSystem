@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import eu.derzauberer.pis.main.Pis;
+import eu.derzauberer.pis.model.ApiInformation;
 import eu.derzauberer.pis.model.Platform;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.util.HttpRequest;
@@ -28,14 +29,15 @@ public class DbRisPlatformsDownloader {
 		request.setUrl(URL);
 		request.getHeader().put("DB-Client-Id", Pis.getUserConfig().getDbClientId());
 		request.getHeader().put("DB-Api-Key", Pis.getUserConfig().getDbApiKey());
+		request.setExceptionAction(exception -> LOGGER.error("Downloading {} from {} failed: {} {}", repository.getName(), NAME, exception.getClass().getSimpleName(), exception.getMessage()));
 		final List<Station> stations = repository.getList();
 		int counter = 0;
 		long millis = System.currentTimeMillis();
 		final ProgressStatus progress = new ProgressStatus(NAME, stations.size());
 		for (Station station : stations) {
-			if (!station.getApiIds().containsKey("eva")) continue;
+			if (station.getApi() == null || station.getApi().getIds() == null || !station.getApi().getIds().containsKey("eva")) continue;
 			request.getParameter().put("keyType", "EVA");
-			request.getParameter().put("key", station.getApiIds().get("eva").toString());
+			request.getParameter().put("key", station.getApi().getIds().get("eva").toString());
 			long wait = System.currentTimeMillis() - millis;
 			try {
 				Thread.sleep(wait < 120 ? 120 - wait : 120);
@@ -49,6 +51,8 @@ public class DbRisPlatformsDownloader {
 	}
 	
 	private void save(Station station, ObjectNode json) {
+		if (station.getApi() == null) station.setApi(new ApiInformation());
+		station.getApi().setLastUpdatedNow();
 		for (JsonNode node : json.withArray("platforms")) {
 			final Platform platfrom = new Platform(node.get("name").asText().toUpperCase());
 			station.getPlatforms().stream().filter(entry -> entry.getName().equalsIgnoreCase(platfrom.getName())).findAny().ifPresent(station.getPlatforms()::remove);

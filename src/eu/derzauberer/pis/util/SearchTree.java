@@ -46,7 +46,7 @@ public class SearchTree<T extends Entity<T>> {
 	public List<T> searchByName(String name) {
 		final List<T> results = new ArrayList<>();
 		final List<String> resultIds;
-		if ((resultIds = entries.get(name)) == null) return results;
+		if ((resultIds = entries.get(name.toLowerCase())) == null) return results;
 		for (String id : resultIds) {
 			repository.getById(id).ifPresent(results::add);
 		}

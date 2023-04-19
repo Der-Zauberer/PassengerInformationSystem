@@ -10,7 +10,7 @@ public class Station implements Entity<Station> {
 	
 	private final String id;
 	private final String name;
-	private final TreeSet<Platform> platforms = new TreeSet<>();
+	private TreeSet<Platform> platforms;
 	private Adress adress;
 	private Location location;
 	private StationServices services;
@@ -38,6 +38,10 @@ public class Station implements Entity<Station> {
 	
 	public Set<Platform> getPlatforms() {
 		return platforms;
+	}
+	
+	public void setPlatforms(TreeSet<Platform> platforms) {
+		this.platforms = platforms;
 	}
 	
 	public Adress getAdress() {

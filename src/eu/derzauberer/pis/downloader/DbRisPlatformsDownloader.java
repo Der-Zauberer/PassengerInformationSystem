@@ -1,6 +1,7 @@
 package eu.derzauberer.pis.downloader;
 
 import java.util.List;
+import java.util.TreeSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +54,7 @@ public class DbRisPlatformsDownloader {
 	private void save(Station station, ObjectNode json) {
 		if (station.getApi() == null) station.setApi(new ApiInformation());
 		station.getApi().setLastUpdatedNow();
+		if (station.getPlatforms() == null && !json.withArray("platforms").isEmpty()) station.setPlatforms(new TreeSet<>());
 		for (JsonNode node : json.withArray("platforms")) {
 			final Platform platfrom = new Platform(node.get("name").asText().toUpperCase());
 			station.getPlatforms().stream().filter(entry -> entry.getName().equalsIgnoreCase(platfrom.getName())).findAny().ifPresent(station.getPlatforms()::remove);

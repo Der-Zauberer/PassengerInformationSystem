@@ -139,7 +139,7 @@ public abstract class Repository<T extends Entity<T>> {
 			}
 			return entities;
 		} catch (IOException exception) {
-			LOGGER.error("Couldn't load entities {}: {} {}!", getName(), exception.getClass().getSimpleName(), exception.getMessage());
+			LOGGER.error("Couldn't load entities with id {}: {} {}!", getName(), exception.getClass().getSimpleName(), exception.getMessage());
 			return new ArrayList<>();
 		}
 	}
@@ -165,7 +165,7 @@ public abstract class Repository<T extends Entity<T>> {
 			}
 			return Optional.of(entity);
 		} catch (IOException exception) {
-			LOGGER.error("Couldn't load entity {} from {}: {} {}!", id, getName(), exception.getClass().getSimpleName(), exception.getMessage());
+			LOGGER.error("Couldn't load entity with id {} from {}: {} {}!", id, getName(), exception.getClass().getSimpleName(), exception.getMessage());
 			return Optional.empty();
 		}
 	}
@@ -180,10 +180,10 @@ public abstract class Repository<T extends Entity<T>> {
 				lastUpdated.put(entity.getId(), lastUpdatedTime);
 				if (removeAction != null) addAction.accept(entity);
 			} else {
-				throw new ConcurrentModificationException("Couldn't save entity " + entity.getId() + " because it has changed since last load!");
+				throw new ConcurrentModificationException("Couldn't save entity with id " + entity.getId() + " because it has changed since last load!");
 			}
 		} catch (IOException exception) {
-			LOGGER.warn("Couldn't save entity {} from {}: {} {}", entity.getId(), getName(), exception.getClass().getSimpleName(), exception.getMessage());
+			LOGGER.warn("Couldn't save entity with id {} from {}: {} {}", entity.getId(), getName(), exception.getClass().getSimpleName(), exception.getMessage());
 		}
 	}
 	
@@ -195,7 +195,7 @@ public abstract class Repository<T extends Entity<T>> {
 				if (removeAction != null) removeAction.accept(id);
 			}
 		} catch (IOException exception) {
-			LOGGER.warn("Couldn't delete entity {} from {}: {} {}", id, getName(), exception.getClass().getSimpleName(), exception.getMessage());
+			LOGGER.warn("Couldn't delete entity with id {} from {}: {} {}", id, getName(), exception.getClass().getSimpleName(), exception.getMessage());
 		}
 	}
 	

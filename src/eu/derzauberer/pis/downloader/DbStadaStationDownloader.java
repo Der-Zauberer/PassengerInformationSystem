@@ -1,8 +1,8 @@
 package eu.derzauberer.pis.downloader;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import eu.derzauberer.pis.main.Pis;
 import eu.derzauberer.pis.model.Adress;
 import eu.derzauberer.pis.model.ApiInformation;
@@ -82,10 +83,9 @@ public class DbStadaStationDownloader {
 			station.getServices().setHasCarRental(extractBoolean(node, "hasCarRental"));
 			if (station.getApi() == null) station.setApi(new ApiInformation());
 			if (station.getApi().getIds() == null) station.getApi().setIds(new HashMap<>());
-			if (station.getApi().getSources() == null) station.getApi().setSources(new HashSet<>());
+			if (station.getApi().getSources() == null) station.getApi().setSources(new HashMap<>());
 			station.getApi().getIds().put("stada", node.get("number").asLong());
-			station.getApi().getSources().add(URL);
-			station.getApi().setLastUpdatedNow();
+			station.getApi().getSources().put(URL, LocalDate.now());
 			progress.count();
 			counter++;
 			repository.add(station);

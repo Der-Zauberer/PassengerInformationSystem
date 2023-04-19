@@ -1,7 +1,7 @@
 package eu.derzauberer.pis.downloader;
 
+import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.HashSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,10 +64,9 @@ public class DbRisStationsDownloader {
 			station.getLocation().setLatitude(node.at("/position/latitude").asDouble());
 			if (station.getApi() == null) station.setApi(new ApiInformation());
 			if (station.getApi().getIds() == null) station.getApi().setIds(new HashMap<>());
-			if (station.getApi().getSources() == null) station.getApi().setSources(new HashSet<>());
+			if (station.getApi().getSources() == null) station.getApi().setSources(new HashMap<>());
 			station.getApi().getIds().put("stada", node.get("stationID").asLong());
-			station.getApi().getSources().add(URL);
-			station.getApi().setLastUpdatedNow();
+			station.getApi().getSources().put(URL, LocalDate.now());
 			progress.count();
 			counter++;
 			repository.add(station);

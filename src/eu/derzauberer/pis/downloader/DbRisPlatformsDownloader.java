@@ -1,5 +1,7 @@
 package eu.derzauberer.pis.downloader;
 
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -53,7 +55,6 @@ public class DbRisPlatformsDownloader {
 	
 	private void save(Station station, ObjectNode json) {
 		if (station.getApi() == null) station.setApi(new ApiInformation());
-		station.getApi().setLastUpdatedNow();
 		if (station.getPlatforms() == null && !json.withArray("platforms").isEmpty()) station.setPlatforms(new TreeSet<>());
 		for (JsonNode node : json.withArray("platforms")) {
 			final Platform platfrom = new Platform(node.get("name").asText().toUpperCase());
@@ -66,6 +67,9 @@ public class DbRisPlatformsDownloader {
 					platfrom.getLinkedPlattforms().add(linkedPlatform.asText());
 				}
 			}
+			if (station.getApi() == null) station.setApi(new ApiInformation());
+			if (station.getApi().getSources() == null) station.getApi().setSources(new HashMap<>());
+			station.getApi().getSources().put(URL, LocalDate.now());
 		}
 		repository.add(station);
 	}

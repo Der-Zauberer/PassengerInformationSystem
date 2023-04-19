@@ -145,13 +145,13 @@ public abstract class Repository<T extends Entity<T>> {
 	}
 	
 	protected boolean containsEntity(String id) {
-		final Path path = Paths.get(DIRECTORY, name, id.toString() + FILE_TYPE);
+		final Path path = Paths.get(DIRECTORY, name, id + FILE_TYPE);
 		return Files.exists(path);
 	}
 	
 	protected Optional<T> loadEntity(String id) {
 		try {
-			final Path path = Paths.get(DIRECTORY, name, id.toString() + FILE_TYPE);
+			final Path path = Paths.get(DIRECTORY, name, id + FILE_TYPE);
 			if (!Files.exists(path)) return Optional.empty();
 			final String content = Files.readString(path);
 			final T entity = OBJECT_MAPPER.readValue(content, type);
@@ -172,15 +172,20 @@ public abstract class Repository<T extends Entity<T>> {
 	
 	protected void saveEntity(T entity) {
 		try {
-			final Path path = Paths.get(DIRECTORY, name, entity.getId().toString() + FILE_TYPE);
+			final Path path = Paths.get(DIRECTORY, name, entity.getId() + FILE_TYPE);
 			final String content = OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(entity);
-			Files.writeString(path, content);
 			final Long lastUpdatedTime = getEntityUpdateTime(entity.getId());
-			if (lastUpdatedTime != null && lastUpdated.get(entity.getId()) == null) {
-				lastUpdated.put(entity.getId(), lastUpdatedTime);
+			if (lastUpdatedTime != null && lastUpdated.get(entity.getId()) != null && lastUpdatedTime.longValue() != lastUpdated.get(entity.getId()).longValue()) {
+				throw new ConcurrentModificationException("Couldn't save entity with id " + entity.getId() + " because it has changed since last load!");
+			}
+			Files.writeString(path, content);
+			final Long newUpdatedTime = getEntityUpdateTime(entity.getId());
+			if (newUpdatedTime != null && lastUpdated.get(entity.getId()) == null) {
+				lastUpdated.put(entity.getId(), newUpdatedTime);
 				if (removeAction != null) addAction.accept(entity);
 			} else {
-				throw new ConcurrentModificationException("Couldn't save entity with id " + entity.getId() + " because it has changed since last load!");
+				lastUpdated.put(entity.getId(), newUpdatedTime);
+				if (removeAction != null) updateAction.accept(entity);
 			}
 		} catch (IOException exception) {
 			LOGGER.warn("Couldn't save entity with id {} from {}: {} {}", entity.getId(), getName(), exception.getClass().getSimpleName(), exception.getMessage());

@@ -7,6 +7,7 @@ import java.util.Map;
 
 public class SearchTree<T extends Entity<T>> {
 	
+	private final Map<String, String> originalNames = new HashMap<>();
 	private final Map<String, List<String>> entries = new HashMap<>();
 	private final Repository<T> repository;
 	
@@ -26,22 +27,29 @@ public class SearchTree<T extends Entity<T>> {
 				results.add(entity.getId());
 			}
 		}
+		originalNames.put(entity.getId(), entity.getName());
 	}
 	
 	public void remove(T entity) {
-		for (String searchString : getSearchStrings(entity.getName())) {
+		removeById(entity.getId());
+	}
+	
+	public void removeById(String id) {
+		for (String searchString : getSearchStrings(originalNames.get(id))) {
 			for (int i = 0; i < searchString.length(); i++) {
 				final String subString = searchString.substring(0, i + 1);
 				List<String> results;
 				if ((results = entries.get(subString)) != null) {
-					results.remove(entity.getId());
+					results.remove(id);
 					if (results.isEmpty()) {
 						entries.remove(subString);
 					}
 				}
 			}
 		}
+		originalNames.remove(id);
 	}
+	
 	
 	public List<T> searchByName(String name) {
 		final List<T> results = new ArrayList<>();

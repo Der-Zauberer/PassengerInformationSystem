@@ -18,6 +18,8 @@ public class StationService extends EntityService<Station> {
 	public StationService() {
 		super("stations", new MemoryRepository<>("stations", Station.class));
 		getRepository().setAddAction(search::add);
+		getRepository().setRemoveAction(search::removeById);
+		getRepository().setUpdateAction(entity -> { search.remove(entity); search.add(entity); });
 		getRepository().getList().forEach(search::add);
 	}
 	

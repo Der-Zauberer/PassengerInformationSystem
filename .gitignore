@@ -27,8 +27,10 @@ hs_err_pid*
 # Eclipse files
 /.settings/
 .project
+
+# Maven files
 /target/
 
-# config file
+# config and data files
 /data/
 config.json

@@ -18,13 +18,13 @@ public class ProgressStatus {
 	}
 	
 	public void count() {
-		if (total < 200 || counter++ < section - 1) return;
+		if (total < 200 || counter++ <= section - 1) return;
 		counter = 0;
 		System.out.print("Loading " + name + ": " + ++percent + "%\r");
 	}
 	
 	public void count(String entity) {
-		if (total < 200 || counter++ < section - 1) {
+		if (total < 200 || counter++ <= section - 1) {
 			System.out.print("Loading " + name + ": " + percent + "% " + entity + "\r");
 			return;
 		}

@@ -216,7 +216,7 @@ public abstract class Repository<T extends Entity<T>> {
 	}
 	
 	protected boolean hasEntityUpdated(String id) {
-		return getEntityUpdateTime(id) != lastUpdated.get(id);
+		return !getEntityUpdateTime(id).equals(lastUpdated.get(id));
 	}
 	
 }

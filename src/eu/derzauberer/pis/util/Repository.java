@@ -16,7 +16,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,6 +26,7 @@ public abstract class Repository<T extends Entity<T>> {
 	
 	private final String name;
 	private final Class<T> type;
+	private final Logger logger;
 	private Consumer<T> addAction;
 	private Consumer<T> updateAction;
 	private Consumer<String> removeAction;
@@ -36,15 +36,16 @@ public abstract class Repository<T extends Entity<T>> {
 	protected static final String DIRECTORY = "data";
 	protected static final String FILE_TYPE = ".json";
 	protected static final ObjectMapper OBJECT_MAPPER = Pis.getSpringConfig().getObjectMapper();
-	protected static final Logger LOGGER = LoggerFactory.getLogger(Repository.class);
 	
-	public Repository(String name, Class<T> type) {
+	
+	public Repository(String name, Class<T> type, Logger logger) {
 		this.name = name;
 		this.type = type;
+		this.logger = logger;
 		try {
 			Files.createDirectories(Paths.get(DIRECTORY, name));
 		} catch (IOException exception) {
-			LOGGER.error("Couldn't create directory {}: {} {}", DIRECTORY + "/" + name, exception.getClass().getSimpleName(), exception.getMessage());
+			logger.error("Couldn't create directory {}: {} {}", DIRECTORY + "/" + name, exception.getClass().getSimpleName(), exception.getMessage());
 		}
 	}
 	
@@ -97,9 +98,9 @@ public abstract class Repository<T extends Entity<T>> {
 			final Collection<T> entities = getList();
 			final String content = OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(entities);
 			Files.writeString(path, content);
-			LOGGER.info("Extracted {} {}", entities.size(), name);
+			logger.info("Extracted {} {}", entities.size(), name);
 		} catch (IOException exception) {
-			LOGGER.error("Couldn't package {}: {} {}",  name, exception.getClass().getSimpleName(), exception.getMessage());
+			logger.error("Couldn't package {}: {} {}",  name, exception.getClass().getSimpleName(), exception.getMessage());
 		}
 	}
 	
@@ -108,9 +109,9 @@ public abstract class Repository<T extends Entity<T>> {
 			final String content = Files.readString(path);
 			final List<T> entities = OBJECT_MAPPER.readValue(content, new TypeReference<ArrayList<T>>() {});
 			entities.forEach(this::add);
-			LOGGER.info("Extracted {} {}", entities.size(), name);
+			logger.info("Extracted {} {}", entities.size(), name);
 		} catch (IOException exception) {
-			LOGGER.error("Couldn't extract {}: {} {}",  name, exception.getClass().getSimpleName(), exception.getMessage());
+			logger.error("Couldn't extract {}: {} {}",  name, exception.getClass().getSimpleName(), exception.getMessage());
 		}
 	}
 	
@@ -139,7 +140,7 @@ public abstract class Repository<T extends Entity<T>> {
 			}
 			return entities;
 		} catch (IOException exception) {
-			LOGGER.error("Couldn't load entities with id {}: {} {}!", getName(), exception.getClass().getSimpleName(), exception.getMessage());
+			logger.error("Couldn't load entities with id {}: {} {}!", getName(), exception.getClass().getSimpleName(), exception.getMessage());
 			return new ArrayList<>();
 		}
 	}
@@ -165,7 +166,7 @@ public abstract class Repository<T extends Entity<T>> {
 			}
 			return Optional.of(entity);
 		} catch (IOException exception) {
-			LOGGER.error("Couldn't load entity with id {} from {}: {} {}!", id, getName(), exception.getClass().getSimpleName(), exception.getMessage());
+			logger.error("Couldn't load entity with id {} from {}: {} {}!", id, getName(), exception.getClass().getSimpleName(), exception.getMessage());
 			return Optional.empty();
 		}
 	}
@@ -188,7 +189,7 @@ public abstract class Repository<T extends Entity<T>> {
 				if (removeAction != null) updateAction.accept(entity);
 			}
 		} catch (IOException exception) {
-			LOGGER.warn("Couldn't save entity with id {} from {}: {} {}", entity.getId(), getName(), exception.getClass().getSimpleName(), exception.getMessage());
+			logger.warn("Couldn't save entity with id {} from {}: {} {}", entity.getId(), getName(), exception.getClass().getSimpleName(), exception.getMessage());
 		}
 	}
 	
@@ -200,7 +201,7 @@ public abstract class Repository<T extends Entity<T>> {
 				if (removeAction != null) removeAction.accept(id);
 			}
 		} catch (IOException exception) {
-			LOGGER.warn("Couldn't delete entity with id {} from {}: {} {}", id, getName(), exception.getClass().getSimpleName(), exception.getMessage());
+			logger.warn("Couldn't delete entity with id {} from {}: {} {}", id, getName(), exception.getClass().getSimpleName(), exception.getMessage());
 		}
 	}
 	

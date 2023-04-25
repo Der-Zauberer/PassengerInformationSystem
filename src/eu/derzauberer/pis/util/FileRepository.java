@@ -5,10 +5,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class FileRepository<T extends Entity<T>> extends Repository<T> {
+	
+	protected static final Logger LOGGER = LoggerFactory.getLogger(FileRepository.class);
 
 	public FileRepository(String name, Class<T> type) {
-		super(name, type);
+		super(name, type, LOGGER);
 		LOGGER.info("Loaded {} {}", size(), name);
 	}
 

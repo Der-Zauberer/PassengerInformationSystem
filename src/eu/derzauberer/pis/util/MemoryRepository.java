@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import eu.derzauberer.pis.main.Pis;
 
@@ -14,9 +16,10 @@ public class MemoryRepository<T extends Entity<T>> extends Repository<T>{
 	
 	private final Map<String, T> entities = new HashMap<>();
 	private static final ModelMapper MODEL_MAPPER = Pis.getSpringConfig().getModelMapper();
+	protected static final Logger LOGGER = LoggerFactory.getLogger(MemoryRepository.class);
 	
 	public MemoryRepository(String name, Class<T> type) {
-		super(name, type);
+		super(name, type, LOGGER);
 		final List<T> entities = loadEntities(true);
 		for (T entity : entities) {
 			this.entities.put(entity.getId(), entity);

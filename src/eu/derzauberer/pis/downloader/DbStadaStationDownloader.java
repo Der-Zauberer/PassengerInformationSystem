@@ -27,7 +27,7 @@ public class DbStadaStationDownloader {
 	
 	private static final String NAME = "db/stada";
 	private static final String URL = "https://apis.deutschebahn.com/db-api-marketplace/apis/station-data/v2/stations";
-	private static final Logger LOGGER = LoggerFactory.getLogger("Downloader");
+	private static final Logger LOGGER = LoggerFactory.getLogger(DbStadaStationDownloader.class);
 	private final Repository<Station> repository = (Repository<Station>) Pis.getRepository("stations", Station.class);
 	
 	public DbStadaStationDownloader() {
@@ -37,12 +37,12 @@ public class DbStadaStationDownloader {
 		request.getHeader().put("DB-Client-Id", Pis.getUserConfig().getDbClientId());
 		request.getHeader().put("DB-Api-Key", Pis.getUserConfig().getDbApiKey());
 		request.setExceptionAction(exception -> LOGGER.error("Downloading {} from {} failed: {} {}", repository.getName(), NAME, exception.getClass().getSimpleName(), exception.getMessage()));
-		request.request().map(HttpRequest::mapToJson).ifPresent(this::saveAll);
+		request.request().map(this::logDownloadProcessing).map(HttpRequest::mapToJson).ifPresent(this::saveAll);
 	}
 	
 	private void saveAll(ObjectNode json) {
 		final List<String> warns = new ArrayList<>();
-		final ProgressStatus progress = new ProgressStatus(NAME, json.withArray("result").size());
+		final ProgressStatus progress = new ProgressStatus("Processing", NAME, json.withArray("result").size());
 		int counter = 0;
 		for (JsonNode node : json.withArray("result")) {
 			final String name = node.get("name").asText();
@@ -94,6 +94,11 @@ public class DbStadaStationDownloader {
 			LOGGER.warn(warn);
 		}
 		LOGGER.info("Downloaded {} stations from {}", counter, NAME, URL);
+	}
+	
+	private String logDownloadProcessing(String string) {
+		LOGGER.info("Processing {}", NAME);
+		return string;
 	}
 	
 	private boolean extractBoolean(JsonNode node, String name) {

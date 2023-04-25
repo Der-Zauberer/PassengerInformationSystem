@@ -23,7 +23,7 @@ public class DbRisStationsDownloader {
 	
 	private static final String NAME = "db/ris::stations";
 	private static final String URL = "https://apis.deutschebahn.com/db-api-marketplace/apis/ris-stations/v1/stations";
-	private static final Logger LOGGER = LoggerFactory.getLogger("Downloader");
+	private static final Logger LOGGER = LoggerFactory.getLogger(DbRisStationsDownloader.class);
 	private final Repository<Station> repository = (Repository<Station>) Pis.getRepository("stations", Station.class);
 	
 	public DbRisStationsDownloader() {
@@ -34,11 +34,11 @@ public class DbRisStationsDownloader {
 		request.getHeader().put("DB-Client-Id", Pis.getUserConfig().getDbClientId());
 		request.getHeader().put("DB-Api-Key", Pis.getUserConfig().getDbApiKey());
 		request.setExceptionAction(exception -> LOGGER.error("Downloading {} from {} failed: {} {}", repository.getName(), NAME, exception.getClass().getSimpleName(), exception.getMessage()));
-		request.request().map(HttpRequest::mapToJson).ifPresent(this::saveAll);
+		request.request().map(this::logDownloadProcessing).map(HttpRequest::mapToJson).ifPresent(this::saveAll);
 	}
 	
 	private void saveAll(ObjectNode json) {
-		final ProgressStatus progress = new ProgressStatus(NAME, json.withArray("stations").size());
+		final ProgressStatus progress = new ProgressStatus("Processing", NAME, json.withArray("stations").size());
 		int counter = 0;
 		for (JsonNode node : json.withArray("stations")) {
 			final String name = node.at("/names/DE/name").asText();
@@ -72,6 +72,11 @@ public class DbRisStationsDownloader {
 			repository.add(station);
 		}
 		LOGGER.info("Downloaded {} stations from {}", counter, NAME, URL);
+	}
+	
+	private String logDownloadProcessing(String string) {
+		LOGGER.info("Processing {}", NAME);
+		return string;
 	}
 	
 	public static String getName() {

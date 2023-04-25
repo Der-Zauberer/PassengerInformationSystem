@@ -36,7 +36,7 @@ public abstract class Repository<T extends Entity<T>> {
 	protected static final String DIRECTORY = "data";
 	protected static final String FILE_TYPE = ".json";
 	protected static final ObjectMapper OBJECT_MAPPER = Pis.getSpringConfig().getObjectMapper();
-	protected static final Logger LOGGER = LoggerFactory.getLogger(Repository.class.getSimpleName());
+	protected static final Logger LOGGER = LoggerFactory.getLogger(Repository.class);
 	
 	public Repository(String name, Class<T> type) {
 		this.name = name;

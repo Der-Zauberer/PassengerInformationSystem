@@ -23,7 +23,7 @@ public class DbRisPlatformsDownloader {
 	
 	private static final String NAME = "db/ris::platforms";
 	private static final String URL = "https://apis.deutschebahn.com/db-api-marketplace/apis/ris-stations/v1/platforms/by-key";
-	private static final Logger LOGGER = LoggerFactory.getLogger("Downloader");
+	private static final Logger LOGGER = LoggerFactory.getLogger(DbRisPlatformsDownloader.class);
 	private final Repository<Station> repository = (Repository<Station>) Pis.getRepository("stations", Station.class);
 	
 	public DbRisPlatformsDownloader() {
@@ -36,7 +36,7 @@ public class DbRisPlatformsDownloader {
 		final List<Station> stations = repository.getList();
 		int counter = 0;
 		long millis = System.currentTimeMillis();
-		final ProgressStatus progress = new ProgressStatus(NAME, stations.size());
+		final ProgressStatus progress = new ProgressStatus("Processing", NAME, stations.size());
 		for (Station station : stations) {
 			if (station.getApi() == null || station.getApi().getIds() == null || !station.getApi().getIds().containsKey("eva")) continue;
 			request.getParameter().put("keyType", "EVA");

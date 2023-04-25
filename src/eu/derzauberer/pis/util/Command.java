@@ -23,7 +23,7 @@ public class Command {
 	private Consumer<String[]> action;
 	private final Map<String, Command> commands;
 	
-	protected static final Logger LOGGER = LoggerFactory.getLogger(Command.class.getSimpleName());
+	protected static final Logger LOGGER = LoggerFactory.getLogger(Command.class);
 	
 	public Command(String name, String path) {
 		this.name = name;

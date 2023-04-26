@@ -89,6 +89,12 @@ public abstract class Repository<T extends Entity<T>> {
 	
 	public abstract Optional<T> getById(String id);
 	
+	public boolean hasEntityUpdatedById(String id) {
+		final Long fileUpdateTime = getEntityUpdateTime(id);
+		final Long repositoryUpdateTime = lastUpdated.get(id);
+		return fileUpdateTime == null && repositoryUpdateTime != null || fileUpdateTime != null && repositoryUpdateTime == null || !fileUpdateTime.equals(repositoryUpdateTime);
+	}
+	
 	public abstract List<T> getList();
 	
 	public abstract int size();
@@ -124,23 +130,29 @@ public abstract class Repository<T extends Entity<T>> {
 			final List<T> entities = new ArrayList<>();
 			final ProgressStatus progressStatus = new ProgressStatus(name, new File(DIRECTORY, getName()).list().length);
 			for (Path path : Files.list(Paths.get(DIRECTORY, name)).toList()) {
+				final String fileName = path.getFileName().toString();
+				final String id = fileName.substring(0, fileName.length() - FILE_TYPE.length());
+				final Long lastUpdatedTime = getEntityUpdateTime(id);
+				if (lastUpdatedTime == null && lastUpdated.get(id) != null) {
+					lastUpdated.remove(id);
+					if (removeAction != null) removeAction.accept(id);
+				}
 				if (!Files.exists(path)) continue;
 				final String content = Files.readString(path);
 				final T entity = OBJECT_MAPPER.readValue(content, type);
 				entities.add(entity);
 				if (progress) progressStatus.count();
-				final Long lastUpdatedTime = getEntityUpdateTime(entity.getId());
 				if (lastUpdatedTime != null && lastUpdated.get(entity.getId()) == null) {
 					lastUpdated.put(entity.getId(), lastUpdatedTime);
-					if (removeAction != null) addAction.accept(entity);
+					if (addAction != null) addAction.accept(entity);
 				} else {
 					lastUpdated.put(entity.getId(), lastUpdatedTime);
-					if (removeAction != null) updateAction.accept(entity);
+					if (updateAction != null) updateAction.accept(entity);
 				}
 			}
 			return entities;
 		} catch (IOException exception) {
-			logger.error("Couldn't load entities with id {}: {} {}!", getName(), exception.getClass().getSimpleName(), exception.getMessage());
+			logger.error("Couldn't load entities from {}: {} {}!", getName(), exception.getClass().getSimpleName(), exception.getMessage());
 			return new ArrayList<>();
 		}
 	}
@@ -153,16 +165,20 @@ public abstract class Repository<T extends Entity<T>> {
 	protected Optional<T> loadEntity(String id) {
 		try {
 			final Path path = Paths.get(DIRECTORY, name, id + FILE_TYPE);
+			final Long lastUpdatedTime = getEntityUpdateTime(id);
+			if(lastUpdatedTime == null && lastUpdated.get(id) != null) {
+				lastUpdated.remove(id);
+				if (removeAction != null) removeAction.accept(id);
+			}
 			if (!Files.exists(path)) return Optional.empty();
 			final String content = Files.readString(path);
 			final T entity = OBJECT_MAPPER.readValue(content, type);
-			final Long lastUpdatedTime = getEntityUpdateTime(entity.getId());
 			if (lastUpdatedTime != null && lastUpdated.get(entity.getId()) == null) {
 				lastUpdated.put(entity.getId(), lastUpdatedTime);
-				if (removeAction != null) addAction.accept(entity);
+				if (addAction != null) addAction.accept(entity);
 			} else {
 				lastUpdated.put(entity.getId(), lastUpdatedTime);
-				if (removeAction != null) updateAction.accept(entity);
+				if (updateAction != null) updateAction.accept(entity);
 			}
 			return Optional.of(entity);
 		} catch (IOException exception) {
@@ -183,10 +199,10 @@ public abstract class Repository<T extends Entity<T>> {
 			final Long newUpdatedTime = getEntityUpdateTime(entity.getId());
 			if (newUpdatedTime != null && lastUpdated.get(entity.getId()) == null) {
 				lastUpdated.put(entity.getId(), newUpdatedTime);
-				if (removeAction != null) addAction.accept(entity);
+				if (addAction != null) addAction.accept(entity);
 			} else {
 				lastUpdated.put(entity.getId(), newUpdatedTime);
-				if (removeAction != null) updateAction.accept(entity);
+				if (updateAction != null) updateAction.accept(entity);
 			}
 		} catch (IOException exception) {
 			logger.warn("Couldn't save entity with id {} from {}: {} {}", entity.getId(), getName(), exception.getClass().getSimpleName(), exception.getMessage());
@@ -214,10 +230,6 @@ public abstract class Repository<T extends Entity<T>> {
 			} catch (IOException exception) {}
 		}
 		return lastUpdatedTime;
-	}
-	
-	protected boolean hasEntityUpdated(String id) {
-		return !getEntityUpdateTime(id).equals(lastUpdated.get(id));
 	}
 	
 }

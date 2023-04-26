@@ -1,5 +1,10 @@
 package eu.derzauberer.pis.util;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -51,7 +56,7 @@ public class MemoryRepository<T extends Entity<T>> extends Repository<T>{
 	@Override
 	@SuppressWarnings("unchecked")
 	public Optional<T> getById(String id) {
-		if (hasEntityUpdated(id)) {
+		if (hasEntityUpdatedById(id)) {
 			loadEntity(id).ifPresentOrElse(entity -> entities.put(id, entity), () -> entities.remove(id));
 		}
 		final T entity = entities.get(id);
@@ -61,10 +66,25 @@ public class MemoryRepository<T extends Entity<T>> extends Repository<T>{
 	
 	@Override
 	public List<T> getList() {
-		for (String id : entities.keySet()) {
-			if (hasEntityUpdated(id)) {
-				loadEntity(id).ifPresentOrElse(entity -> entities.put(id, entity), () -> entities.remove(id));
+		try {
+			for (Path path : Files.list(Paths.get(DIRECTORY, getName())).toList()) {
+				final String fileName = path.getFileName().toString();
+				final String id = fileName.substring(0, fileName.length() - FILE_TYPE.length());
+				if (hasEntityUpdatedById(id)) {
+					loadEntity(id).ifPresentOrElse(entity -> entities.put(id, entity), () -> entities.remove(id));
+				}
 			}
+		} catch (IOException exception) {
+			LOGGER.error("Couldn't load entities from {}: {} {}!", getName(), exception.getClass().getSimpleName(), exception.getMessage());
+		}
+		final List<String> idsToRemove = new ArrayList<>();
+		for (String id : entities.keySet()) {
+			if (hasEntityUpdatedById(id)) {
+				loadEntity(id).ifPresentOrElse(entity -> entities.put(id, entity), () -> idsToRemove.add(id));
+			}
+		}
+		for (String id : idsToRemove) {
+			entities.remove(id);
 		}
 		return Collections.unmodifiableList(entities.values().stream().sorted().toList());
 	}

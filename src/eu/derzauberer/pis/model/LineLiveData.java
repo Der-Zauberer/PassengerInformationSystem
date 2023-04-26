@@ -3,8 +3,11 @@ package eu.derzauberer.pis.model;
 import java.beans.ConstructorProperties;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import eu.derzauberer.pis.util.Entity;
 
+@JsonPropertyOrder({ "id", "type", "number", "date", "operator", "driver", "cancelled", "stops", "position", "api" })
 public class LineLiveData extends Line<LineStopLiveData> implements Entity<LineLiveData> {
 
 	private final LocalDate date;
@@ -12,7 +15,7 @@ public class LineLiveData extends Line<LineStopLiveData> implements Entity<LineL
 	private boolean cancelled;
 	private Integer position;
 	
-	@ConstructorProperties({"id", "type", "number", "date"})
+	@ConstructorProperties({ "id", "type", "number", "date" })
 	public LineLiveData(String id, TrainType type, int number, LocalDate date) {
 		super(id, type, number);
 		this.date = date;

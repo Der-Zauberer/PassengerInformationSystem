@@ -5,8 +5,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import eu.derzauberer.pis.util.Entity;
 
+@JsonPropertyOrder({ "id", "type", "number", "operator", "stops", "api" })
 public class LineSceduled extends Line<LineStop> implements Entity<LineSceduled> {
 	
 	private boolean monday;
@@ -23,7 +26,7 @@ public class LineSceduled extends Line<LineStop> implements Entity<LineSceduled>
 	private List<LocalDate> inclusiveDates = new ArrayList<>();
 	private List<LocalDate> exclusiveDates = new ArrayList<>();
 
-	@ConstructorProperties({"id", "type", "number"})
+	@ConstructorProperties({ "id", "type", "number" })
 	public LineSceduled(String id, TrainType type, int number) {
 		super(id, type, number);
 	}

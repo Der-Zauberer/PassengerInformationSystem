@@ -13,7 +13,7 @@ public abstract class Line<T extends LineStop> {
 	private final List<T> stops = new ArrayList<>();
 	private ApiInformation api;
 	
-	@ConstructorProperties({"id", "type", "number"})
+	@ConstructorProperties({ "id", "type", "number" })
 	public Line(String id, TrainType type, int number) {
 		this.id = id;
 		this.type = type;

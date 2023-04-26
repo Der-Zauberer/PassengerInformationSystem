@@ -10,7 +10,7 @@ public class Platform implements Comparable<Platform> {
 	private Integer length;
 	private final TreeSet<String> linkedPlattforms = new TreeSet<>();
 	
-	@ConstructorProperties({"name"})
+	@ConstructorProperties({ "name" })
 	public Platform(String name) {
 		this.name = name;
 	}

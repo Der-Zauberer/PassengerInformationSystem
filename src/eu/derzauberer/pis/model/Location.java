@@ -7,7 +7,7 @@ public class Location {
 	private double latitude;
 	private double longitude;
 	
-	@ConstructorProperties({"latitude", "longitude"})
+	@ConstructorProperties({ "latitude", "longitude" })
 	public Location(double latitude, double longitude) {
 		this.latitude = latitude;
 		this.longitude = longitude;

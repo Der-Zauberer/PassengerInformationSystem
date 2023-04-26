@@ -2,7 +2,7 @@ package eu.derzauberer.pis.model;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({"name", "street", "postalCode", "city", "state", "country", "telephoneNumber", "mail"})
+@JsonPropertyOrder({ "name", "street", "postalCode", "city", "state", "country", "telephoneNumber", "mail" })
 public class Adress {
 	
 	private String name;

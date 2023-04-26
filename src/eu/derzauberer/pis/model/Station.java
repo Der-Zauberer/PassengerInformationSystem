@@ -20,7 +20,7 @@ public class Station implements Entity<Station> {
 		this(Entity.nameToId(name), name);
 	}
 	
-	@ConstructorProperties({"id", "name"})
+	@ConstructorProperties({ "id", "name" })
 	public Station(String id, String name) {
 		this.id = id;
 		this.name = name;

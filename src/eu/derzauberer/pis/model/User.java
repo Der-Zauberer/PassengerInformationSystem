@@ -18,7 +18,7 @@ public class User implements Entity<User> {
 	private LocalDateTime lastLogin;
 	private final Set<String> permissions;
 	
-	@ConstructorProperties({"username", "name", "passwordHash"})
+	@ConstructorProperties({ "username", "name", "passwordHash" })
 	public User(String username, String name, String passwordHash) {
 		this.username = username;
 		this.name = name;

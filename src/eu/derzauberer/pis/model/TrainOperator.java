@@ -17,7 +17,7 @@ public class TrainOperator implements Entity<TrainOperator> {
 		this(Entity.nameToId(name), name);
 	}
 	
-	@ConstructorProperties({"id", "name"})
+	@ConstructorProperties({ "id", "name" })
 	public TrainOperator(String id, String name) {
 		this.id = id;
 		this.name = name;

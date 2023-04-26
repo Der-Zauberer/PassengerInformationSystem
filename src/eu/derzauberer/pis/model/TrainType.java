@@ -19,7 +19,7 @@ public class TrainType implements Entity<TrainType> {
 	private int textColor;
 	private int api;
 	
-	@ConstructorProperties({"id", "name", "classification"})
+	@ConstructorProperties({ "id", "name", "classification" })
 	public TrainType(String id, String name, TrainClassifican classification) {
 		this.id = id;
 		this.name = name;

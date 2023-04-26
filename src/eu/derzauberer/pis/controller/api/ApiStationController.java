@@ -1,5 +1,7 @@
 package eu.derzauberer.pis.controller.api;
 
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,23 +31,17 @@ public class ApiStationController {
 	
 	@GetMapping
 	public ListDto<Station> getStations(
+			@RequestParam(name = "query", required = false) String query,
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit,
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset
 			) {
-		return new ListDto<>(stationService.getList(), limit == -1 ? stationService.size() : limit, offset);
+		final List<Station> stations = query != null ? stationService.searchByName(query) : stationService.getList();
+		return new ListDto<>(stations, limit == -1 ? stations.size() : limit, offset);
 	}
 	
 	@GetMapping("{id}")
 	public Station getStation(@PathVariable("id") String id) {
 		return stationService.getById(id).orElseThrow(() -> getNotFoundException(id));
-	}
-	
-	@GetMapping("/search")
-	public ListDto<String> searchStation(@RequestParam("query") String query,
-			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit,
-			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset
-			) {
-		return new ListDto<>(stationService.searchByName(query).stream().map(Station::getName).toList(), limit == -1 ? 10 : limit, offset);
 	}
 	
 	@PostMapping

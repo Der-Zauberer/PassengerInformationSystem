@@ -5,13 +5,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.ConcurrentModificationException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -28,10 +24,7 @@ public abstract class Repository<T extends Entity<T>> {
 	private final Class<T> type;
 	private final Logger logger;
 	private Consumer<T> addAction;
-	private Consumer<T> updateAction;
 	private Consumer<String> removeAction;
-	
-	private final Map<String, Long> lastUpdated = new HashMap<>();
 	
 	protected static final String DIRECTORY = "data";
 	protected static final String FILE_TYPE = ".json";
@@ -65,14 +58,6 @@ public abstract class Repository<T extends Entity<T>> {
 		this.addAction = addAction;
 	}
 	
-	public Consumer<T> getUpdateAction() {
-		return updateAction;
-	}
-	
-	public void setUpdateAction(Consumer<T> updateAction) {
-		this.updateAction = updateAction;
-	}
-	
 	public Consumer<String> getRemoveAction() {
 		return removeAction;
 	}
@@ -88,12 +73,6 @@ public abstract class Repository<T extends Entity<T>> {
 	public abstract boolean containsById(String id);
 	
 	public abstract Optional<T> getById(String id);
-	
-	public boolean hasEntityUpdatedById(String id) {
-		final Long fileUpdateTime = getEntityUpdateTime(id);
-		final Long repositoryUpdateTime = lastUpdated.get(id);
-		return fileUpdateTime == null && repositoryUpdateTime != null || fileUpdateTime != null && repositoryUpdateTime == null || !fileUpdateTime.equals(repositoryUpdateTime);
-	}
 	
 	public abstract List<T> getList();
 	
@@ -130,25 +109,12 @@ public abstract class Repository<T extends Entity<T>> {
 			final List<T> entities = new ArrayList<>();
 			final ProgressStatus progressStatus = new ProgressStatus(name, new File(DIRECTORY, getName()).list().length);
 			for (Path path : Files.list(Paths.get(DIRECTORY, name)).toList()) {
-				final String fileName = path.getFileName().toString();
-				final String id = fileName.substring(0, fileName.length() - FILE_TYPE.length());
-				final Long lastUpdatedTime = getEntityUpdateTime(id);
-				if (lastUpdatedTime == null && lastUpdated.get(id) != null) {
-					lastUpdated.remove(id);
-					if (removeAction != null) removeAction.accept(id);
-				}
 				if (!Files.exists(path)) continue;
 				final String content = Files.readString(path);
 				final T entity = OBJECT_MAPPER.readValue(content, type);
 				entities.add(entity);
+				if (addAction != null) addAction.accept(entity);
 				if (progress) progressStatus.count();
-				if (lastUpdatedTime != null && lastUpdated.get(entity.getId()) == null) {
-					lastUpdated.put(entity.getId(), lastUpdatedTime);
-					if (addAction != null) addAction.accept(entity);
-				} else {
-					lastUpdated.put(entity.getId(), lastUpdatedTime);
-					if (updateAction != null) updateAction.accept(entity);
-				}
 			}
 			return entities;
 		} catch (IOException exception) {
@@ -165,21 +131,10 @@ public abstract class Repository<T extends Entity<T>> {
 	protected Optional<T> loadEntity(String id) {
 		try {
 			final Path path = Paths.get(DIRECTORY, name, id + FILE_TYPE);
-			final Long lastUpdatedTime = getEntityUpdateTime(id);
-			if(lastUpdatedTime == null && lastUpdated.get(id) != null) {
-				lastUpdated.remove(id);
-				if (removeAction != null) removeAction.accept(id);
-			}
 			if (!Files.exists(path)) return Optional.empty();
 			final String content = Files.readString(path);
 			final T entity = OBJECT_MAPPER.readValue(content, type);
-			if (lastUpdatedTime != null && lastUpdated.get(entity.getId()) == null) {
-				lastUpdated.put(entity.getId(), lastUpdatedTime);
-				if (addAction != null) addAction.accept(entity);
-			} else {
-				lastUpdated.put(entity.getId(), lastUpdatedTime);
-				if (updateAction != null) updateAction.accept(entity);
-			}
+			if (addAction != null) addAction.accept(entity);
 			return Optional.of(entity);
 		} catch (IOException exception) {
 			logger.error("Couldn't load entity with id {} from {}: {} {}!", id, getName(), exception.getClass().getSimpleName(), exception.getMessage());
@@ -191,45 +146,22 @@ public abstract class Repository<T extends Entity<T>> {
 		try {
 			final Path path = Paths.get(DIRECTORY, name, entity.getId() + FILE_TYPE);
 			final String content = OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(entity);
-			final Long lastUpdatedTime = getEntityUpdateTime(entity.getId());
-			if (lastUpdatedTime != null && lastUpdated.get(entity.getId()) != null && lastUpdatedTime.longValue() != lastUpdated.get(entity.getId()).longValue()) {
-				throw new ConcurrentModificationException("Couldn't save entity with id " + entity.getId() + " because it has changed since last load!");
-			}
 			Files.writeString(path, content);
-			final Long newUpdatedTime = getEntityUpdateTime(entity.getId());
-			if (newUpdatedTime != null && lastUpdated.get(entity.getId()) == null) {
-				lastUpdated.put(entity.getId(), newUpdatedTime);
-				if (addAction != null) addAction.accept(entity);
-			} else {
-				lastUpdated.put(entity.getId(), newUpdatedTime);
-				if (updateAction != null) updateAction.accept(entity);
-			}
 		} catch (IOException exception) {
 			logger.warn("Couldn't save entity with id {} from {}: {} {}", entity.getId(), getName(), exception.getClass().getSimpleName(), exception.getMessage());
 		}
 	}
 	
-	protected void deleteEnity(String id) {
+	protected boolean deleteEnity(String id) {
 		try {
-			Files.deleteIfExists(Paths.get(DIRECTORY, name, id + FILE_TYPE));
-			if (lastUpdated.get(id) != getEntityUpdateTime(id)) {
-				lastUpdated.remove(id);
-				if (removeAction != null) removeAction.accept(id);
+			if (Files.deleteIfExists(Paths.get(DIRECTORY, name, id + FILE_TYPE)) && removeAction != null) {
+				removeAction.accept(id);
+				return true;
 			}
 		} catch (IOException exception) {
 			logger.warn("Couldn't delete entity with id {} from {}: {} {}", id, getName(), exception.getClass().getSimpleName(), exception.getMessage());
 		}
-	}
-	
-	private Long getEntityUpdateTime(String id) {
-		Long lastUpdatedTime = null;
-		final Path path = Paths.get(DIRECTORY, getName(), id + FILE_TYPE);
-		if (Files.exists(path)) {
-			try {
-				lastUpdatedTime = Files.readAttributes(path, BasicFileAttributes.class).lastModifiedTime().toMillis();
-			} catch (IOException exception) {}
-		}
-		return lastUpdatedTime;
+		return false;
 	}
 	
 }

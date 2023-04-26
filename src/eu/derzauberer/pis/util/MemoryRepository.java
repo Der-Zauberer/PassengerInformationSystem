@@ -1,15 +1,10 @@
 package eu.derzauberer.pis.util;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
 
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -19,7 +14,7 @@ import eu.derzauberer.pis.main.Pis;
 
 public class MemoryRepository<T extends Entity<T>> extends Repository<T>{
 	
-	private final Map<String, T> entities = new HashMap<>();
+	private final Map<String, T> entities = new TreeMap<>();
 	private static final ModelMapper MODEL_MAPPER = Pis.getSpringConfig().getModelMapper();
 	protected static final Logger LOGGER = LoggerFactory.getLogger(MemoryRepository.class);
 	
@@ -56,9 +51,6 @@ public class MemoryRepository<T extends Entity<T>> extends Repository<T>{
 	@Override
 	@SuppressWarnings("unchecked")
 	public Optional<T> getById(String id) {
-		if (hasEntityUpdatedById(id)) {
-			loadEntity(id).ifPresentOrElse(entity -> entities.put(id, entity), () -> entities.remove(id));
-		}
 		final T entity = entities.get(id);
 		if (entity == null) return Optional.empty();
 		return Optional.of((T) MODEL_MAPPER.map(entities.get(id), entity.getClass()));
@@ -66,27 +58,7 @@ public class MemoryRepository<T extends Entity<T>> extends Repository<T>{
 	
 	@Override
 	public List<T> getList() {
-		try {
-			for (Path path : Files.list(Paths.get(DIRECTORY, getName())).toList()) {
-				final String fileName = path.getFileName().toString();
-				final String id = fileName.substring(0, fileName.length() - FILE_TYPE.length());
-				if (hasEntityUpdatedById(id)) {
-					loadEntity(id).ifPresentOrElse(entity -> entities.put(id, entity), () -> entities.remove(id));
-				}
-			}
-		} catch (IOException exception) {
-			LOGGER.error("Couldn't load entities from {}: {} {}!", getName(), exception.getClass().getSimpleName(), exception.getMessage());
-		}
-		final List<String> idsToRemove = new ArrayList<>();
-		for (String id : entities.keySet()) {
-			if (hasEntityUpdatedById(id)) {
-				loadEntity(id).ifPresentOrElse(entity -> entities.put(id, entity), () -> idsToRemove.add(id));
-			}
-		}
-		for (String id : idsToRemove) {
-			entities.remove(id);
-		}
-		return Collections.unmodifiableList(entities.values().stream().sorted().toList());
+		return Collections.unmodifiableList(entities.values().stream().toList());
 	}
 
 	@Override

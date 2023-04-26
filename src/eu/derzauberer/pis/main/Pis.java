@@ -14,7 +14,7 @@ import org.springframework.context.annotation.ComponentScan;
 import eu.derzauberer.pis.commands.DownloadCommand;
 import eu.derzauberer.pis.commands.ExtractCommand;
 import eu.derzauberer.pis.commands.PackageCommand;
-import eu.derzauberer.pis.model.Line;
+import eu.derzauberer.pis.model.LineSceduled;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.model.TrainOperator;
 import eu.derzauberer.pis.model.TrainType;
@@ -52,7 +52,7 @@ public class Pis {
 	}
 	
 	private static void registerRepositories() {
-		repositories.put("lines", () -> new FileRepository<>("lines", Line.class));
+		repositories.put("lines", () -> new FileRepository<>("lines", LineSceduled.class));
 		repositories.put("operators", () -> new FileRepository<>("operators", TrainOperator.class));
 		repositories.put("stations", () -> new FileRepository<>("stations", Station.class));
 		repositories.put("types", () -> new FileRepository<>("types", TrainType.class));

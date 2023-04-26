@@ -1,23 +1,16 @@
 package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.derzauberer.pis.util.Entity;
-
-public class Line implements Entity<Line> {
-
+public abstract class Line<T extends LineStop> {
+	
 	private final String id;
 	private TrainType type;
 	private int number;
-	private LocalDate date;
 	private String operator;
-	private String driver;
-	private boolean cancelled;
-	private Integer position;
-	private final List<LineStop> stops = new ArrayList<>();
+	private final List<T> stops = new ArrayList<>();
 	private ApiInformation api;
 	
 	@ConstructorProperties({"id", "type", "number"})
@@ -25,19 +18,16 @@ public class Line implements Entity<Line> {
 		this.id = id;
 		this.type = type;
 		this.number = number;
-		this.date = LocalDate.now();
 	}
-	
-	@Override
+
 	public String getId() {
 		return id;
 	}
-	
-	@Override
+
 	public String getName() {
 		return type.getId() + number;
 	}
-
+	
 	public TrainType getType() {
 		return type;
 	}
@@ -53,14 +43,6 @@ public class Line implements Entity<Line> {
 	public void setNumber(int number) {
 		this.number = number;
 	}
-	
-	public LocalDate getDate() {
-		return date;
-	}
-	
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
 
 	public String getOperator() {
 		return operator;
@@ -69,32 +51,8 @@ public class Line implements Entity<Line> {
 	public void setOperator(String operator) {
 		this.operator = operator;
 	}
-
-	public String getDriver() {
-		return driver;
-	}
-
-	public void setDriver(String driver) {
-		this.driver = driver;
-	}
-
-	public boolean isCancelled() {
-		return cancelled;
-	}
-
-	public void setCancelled(boolean cancelled) {
-		this.cancelled = cancelled;
-	}
 	
-	public Integer getPosition() {
-		return position;
-	}
-	
-	public void setPosition(Integer trainPosition) {
-		this.position = trainPosition;
-	}
-	
-	public List<LineStop> getStops() {
+	public List<T> getStops() {
 		return stops;
 	}
 	

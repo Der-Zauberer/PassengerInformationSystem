@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import eu.derzauberer.pis.dto.ListDto;
-import eu.derzauberer.pis.model.Line;
+import eu.derzauberer.pis.model.LineSceduled;
 import eu.derzauberer.pis.service.LineService;
 
 @RestController
@@ -28,7 +28,7 @@ public class ApiLineController {
 	private ModelMapper modelMapper;
 	
 	@GetMapping
-	public ListDto<Line> getLines(
+	public ListDto<LineSceduled> getLines(
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit,
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset
 			) {
@@ -36,19 +36,19 @@ public class ApiLineController {
 	}
 	
 	@GetMapping("{id}")
-	public Line getLine(@PathVariable("id") String id) {
+	public LineSceduled getLine(@PathVariable("id") String id) {
 		return lineService.getById(id).orElseThrow(() -> getNotFoundException(id));
 	}
 	
 	@PostMapping
-	public Line setLine(Line line) {
+	public LineSceduled setLine(LineSceduled line) {
 		lineService.add(line);
 		return line;
 	}
 	
 	@PutMapping
-	public Line updateLine(Line line) {
-		final Line existingLine = lineService.getById(line.getId()).orElseThrow(() -> getNotFoundException(line.getId()));
+	public LineSceduled updateLine(LineSceduled line) {
+		final LineSceduled existingLine = lineService.getById(line.getId()).orElseThrow(() -> getNotFoundException(line.getId()));
 		modelMapper.map(line, existingLine);
 		return existingLine;
 	}

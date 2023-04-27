@@ -1,7 +1,5 @@
 package eu.derzauberer.pis.downloader;
 
-import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -12,7 +10,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import eu.derzauberer.pis.main.Pis;
-import eu.derzauberer.pis.model.ApiInformation;
 import eu.derzauberer.pis.model.Platform;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.util.HttpRequest;
@@ -38,9 +35,9 @@ public class DbRisPlatformsDownloader {
 		long millis = System.currentTimeMillis();
 		final ProgressStatus progress = new ProgressStatus("Processing", NAME, stations.size());
 		for (Station station : stations) {
-			if (station.getApi() == null || station.getApi().getIds() == null || !station.getApi().getIds().containsKey("eva")) continue;
+			if (station.getApiInformation() == null || station.getApiInformation().getIds() == null || !station.getApiInformation().getIds().containsKey("eva")) continue;
 			request.getParameter().put("keyType", "EVA");
-			request.getParameter().put("key", station.getApi().getIds().get("eva").toString());
+			request.getParameter().put("key", station.getApiInformation().getIds().get("eva").toString());
 			long wait = System.currentTimeMillis() - millis;
 			try {
 				Thread.sleep(wait < 120 ? 120 - wait : 120);
@@ -54,7 +51,6 @@ public class DbRisPlatformsDownloader {
 	}
 	
 	private void save(Station station, ObjectNode json) {
-		if (station.getApi() == null) station.setApi(new ApiInformation());
 		if (station.getPlatforms() == null && !json.withArray("platforms").isEmpty()) station.setPlatforms(new TreeSet<>());
 		for (JsonNode node : json.withArray("platforms")) {
 			final Platform platfrom = new Platform(node.get("name").asText().toUpperCase());
@@ -67,9 +63,7 @@ public class DbRisPlatformsDownloader {
 					platfrom.getLinkedPlattforms().add(linkedPlatform.asText());
 				}
 			}
-			if (station.getApi() == null) station.setApi(new ApiInformation());
-			if (station.getApi().getSources() == null) station.getApi().setSources(new HashMap<>());
-			station.getApi().getSources().put(URL, LocalDate.now());
+			station.getOrCreateApiInformation().addSource(URL);
 		}
 		repository.add(station);
 	}

@@ -17,7 +17,7 @@ public class TrainType implements Entity<TrainType> {
 	private final TrainClassifican classification;
 	private int backgourndColor;
 	private int textColor;
-	private int api;
+	private ApiInformation api;
 	
 	@ConstructorProperties({ "id", "name", "classification" })
 	public TrainType(String id, String name, TrainClassifican classification) {
@@ -58,11 +58,16 @@ public class TrainType implements Entity<TrainType> {
 		this.textColor = textColor;
 	}
 	
-	public int getApi() {
+	public ApiInformation getApiInformation() {
 		return api;
 	}
 	
-	public void setApi(int api) {
+	public ApiInformation getOrCreateApiInformation() {
+		if (api == null) api = new ApiInformation();
+		return api;
+	}
+	
+	public void setApiInformation(ApiInformation api) {
 		this.api = api;
 	}
 

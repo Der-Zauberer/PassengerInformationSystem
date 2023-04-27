@@ -48,6 +48,11 @@ public class Station implements Entity<Station> {
 		return adress;
 	}
 	
+	public Adress getOrCreateAdress() {
+		if (adress == null) adress = new Adress();
+		return adress;
+	}
+	
 	public void setAdress(Adress adress) {
 		this.adress = adress;
 	}
@@ -64,15 +69,25 @@ public class Station implements Entity<Station> {
 		return services;
 	}
 	
+	public StationServices getorCreateServices() {
+		if (services == null) services = new StationServices();
+		return services;
+	}
+	
 	public void setServices(StationServices services) {
 		this.services = services;
 	}
 	
-	public ApiInformation getApi() {
+	public ApiInformation getApiInformation() {
 		return api;
 	}
 	
-	public void setApi(ApiInformation api) {
+	public ApiInformation getOrCreateApiInformation() {
+		if (api == null) api = new ApiInformation();
+		return api;
+	}
+	
+	public void setApiInformation(ApiInformation api) {
 		this.api = api;
 	}
 

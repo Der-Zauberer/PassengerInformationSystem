@@ -8,9 +8,9 @@ public class TrainOperator implements Entity<TrainOperator> {
 
 	private final String id;
 	private String name;
+	private Adress adress;
 	private int backgorundColor;
 	private int textColor;
-	private Adress adress;
 	private ApiInformation api;
 	
 	public TrainOperator(String name) {
@@ -43,6 +43,15 @@ public class TrainOperator implements Entity<TrainOperator> {
 		return adress;
 	}
 	
+	public Adress getOrCreateAdress() {
+		if (adress == null) adress = new Adress();
+		return adress;
+	}
+	
+	public void setAdress(Adress adress) {
+		this.adress = adress;
+	}
+	
 	public int getPrimaryColor() {
 		return backgorundColor;
 	}
@@ -63,8 +72,13 @@ public class TrainOperator implements Entity<TrainOperator> {
 		return api;
 	}
 	
-	public void setAdress(Adress adress) {
-		this.adress = adress;
+	public ApiInformation getOrCreateApi() {
+		if (api == null) api = new ApiInformation();
+		return api;
+	}
+	
+	public void setApiInformation(ApiInformation api) {
+		this.api = api;
 	}
 
 }

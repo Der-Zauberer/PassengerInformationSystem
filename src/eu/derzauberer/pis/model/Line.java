@@ -56,11 +56,16 @@ public abstract class Line<T extends LineStop> {
 		return stops;
 	}
 	
-	public ApiInformation getApi() {
+	public ApiInformation getApiInformation() {
 		return api;
 	}
 	
-	public void setApi(ApiInformation api) {
+	public ApiInformation getOrCreateApiInformtion() {
+		if (api == null) api = new ApiInformation();
+		return api;
+	}
+	
+	public void setApiInformation(ApiInformation api) {
 		this.api = api;
 	}
 

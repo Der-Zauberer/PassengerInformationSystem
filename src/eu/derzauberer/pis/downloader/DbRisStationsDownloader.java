@@ -1,8 +1,5 @@
 package eu.derzauberer.pis.downloader;
 
-import java.time.LocalDate;
-import java.util.HashMap;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,8 +7,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import eu.derzauberer.pis.main.Pis;
-import eu.derzauberer.pis.model.Adress;
-import eu.derzauberer.pis.model.ApiInformation;
 import eu.derzauberer.pis.model.Location;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.util.Entity;
@@ -43,30 +38,24 @@ public class DbRisStationsDownloader {
 		for (JsonNode node : json.withArray("stations")) {
 			final String name = node.at("/names/DE/name").asText();
 			final Station station = repository.getById(Entity.nameToId(name)).orElse(new Station(name));
-			if (station.getAdress() == null) station.setAdress(new Adress());
 			if (node.at("/owner/name").asText().equalsIgnoreCase("DB S&S")) {
-				station.getAdress().setName("DB Station&Service AG");
+				station.getOrCreateAdress().setName("DB Station&Service AG");
 			} else {
-				station.getAdress().setName(node.at("/owner/name").asText());
+				station.getOrCreateAdress().setName(node.at("/owner/name").asText());
 			}
-			station.getAdress().setStreet(node.at("/address/street").asText() + " " + node.at("/address/houseNumber").asText());
-			station.getAdress().setPostalCode(node.at("/address/postalCode").asInt());
-			station.getAdress().setCity(node.at("/address/city").asText());
+			station.getOrCreateAdress().setStreet(node.at("/address/street").asText() + " " + node.at("/address/houseNumber").asText());
+			station.getOrCreateAdress().setPostalCode(node.at("/address/postalCode").asInt());
+			station.getOrCreateAdress().setCity(node.at("/address/city").asText());
 			if (node.at("/address/country").asText().equalsIgnoreCase("de")) {
-				station.getAdress().setCountry("Germany");
+				station.getOrCreateAdress().setCountry("Germany");
 			} else if (node.at("/address/country").asText().equalsIgnoreCase("ch")) {
-				station.getAdress().setCountry("Switzerland");
+				station.getOrCreateAdress().setCountry("Switzerland");
 			} else {
-				station.getAdress().setCountry(node.at("/address/country").asText());
+				station.getOrCreateAdress().setCountry(node.at("/address/country").asText());
 			}
-			if (station.getLocation() == null) station.setLocation(new Location(0, 0));
-			station.getLocation().setLongitude(node.at("/position/longitude").asDouble());
-			station.getLocation().setLatitude(node.at("/position/latitude").asDouble());
-			if (station.getApi() == null) station.setApi(new ApiInformation());
-			if (station.getApi().getIds() == null) station.getApi().setIds(new HashMap<>());
-			if (station.getApi().getSources() == null) station.getApi().setSources(new HashMap<>());
-			station.getApi().getIds().put("stada", node.get("stationID").asLong());
-			station.getApi().getSources().put(URL, LocalDate.now());
+			station.setLocation(new Location(node.at("/position/latitude").asDouble(), node.at("/position/longitude").asDouble()));
+			station.getOrCreateApiInformation().addId("stada", node.get("stationID").asLong());
+			station.getOrCreateApiInformation().addSource(URL);
 			progress.count();
 			counter++;
 			repository.add(station);

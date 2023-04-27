@@ -17,12 +17,12 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
-import eu.derzauberer.pis.serialization.DateDeserializer;
-import eu.derzauberer.pis.serialization.DateSerializer;
-import eu.derzauberer.pis.serialization.DateTimeDeserializer;
-import eu.derzauberer.pis.serialization.DateTimeSerializer;
-import eu.derzauberer.pis.serialization.TimeDeserializer;
-import eu.derzauberer.pis.serialization.TimeSerializer;
+import eu.derzauberer.pis.main.SerializationConfiguration.DateDeserializer;
+import eu.derzauberer.pis.main.SerializationConfiguration.DateSerializer;
+import eu.derzauberer.pis.main.SerializationConfiguration.DateTimeDeserializer;
+import eu.derzauberer.pis.main.SerializationConfiguration.DateTimeSerializer;
+import eu.derzauberer.pis.main.SerializationConfiguration.TimeDeserializer;
+import eu.derzauberer.pis.main.SerializationConfiguration.TimeSerializer;
 import eu.derzauberer.pis.util.PrettyPrinter;
 
 @Configuration
@@ -34,10 +34,10 @@ public class SpringConfiguration {
 	@Bean
 	public Jackson2ObjectMapperBuilder getJsonMapperBuilder() {
 		SimpleModule module = new SimpleModule();
-		module.addSerializer(LocalTime.class, new TimeSerializer());
-		module.addDeserializer(LocalTime.class, new TimeDeserializer());
 		module.addSerializer(LocalDate.class, new DateSerializer());
 		module.addDeserializer(LocalDate.class, new DateDeserializer());
+		module.addSerializer(LocalTime.class, new TimeSerializer());
+		module.addDeserializer(LocalTime.class, new TimeDeserializer());
 		module.addSerializer(LocalDateTime.class, new DateTimeSerializer());
 		module.addDeserializer(LocalDateTime.class, new DateTimeDeserializer());
 		Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();

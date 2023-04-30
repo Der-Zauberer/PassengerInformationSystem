@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import eu.derzauberer.pis.util.Entity;
 
-@JsonPropertyOrder({ "id", "type", "number", "operator", "stops", "api" })
+@JsonPropertyOrder({ "id", "type", "number", "operatorId", "stops", "api" })
 public class LineTemplate extends Line<LineStop> implements Entity<LineTemplate> {
 
 	@ConstructorProperties({ "id", "type", "number" })

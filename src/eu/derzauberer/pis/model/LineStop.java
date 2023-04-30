@@ -5,31 +5,31 @@ import java.time.LocalTime;
 
 public class LineStop {
 	
-	private final String station;
+	private final String stationId;
 	private final int platform;
 	private final String platfromArea;
 	private final LocalTime arrival;
 	private final LocalTime departure;
 	
-	public LineStop(String station, int platform, String platfromArea, LocalTime departure) {
-		this.station = station;
+	public LineStop(String stationId, int platform, String platfromArea, LocalTime departure) {
+		this.stationId = stationId;
 		this.platform = platform;
 		this.platfromArea = platfromArea;
 		this.arrival = departure;
 		this.departure = departure;
 	}
 	
-	@ConstructorProperties({"station", "platform", "platfromArea", "arrival", "departure"})
-	public LineStop(String station, int platform, String platfromArea, LocalTime arrival, LocalTime departure) {
-		this.station = station;
+	@ConstructorProperties({"stationId", "platform", "platfromArea", "arrival", "departure"})
+	public LineStop(String stationId, int platform, String platfromArea, LocalTime arrival, LocalTime departure) {
+		this.stationId = stationId;
 		this.platform = platform;
 		this.platfromArea = platfromArea;
 		this.arrival = arrival;
 		this.departure = departure;
 	}
 	
-	public String getStation() {
-		return station;
+	public String getStationId() {
+		return stationId;
 	}
 	
 	public int getPlatform() {

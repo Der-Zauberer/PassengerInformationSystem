@@ -9,7 +9,7 @@ public abstract class Line<T extends LineStop> {
 	private final String id;
 	private TrainType type;
 	private int number;
-	private String operator;
+	private String operatorId;
 	private final List<T> stops = new ArrayList<>();
 	private ApiInformation api;
 	
@@ -44,12 +44,12 @@ public abstract class Line<T extends LineStop> {
 		this.number = number;
 	}
 
-	public String getOperator() {
-		return operator;
+	public String getOperatorId() {
+		return operatorId;
 	}
 
-	public void setOperator(String operator) {
-		this.operator = operator;
+	public void setOperatorId(String operatorId) {
+		this.operatorId = operatorId;
 	}
 	
 	public List<T> getStops() {

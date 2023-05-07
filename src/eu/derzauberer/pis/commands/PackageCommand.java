@@ -5,8 +5,8 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 
 import eu.derzauberer.pis.main.Pis;
+import eu.derzauberer.pis.repositories.Repository;
 import eu.derzauberer.pis.util.Command;
-import eu.derzauberer.pis.util.Repository;
 
 public class PackageCommand extends Command {
 	

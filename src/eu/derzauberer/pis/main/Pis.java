@@ -19,10 +19,10 @@ import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.model.TrainOperator;
 import eu.derzauberer.pis.model.TrainType;
 import eu.derzauberer.pis.model.User;
+import eu.derzauberer.pis.repositories.FileRepository;
+import eu.derzauberer.pis.repositories.Repository;
 import eu.derzauberer.pis.util.Command;
 import eu.derzauberer.pis.util.Entity;
-import eu.derzauberer.pis.util.FileRepository;
-import eu.derzauberer.pis.util.Repository;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 @ComponentScan(basePackages = {"eu.derzauberer.pis"})

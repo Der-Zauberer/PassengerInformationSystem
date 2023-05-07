@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.model.Station;
+import eu.derzauberer.pis.repositories.MemoryRepository;
 import eu.derzauberer.pis.util.EntityService;
-import eu.derzauberer.pis.util.MemoryRepository;
 import eu.derzauberer.pis.util.SearchTree;
 
 @Service

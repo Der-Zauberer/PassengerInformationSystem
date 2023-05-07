@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.util;
+package eu.derzauberer.pis.repositories;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +17,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import eu.derzauberer.pis.main.Pis;
+import eu.derzauberer.pis.util.Entity;
+import eu.derzauberer.pis.util.ProgressStatus;
 
 public abstract class Repository<T extends Entity<T>> {
 	

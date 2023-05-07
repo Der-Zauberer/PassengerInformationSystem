@@ -7,6 +7,8 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import eu.derzauberer.pis.repositories.Repository;
+
 public abstract class EntityService<T extends Entity<T>> {
 	
 	private final String name;

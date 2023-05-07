@@ -13,10 +13,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import eu.derzauberer.pis.main.Pis;
 import eu.derzauberer.pis.model.Location;
 import eu.derzauberer.pis.model.Station;
+import eu.derzauberer.pis.repositories.Repository;
 import eu.derzauberer.pis.util.Entity;
 import eu.derzauberer.pis.util.HttpRequest;
 import eu.derzauberer.pis.util.ProgressStatus;
-import eu.derzauberer.pis.util.Repository;
 
 public class DbStadaStationDownloader {
 	

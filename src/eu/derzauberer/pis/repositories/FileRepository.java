@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.util;
+package eu.derzauberer.pis.repositories;
 
 import java.io.File;
 import java.util.Collections;
@@ -7,6 +7,8 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import eu.derzauberer.pis.util.Entity;
 
 public class FileRepository<T extends Entity<T>> extends Repository<T> {
 	

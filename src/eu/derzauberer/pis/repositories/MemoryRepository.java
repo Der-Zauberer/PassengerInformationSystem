@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.util;
+package eu.derzauberer.pis.repositories;
 
 import java.util.Collections;
 import java.util.List;
@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.derzauberer.pis.main.Pis;
+import eu.derzauberer.pis.util.Entity;
 
 public class MemoryRepository<T extends Entity<T>> extends Repository<T>{
 	

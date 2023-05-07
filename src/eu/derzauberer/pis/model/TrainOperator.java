@@ -2,8 +2,6 @@ package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
 
-import eu.derzauberer.pis.util.Entity;
-
 public class TrainOperator implements Entity<TrainOperator> {
 
 	private final String id;

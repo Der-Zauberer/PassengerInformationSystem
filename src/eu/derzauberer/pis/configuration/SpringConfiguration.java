@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.main;
+package eu.derzauberer.pis.configuration;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,13 +17,13 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
-import eu.derzauberer.pis.main.SerializationConfiguration.DateDeserializer;
-import eu.derzauberer.pis.main.SerializationConfiguration.DateSerializer;
-import eu.derzauberer.pis.main.SerializationConfiguration.DateTimeDeserializer;
-import eu.derzauberer.pis.main.SerializationConfiguration.DateTimeSerializer;
-import eu.derzauberer.pis.main.SerializationConfiguration.TimeDeserializer;
-import eu.derzauberer.pis.main.SerializationConfiguration.TimeSerializer;
-import eu.derzauberer.pis.util.PrettyPrinter;
+import eu.derzauberer.pis.configuration.SerializationConfiguration.DateDeserializer;
+import eu.derzauberer.pis.configuration.SerializationConfiguration.DateSerializer;
+import eu.derzauberer.pis.configuration.SerializationConfiguration.DateTimeDeserializer;
+import eu.derzauberer.pis.configuration.SerializationConfiguration.DateTimeSerializer;
+import eu.derzauberer.pis.configuration.SerializationConfiguration.PrettyPrinter;
+import eu.derzauberer.pis.configuration.SerializationConfiguration.TimeDeserializer;
+import eu.derzauberer.pis.configuration.SerializationConfiguration.TimeSerializer;
 
 @Configuration
 public class SpringConfiguration {

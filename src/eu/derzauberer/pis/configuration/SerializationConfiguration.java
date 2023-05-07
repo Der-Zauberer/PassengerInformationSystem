@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.main;
+package eu.derzauberer.pis.configuration;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -9,12 +9,37 @@ import java.time.format.DateTimeFormatter;
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.util.DefaultIndenter;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 public class SerializationConfiguration {
+	
+	public static class PrettyPrinter extends DefaultPrettyPrinter {
+
+		private static final long serialVersionUID = 1L;
+		
+		public PrettyPrinter() {
+			final DefaultIndenter indenter = new DefaultIndenter("\t", "\n");
+			indentArraysWith(indenter);
+			indentObjectsWith(indenter);
+		}
+
+		@Override
+	    public DefaultPrettyPrinter createInstance() {
+	        return new PrettyPrinter();
+	        
+	    }
+
+	    @Override
+	    public void writeObjectFieldValueSeparator(JsonGenerator generator) throws IOException {
+	        generator.writeRaw(": ");
+	    }
+		
+	}
 	
 	public static class DateSerializer extends StdSerializer<LocalDate> {
 

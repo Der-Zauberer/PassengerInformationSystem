@@ -5,8 +5,6 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import eu.derzauberer.pis.util.Entity;
-
 public class User implements Entity<User> {
 	
 	private final String username;

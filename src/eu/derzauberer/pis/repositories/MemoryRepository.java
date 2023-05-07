@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.derzauberer.pis.main.Pis;
-import eu.derzauberer.pis.util.Entity;
+import eu.derzauberer.pis.model.Entity;
 
 public class MemoryRepository<T extends Entity<T>> extends Repository<T>{
 	

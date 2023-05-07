@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import eu.derzauberer.pis.model.Entity;
 import eu.derzauberer.pis.repositories.Repository;
 
 public class SearchTree<T extends Entity<T>> {

@@ -5,8 +5,6 @@ import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import eu.derzauberer.pis.util.Entity;
-
 @JsonPropertyOrder({ "id", "type", "number", "date", "operator", "driver", "cancelled", "stops", "position", "api" })
 public class LineLiveData extends Line<LineStopLiveData> implements Entity<LineLiveData> {
 

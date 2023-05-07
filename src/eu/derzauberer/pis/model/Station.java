@@ -4,8 +4,6 @@ import java.beans.ConstructorProperties;
 import java.util.Set;
 import java.util.TreeSet;
 
-import eu.derzauberer.pis.util.Entity;
-
 public class Station implements Entity<Station> {
 	
 	private final String id;

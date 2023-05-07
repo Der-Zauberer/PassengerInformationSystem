@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.util;
+package eu.derzauberer.pis.service;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import eu.derzauberer.pis.model.Entity;
 import eu.derzauberer.pis.repositories.Repository;
 
 public abstract class EntityService<T extends Entity<T>> {

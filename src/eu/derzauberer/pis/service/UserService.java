@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import eu.derzauberer.pis.main.Pis;
 import eu.derzauberer.pis.model.User;
 import eu.derzauberer.pis.repositories.MemoryRepository;
-import eu.derzauberer.pis.util.EntityService;
 
 @Service
 public class UserService extends EntityService<User> {

@@ -14,6 +14,9 @@ import org.springframework.context.annotation.ComponentScan;
 import eu.derzauberer.pis.commands.DownloadCommand;
 import eu.derzauberer.pis.commands.ExtractCommand;
 import eu.derzauberer.pis.commands.PackageCommand;
+import eu.derzauberer.pis.configuration.SpringConfiguration;
+import eu.derzauberer.pis.configuration.UserConfiguration;
+import eu.derzauberer.pis.model.Entity;
 import eu.derzauberer.pis.model.LineSceduled;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.model.TrainOperator;
@@ -22,7 +25,6 @@ import eu.derzauberer.pis.model.User;
 import eu.derzauberer.pis.repositories.FileRepository;
 import eu.derzauberer.pis.repositories.Repository;
 import eu.derzauberer.pis.util.Command;
-import eu.derzauberer.pis.util.Entity;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 @ComponentScan(basePackages = {"eu.derzauberer.pis"})

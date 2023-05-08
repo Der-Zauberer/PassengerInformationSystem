@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.model.Station;
+import eu.derzauberer.pis.model.StationTraffic;
 import eu.derzauberer.pis.repositories.MemoryRepository;
 import eu.derzauberer.pis.repositories.Repository;
 import eu.derzauberer.pis.util.SearchTree;
@@ -15,6 +16,7 @@ import eu.derzauberer.pis.util.SearchTree;
 public class StationService {
 	
 	private final Repository<Station> stationRepository = new MemoryRepository<>("stations", Station.class);
+	private final Repository<StationTraffic> stationTrafficRepository = new MemoryRepository<>("station_traffic", StationTraffic.class);
 	private final SearchTree<Station> search = new SearchTree<>(stationRepository);
 	
 	public StationService() {

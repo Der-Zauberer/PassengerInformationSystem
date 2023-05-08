@@ -2,7 +2,7 @@ package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
 
-public class TrainType implements Entity<TrainType> {
+public class TrainType implements Entity<TrainType>, NameEntity {
 	
 	public enum TrainClassifican {
 		FREIGHT,
@@ -31,7 +31,6 @@ public class TrainType implements Entity<TrainType> {
 		return id;
 	}
 	
-	@Override
 	public String getName() {
 		return name;
 	}

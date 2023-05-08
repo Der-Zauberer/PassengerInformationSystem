@@ -1,19 +1,28 @@
 package eu.derzauberer.pis.model;
 
+import java.beans.ConstructorProperties;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeSet;
 
-public class StationTraffic {
+public class StationTraffic implements Entity<StationTraffic> {
 	
+	private final String stationId;
 	private final LocalDate date;
 	private final Map<Integer, TreeSet<StationTrafficEntry>> departures = new HashMap<>();
 	private final Map<Integer, TreeSet<StationTrafficEntry>> arrivals = new HashMap<>();
 	
-	public StationTraffic(LocalDate date) {
+	@ConstructorProperties({ "stationId", "date" })
+	public StationTraffic(String stationId, LocalDate date) {
 		super();
+		this.stationId = stationId;
 		this.date = date;
+	}
+	
+	@Override
+	public String getId() {
+		return stationId;
 	}
 	
 	public LocalDate getDate() {
@@ -30,7 +39,6 @@ public class StationTraffic {
 	
 	public TreeSet<StationTrafficEntry> getDeparturesInHour(int hour) {
 		return new TreeSet<>(departures.get(hour));
-		
 	}
 	
 	public TreeSet<StationTrafficEntry> getDeparturesSinceHour(int hour) {

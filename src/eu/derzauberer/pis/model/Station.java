@@ -4,7 +4,7 @@ import java.beans.ConstructorProperties;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class Station implements Entity<Station> {
+public class Station implements Entity<Station>, NameEntity {
 	
 	private final String id;
 	private final String name;
@@ -15,7 +15,7 @@ public class Station implements Entity<Station> {
 	private ApiInformation api;
 
 	public Station(String name) {
-		this(Entity.nameToId(name), name);
+		this(NameEntity.nameToId(name), name);
 	}
 	
 	@ConstructorProperties({ "id", "name" })

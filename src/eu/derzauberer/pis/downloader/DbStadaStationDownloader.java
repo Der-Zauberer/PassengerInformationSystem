@@ -11,8 +11,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import eu.derzauberer.pis.main.Pis;
-import eu.derzauberer.pis.model.Entity;
 import eu.derzauberer.pis.model.Location;
+import eu.derzauberer.pis.model.NameEntity;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.repositories.Repository;
 import eu.derzauberer.pis.util.HttpRequest;
@@ -41,7 +41,7 @@ public class DbStadaStationDownloader {
 		int counter = 0;
 		for (JsonNode node : json.withArray("result")) {
 			final String name = node.get("name").asText();
-			final Station station = repository.getById(Entity.nameToId(name)).orElse(new Station(name));
+			final Station station = repository.getById(NameEntity.nameToId(name)).orElse(new Station(name));
 			station.getOrCreateAdress().setStreet(node.at("/mailingAddress/street").asText());
 			station.getOrCreateAdress().setPostalCode(node.at("/mailingAddress/zipcode").asInt());
 			station.getOrCreateAdress().setCity(node.at("/mailingAddress/city").asText());

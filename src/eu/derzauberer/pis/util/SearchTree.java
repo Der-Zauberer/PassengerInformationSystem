@@ -6,9 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import eu.derzauberer.pis.model.Entity;
+import eu.derzauberer.pis.model.NameEntity;
 import eu.derzauberer.pis.repositories.Repository;
 
-public class SearchTree<T extends Entity<T>> {
+public class SearchTree<T extends Entity<T> & NameEntity> {
 	
 	private final Map<String, String> originalNames = new HashMap<>();
 	private final Map<String, List<String>> entries = new HashMap<>();

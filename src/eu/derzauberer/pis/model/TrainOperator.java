@@ -2,7 +2,7 @@ package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
 
-public class TrainOperator implements Entity<TrainOperator> {
+public class TrainOperator implements Entity<TrainOperator>, NameEntity {
 
 	private final String id;
 	private String name;
@@ -12,7 +12,7 @@ public class TrainOperator implements Entity<TrainOperator> {
 	private ApiInformation api;
 	
 	public TrainOperator(String name) {
-		this(Entity.nameToId(name), name);
+		this(NameEntity.nameToId(name), name);
 	}
 	
 	@ConstructorProperties({ "id", "name" })

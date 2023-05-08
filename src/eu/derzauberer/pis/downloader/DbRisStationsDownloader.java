@@ -7,8 +7,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import eu.derzauberer.pis.main.Pis;
-import eu.derzauberer.pis.model.Entity;
 import eu.derzauberer.pis.model.Location;
+import eu.derzauberer.pis.model.NameEntity;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.repositories.Repository;
 import eu.derzauberer.pis.util.HttpRequest;
@@ -37,7 +37,7 @@ public class DbRisStationsDownloader {
 		int counter = 0;
 		for (JsonNode node : json.withArray("stations")) {
 			final String name = node.at("/names/DE/name").asText();
-			final Station station = repository.getById(Entity.nameToId(name)).orElse(new Station(name));
+			final Station station = repository.getById(NameEntity.nameToId(name)).orElse(new Station(name));
 			if (node.at("/owner/name").asText().equalsIgnoreCase("DB S&S")) {
 				station.getOrCreateAdress().setName("DB Station&Service AG");
 			} else {

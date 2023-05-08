@@ -32,7 +32,7 @@ public class ApiLineController {
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit,
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset
 			) {
-		return new ListDto<>(lineService.getList(), limit == -1 ? lineService.size() : limit, offset);
+		return new ListDto<>(lineService.getLines(), limit == -1 ? lineService.size() : limit, offset);
 	}
 	
 	@GetMapping("{id}")

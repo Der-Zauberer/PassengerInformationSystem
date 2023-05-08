@@ -35,7 +35,7 @@ public class ApiStationController {
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit,
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset
 			) {
-		final List<Station> stations = query != null ? stationService.searchByName(query) : stationService.getList();
+		final List<Station> stations = query != null ? stationService.searchByName(query) : stationService.getStations();
 		return new ListDto<>(stations, limit == -1 ? stations.size() : limit, offset);
 	}
 	

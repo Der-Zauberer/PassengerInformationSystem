@@ -2,23 +2,42 @@ package eu.derzauberer.pis.service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.repositories.MemoryRepository;
+import eu.derzauberer.pis.repositories.Repository;
 import eu.derzauberer.pis.util.SearchTree;
 
 @Service
-public class StationService extends EntityService<Station> {
+public class StationService {
 	
-	private final SearchTree<Station> search = new SearchTree<>(getRepository());
+	private final Repository<Station> stationRepository = new MemoryRepository<>("stations", Station.class);
+	private final SearchTree<Station> search = new SearchTree<>(stationRepository);
 	
 	public StationService() {
-		super("stations", new MemoryRepository<>("stations", Station.class));
-		getRepository().setAddAction(entity -> { search.remove(entity); search.add(entity); });
-		getRepository().setRemoveAction(search::removeById);
-		getRepository().getList().forEach(search::add);
+		stationRepository.getList().forEach(search::add);
+	}
+	
+	public void add(Station station) {
+		stationRepository.add(station);
+		search.remove(station);
+		search.add(station);
+	}
+	
+	public boolean removeById(String stationId) {
+		search.removeById(stationId);
+		return stationRepository.removeById(stationId);
+	}
+	
+	public boolean containsById(String stationId) {
+		return stationRepository.containsById(stationId);
+	}
+	
+	public Optional<Station> getById(String stationId) {
+		return stationRepository.getById(stationId);
 	}
 	
 	public List<Station> searchByName(String name) {
@@ -35,6 +54,14 @@ public class StationService extends EntityService<Station> {
 			return 0;
 		});
 		return results;
+	}
+	
+	public List<Station> getStations() {
+		return stationRepository.getList();
+	}
+	
+	public int size() {
+		return stationRepository.size();
 	}
 
 }

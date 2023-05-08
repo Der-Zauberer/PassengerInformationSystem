@@ -32,7 +32,7 @@ public class ApiOperatorController {
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit,
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset
 			) {
-		return new ListDto<>(operatorService.getList(), limit == -1 ? operatorService.size() : limit, offset);
+		return new ListDto<>(operatorService.getOperators(), limit == -1 ? operatorService.size() : limit, offset);
 	}
 	
 	@GetMapping("{id}")

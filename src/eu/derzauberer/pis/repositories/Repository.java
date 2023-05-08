@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import org.slf4j.Logger;
 
@@ -25,8 +24,6 @@ public abstract class Repository<T extends Entity<T>> {
 	private final String name;
 	private final Class<T> type;
 	private final Logger logger;
-	private Consumer<T> addAction;
-	private Consumer<String> removeAction;
 	
 	protected static final String DIRECTORY = "data";
 	protected static final String FILE_TYPE = ".json";
@@ -50,22 +47,6 @@ public abstract class Repository<T extends Entity<T>> {
 	
 	public Class<T> getType() {
 		return type;
-	}
-	
-	public Consumer<T> getAddAction() {
-		return addAction;
-	}
-	
-	public void setAddAction(Consumer<T> addAction) {
-		this.addAction = addAction;
-	}
-	
-	public Consumer<String> getRemoveAction() {
-		return removeAction;
-	}
-	
-	public void setRemoveAction(Consumer<String> removeAction) {
-		this.removeAction = removeAction;
 	}
 	
 	public abstract void add(T entity);
@@ -115,7 +96,6 @@ public abstract class Repository<T extends Entity<T>> {
 				final String content = Files.readString(path);
 				final T entity = OBJECT_MAPPER.readValue(content, type);
 				entities.add(entity);
-				if (addAction != null) addAction.accept(entity);
 				if (progress) progressStatus.count();
 			}
 			return entities;
@@ -136,7 +116,6 @@ public abstract class Repository<T extends Entity<T>> {
 			if (!Files.exists(path)) return Optional.empty();
 			final String content = Files.readString(path);
 			final T entity = OBJECT_MAPPER.readValue(content, type);
-			if (addAction != null) addAction.accept(entity);
 			return Optional.of(entity);
 		} catch (IOException exception) {
 			logger.error("Couldn't load entity with id {} from {}: {} {}!", id, getName(), exception.getClass().getSimpleName(), exception.getMessage());
@@ -156,10 +135,7 @@ public abstract class Repository<T extends Entity<T>> {
 	
 	protected boolean deleteEnity(String id) {
 		try {
-			if (Files.deleteIfExists(Paths.get(DIRECTORY, name, id + FILE_TYPE)) && removeAction != null) {
-				removeAction.accept(id);
-				return true;
-			}
+			return Files.deleteIfExists(Paths.get(DIRECTORY, name, id + FILE_TYPE));
 		} catch (IOException exception) {
 			logger.warn("Couldn't delete entity with id {} from {}: {} {}", id, getName(), exception.getClass().getSimpleName(), exception.getMessage());
 		}

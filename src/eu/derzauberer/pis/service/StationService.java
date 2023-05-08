@@ -1,13 +1,17 @@
 package eu.derzauberer.pis.service;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.SortedSet;
 
 import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.model.StationTraffic;
+import eu.derzauberer.pis.model.StationTrafficEntry;
 import eu.derzauberer.pis.repositories.MemoryRepository;
 import eu.derzauberer.pis.repositories.Repository;
 import eu.derzauberer.pis.util.SearchTree;
@@ -42,6 +46,14 @@ public class StationService {
 		return stationRepository.getById(stationId);
 	}
 	
+	public List<Station> getStations() {
+		return stationRepository.getList();
+	}
+	
+	public int size() {
+		return stationRepository.size();
+	}
+	
 	public List<Station> searchByName(String name) {
 		final List<Station> results = search.searchByName(name);
 		Collections.sort(results, (station1, station2) -> {
@@ -58,12 +70,18 @@ public class StationService {
 		return results;
 	}
 	
-	public List<Station> getStations() {
-		return stationRepository.getList();
+	public SortedSet<StationTrafficEntry> getDeparturesInHour(String stationId, LocalDateTime dateTime) {
+		final StationTraffic stationTraffic = 
+				stationTrafficRepository.getById(StationTraffic.createIdFormNameAndDate(stationId, dateTime.toLocalDate()))
+				.orElse(new StationTraffic(stationId, dateTime.toLocalDate()));
+		return stationTraffic.getDeparturesInHour(dateTime.getHour());
 	}
 	
-	public int size() {
-		return stationRepository.size();
+	public Set<StationTrafficEntry> getArrivalsInHour(String stationId, LocalDateTime dateTime) {
+		final StationTraffic stationTraffic = 
+				stationTrafficRepository.getById(StationTraffic.createIdFormNameAndDate(stationId, dateTime.toLocalDate()))
+				.orElse(new StationTraffic(stationId, dateTime.toLocalDate()));
+		return stationTraffic.getArrivalsInHour(dateTime.getHour());
 	}
 
 }

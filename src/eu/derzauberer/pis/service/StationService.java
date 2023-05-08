@@ -12,7 +12,7 @@ import eu.derzauberer.pis.util.SearchTree;
 @Service
 public class StationService extends EntityService<Station> {
 	
-	private final SearchTree<Station> search = new SearchTree<>(getRepository()); 
+	private final SearchTree<Station> search = new SearchTree<>(getRepository());
 	
 	public StationService() {
 		super("stations", new MemoryRepository<>("stations", Station.class));

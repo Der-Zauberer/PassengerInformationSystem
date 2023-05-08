@@ -3,7 +3,7 @@ package eu.derzauberer.pis.model;
 import java.beans.ConstructorProperties;
 import java.time.LocalTime;
 
-public class TrainTrafficEntry implements Comparable<TrainTrafficEntry> {
+public class StationTrafficEntry implements Comparable<StationTrafficEntry> {
 	
 	private final LocalTime time;
 	private final String lineId;
@@ -11,7 +11,7 @@ public class TrainTrafficEntry implements Comparable<TrainTrafficEntry> {
 	private final boolean lastStation;
 	
 	@ConstructorProperties({ "time", "lineId", "stationPosition", "lastStation" })
-	public TrainTrafficEntry(LocalTime time, String lineId, int stationPosition, boolean lastStation) {
+	public StationTrafficEntry(LocalTime time, String lineId, int stationPosition, boolean lastStation) {
 		super();
 		this.time = time;
 		this.lineId = lineId;
@@ -36,7 +36,7 @@ public class TrainTrafficEntry implements Comparable<TrainTrafficEntry> {
 	}
 	
 	@Override
-	public int compareTo(TrainTrafficEntry entry) {
+	public int compareTo(StationTrafficEntry entry) {
 		return time.compareTo(entry.getTime());
 	}
 

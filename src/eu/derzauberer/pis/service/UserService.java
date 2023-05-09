@@ -3,23 +3,27 @@ package eu.derzauberer.pis.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import eu.derzauberer.pis.main.Pis;
 import eu.derzauberer.pis.model.User;
-import eu.derzauberer.pis.repositories.MemoryRepository;
 import eu.derzauberer.pis.repositories.Repository;
 
 @Service
 public class UserService {
 	
-	final Repository<User> userRepository = new MemoryRepository<>("types", User.class);
+	private final Repository<User> userRepository;
+	private final PasswordEncoder passwordEncoder;
 	
-	private static final PasswordEncoder ENCODER = Pis.getSpringConfig().getPasswordEncoder();
+	@Autowired
+	public UserService(Repository<User> userRepository, PasswordEncoder passwordEncoder) {
+		this.userRepository = userRepository;
+		this.passwordEncoder = passwordEncoder;
+	}
 	
 	public Optional<User> login(String username, String password) {
-		return userRepository.getById(username).filter(user -> ENCODER.matches(password, user.getPasswordHash()));
+		return userRepository.getById(username).filter(user -> passwordEncoder.matches(password, user.getPasswordHash()));
 	}
 	
 	public void add(User user) {
@@ -47,7 +51,7 @@ public class UserService {
 	}
 	
 	public String hashPassword(String password) {
-		return ENCODER.encode(password);
+		return passwordEncoder.encode(password);
 	}
 	
 }

@@ -3,16 +3,21 @@ package eu.derzauberer.pis.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.model.TrainType;
-import eu.derzauberer.pis.repositories.MemoryRepository;
 import eu.derzauberer.pis.repositories.Repository;
 
 @Service
 public class TypeService {
 	
-	final Repository<TrainType> typeRepository = new MemoryRepository<>("types", TrainType.class);
+	private final Repository<TrainType> typeRepository;
+	
+	@Autowired
+	public TypeService(Repository<TrainType> typeRepository) {
+		this.typeRepository = typeRepository;
+	}
 	
 	public void add(TrainType type) {
 		typeRepository.add(type);

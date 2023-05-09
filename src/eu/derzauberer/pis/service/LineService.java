@@ -3,16 +3,21 @@ package eu.derzauberer.pis.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.model.LineSceduled;
-import eu.derzauberer.pis.repositories.FileRepository;
 import eu.derzauberer.pis.repositories.Repository;
 
 @Service
 public class LineService {
 	
-	final Repository<LineSceduled> lineRepository = new FileRepository<>("lines", LineSceduled.class);
+	private final Repository<LineSceduled> lineRepository;
+	
+	@Autowired
+	public LineService(Repository<LineSceduled> lineRepository) {
+		this.lineRepository = lineRepository;
+	}
 	
 	public void add(LineSceduled line) {
 		lineRepository.add(line);

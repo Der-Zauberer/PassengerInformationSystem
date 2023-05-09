@@ -24,6 +24,15 @@ import eu.derzauberer.pis.configuration.SerializationConfiguration.DateTimeSeria
 import eu.derzauberer.pis.configuration.SerializationConfiguration.PrettyPrinter;
 import eu.derzauberer.pis.configuration.SerializationConfiguration.TimeDeserializer;
 import eu.derzauberer.pis.configuration.SerializationConfiguration.TimeSerializer;
+import eu.derzauberer.pis.model.LineSceduled;
+import eu.derzauberer.pis.model.Station;
+import eu.derzauberer.pis.model.StationTraffic;
+import eu.derzauberer.pis.model.TrainOperator;
+import eu.derzauberer.pis.model.TrainType;
+import eu.derzauberer.pis.model.User;
+import eu.derzauberer.pis.repositories.FileRepository;
+import eu.derzauberer.pis.repositories.MemoryRepository;
+import eu.derzauberer.pis.repositories.Repository;
 
 @Configuration
 public class SpringConfiguration {
@@ -51,6 +60,7 @@ public class SpringConfiguration {
 	    return builder;
 	}
 	
+	@Bean
 	public ObjectMapper getObjectMapper() {
 		if (OBJECT_MAPPER == null) {
 			OBJECT_MAPPER = getJsonMapperBuilder().build();
@@ -68,9 +78,39 @@ public class SpringConfiguration {
 		return MODEL_MAPPER;
 	}
 	
-	@Bean 
+	@Bean
 	public PasswordEncoder getPasswordEncoder() {
 	    return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
+	public Repository<LineSceduled> getLineRepository() {
+		return new FileRepository<>("lines", LineSceduled.class);
+	}
+	
+	@Bean
+	public Repository<TrainOperator> getOperatorRepository() {
+		return new MemoryRepository<>("operators", TrainOperator.class);
+	}
+	
+	@Bean
+	public Repository<Station> getStationRepository() {
+		return new MemoryRepository<>("stations", Station.class);
+	}
+	
+	@Bean
+	public Repository<StationTraffic> getStationTrafficRepository() {
+		return new FileRepository<>("station_traffic", StationTraffic.class);
+	}
+	
+	@Bean
+	public Repository<TrainType> getTypeRepository() {
+		return new MemoryRepository<>("types", TrainType.class);
+	}
+	
+	@Bean
+	public Repository<User> getUserRepository() {
+		return new MemoryRepository<>("users", User.class);
 	}
 	
 }

@@ -3,16 +3,21 @@ package eu.derzauberer.pis.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.model.TrainOperator;
-import eu.derzauberer.pis.repositories.MemoryRepository;
 import eu.derzauberer.pis.repositories.Repository;
 
 @Service
 public class OperatorService {
 	
-	final Repository<TrainOperator> operatorRepository = new MemoryRepository<>("operators", TrainOperator.class);
+	private final Repository<TrainOperator> operatorRepository;
+	
+	@Autowired
+	public OperatorService(Repository<TrainOperator> operatorRepository) {
+		this.operatorRepository = operatorRepository;
+	}
 	
 	public void add(TrainOperator operator) {
 		operatorRepository.add(operator);

@@ -7,23 +7,27 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.model.StationTraffic;
 import eu.derzauberer.pis.model.StationTrafficEntry;
-import eu.derzauberer.pis.repositories.MemoryRepository;
 import eu.derzauberer.pis.repositories.Repository;
 import eu.derzauberer.pis.util.SearchTree;
 
 @Service
 public class StationService {
 	
-	private final Repository<Station> stationRepository = new MemoryRepository<>("stations", Station.class);
-	private final Repository<StationTraffic> stationTrafficRepository = new MemoryRepository<>("station_traffic", StationTraffic.class);
-	private final SearchTree<Station> search = new SearchTree<>(stationRepository);
+	private final Repository<Station> stationRepository;
+	private final Repository<StationTraffic> stationTrafficRepository;
+	private final SearchTree<Station> search;
 	
-	public StationService() {
+	@Autowired
+	public StationService(Repository<Station> stationRepository, Repository<StationTraffic> stationTrafficRepository) {
+		this.stationRepository = stationRepository;
+		this.stationTrafficRepository = stationTrafficRepository;
+		this.search = new SearchTree<>(stationRepository);
 		stationRepository.getList().forEach(search::add);
 	}
 	

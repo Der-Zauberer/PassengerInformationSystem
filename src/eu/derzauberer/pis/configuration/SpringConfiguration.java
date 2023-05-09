@@ -36,9 +36,6 @@ import eu.derzauberer.pis.repositories.Repository;
 
 @Configuration
 public class SpringConfiguration {
-	
-	private static ObjectMapper OBJECT_MAPPER;
-	private static ModelMapper MODEL_MAPPER;
 
 	@Bean
 	public Jackson2ObjectMapperBuilder getJsonMapperBuilder() {
@@ -62,20 +59,16 @@ public class SpringConfiguration {
 	
 	@Bean
 	public ObjectMapper getObjectMapper() {
-		if (OBJECT_MAPPER == null) {
-			OBJECT_MAPPER = getJsonMapperBuilder().build();
-			OBJECT_MAPPER.setDefaultPrettyPrinter(new PrettyPrinter());
-		}
-		return OBJECT_MAPPER;
+		final ObjectMapper objectMapper = getJsonMapperBuilder().build();
+		objectMapper.setDefaultPrettyPrinter(new PrettyPrinter());
+		return objectMapper;
 	}
 	
 	@Bean
 	public ModelMapper getModelMapper() {
-		if (MODEL_MAPPER == null) {
-			MODEL_MAPPER  = new ModelMapper();
-			MODEL_MAPPER.getConfiguration().setSkipNullEnabled(true);
-		}
-		return MODEL_MAPPER;
+		final ModelMapper modelMapper = new ModelMapper();
+		modelMapper.getConfiguration().setSkipNullEnabled(true);
+		return modelMapper;
 	}
 	
 	@Bean

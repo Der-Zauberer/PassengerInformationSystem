@@ -1,27 +1,20 @@
 package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
-import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({ "id", "type", "number", "date", "operator", "driver", "cancelled", "stops", "position", "api" })
+@JsonPropertyOrder({ "id", "type", "number", "operator", "driver", "cancelled", "stops", "position", "api" })
 public class LineLiveData extends Line<LineStopLiveData> implements Entity<LineLiveData> {
 
-	private final LocalDate date;
 	private String driver;
 	private boolean cancelled;
 	private Integer position;
 	
-	@ConstructorProperties({ "id", "type", "number", "date" })
-	public LineLiveData(String id, TrainType type, int number, LocalDate date) {
+	@ConstructorProperties({ "id", "type", "number"})
+	public LineLiveData(String id, TrainType type, int number) {
 		super(id, type, number);
-		this.date = date;
 		cancelled = false;
-	}
-	
-	public LocalDate getDate() {
-		return date;
 	}
 	
 	public String getDriver() {

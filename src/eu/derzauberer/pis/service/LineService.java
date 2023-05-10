@@ -1,5 +1,6 @@
 package eu.derzauberer.pis.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,22 +57,30 @@ public class LineService {
 	private void addLineToTrafficIndex(LineLiveData line) {
 		int i = 0;
 		for (LineStop stop : line.getStops()) {
-			final String stationTrafficId = StationTraffic.createIdFormNameAndDate(stop.getStationId(), line.getDate());
-			final StationTraffic stationTraffic = stationTrafficRepository.getById(stationTrafficId).orElse(new StationTraffic(stop.getStationId(), line.getDate()));
-			stationTraffic.addArrival(new StationTrafficEntry(stop.getArrival(), line.getId(), i, line.getLastStop().equals(stop) ? true : false));
-			stationTraffic.addDeparture(new StationTrafficEntry(stop.getDeparture(), line.getId(), i++, line.getLastStop().equals(stop) ? true : false));
-			stationTrafficRepository.add(stationTraffic);
+			final StationTraffic arrivalStationTraffic = getOrCreateStationTraffic(stop.getStationId(), stop.getDeparture().toLocalDate());
+			arrivalStationTraffic.addArrival(new StationTrafficEntry(stop.getArrival().toLocalTime(), line.getId(), i, line.getLastStop().equals(stop) ? true : false));
+			stationTrafficRepository.add(arrivalStationTraffic);
+			final StationTraffic departureStationTraffic = getOrCreateStationTraffic(stop.getStationId(), stop.getArrival().toLocalDate());
+			departureStationTraffic.addDeparture(new StationTrafficEntry(stop.getDeparture().toLocalTime(), line.getId(), i++, line.getLastStop().equals(stop) ? true : false));
+			stationTrafficRepository.add(departureStationTraffic);
 		}
 	}
 	
 	private void removeLineToTrafficIndex(LineLiveData line) {
 		for (LineStop stop : line.getStops()) {
-			final String stationTrafficId = StationTraffic.createIdFormNameAndDate(stop.getStationId(), line.getDate());
-			final StationTraffic stationTraffic = stationTrafficRepository.getById(stationTrafficId).orElse(new StationTraffic(stop.getStationId(), line.getDate()));
-			stationTraffic.removeArrival(stop.getArrival(), line.getId());
-			stationTraffic.removeArrival(stop.getDeparture(), line.getId());
-			stationTrafficRepository.add(stationTraffic);
+			final StationTraffic arrivalStationTraffic = getOrCreateStationTraffic(stop.getStationId(), stop.getDeparture().toLocalDate());
+			arrivalStationTraffic.removeArrival(stop.getArrival().toLocalTime(), line.getId());
+			stationTrafficRepository.add(arrivalStationTraffic);
+			final StationTraffic departureStationTraffic = getOrCreateStationTraffic(stop.getStationId(), stop.getArrival().toLocalDate());
+			departureStationTraffic.removeDeparture(stop.getDeparture().toLocalTime(), line.getId());
+			stationTrafficRepository.add(departureStationTraffic);
 		}
+	}
+	
+	private StationTraffic getOrCreateStationTraffic(String stationId, LocalDate date) {
+		return stationTrafficRepository
+				.getById(StationTraffic.createIdFormNameAndDate(stationId, date))
+				.orElse(new StationTraffic(stationId, date));
 	}
 
 }

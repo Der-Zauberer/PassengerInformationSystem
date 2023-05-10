@@ -1,17 +1,17 @@
 package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 public class LineStop {
 	
 	private final String stationId;
 	private final int platform;
 	private final String platfromArea;
-	private final LocalTime arrival;
-	private final LocalTime departure;
+	private final LocalDateTime arrival;
+	private final LocalDateTime departure;
 	
-	public LineStop(String stationId, int platform, String platfromArea, LocalTime departure) {
+	public LineStop(String stationId, int platform, String platfromArea, LocalDateTime departure) {
 		this.stationId = stationId;
 		this.platform = platform;
 		this.platfromArea = platfromArea;
@@ -20,7 +20,7 @@ public class LineStop {
 	}
 	
 	@ConstructorProperties({"stationId", "platform", "platfromArea", "arrival", "departure"})
-	public LineStop(String stationId, int platform, String platfromArea, LocalTime arrival, LocalTime departure) {
+	public LineStop(String stationId, int platform, String platfromArea, LocalDateTime arrival, LocalDateTime departure) {
 		this.stationId = stationId;
 		this.platform = platform;
 		this.platfromArea = platfromArea;
@@ -40,11 +40,11 @@ public class LineStop {
 		return platfromArea;
 	}
 	
-	public LocalTime getArrival() {
+	public LocalDateTime getArrival() {
 		return arrival;
 	}
 	
-	public LocalTime getDeparture() {
+	public LocalDateTime getDeparture() {
 		return departure;
 	}
 

@@ -1,7 +1,7 @@
 package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 public class LineStopLiveData extends LineStop {
 	
@@ -11,14 +11,14 @@ public class LineStopLiveData extends LineStop {
 	private boolean cancelled;
 	private String information;
 	
-	public LineStopLiveData(String station, int platform, String platfromArea, LocalTime departure) {
+	public LineStopLiveData(String station, int platform, String platfromArea, LocalDateTime departure) {
 		super(station, platform, platfromArea, departure);
 		this.delay = 0;
 		this.cancelled = false;
 	}
 	
 	@ConstructorProperties({"station", "platform", "platfromArea", "arrival", "departure"})
-	public LineStopLiveData(String station, int platform, String platfromArea, LocalTime arrival, LocalTime departure) {
+	public LineStopLiveData(String station, int platform, String platfromArea, LocalDateTime arrival, LocalDateTime departure) {
 		super(station, platform, platfromArea, arrival, departure);
 		this.delay = 0;
 		this.cancelled = false;

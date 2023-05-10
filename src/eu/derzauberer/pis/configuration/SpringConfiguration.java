@@ -24,7 +24,7 @@ import eu.derzauberer.pis.configuration.SerializationConfiguration.DateTimeSeria
 import eu.derzauberer.pis.configuration.SerializationConfiguration.PrettyPrinter;
 import eu.derzauberer.pis.configuration.SerializationConfiguration.TimeDeserializer;
 import eu.derzauberer.pis.configuration.SerializationConfiguration.TimeSerializer;
-import eu.derzauberer.pis.model.LineSceduled;
+import eu.derzauberer.pis.model.LineLiveData;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.model.StationTraffic;
 import eu.derzauberer.pis.model.TrainOperator;
@@ -77,8 +77,8 @@ public class SpringConfiguration {
 	}
 	
 	@Bean
-	public Repository<LineSceduled> getLineRepository() {
-		return new FileRepository<>("lines", LineSceduled.class);
+	public Repository<LineLiveData> getLineRepository() {
+		return new FileRepository<>("lines", LineLiveData.class);
 	}
 	
 	@Bean
@@ -93,7 +93,7 @@ public class SpringConfiguration {
 	
 	@Bean
 	public Repository<StationTraffic> getStationTrafficRepository() {
-		return new FileRepository<>("station_traffic", StationTraffic.class);
+		return new FileRepository<>("station_traffic_indices", StationTraffic.class);
 	}
 	
 	@Bean

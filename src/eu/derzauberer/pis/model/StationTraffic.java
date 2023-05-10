@@ -2,6 +2,7 @@ package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,11 +30,18 @@ public class StationTraffic implements Entity<StationTraffic> {
 	}
 	
 	public void addDeparture(StationTrafficEntry entry) {
-		departures.get(entry.getTime().getHour()).add(entry);
+		final int hour = entry.getTime().getHour();
+		if (departures.get(hour) == null) departures.put(hour, new TreeSet<>());
+		departures.get(hour).add(entry);
 	}
 	
-	public void removeDeparture(StationTrafficEntry entry) {
-		departures.get(entry.getTime().getHour()).remove(entry);
+	public void removeDeparture(LocalTime time, String lineId) {
+		if (departures.get(time.getHour()) == null) return; 
+		departures.get(time.getHour()).stream()
+			.filter(entry -> entry.getLineId().equals(lineId))
+			.findAny()
+			.ifPresent(departures.get(time.getHour())::remove);
+		if (departures.get(time.getHour()).isEmpty()) departures.remove(time.getHour());
 	}
 	
 	public SortedSet<StationTrafficEntry> getDeparturesInHour(int hour) {
@@ -50,11 +58,18 @@ public class StationTraffic implements Entity<StationTraffic> {
 	}
 	
 	public void addArrival(StationTrafficEntry entry) {
-		arrivals.get(entry.getTime().getHour()).add(entry);
+		final int hour = entry.getTime().getHour();
+		if (arrivals.get(hour) == null) arrivals.put(hour, new TreeSet<>());
+		arrivals.get(hour).add(entry);
 	}
 	
-	public void removeArrival(StationTrafficEntry entry) {
-		arrivals.get(entry.getTime().getHour()).remove(entry);
+	public void removeArrival(LocalTime time, String lineId) {
+		if (arrivals.get(time.getHour()) == null) return; 
+		arrivals.get(time.getHour()).stream()
+				.filter(entry -> entry.getLineId().equals(lineId))
+				.findAny()
+				.ifPresent(arrivals.get(time.getHour())::remove);
+		if (arrivals.get(time.getHour()).isEmpty()) arrivals.remove(time.getHour());
 	}
 	
 	public SortedSet<StationTrafficEntry> getArrivalsInHour(int hour) {

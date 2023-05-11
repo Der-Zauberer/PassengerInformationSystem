@@ -1,5 +1,6 @@
 package eu.derzauberer.pis.controller.api;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -35,7 +36,7 @@ public class ApiLineController {
 	@Autowired
 	private ModelMapper modelMapper;
 	
-	@GetMapping("/arrivals/{stationId}/{date}")
+	@GetMapping("/{arrivalOrDeparture}/{stationId}/{date}")
 	public ListDto<StationTrafficEntry> getArrivals(
 			@PathVariable("stationId") String stationId,
 			@PathVariable("date") String date,
@@ -43,9 +44,7 @@ public class ApiLineController {
 			@RequestParam(name = "limit", required = false, defaultValue = "10") int limit,
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset
 			) {
-		final Station station = stationService.getById(stationId).orElseThrow(() -> getNotFoundException("Station", stationId));
-		final List<StationTrafficEntry> entries = lineService.findArrivalsSinceHour(station, null, limit).stream().toList();
-		return new ListDto<>(entries, limit == -1 ? entries.size() : limit, offset);
+		return getTraffic(false, stationId, date, hour, limit, offset);
 	}
 	
 	@GetMapping("/departures/{stationId}/{date}")
@@ -56,8 +55,14 @@ public class ApiLineController {
 			@RequestParam(name = "limit", required = false, defaultValue = "10") int limit,
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset
 			) {
+		return getTraffic(true, stationId, date, hour, limit, offset);
+	}
+	
+	private ListDto<StationTrafficEntry> getTraffic(boolean arrival, String stationId, String date, int hour, int limit, int offset) {
 		final Station station = stationService.getById(stationId).orElseThrow(() -> getNotFoundException("Station", stationId));
-		final List<StationTrafficEntry> entries = lineService.findDeparturesSinceHour(station, null, limit).stream().toList();
+		if (!date.matches("^\\d{8}$")) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date format " + date + " is invalid, it has to be YYYYMMDD");
+		final LocalDateTime dateTime = LocalDateTime.of(Integer.parseInt(date.substring(0, 3)), Integer.parseInt(date.substring(4, 5)), Integer.parseInt(date.substring(6, 7)), hour, 0);
+		final List<StationTrafficEntry> entries = (arrival ? lineService.findArrivalsSinceHour(station, dateTime, limit) : lineService.findDeparturesSinceHour(station, dateTime, limit)).stream().toList();
 		return new ListDto<>(entries, limit == -1 ? entries.size() : limit, offset);
 	}
 	

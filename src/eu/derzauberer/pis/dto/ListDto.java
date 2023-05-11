@@ -7,7 +7,7 @@ public class ListDto<T> {
 	
 	private final int offset;
     private final int limit;
-    private final int total;
+    private int total;
     private final ArrayList<T> results;
     
     public ListDto(List<T> list) {
@@ -39,6 +39,11 @@ public class ListDto<T> {
 	
 	public int getTotal() {
 		return total;
+	}
+	
+	public ListDto<T> manipulteTotal(int newTotal) {
+		this.total = newTotal;
+		return this;
 	}
 	
 	public ArrayList<T> getResults() {

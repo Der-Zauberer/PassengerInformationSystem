@@ -61,9 +61,10 @@ public class ApiLineController {
 	private ListDto<StationTrafficEntry> getTraffic(boolean arrival, String stationId, String date, int hour, int limit, int offset) {
 		final Station station = stationService.getById(stationId).orElseThrow(() -> getNotFoundException("Station", stationId));
 		if (!date.matches("^\\d{8}$")) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date format " + date + " is invalid, it has to be YYYYMMDD");
-		final LocalDateTime dateTime = LocalDateTime.of(Integer.parseInt(date.substring(0, 3)), Integer.parseInt(date.substring(4, 5)), Integer.parseInt(date.substring(6, 7)), hour, 0);
-		final List<StationTrafficEntry> entries = (arrival ? lineService.findArrivalsSinceHour(station, dateTime, limit) : lineService.findDeparturesSinceHour(station, dateTime, limit)).stream().toList();
-		return new ListDto<>(entries, limit == -1 ? entries.size() : limit, offset);
+		final LocalDateTime dateTime = LocalDateTime.of(Integer.parseInt(date.substring(0, 4)), Integer.parseInt(date.substring(4, 6)), Integer.parseInt(date.substring(6, 8)), hour, 0);
+		final List<StationTrafficEntry> entries = (!arrival ? lineService.findArrivalsSinceHour(station, dateTime, limit) : lineService.findDeparturesSinceHour(station, dateTime, limit)).stream().toList();
+		final int total = !arrival ? lineService.getAmountOfArrivalsSinceHour(station, dateTime, limit) : lineService.getAmountOfDeparturesSinceHour(station, dateTime, limit);
+		return new ListDto<>(entries, limit == -1 ? entries.size() : limit, offset).manipulteTotal(total);
 	}
 	
 	@GetMapping("{id}")

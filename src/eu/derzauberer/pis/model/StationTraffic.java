@@ -70,7 +70,7 @@ public class StationTraffic implements Entity<StationTraffic> {
 	}
 	
 	public static String createIdFormNameAndDate(String stationId, LocalDate date) {
-		return stationId + "_" + date.getYear() + date.getMonthValue() + date.getDayOfMonth();
+		return String.format("%1$s_%2$04d%3$02d%4$02d", stationId, date.getYear(), date.getMonthValue(), date.getDayOfMonth());
 	}
 
 }

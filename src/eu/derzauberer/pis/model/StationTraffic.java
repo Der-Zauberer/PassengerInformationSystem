@@ -49,14 +49,6 @@ public class StationTraffic implements Entity<StationTraffic> {
 		return Collections.unmodifiableSortedSet(departureSet != null ? departureSet : new TreeSet<>());
 	}
 	
-	public SortedSet<StationTrafficEntry> getDeparturesSinceHour(int hour) {
-		final SortedSet<StationTrafficEntry> departureSet = new TreeSet<>();
-		for (int i = hour; i < 24; i++) {
-			departureSet.addAll(arrivals.get(hour));
-		}
-		return Collections.unmodifiableSortedSet(departureSet);
-	}
-	
 	public void addArrival(StationTrafficEntry entry) {
 		final int hour = entry.getTime().getHour();
 		if (arrivals.get(hour) == null) arrivals.put(hour, new TreeSet<>());
@@ -75,14 +67,6 @@ public class StationTraffic implements Entity<StationTraffic> {
 	public SortedSet<StationTrafficEntry> getArrivalsInHour(int hour) {
 		final SortedSet<StationTrafficEntry> arrivalSet = arrivals.get(hour);
 		return Collections.unmodifiableSortedSet(arrivalSet != null ? arrivalSet : new TreeSet<>());
-	}
-	
-	public SortedSet<StationTrafficEntry> getArrivalsSinceHour(int hour) {
-		final SortedSet<StationTrafficEntry> arrivalSet = new TreeSet<>();
-		for (int i = hour; i <= 24; i++) {
-			arrivalSet.addAll(arrivals.get(hour));
-		}
-		return Collections.unmodifiableSortedSet(arrivalSet);
 	}
 	
 	public static String createIdFormNameAndDate(String stationId, LocalDate date) {

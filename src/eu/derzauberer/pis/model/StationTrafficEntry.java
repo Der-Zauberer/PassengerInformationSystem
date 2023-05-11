@@ -10,8 +10,8 @@ public class StationTrafficEntry implements Comparable<StationTrafficEntry> {
 	private final int stationPosition;
 	private final boolean lastStation;
 	
-	@ConstructorProperties({ "time", "lineId", "stationPosition", "lastStation" })
-	public StationTrafficEntry(LocalTime time, String lineId, int stationPosition, boolean lastStation) {
+	@ConstructorProperties({ "time", "lineId", "stationPosition", "platform", "platfromArea", "lastStation" })
+	public StationTrafficEntry(LocalTime time, String lineId, int stationPosition, int platform, String platfromArea, boolean lastStation) {
 		super();
 		this.time = time;
 		this.lineId = lineId;

@@ -9,11 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import eu.derzauberer.pis.dto.ListDto;
 import eu.derzauberer.pis.model.LineLiveData;
 import eu.derzauberer.pis.service.LineService;
 
@@ -26,14 +24,6 @@ public class ApiLineController {
 	
 	@Autowired
 	private ModelMapper modelMapper;
-	
-	@GetMapping
-	public ListDto<LineLiveData> getLines(
-			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit,
-			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset
-			) {
-		return new ListDto<>(lineService.getLines(), limit == -1 ? lineService.size() : limit, offset);
-	}
 	
 	@GetMapping("{id}")
 	public LineLiveData getLine(@PathVariable("id") String id) {

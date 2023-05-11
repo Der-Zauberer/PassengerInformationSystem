@@ -1,7 +1,6 @@
 package eu.derzauberer.pis.service;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,10 +45,6 @@ public class LineService {
 		return lineRepository.getById(lineId);
 	}
 	
-	public List<LineLiveData> getLines() {
-		return lineRepository.getList();
-	}
-	
 	public int size() {
 		return lineRepository.size();
 	}
@@ -58,10 +53,10 @@ public class LineService {
 		int i = 0;
 		for (LineStop stop : line.getStops()) {
 			final StationTraffic arrivalStationTraffic = getOrCreateStationTraffic(stop.getStationId(), stop.getDeparture().toLocalDate());
-			arrivalStationTraffic.addArrival(new StationTrafficEntry(stop.getArrival().toLocalTime(), line.getId(), i, line.getLastStop().equals(stop) ? true : false));
+			arrivalStationTraffic.addArrival(new StationTrafficEntry(stop.getArrival().toLocalTime(), line.getId(), i, stop.getPlatform(), stop.getPlatfromArea(), line.getLastStop().equals(stop) ? true : false));
 			stationTrafficRepository.add(arrivalStationTraffic);
 			final StationTraffic departureStationTraffic = getOrCreateStationTraffic(stop.getStationId(), stop.getArrival().toLocalDate());
-			departureStationTraffic.addDeparture(new StationTrafficEntry(stop.getDeparture().toLocalTime(), line.getId(), i++, line.getLastStop().equals(stop) ? true : false));
+			departureStationTraffic.addDeparture(new StationTrafficEntry(stop.getDeparture().toLocalTime(), line.getId(), i++, stop.getPlatform(), stop.getPlatfromArea(), line.getLastStop().equals(stop) ? true : false));
 			stationTrafficRepository.add(departureStationTraffic);
 		}
 	}

@@ -1,13 +1,17 @@
 package eu.derzauberer.pis.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.model.LineLiveData;
 import eu.derzauberer.pis.model.LineStop;
+import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.model.StationTraffic;
 import eu.derzauberer.pis.model.StationTrafficEntry;
 import eu.derzauberer.pis.repositories.Repository;
@@ -47,6 +51,36 @@ public class LineService {
 	
 	public int size() {
 		return lineRepository.size();
+	}
+	
+	public SortedSet<StationTrafficEntry> findArrivalsSinceHour(Station station, LocalDateTime dateTime, int limit) {
+		final StationTraffic traffic = getOrCreateStationTraffic(station.getId(), dateTime.toLocalDate());
+		final SortedSet<StationTrafficEntry> results = new TreeSet<>();
+		int i = 0;
+		for (int j = dateTime.getHour(); j < 23; j++) {
+			for (StationTrafficEntry entry : traffic.getArrivalsInHour(j)) {
+				results.add(entry);
+				if (i++ >= limit) {
+					return results;
+				}
+			}
+		}
+		return results;
+	}
+	
+	public SortedSet<StationTrafficEntry> findDeparturesSinceHour(Station station, LocalDateTime dateTime, int limit) {
+		final StationTraffic traffic = getOrCreateStationTraffic(station.getId(), dateTime.toLocalDate());
+		final SortedSet<StationTrafficEntry> results = new TreeSet<>();
+		int i = 0;
+		for (int j = dateTime.getHour(); j < 23; j++) {
+			for (StationTrafficEntry entry : traffic.getDeparturesInHour(j)) {
+				results.add(entry);
+				if (i++ >= limit) {
+					return results;
+				}
+			}
+		}
+		return results;
 	}
 	
 	private void addLineToTrafficIndex(LineLiveData line) {

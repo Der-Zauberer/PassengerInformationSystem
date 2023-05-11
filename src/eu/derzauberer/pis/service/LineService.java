@@ -11,9 +11,12 @@ import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.model.LineLiveData;
 import eu.derzauberer.pis.model.LineStop;
+import eu.derzauberer.pis.model.LineStopLiveData;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.model.StationTraffic;
 import eu.derzauberer.pis.model.StationTrafficEntry;
+import eu.derzauberer.pis.model.TrainType;
+import eu.derzauberer.pis.model.TrainType.TrainClassifican;
 import eu.derzauberer.pis.repositories.Repository;
 
 @Service
@@ -26,6 +29,8 @@ public class LineService {
 	public LineService(Repository<LineLiveData> lineRepository, Repository<StationTraffic> stationTrafficRepository) {
 		this.lineRepository = lineRepository;
 		this.stationTrafficRepository = stationTrafficRepository;
+		final LineLiveData line = new LineLiveData("0fc45a", new TrainType("RE", "RE", TrainClassifican.PASSENGER_REGIONAL), 2);
+		line.addStop(new LineStopLiveData(null, 0, null, null));
 	}
 	
 	public void add(LineLiveData line) {

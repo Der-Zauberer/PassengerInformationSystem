@@ -23,7 +23,7 @@ public class LineService {
 	private final Repository<StationTraffic> stationTrafficRepository;
 	
 	@Autowired
-	public LineService(Repository<LineLiveData> lineRepository, Repository<StationTraffic> stationTrafficRepository) {
+	public LineService(Repository<LineLiveData> lineRepository, Repository<StationTraffic> stationTrafficRepository) throws InterruptedException {
 		this.lineRepository = lineRepository;
 		this.stationTrafficRepository = stationTrafficRepository;
 	}
@@ -99,6 +99,10 @@ public class LineService {
 			i += traffic.getDeparturesInHour(j).size();
 		}
 		return i;
+	}
+	
+	public String createLineId() {
+		return String.format("%08x", Long.valueOf(System.nanoTime()).toString().hashCode());
 	}
 	
 	private void addLineToTrafficIndex(LineLiveData line) {

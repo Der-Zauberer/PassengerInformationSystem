@@ -32,7 +32,7 @@ public class TypeController {
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit,
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset
 			) {
-		return new ListDto<>(typeService.getTypes(), limit == -1 ? typeService.size() : limit, offset);
+		return new ListDto<>(typeService.getList(), limit == -1 ? typeService.size() : limit, offset);
 	}
 
 	@GetMapping("{id}")

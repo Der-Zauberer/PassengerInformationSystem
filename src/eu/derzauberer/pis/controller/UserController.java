@@ -32,7 +32,7 @@ public class UserController {
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit,
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset
 			) {
-		return new ListDto<>(userService.getUsers(), limit == -1 ? userService.size() : limit, offset);
+		return new ListDto<>(userService.getList(), limit == -1 ? userService.size() : limit, offset);
 	}
 	
 	@GetMapping("{id}")

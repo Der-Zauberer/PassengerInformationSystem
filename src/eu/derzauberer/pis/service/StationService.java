@@ -3,7 +3,6 @@ package eu.derzauberer.pis.service;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
 
@@ -17,7 +16,7 @@ import eu.derzauberer.pis.repositories.Repository;
 import eu.derzauberer.pis.util.SearchTree;
 
 @Service
-public class StationService {
+public class StationService extends EntityService<Station> {
 	
 	private final Repository<Station> stationRepository;
 	private final Repository<StationTraffic> stationTrafficRepository;
@@ -25,37 +24,24 @@ public class StationService {
 	
 	@Autowired
 	public StationService(Repository<Station> stationRepository, Repository<StationTraffic> stationTrafficRepository) {
+		super(stationRepository);
 		this.stationRepository = stationRepository;
 		this.stationTrafficRepository = stationTrafficRepository;
 		this.search = new SearchTree<>(stationRepository);
 		stationRepository.getList().forEach(search::add);
 	}
 	
+	@Override
 	public void add(Station station) {
 		stationRepository.add(station);
 		search.remove(station);
 		search.add(station);
 	}
 	
+	@Override
 	public boolean removeById(String stationId) {
 		search.removeById(stationId);
 		return stationRepository.removeById(stationId);
-	}
-	
-	public boolean containsById(String stationId) {
-		return stationRepository.containsById(stationId);
-	}
-	
-	public Optional<Station> getById(String stationId) {
-		return stationRepository.getById(stationId);
-	}
-	
-	public List<Station> getStations() {
-		return stationRepository.getList();
-	}
-	
-	public int size() {
-		return stationRepository.size();
 	}
 	
 	public List<Station> searchByName(String name) {

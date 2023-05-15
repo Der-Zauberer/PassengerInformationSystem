@@ -2,7 +2,6 @@ package eu.derzauberer.pis.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -17,17 +16,19 @@ import eu.derzauberer.pis.model.StationTrafficEntry;
 import eu.derzauberer.pis.repositories.Repository;
 
 @Service
-public class LineService {
+public class LineService extends EntityService<LineLiveData> {
 	
 	private final Repository<LineLiveData> lineRepository;
 	private final Repository<StationTraffic> stationTrafficRepository;
 	
 	@Autowired
 	public LineService(Repository<LineLiveData> lineRepository, Repository<StationTraffic> stationTrafficRepository) throws InterruptedException {
+		super(lineRepository);
 		this.lineRepository = lineRepository;
 		this.stationTrafficRepository = stationTrafficRepository;
 	}
 	
+	@Override
 	public void add(LineLiveData line) {
 		if (lineRepository.containsById(line.getId())) {
 			removeLineToTrafficIndex(line);
@@ -36,21 +37,10 @@ public class LineService {
 		addLineToTrafficIndex(line);
 	}
 	
+	@Override
 	public boolean removeById(String lineId) {
 		lineRepository.getById(lineId).ifPresent(this::removeLineToTrafficIndex);
 		return lineRepository.removeById(lineId);
-	}
-	
-	public boolean containsById(String lineId) {
-		return lineRepository.containsById(lineId);
-	}
-	
-	public Optional<LineLiveData> getById(String lineId) {
-		return lineRepository.getById(lineId);
-	}
-	
-	public int size() {
-		return lineRepository.size();
 	}
 	
 	public SortedSet<StationTrafficEntry> findArrivalsSinceHour(Station station, LocalDateTime dateTime, int limit) {

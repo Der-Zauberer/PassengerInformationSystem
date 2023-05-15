@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.controller.api;
+package eu.derzauberer.pis.controller;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ import eu.derzauberer.pis.service.StationService;
 
 @RestController
 @RequestMapping("/api/stations")
-public class ApiStationController {
+public class StationController {
 	
 	@Autowired
 	private StationService stationService;

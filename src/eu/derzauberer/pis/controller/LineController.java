@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.controller.api;
+package eu.derzauberer.pis.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,7 +25,7 @@ import eu.derzauberer.pis.service.StationService;
 
 @RestController
 @RequestMapping("/api/lines")
-public class ApiLineController {
+public class LineController {
 	
 	@Autowired
 	private LineService lineService;

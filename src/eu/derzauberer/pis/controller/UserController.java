@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.controller.api;
+package eu.derzauberer.pis.controller;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import eu.derzauberer.pis.service.UserService;
 
 @RestController
 @RequestMapping("/api/users")
-public class ApiUserController {
+public class UserController {
 	
 	@Autowired
 	private UserService userService;

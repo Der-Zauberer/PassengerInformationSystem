@@ -6,11 +6,11 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import eu.derzauberer.pis.main.Pis;
+import eu.derzauberer.pis.configuration.UserConfiguration;
 import eu.derzauberer.pis.model.Location;
 import eu.derzauberer.pis.model.NameEntity;
 import eu.derzauberer.pis.model.Station;
-import eu.derzauberer.pis.repositories.Repository;
+import eu.derzauberer.pis.service.StationService;
 import eu.derzauberer.pis.util.HttpRequest;
 import eu.derzauberer.pis.util.ProgressStatus;
 
@@ -18,17 +18,24 @@ public class DbRisStationsDownloader {
 	
 	private static final String NAME = "db/ris::stations";
 	private static final String URL = "https://apis.deutschebahn.com/db-api-marketplace/apis/ris-stations/v1/stations";
-	private static final Logger LOGGER = LoggerFactory.getLogger(DbRisStationsDownloader.class);
-	private final Repository<Station> repository = (Repository<Station>) Pis.getRepository("stations", Station.class);
+	private final Logger logger = LoggerFactory.getLogger(DbRisStationsDownloader.class);
+	private final UserConfiguration config;
+	private final StationService stationService;
 	
-	public DbRisStationsDownloader() {
-		LOGGER.info("Downloading {} from {}", NAME, URL);
+	public DbRisStationsDownloader(UserConfiguration config, StationService stationService) {
+		this.config = config;
+		this.stationService = stationService;
+		download();
+	}
+	
+	private void download() {
+		logger.info("Downloading {} from {}", NAME, URL);
 		final HttpRequest request = new HttpRequest();
 		request.setUrl(URL);
 		request.getParameter().put("limit","10000");
-		request.getHeader().put("DB-Client-Id", Pis.getUserConfig().getDbClientId());
-		request.getHeader().put("DB-Api-Key", Pis.getUserConfig().getDbApiKey());
-		request.setExceptionAction(exception -> LOGGER.error("Downloading {} from {} failed: {} {}", repository.getName(), NAME, exception.getClass().getSimpleName(), exception.getMessage()));
+		request.getHeader().put("DB-Client-Id", config.getDbClientId());
+		request.getHeader().put("DB-Api-Key", config.getDbApiKey());
+		request.setExceptionAction(exception -> logger.error("Downloading {} from {} failed: {} {}", stationService.getName(), NAME, exception.getClass().getSimpleName(), exception.getMessage()));
 		request.request().map(this::logDownloadProcessing).map(HttpRequest::mapToJson).ifPresent(this::saveAll);
 	}
 	
@@ -37,7 +44,7 @@ public class DbRisStationsDownloader {
 		int counter = 0;
 		for (JsonNode node : json.withArray("stations")) {
 			final String name = node.at("/names/DE/name").asText();
-			final Station station = repository.getById(NameEntity.nameToId(name)).orElse(new Station(name));
+			final Station station = stationService.getById(NameEntity.nameToId(name)).orElse(new Station(name));
 			if (node.at("/owner/name").asText().equalsIgnoreCase("DB S&S")) {
 				station.getOrCreateAdress().setName("DB Station&Service AG");
 			} else {
@@ -58,13 +65,13 @@ public class DbRisStationsDownloader {
 			station.getOrCreateApiInformation().addSource(URL);
 			progress.count();
 			counter++;
-			repository.add(station);
+			stationService.add(station);
 		}
-		LOGGER.info("Downloaded {} stations from {}", counter, NAME, URL);
+		logger.info("Downloaded {} stations from {}", counter, NAME, URL);
 	}
 	
 	private String logDownloadProcessing(String string) {
-		LOGGER.info("Processing {}", NAME);
+		logger.info("Processing {}", NAME);
 		return string;
 	}
 	

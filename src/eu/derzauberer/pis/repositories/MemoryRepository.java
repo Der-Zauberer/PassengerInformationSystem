@@ -16,7 +16,7 @@ import eu.derzauberer.pis.model.Entity;
 public class MemoryRepository<T extends Entity<T>> extends Repository<T>{
 	
 	private final Map<String, T> entities = new TreeMap<>();
-	private static final ModelMapper MODEL_MAPPER = Pis.getSpringConfig().getModelMapper();
+	private static final ModelMapper MODEL_MAPPER = Pis.getSpringConfiguration().getModelMapper();
 	protected static final Logger LOGGER = LoggerFactory.getLogger(MemoryRepository.class);
 	
 	public MemoryRepository(String name, Class<T> type) {

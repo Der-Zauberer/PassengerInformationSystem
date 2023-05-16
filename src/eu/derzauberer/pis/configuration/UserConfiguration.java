@@ -7,12 +7,14 @@ import java.nio.file.Paths;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import eu.derzauberer.pis.main.Pis;
 
+@Component
 public class UserConfiguration {
 	
 	private ObjectNode config;
@@ -20,22 +22,21 @@ public class UserConfiguration {
 	
 	private static final String DB_CLIENT_ID = "db-client-id";
 	private static final String DB_API_KEY = "db-api-key";
-	
-	private static final ObjectMapper MAPPER = Pis.getSpringConfig().getObjectMapper();
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserConfiguration.class.getSimpleName());
+	private static final ObjectMapper mapper = Pis.getSpringConfiguration().getObjectMapper();
 	
 	public UserConfiguration() {
 		try {
 			if (!Files.exists(path)) {
-				config = MAPPER.createObjectNode();
+				config = mapper.createObjectNode();
 				setDbClientId("");
 				setDbApiKey("");
 			} else {
 				final String content = Files.readString(path);
-				config = MAPPER.readValue(content.toString(), ObjectNode.class);
+				config = mapper.readValue(content.toString(), ObjectNode.class);
 			}
 		} catch (IOException exception) {
-			config = MAPPER.createObjectNode();
+			config = mapper.createObjectNode();
 			LOGGER.warn("Failed to laod config.json: {} {}", exception.getClass(), exception.getMessage());
 		}
 	}
@@ -60,7 +61,7 @@ public class UserConfiguration {
 	
 	private void save() {
 		try {
-			final String content = MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(config);
+			final String content = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(config);
 			Files.writeString(path, content);
 		} catch (IOException exception) {
 			LOGGER.warn("Failed to save config.json: {} {}", exception.getClass(), exception.getMessage());

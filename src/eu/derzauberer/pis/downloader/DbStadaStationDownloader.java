@@ -10,11 +10,11 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import eu.derzauberer.pis.main.Pis;
+import eu.derzauberer.pis.configuration.UserConfiguration;
 import eu.derzauberer.pis.model.Location;
 import eu.derzauberer.pis.model.NameEntity;
 import eu.derzauberer.pis.model.Station;
-import eu.derzauberer.pis.repositories.Repository;
+import eu.derzauberer.pis.service.StationService;
 import eu.derzauberer.pis.util.HttpRequest;
 import eu.derzauberer.pis.util.ProgressStatus;
 
@@ -22,16 +22,23 @@ public class DbStadaStationDownloader {
 	
 	private static final String NAME = "db/stada";
 	private static final String URL = "https://apis.deutschebahn.com/db-api-marketplace/apis/station-data/v2/stations";
-	private static final Logger LOGGER = LoggerFactory.getLogger(DbStadaStationDownloader.class);
-	private final Repository<Station> repository = (Repository<Station>) Pis.getRepository("stations", Station.class);
+	private final Logger logger = LoggerFactory.getLogger(DbStadaStationDownloader.class);
+	private final UserConfiguration config;
+	private final StationService stationService;
 	
-	public DbStadaStationDownloader() {
-		LOGGER.info("Downloading {} from {}", NAME, URL);
+	public DbStadaStationDownloader(UserConfiguration config, StationService stationService) {
+		this.config = config;
+		this.stationService = stationService;
+		download();
+	}
+	
+	private void download() {
+		logger.info("Downloading {} from {}", NAME, URL);
 		final HttpRequest request = new HttpRequest();
 		request.setUrl(URL);
-		request.getHeader().put("DB-Client-Id", Pis.getUserConfig().getDbClientId());
-		request.getHeader().put("DB-Api-Key", Pis.getUserConfig().getDbApiKey());
-		request.setExceptionAction(exception -> LOGGER.error("Downloading {} from {} failed: {} {}", repository.getName(), NAME, exception.getClass().getSimpleName(), exception.getMessage()));
+		request.getHeader().put("DB-Client-Id", config.getDbClientId());
+		request.getHeader().put("DB-Api-Key", config.getDbApiKey());
+		request.setExceptionAction(exception -> logger.error("Downloading {} from {} failed: {} {}", stationService.getName(), NAME, exception.getClass().getSimpleName(), exception.getMessage()));
 		request.request().map(this::logDownloadProcessing).map(HttpRequest::mapToJson).ifPresent(this::saveAll);
 	}
 	
@@ -41,7 +48,7 @@ public class DbStadaStationDownloader {
 		int counter = 0;
 		for (JsonNode node : json.withArray("result")) {
 			final String name = node.get("name").asText();
-			final Station station = repository.getById(NameEntity.nameToId(name)).orElse(new Station(name));
+			final Station station = stationService.getById(NameEntity.nameToId(name)).orElse(new Station(name));
 			station.getOrCreateAdress().setStreet(node.at("/mailingAddress/street").asText());
 			station.getOrCreateAdress().setPostalCode(node.at("/mailingAddress/zipcode").asInt());
 			station.getOrCreateAdress().setCity(node.at("/mailingAddress/city").asText());
@@ -74,16 +81,16 @@ public class DbStadaStationDownloader {
 			station.getOrCreateApiInformation().addSource(URL);
 			progress.count();
 			counter++;
-			repository.add(station);
+			stationService.add(station);
 		}
 		for (String warn : warns) {
-			LOGGER.warn(warn);
+			logger.warn(warn);
 		}
-		LOGGER.info("Downloaded {} stations from {}", counter, NAME, URL);
+		logger.info("Downloaded {} stations from {}", counter, NAME, URL);
 	}
 	
 	private String logDownloadProcessing(String string) {
-		LOGGER.info("Processing {}", NAME);
+		logger.info("Processing {}", NAME);
 		return string;
 	}
 	

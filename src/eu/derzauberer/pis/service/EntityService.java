@@ -15,6 +15,10 @@ public abstract class EntityService<T extends Entity<T>> {
 		this.repository = repository;
 	}
 	
+	public String getName() {
+		return repository.getName();
+	}
+	
 	public void add(T entity) {
 		repository.add(entity);
 	}

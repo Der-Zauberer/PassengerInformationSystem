@@ -7,9 +7,13 @@ public class LineStop {
 	
 	private final String stationId;
 	private final int platform;
+	private int changedPlatform;
 	private final String platfromArea;
+	private String changedPlatfromArea;
 	private final LocalDateTime arrival;
 	private final LocalDateTime departure;
+	private int delay;
+	private boolean cancelled;
 	
 	public LineStop(String stationId, int platform, String platfromArea, LocalDateTime departure) {
 		this.stationId = stationId;
@@ -36,8 +40,24 @@ public class LineStop {
 		return platform;
 	}
 	
+	public int getChangedPlatform() {
+		return changedPlatform;
+	}
+	
+	public void setChangedPlatform(int changedPlatform) {
+		this.changedPlatform = changedPlatform;
+	}
+	
 	public String getPlatfromArea() {
 		return platfromArea;
+	}
+	
+	public String getChangedPlatfromArea() {
+		return changedPlatfromArea;
+	}
+	
+	public void setChangedPlatfromArea(String changedPlatfromArea) {
+		this.changedPlatfromArea = changedPlatfromArea;
 	}
 	
 	public LocalDateTime getArrival() {
@@ -46,6 +66,14 @@ public class LineStop {
 	
 	public LocalDateTime getDeparture() {
 		return departure;
+	}
+	
+	public int getDelay() {
+		return delay;
+	}
+	
+	public boolean isCancelled() {
+		return cancelled;
 	}
 
 }

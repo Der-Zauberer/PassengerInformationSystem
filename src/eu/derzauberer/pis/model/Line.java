@@ -1,32 +1,59 @@
 package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class Line<T extends LineStop> {
+public class Line implements Entity<Line>, NameEntity {
 	
 	private final String id;
+	private final String routeId;
+	private String name;
 	private TrainType type;
 	private int number;
 	private String operatorId;
-	private List<T> stops;
+	private String driver;
+	private boolean cancelled;
+	private Integer position;
+	private List<LineStop> stops;
 	private ApiInformation api;
 	
-	@ConstructorProperties({ "id", "type", "number" })
-	public Line(String id, TrainType type, int number) {
+	private Line(String id, Route route, LocalDateTime departure) {
 		this.id = id;
+		this.routeId = route.getId();
+		this.name = route.getName();
+		this.type = route.getType();
+		this.number = route.getNumber();
+		this.operatorId = route.getOperatorId();
+		// TODO LineStop
+	}
+	
+	@ConstructorProperties({ "id", "routeId", "type", "number" })
+	private Line(String id, String routeId, TrainType type, int number) {
+		this.id = id;
+		this.routeId = routeId;
 		this.type = type;
 		this.number = number;
 	}
 
+	@Override
 	public String getId() {
 		return id;
 	}
+	
+	public String getRouteId() {
+		return routeId;
+	}
 
+	@Override
 	public String getName() {
-		return type.getId() + number;
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	public TrainType getType() {
@@ -53,14 +80,38 @@ public abstract class Line<T extends LineStop> {
 		this.operatorId = operatorId;
 	}
 	
-	public void addStop(T stop) {
+	public String getDriver() {
+		return driver;
+	}
+	
+	public void setDriver(String driver) {
+		this.driver = driver;
+	}
+	
+	public boolean isCancelled() {
+		return cancelled;
+	}
+	
+	public void setCancelled(boolean cancelled) {
+		this.cancelled = cancelled;
+	}
+	
+	public Integer getPosition() {
+		return position;
+	}
+	
+	public void setPosition(Integer position) {
+		this.position = position;
+	}
+	
+	public void addStop(LineStop stop) {
 		if (stops == null) stops = new ArrayList<>();
 		stops.add(stop);
 	}
 	
-	public void addStop(int position, T stop) {
+	public void addStop(int position, LineStop stop) {
 		if (stops == null) { 
-			final List<T> newStops = new ArrayList<>();
+			final List<LineStop> newStops = new ArrayList<>();
 			newStops.set(position, stop);
 			stops = newStops;
 		} else {
@@ -68,7 +119,7 @@ public abstract class Line<T extends LineStop> {
 		}
 	}
 	
-	public void removeStop(T stop) {
+	public void removeStop(LineStop stop) {
 		if (stops.isEmpty()) return;
 		stops.remove(stop);
 		if (stops.isEmpty()) stop = null;
@@ -86,11 +137,11 @@ public abstract class Line<T extends LineStop> {
 		if (stops.isEmpty()) stops = null;
 	}
 	
-	public T getStop(String stationId) {
+	public LineStop getStop(String stationId) {
 		return stops.stream().filter(stop -> stop.getStationId().equals(stationId)).findAny().orElse(null);
 	}
 	
-	public T getStop(int position) {
+	public LineStop getStop(int position) {
 		return stops.get(position);
 	}
 	
@@ -98,15 +149,15 @@ public abstract class Line<T extends LineStop> {
 		return stops != null ? stops.size() : 0;
 	}
 	
-	public T getFirstStop() {
+	public LineStop getFirstStop() {
 		return stops != null && !stops.isEmpty() ? stops.get(0) : null;
 	}
 	
-	public T getLastStop() {
+	public LineStop getLastStop() {
 		return stops != null && !stops.isEmpty() ? stops.get(stops.size() - 1) : null;
 	}
 	
-	public List<T> getStops() {
+	public List<LineStop> getStops() {
 		return Collections.unmodifiableList(stops != null ? stops : new ArrayList<>());
 	}
 	

@@ -11,7 +11,9 @@ public class Route implements Entity<Route>, NameEntity {
 	private String name;
 	private TrainType type;
 	private int number;
+	private String operatorId;
 	private List<RouteStop> stops;
+	private LineScedule scedule;
 	private ApiInformation api;
 	
 	@ConstructorProperties({ "id", "name", "type" , "number"})
@@ -20,6 +22,7 @@ public class Route implements Entity<Route>, NameEntity {
 		this.name = name;
 		this.type = type;
 		this.number = number;
+		this.scedule = new LineScedule();
 	}
 	
 	@Override
@@ -50,6 +53,14 @@ public class Route implements Entity<Route>, NameEntity {
 	
 	public void setNumber(int number) {
 		this.number = number;
+	}
+	
+	public String getOperatorId() {
+		return operatorId;
+	}
+	
+	public void setOperatorId(String operatorId) {
+		this.operatorId = operatorId;
 	}
 	
 	public void addStop(RouteStop stop) {
@@ -107,6 +118,10 @@ public class Route implements Entity<Route>, NameEntity {
 	
 	public List<RouteStop> getStops() {
 		return Collections.unmodifiableList(stops != null ? stops : new ArrayList<>());
+	}
+	
+	public LineScedule getScedule() {
+		return scedule;
 	}
 	
 	public ApiInformation getApiInformation() {

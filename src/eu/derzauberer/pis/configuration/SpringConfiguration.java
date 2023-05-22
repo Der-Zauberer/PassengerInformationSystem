@@ -25,6 +25,7 @@ import eu.derzauberer.pis.configuration.SerializationConfiguration.PrettyPrinter
 import eu.derzauberer.pis.configuration.SerializationConfiguration.TimeDeserializer;
 import eu.derzauberer.pis.configuration.SerializationConfiguration.TimeSerializer;
 import eu.derzauberer.pis.model.Line;
+import eu.derzauberer.pis.model.Route;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.model.StationTraffic;
 import eu.derzauberer.pis.model.TrainOperator;
@@ -84,6 +85,11 @@ public class SpringConfiguration {
 	@Bean
 	public Repository<TrainOperator> getOperatorRepository() {
 		return new MemoryRepository<>("operators", TrainOperator.class);
+	}
+	
+	@Bean
+	public Repository<Route> getRouteRepository() {
+		return new MemoryRepository<>("routes", Route.class);
 	}
 	
 	@Bean

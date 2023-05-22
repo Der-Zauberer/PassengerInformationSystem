@@ -8,7 +8,7 @@ import java.util.TreeSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import eu.derzauberer.pis.model.LineLiveData;
+import eu.derzauberer.pis.model.Line;
 import eu.derzauberer.pis.model.LineStop;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.model.StationTraffic;
@@ -16,20 +16,20 @@ import eu.derzauberer.pis.model.StationTrafficEntry;
 import eu.derzauberer.pis.repositories.Repository;
 
 @Service
-public class LineService extends EntityService<LineLiveData> {
+public class LineService extends EntityService<Line> {
 	
-	private final Repository<LineLiveData> lineRepository;
+	private final Repository<Line> lineRepository;
 	private final Repository<StationTraffic> stationTrafficRepository;
 	
 	@Autowired
-	public LineService(Repository<LineLiveData> lineRepository, Repository<StationTraffic> stationTrafficRepository) throws InterruptedException {
+	public LineService(Repository<Line> lineRepository, Repository<StationTraffic> stationTrafficRepository) throws InterruptedException {
 		super(lineRepository);
 		this.lineRepository = lineRepository;
 		this.stationTrafficRepository = stationTrafficRepository;
 	}
 	
 	@Override
-	public void add(LineLiveData line) {
+	public void add(Line line) {
 		if (lineRepository.containsById(line.getId())) {
 			removeLineToTrafficIndex(line);
 		}
@@ -95,7 +95,7 @@ public class LineService extends EntityService<LineLiveData> {
 		return String.format("%08x", Long.valueOf(System.nanoTime()).toString().hashCode());
 	}
 	
-	private void addLineToTrafficIndex(LineLiveData line) {
+	private void addLineToTrafficIndex(Line line) {
 		int i = 0;
 		for (LineStop stop : line.getStops()) {
 			final StationTraffic arrivalStationTraffic = getOrCreateStationTraffic(stop.getStationId(), stop.getDeparture().toLocalDate());
@@ -107,7 +107,7 @@ public class LineService extends EntityService<LineLiveData> {
 		}
 	}
 	
-	private void removeLineToTrafficIndex(LineLiveData line) {
+	private void removeLineToTrafficIndex(Line line) {
 		for (LineStop stop : line.getStops()) {
 			final StationTraffic arrivalStationTraffic = getOrCreateStationTraffic(stop.getStationId(), stop.getDeparture().toLocalDate());
 			arrivalStationTraffic.removeArrival(stop.getArrival().toLocalTime(), line.getId());

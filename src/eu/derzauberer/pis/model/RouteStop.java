@@ -1,31 +1,30 @@
 package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
-import java.time.LocalDateTime;
 
 public class RouteStop {
 	
 	private final String stationId;
 	private final int platform;
 	private final String platfromArea;
-	private final LocalDateTime arrival;
-	private final LocalDateTime departure;
+	private final int arrivalMinutesSinceStart;
+	private final int departureMinutesSinceStart;
 	
-	public RouteStop(String stationId, int platform, String platfromArea, LocalDateTime departure) {
+	public RouteStop(String stationId, int platform, String platfromArea, int departureMinutesSinceStart) {
 		this.stationId = stationId;
 		this.platform = platform;
 		this.platfromArea = platfromArea;
-		this.arrival = departure;
-		this.departure = departure;
+		this.arrivalMinutesSinceStart = departureMinutesSinceStart;
+		this.departureMinutesSinceStart = departureMinutesSinceStart;
 	}
 	
-	@ConstructorProperties({"stationId", "platform", "platfromArea", "arrival", "departure"})
-	public RouteStop(String stationId, int platform, String platfromArea, LocalDateTime arrival, LocalDateTime departure) {
+	@ConstructorProperties({"stationId", "platform", "platfromArea", "arrivalMinutesSinceStart", "departureMinutesSinceStart"})
+	public RouteStop(String stationId, int platform, String platfromArea, int arrivalMinutesSinceStart, int departureMinutesSinceStart) {
 		this.stationId = stationId;
 		this.platform = platform;
 		this.platfromArea = platfromArea;
-		this.arrival = arrival;
-		this.departure = departure;
+		this.arrivalMinutesSinceStart = arrivalMinutesSinceStart;
+		this.departureMinutesSinceStart = departureMinutesSinceStart;
 	}
 	
 	public String getStationId() {
@@ -40,12 +39,12 @@ public class RouteStop {
 		return platfromArea;
 	}
 	
-	public LocalDateTime getArrival() {
-		return arrival;
+	public int getArrivalMinutesSinceStart() {
+		return arrivalMinutesSinceStart;
 	}
 	
-	public LocalDateTime getDeparture() {
-		return departure;
+	public int getDepartureMinutesSinceStart() {
+		return departureMinutesSinceStart;
 	}
 
 }

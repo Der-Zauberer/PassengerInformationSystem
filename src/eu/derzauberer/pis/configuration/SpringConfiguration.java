@@ -24,7 +24,7 @@ import eu.derzauberer.pis.configuration.SerializationConfiguration.DateTimeSeria
 import eu.derzauberer.pis.configuration.SerializationConfiguration.PrettyPrinter;
 import eu.derzauberer.pis.configuration.SerializationConfiguration.TimeDeserializer;
 import eu.derzauberer.pis.configuration.SerializationConfiguration.TimeSerializer;
-import eu.derzauberer.pis.model.LineLiveData;
+import eu.derzauberer.pis.model.Line;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.model.StationTraffic;
 import eu.derzauberer.pis.model.TrainOperator;
@@ -77,8 +77,8 @@ public class SpringConfiguration {
 	}
 	
 	@Bean
-	public Repository<LineLiveData> getLineRepository() {
-		return new FileRepository<>("lines", LineLiveData.class);
+	public Repository<Line> getLineRepository() {
+		return new FileRepository<>("lines", Line.class);
 	}
 	
 	@Bean

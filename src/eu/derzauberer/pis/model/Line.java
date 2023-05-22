@@ -27,7 +27,16 @@ public class Line implements Entity<Line>, NameEntity {
 		this.type = route.getType();
 		this.number = route.getNumber();
 		this.operatorId = route.getOperatorId();
-		// TODO LineStop
+		this.stops = new ArrayList<>();
+		for (RouteStop stop : route.getStops()) {
+			final LineStop lineStop = new LineStop(
+					stop.getStationId(), 
+					stop.getPlatform(), 
+					stop.getPlatfromArea(),
+					departure.plusMinutes(stop.getArrivalMinutesSinceStart()),
+					departure.plusMinutes(stop.getDepartureMinutesSinceStart()));
+			stops.add(lineStop);
+		}
 	}
 	
 	@ConstructorProperties({ "id", "routeId", "type", "number" })

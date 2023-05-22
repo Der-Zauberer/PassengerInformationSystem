@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import eu.derzauberer.pis.dto.ListDto;
-import eu.derzauberer.pis.model.LineLiveData;
+import eu.derzauberer.pis.model.Line;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.model.StationTrafficEntry;
 import eu.derzauberer.pis.service.LineService;
@@ -68,19 +68,19 @@ public class LineController {
 	}
 	
 	@GetMapping("{id}")
-	public LineLiveData getLine(@PathVariable("id") String id) {
+	public Line getLine(@PathVariable("id") String id) {
 		return lineService.getById(id).orElseThrow(() -> getNotFoundException("Line", id));
 	}
 	
 	@PostMapping
-	public LineLiveData setLine(LineLiveData line) {
+	public Line setLine(Line line) {
 		lineService.add(line);
 		return line;
 	}
 	
 	@PutMapping
-	public LineLiveData updateLine(LineLiveData line) {
-		final LineLiveData existingLine = lineService.getById(line.getId()).orElseThrow(() -> getNotFoundException("Line", line.getId()));
+	public Line updateLine(Line line) {
+		final Line existingLine = lineService.getById(line.getId()).orElseThrow(() -> getNotFoundException("Line", line.getId()));
 		modelMapper.map(line, existingLine);
 		return existingLine;
 	}

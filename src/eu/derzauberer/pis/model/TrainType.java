@@ -13,7 +13,7 @@ public class TrainType implements Entity<TrainType>, NameEntity {
 	private final String id;
 	private final String name;
 	private final TrainClassifican classification;
-	private int backgourndColor;
+	private int backgroundColor;
 	private int textColor;
 	private ApiInformation api;
 	
@@ -22,7 +22,7 @@ public class TrainType implements Entity<TrainType>, NameEntity {
 		this.id = id;
 		this.name = name;
 		this.classification = classification;
-		this.backgourndColor = 0x000000;
+		this.backgroundColor = 0x000000;
 		this.textColor = 0xffffff;
 	}
 	
@@ -39,12 +39,12 @@ public class TrainType implements Entity<TrainType>, NameEntity {
 		return classification;
 	}
 	
-	public int getBackgourndColor() {
-		return backgourndColor;
+	public int getBackgroundColor() {
+		return backgroundColor;
 	}
 	
-	public void setBackgourndColor(int backgourndColor) {
-		this.backgourndColor = backgourndColor;
+	public void setBackgroundColor(int backgroundColor) {
+		this.backgroundColor = backgroundColor;
 	}
 	
 	public int getTextColor() {

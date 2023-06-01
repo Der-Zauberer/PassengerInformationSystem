@@ -5,6 +5,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
@@ -36,7 +39,18 @@ import eu.derzauberer.pis.repositories.MemoryRepository;
 import eu.derzauberer.pis.repositories.Repository;
 
 @Configuration
-public class SpringConfiguration {
+public class SpringConfiguration implements ApplicationContextAware {
+	
+	private static ApplicationContext applicationContext;
+	
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		SpringConfiguration.applicationContext = applicationContext;
+	}
+	
+	public static <T> T getBean(Class<T> bean) {
+        return applicationContext.getBean(bean);
+    }
 
 	@Bean
 	public Jackson2ObjectMapperBuilder getJsonMapperBuilder() {

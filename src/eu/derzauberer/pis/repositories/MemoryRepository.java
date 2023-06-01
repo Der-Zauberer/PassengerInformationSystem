@@ -10,15 +10,16 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.derzauberer.pis.main.Pis;
+import eu.derzauberer.pis.configuration.SpringConfiguration;
 import eu.derzauberer.pis.model.Entity;
 
 public class MemoryRepository<T extends Entity<T>> extends Repository<T>{
 	
 	private final Map<String, T> entities = new TreeMap<>();
-	private static final ModelMapper MODEL_MAPPER = Pis.getSpringConfiguration().getModelMapper();
-	protected static final Logger LOGGER = LoggerFactory.getLogger(MemoryRepository.class);
 	
+	private static final ModelMapper MODEL_MAPPER = SpringConfiguration.getBean(ModelMapper.class);
+	protected static final Logger LOGGER = LoggerFactory.getLogger(MemoryRepository.class);
+
 	public MemoryRepository(String name, Class<T> type) {
 		super(name, type, LOGGER);
 		final List<T> entities = loadEntities(true);

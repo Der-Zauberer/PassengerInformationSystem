@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import eu.derzauberer.pis.main.Pis;
+import eu.derzauberer.pis.configuration.SpringConfiguration;
 import eu.derzauberer.pis.model.Entity;
 import eu.derzauberer.pis.util.ProgressStatus;
 
@@ -27,8 +27,7 @@ public abstract class Repository<T extends Entity<T>> {
 	
 	protected static final String DIRECTORY = "data";
 	protected static final String FILE_TYPE = ".json";
-	protected static final ObjectMapper OBJECT_MAPPER = Pis.getSpringConfiguration().getObjectMapper();
-	
+	private static final ObjectMapper OBJECT_MAPPER = SpringConfiguration.getBean(ObjectMapper.class);
 	
 	public Repository(String name, Class<T> type, Logger logger) {
 		this.name = name;

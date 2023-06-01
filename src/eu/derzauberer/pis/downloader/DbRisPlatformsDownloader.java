@@ -5,6 +5,7 @@ import java.util.TreeSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -18,12 +19,14 @@ import eu.derzauberer.pis.util.ProgressStatus;
 
 public class DbRisPlatformsDownloader {
 	
-	private static final String NAME = "db/ris::platforms";
-	private static final String URL = "https://apis.deutschebahn.com/db-api-marketplace/apis/ris-stations/v1/platforms/by-key";
-	private final Logger logger = LoggerFactory.getLogger(DbRisPlatformsDownloader.class);
 	private final UserConfiguration config;
 	private final StationService stationService;
 	
+	private static final String NAME = "db/ris::platforms";
+	private static final String URL = "https://apis.deutschebahn.com/db-api-marketplace/apis/ris-stations/v1/platforms/by-key";
+	private static final Logger LOGGER = LoggerFactory.getLogger(DbRisPlatformsDownloader.class);
+	
+	@Autowired
 	public DbRisPlatformsDownloader(UserConfiguration config, StationService stationService) {
 		this.config = config;
 		this.stationService = stationService;
@@ -31,12 +34,12 @@ public class DbRisPlatformsDownloader {
 	}
 	
 	private void download() {
-		logger.info("Downloading {} from {}", NAME, URL);
+		LOGGER.info("Downloading {} from {}", NAME, URL);
 		final HttpRequest request = new HttpRequest();
 		request.setUrl(URL);
 		request.getHeader().put("DB-Client-Id", config.getDbClientId());
 		request.getHeader().put("DB-Api-Key", config.getDbApiKey());
-		request.setExceptionAction(exception -> logger.error("Downloading {} from {} failed: {} {}", stationService.getName(), NAME, exception.getClass().getSimpleName(), exception.getMessage()));
+		request.setExceptionAction(exception -> LOGGER.error("Downloading {} from {} failed: {} {}", stationService.getName(), NAME, exception.getClass().getSimpleName(), exception.getMessage()));
 		final List<Station> stations = stationService.getList();
 		int counter = 0;
 		long millis = System.currentTimeMillis();
@@ -54,7 +57,7 @@ public class DbRisPlatformsDownloader {
 			progress.count(station.getId());
 			counter++;
 		}
-		logger.info("Downloaded {} stations platforms from {}", counter, NAME, URL);
+		LOGGER.info("Downloaded {} stations platforms from {}", counter, NAME, URL);
 	}
 	
 	private void save(Station station, ObjectNode json) {

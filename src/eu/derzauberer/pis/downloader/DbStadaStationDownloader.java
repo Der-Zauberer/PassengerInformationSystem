@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -20,12 +21,14 @@ import eu.derzauberer.pis.util.ProgressStatus;
 
 public class DbStadaStationDownloader {
 	
-	private static final String NAME = "db/stada";
-	private static final String URL = "https://apis.deutschebahn.com/db-api-marketplace/apis/station-data/v2/stations";
-	private final Logger logger = LoggerFactory.getLogger(DbStadaStationDownloader.class);
 	private final UserConfiguration config;
 	private final StationService stationService;
 	
+	private static final String NAME = "db/stada";
+	private static final String URL = "https://apis.deutschebahn.com/db-api-marketplace/apis/station-data/v2/stations";
+	private static final Logger LOGGER = LoggerFactory.getLogger(DbStadaStationDownloader.class);
+	
+	@Autowired
 	public DbStadaStationDownloader(UserConfiguration config, StationService stationService) {
 		this.config = config;
 		this.stationService = stationService;
@@ -33,12 +36,12 @@ public class DbStadaStationDownloader {
 	}
 	
 	private void download() {
-		logger.info("Downloading {} from {}", NAME, URL);
+		LOGGER.info("Downloading {} from {}", NAME, URL);
 		final HttpRequest request = new HttpRequest();
 		request.setUrl(URL);
 		request.getHeader().put("DB-Client-Id", config.getDbClientId());
 		request.getHeader().put("DB-Api-Key", config.getDbApiKey());
-		request.setExceptionAction(exception -> logger.error("Downloading {} from {} failed: {} {}", stationService.getName(), NAME, exception.getClass().getSimpleName(), exception.getMessage()));
+		request.setExceptionAction(exception -> LOGGER.error("Downloading {} from {} failed: {} {}", stationService.getName(), NAME, exception.getClass().getSimpleName(), exception.getMessage()));
 		request.request().map(this::logDownloadProcessing).map(HttpRequest::mapToJson).ifPresent(this::saveAll);
 	}
 	
@@ -84,13 +87,13 @@ public class DbStadaStationDownloader {
 			stationService.add(station);
 		}
 		for (String warn : warns) {
-			logger.warn(warn);
+			LOGGER.warn(warn);
 		}
-		logger.info("Downloaded {} stations from {}", counter, NAME, URL);
+		LOGGER.info("Downloaded {} stations from {}", counter, NAME, URL);
 	}
 	
 	private String logDownloadProcessing(String string) {
-		logger.info("Processing {}", NAME);
+		LOGGER.info("Processing {}", NAME);
 		return string;
 	}
 	

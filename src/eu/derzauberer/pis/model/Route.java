@@ -4,6 +4,7 @@ import java.beans.ConstructorProperties;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Route implements Entity<Route>, NameEntity {
 	
@@ -14,6 +15,7 @@ public class Route implements Entity<Route>, NameEntity {
 	private String operatorId;
 	private List<RouteStop> stops;
 	private LineScedule scedule;
+	private List<Information> informations;
 	private ApiInformation api;
 	
 	@ConstructorProperties({ "id", "name", "type" , "number"})
@@ -122,6 +124,36 @@ public class Route implements Entity<Route>, NameEntity {
 	
 	public LineScedule getScedule() {
 		return scedule;
+	}
+	
+	public void addInformation(Information information) {
+		if (informations == null) informations = new ArrayList<>();
+		informations.add(information);
+	}
+	
+	public void removeInformation(Information information) {
+		if (informations == null) return;
+		informations.remove(information);
+		if (informations.isEmpty()) informations = null;
+	}
+	
+	public void removeInformation(int index) {
+		if (informations == null) return;
+		informations.remove(index);
+		if (informations.isEmpty()) informations = null;
+	}
+	
+	public Information getInformation(int index) {
+		return informations.get(index);
+	}
+	
+	public int getInformationIndex(Information information) {
+		return informations.indexOf(information);
+	}
+	
+	public List<Information> getInformations() {
+		final List<Information> results = informations != null ? informations : new ArrayList<>();
+		return results.stream().sorted().collect(Collectors.toUnmodifiableList());
 	}
 	
 	public ApiInformation getApiInformation() {

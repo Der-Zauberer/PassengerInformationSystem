@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Line implements Entity<Line>, NameEntity {
 	
@@ -18,6 +19,7 @@ public class Line implements Entity<Line>, NameEntity {
 	private boolean cancelled;
 	private Integer position;
 	private List<LineStop> stops;
+	private List<Information> informations;
 	private ApiInformation api;
 	
 	private Line(String id, Route route, LocalDateTime departure) {
@@ -168,6 +170,36 @@ public class Line implements Entity<Line>, NameEntity {
 	
 	public List<LineStop> getStops() {
 		return Collections.unmodifiableList(stops != null ? stops : new ArrayList<>());
+	}
+	
+	public void addInformation(Information information) {
+		if (informations == null) informations = new ArrayList<>();
+		informations.add(information);
+	}
+	
+	public void removeInformation(Information information) {
+		if (informations == null) return;
+		informations.remove(information);
+		if (informations.isEmpty()) informations = null;
+	}
+	
+	public void removeInformation(int index) {
+		if (informations == null) return;
+		informations.remove(index);
+		if (informations.isEmpty()) informations = null;
+	}
+	
+	public Information getInformation(int index) {
+		return informations.get(index);
+	}
+	
+	public int getInformationIndex(Information information) {
+		return informations.indexOf(information);
+	}
+	
+	public List<Information> getInformations() {
+		final List<Information> results = informations != null ? informations : new ArrayList<>();
+		return results.stream().sorted().collect(Collectors.toUnmodifiableList());
 	}
 	
 	public ApiInformation getApiInformation() {

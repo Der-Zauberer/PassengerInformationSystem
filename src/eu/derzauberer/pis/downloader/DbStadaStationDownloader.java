@@ -58,7 +58,7 @@ public class DbStadaStationDownloader {
 			station.getOrCreateAdress().setCountry("Germany");
 			if (!node.get("evaNumbers").isEmpty() && !node.get("evaNumbers").get(0).isEmpty()) {
 				JsonNode eva = node.get("evaNumbers").get(0);
-				station.getOrCreateApiInformation().addId("eva", "eva.get(\"number\").asLong()");
+				station.getOrCreateApiInformation().addId("eva", eva.get("number").asLong());
 				final JsonNode location = eva.at("/geographicCoordinates/coordinates");
 				if (!location.isEmpty()) {
 					station.setLocation(new Location(location.get(1).asDouble(), location.get(0).asDouble()));

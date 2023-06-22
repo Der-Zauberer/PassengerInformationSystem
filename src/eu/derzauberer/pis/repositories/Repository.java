@@ -60,6 +60,10 @@ public abstract class Repository<T extends Entity<T>> {
 	
 	public abstract int size();
 	
+	public boolean isEmpty() {
+		return size() == 0;
+	}
+	
 	public void packageEntities(Path path) {
 		try {
 			final Collection<T> entities = getList();

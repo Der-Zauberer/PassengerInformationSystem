@@ -1,46 +1,31 @@
-package eu.derzauberer.pis.model;
+package eu.derzauberer.pis.dto;
 
-import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
-public class User implements Entity<User> {
-	
+import eu.derzauberer.pis.model.Entity;
+import eu.derzauberer.pis.model.User;
+
+public class UserDto implements Entity<User> {
+
 	private String username;
 	private String displayName;
 	private String mail;
-	private String passwordHash;
 	private boolean disabled = false;
 	private boolean forcePasswordChange;
 	private LocalDateTime created;
 	private LocalDateTime lastLogin;
-	private final Set<String> permissions;
-	
-	@ConstructorProperties({})
-	private User() {
-		created = LocalDateTime.now();
-		this.permissions = new HashSet<>();
-	}
-	
-	@ConstructorProperties({ "username", "displayName", "passwordHash" })
-	public User(String username, String displayName, String passwordHash) {
-		this.username = username;
-		this.displayName = displayName;
-		this.passwordHash = passwordHash;
-		this.disabled = false;
-		this.forcePasswordChange = false;
-		created = LocalDateTime.now();
-		this.permissions = new HashSet<>();
-	}
 	
 	@Override
 	public String getId() {
 		return username;
 	}
 	
-	public String getUserName() {
+	public String getUsername() {
 		return username;
+	}
+	
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	
 	public String getDisplayName() {
@@ -59,14 +44,6 @@ public class User implements Entity<User> {
 		this.mail = mail;
 	}
 	
-	public String getPasswordHash() {
-		return passwordHash;
-	}
-	
-	public void setPasswordHash(String passwordHash) {
-		this.passwordHash = passwordHash;
-	}
-	
 	public boolean isDisabled() {
 		return disabled;
 	}
@@ -75,7 +52,7 @@ public class User implements Entity<User> {
 		this.disabled = disabled;
 	}
 	
-	public boolean hasForcePasswordChange() {
+	public boolean isForcePasswordChange() {
 		return forcePasswordChange;
 	}
 	
@@ -87,16 +64,16 @@ public class User implements Entity<User> {
 		return created;
 	}
 	
+	public void setCreated(LocalDateTime created) {
+		this.created = created;
+	}
+	
 	public LocalDateTime getLastLogin() {
 		return lastLogin;
 	}
 	
 	public void setLastLogin(LocalDateTime lastLogin) {
 		this.lastLogin = lastLogin;
-	}
-	
-	public Set<String> getPermissions() {
-		return permissions;
 	}
 	
 }

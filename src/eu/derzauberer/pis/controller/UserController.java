@@ -1,5 +1,7 @@
 package eu.derzauberer.pis.controller;
 
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import eu.derzauberer.pis.dto.ListDto;
+import eu.derzauberer.pis.dto.UserDto;
+import eu.derzauberer.pis.dto.UserEditDto;
+import eu.derzauberer.pis.dto.UserInfoDto;
 import eu.derzauberer.pis.model.User;
 import eu.derzauberer.pis.service.UserService;
 
@@ -28,29 +33,34 @@ public class UserController {
 	private ModelMapper modelMapper;
 	
 	@GetMapping
-	public ListDto<User> getUsers(
+	public ListDto<UserInfoDto> getUsers(
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit,
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset
 			) {
-		return new ListDto<>(userService.getList(), limit == -1 ? userService.size() : limit, offset);
+		final List<UserInfoDto> users = userService.getList()
+				.stream()
+				.map(this::mapUserToUserInfoDto)
+				.toList();
+		return new ListDto<>(users, limit == -1 ? userService.size() : limit, offset);
 	}
 	
 	@GetMapping("{id}")
-	public User getUser(@PathVariable("id") String id) {
-		return userService.getById(id).orElseThrow(() -> getNotFoundException(id));
+	public UserInfoDto getUser(@PathVariable("id") String id) {
+		return userService.getById(id).map(this::mapUserToUserInfoDto).orElseThrow(() -> getNotFoundException(id));
 	}
 	
 	@PostMapping
-	public User setUser(User user) {
-		userService.add(user);
-		return user;
+	public UserDto setUser(UserEditDto user) {
+		final User mappedUser = modelMapper.map(user, User.class);
+		userService.add(mappedUser);
+		return modelMapper.map(mappedUser, UserDto.class);
 	}
 	
 	@PutMapping
-	public User updateUser(User user) {
+	public UserDto updateUser(UserEditDto user) {
 		final User existingUser = userService.getById(user.getId()).orElseThrow(() -> getNotFoundException(user.getId()));
 		modelMapper.map(user, existingUser);
-		return existingUser;
+		return modelMapper.map(existingUser, UserDto.class);
 	}
 	
 	@DeleteMapping("{id}")
@@ -60,6 +70,10 @@ public class UserController {
 	
 	private ResponseStatusException getNotFoundException(String id) {
 		return new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id " + id + " does not exist!");
+	}
+	
+	private UserInfoDto mapUserToUserInfoDto(User user) {
+		return modelMapper.map(user, UserInfoDto.class);
 	}
 
 }

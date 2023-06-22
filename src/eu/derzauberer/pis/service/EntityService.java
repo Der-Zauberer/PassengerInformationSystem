@@ -43,6 +43,10 @@ public abstract class EntityService<T extends Entity<T>> {
 		return repository.size();
 	}
 	
+	public boolean isEmpty() {
+		return repository.isEmpty();
+	}
+	
 	public void packageEntities(Path path) {
 		repository.packageEntities(path);
 	}

@@ -1,5 +1,6 @@
 package eu.derzauberer.pis.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,17 @@ public class UserService extends EntityService<User> {
 		super(userRepository);
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
+		if (isEmpty()) add(new User("admin", "Admin", hashPassword("admin")));
 	}
 	
 	public Optional<User> login(String username, String password) {
-		return userRepository.getById(username).filter(user -> passwordEncoder.matches(password, user.getPasswordHash()));
+		return userRepository.getById(username)
+			.filter(processingUser -> passwordEncoder.matches(password, processingUser.getPasswordHash()))
+			.map(processingUser -> {
+				processingUser.setLastLogin(LocalDateTime.now());
+				add(processingUser);
+				return processingUser;
+			});
 	}
 	
 	public String hashPassword(String password) {

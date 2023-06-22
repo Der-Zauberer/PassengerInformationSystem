@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,14 +51,15 @@ public class UserController {
 	}
 	
 	@PostMapping
-	public UserDto setUser(UserEditDto user) {
-		final User mappedUser = modelMapper.map(user, User.class);
+	public UserDto setUser(@RequestBody UserEditDto user) {
+		final User mappedUser = new User(user.getUsername(), user.getDisplayName(), null);
+		modelMapper.map(user, mappedUser);
 		userService.add(mappedUser);
 		return modelMapper.map(mappedUser, UserDto.class);
 	}
 	
 	@PutMapping
-	public UserDto updateUser(UserEditDto user) {
+	public UserDto updateUser(@RequestBody UserEditDto user) {
 		final User existingUser = userService.getById(user.getId()).orElseThrow(() -> getNotFoundException(user.getId()));
 		modelMapper.map(user, existingUser);
 		return modelMapper.map(existingUser, UserDto.class);

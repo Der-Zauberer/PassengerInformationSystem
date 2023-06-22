@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class User implements Entity<User> {
 	
-	private String username;
+	private final String username;
 	private String displayName;
 	private String mail;
 	private String passwordHash;
@@ -16,12 +16,6 @@ public class User implements Entity<User> {
 	private LocalDateTime created;
 	private LocalDateTime lastLogin;
 	private final Set<String> permissions;
-	
-	@ConstructorProperties({})
-	private User() {
-		created = LocalDateTime.now();
-		this.permissions = new HashSet<>();
-	}
 	
 	@ConstructorProperties({ "username", "displayName", "passwordHash" })
 	public User(String username, String displayName, String passwordHash) {

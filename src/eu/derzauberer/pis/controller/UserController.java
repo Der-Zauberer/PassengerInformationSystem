@@ -62,6 +62,7 @@ public class UserController {
 	public UserDto updateUser(@RequestBody UserEditDto user) {
 		final User existingUser = userService.getById(user.getId()).orElseThrow(() -> getNotFoundException(user.getId()));
 		modelMapper.map(user, existingUser);
+		userService.add(existingUser);
 		return modelMapper.map(existingUser, UserDto.class);
 	}
 	

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,15 +42,16 @@ public class RouteController {
 	}
 	
 	@PostMapping
-	public Route setRoute(Route operator) {
+	public Route setRoute(@RequestBody Route operator) {
 		routeService.add(operator);
 		return operator;
 	}
 	
 	@PutMapping
-	public Route updateRoute(Route operator) {
+	public Route updateRoute(@RequestBody Route operator) {
 		final Route existingRoute = routeService.getById(operator.getId()).orElseThrow(() -> getNotFoundException(operator.getId()));
 		modelMapper.map(operator, existingRoute);
+		routeService.add(existingRoute);
 		return existingRoute;
 	}
 	

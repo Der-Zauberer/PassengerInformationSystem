@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,15 +42,16 @@ public class OperatorController {
 	}
 	
 	@PostMapping
-	public TrainOperator setOperator(TrainOperator operator) {
+	public TrainOperator setOperator(@RequestBody TrainOperator operator) {
 		operatorService.add(operator);
 		return operator;
 	}
 	
 	@PutMapping
-	public TrainOperator updateOperator(TrainOperator operator) {
+	public TrainOperator updateOperator(@RequestBody TrainOperator operator) {
 		final TrainOperator existingOperator = operatorService.getById(operator.getId()).orElseThrow(() -> getNotFoundException(operator.getId()));
 		modelMapper.map(operator, existingOperator);
+		operatorService.add(existingOperator);
 		return existingOperator;
 	}
 	

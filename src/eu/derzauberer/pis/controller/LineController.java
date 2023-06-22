@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -73,15 +74,16 @@ public class LineController {
 	}
 	
 	@PostMapping
-	public Line setLine(Line line) {
+	public Line setLine(@RequestBody Line line) {
 		lineService.add(line);
 		return line;
 	}
 	
 	@PutMapping
-	public Line updateLine(Line line) {
+	public Line updateLine(@RequestBody Line line) {
 		final Line existingLine = lineService.getById(line.getId()).orElseThrow(() -> getNotFoundException("Line", line.getId()));
 		modelMapper.map(line, existingLine);
+		lineService.add(existingLine);
 		return existingLine;
 	}
 	

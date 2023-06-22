@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,15 +42,16 @@ public class TypeController {
 	}
 	
 	@PostMapping
-	public TrainType setType(TrainType type) {
+	public TrainType setType(@RequestBody TrainType type) {
 		typeService.add(type);
 		return type;
 	}
 	
 	@PutMapping
-	public TrainType updateType(TrainType type) {
+	public TrainType updateType(@RequestBody TrainType type) {
 		final TrainType existingType = typeService.getById(type.getId()).orElseThrow(() -> getNotFoundException(type.getId()));
 		modelMapper.map(type, existingType);
+		typeService.add(existingType);
 		return existingType;
 	}
 	

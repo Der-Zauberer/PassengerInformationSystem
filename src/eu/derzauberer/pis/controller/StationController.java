@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,15 +46,16 @@ public class StationController {
 	}
 	
 	@PostMapping
-	public Station setStation(Station station) {
+	public Station setStation(@RequestBody Station station) {
 		stationService.add(station);
 		return station;
 	}
 	
 	@PutMapping
-	public Station updateStation(Station station) {
+	public Station updateStation(@RequestBody Station station) {
 		final Station existingStation = stationService.getById(station.getId()).orElseThrow(() -> getNotFoundException(station.getId()));
 		modelMapper.map(station, existingStation);
+		stationService.add(existingStation);
 		return existingStation;
 	}
 	

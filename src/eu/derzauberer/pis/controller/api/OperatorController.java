@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.controller;
+package eu.derzauberer.pis.controller.api;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.controller;
+package eu.derzauberer.pis.controller.api;
 
 import java.time.LocalDateTime;
 import java.util.List;

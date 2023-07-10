@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.controller;
+package eu.derzauberer.pis.controller.api;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

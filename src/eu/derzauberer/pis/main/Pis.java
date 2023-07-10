@@ -24,6 +24,7 @@ public class Pis {
 		
 		final Properties properties = new Properties();
 		properties.put("server.error.include-message", "always");
+		properties.put("spring.main.allow-bean-definition-overriding", "true");
 		springApplication.setDefaultProperties(properties);
 		
 		springApplication.run();

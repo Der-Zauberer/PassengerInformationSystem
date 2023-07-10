@@ -41,6 +41,9 @@ import eu.derzauberer.pis.repositories.Repository;
 @Configuration
 public class SpringConfiguration implements ApplicationContextAware {
 	
+	public static boolean caching = true;
+	public static boolean indexing = true;
+	
 	private static ApplicationContext applicationContext;
 	
 	@Override
@@ -98,17 +101,17 @@ public class SpringConfiguration implements ApplicationContextAware {
 	
 	@Bean
 	public Repository<TrainOperator> getOperatorRepository() {
-		return new MemoryRepository<>("operators", TrainOperator.class);
+		return caching ? new MemoryRepository<>("operators", TrainOperator.class) : new FileRepository<>("operators", TrainOperator.class);
 	}
 	
 	@Bean
 	public Repository<Route> getRouteRepository() {
-		return new MemoryRepository<>("routes", Route.class);
+		return caching ? new MemoryRepository<>("routes", Route.class) : new FileRepository<>("routes", Route.class);
 	}
 	
 	@Bean
 	public Repository<Station> getStationRepository() {
-		return new MemoryRepository<>("stations", Station.class);
+		return caching ? new MemoryRepository<>("stations", Station.class) : new FileRepository<>("stations", Station.class);
 	}
 	
 	@Bean
@@ -118,12 +121,12 @@ public class SpringConfiguration implements ApplicationContextAware {
 	
 	@Bean
 	public Repository<TrainType> getTypeRepository() {
-		return new MemoryRepository<>("types", TrainType.class);
+		return caching ? new MemoryRepository<>("types", TrainType.class) : new FileRepository<>("types", TrainType.class);
 	}
 	
 	@Bean
 	public Repository<User> getUserRepository() {
-		return new MemoryRepository<>("users", User.class);
+		return caching ? new MemoryRepository<>("users", User.class) : new FileRepository<>("users", User.class);
 	}
 	
 }

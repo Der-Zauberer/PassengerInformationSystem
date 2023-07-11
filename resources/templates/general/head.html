@@ -1,10 +1,10 @@
-<th:block th:fragment="head">
+<th:block th:fragment="head(title)">
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="theme-color" content="#003ecc">
 		<link href="/resources/swd/style.css" rel="stylesheet">
 		<script src="/resources/swd/script.js"></script>
-		<title>Passenger Informations System</title>
+		<title th:text="${title}"></title>
 	</head>
 <th:block>

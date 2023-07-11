@@ -1,7 +1,7 @@
 <th:block th:fragment="menu">
-	<div class="menu">
-		<a class="menu-title">Passenger Information System</a>
+	<div class="menu" th:with="url=${#ctx.springRequestContext.requestUri}">
+		<a class="menu-title" href="/">Passenger Information System</a>
 		<div class="width-100"></div>
-		<a href="/stations" th:text="#{menu.stations}"></a>
+		<a href="/stations" th:text="#{menu.stations}" th:classappend="${url == '/stations' ? 'menu-active' : ''}"></a>
 	</div>
 </th:block>

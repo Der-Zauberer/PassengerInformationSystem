@@ -43,7 +43,12 @@ public class FileRepository<T extends Entity<T>> extends Repository<T> {
 
 	@Override
 	public List<T> getList() {
-		return Collections.unmodifiableList(loadEntities().stream().sorted().toList());
+		return Collections.unmodifiableList(loadEntities());
+	}
+	
+	@Override
+	public List<T> getRange(int beginn, int end) {
+		return Collections.unmodifiableList(loadEntitiesInRange(beginn, end));
 	}
 	
 	@Override

@@ -39,6 +39,10 @@ public abstract class EntityService<T extends Entity<T>> {
 		return repository.getList();
 	}
 	
+	public List<T> getRange(int beginn, int end) {
+		return repository.getRange(beginn, end);
+	}
+	
 	public int size() {
 		return repository.size();
 	}

@@ -1,5 +1,6 @@
 package eu.derzauberer.pis.main;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -17,7 +18,7 @@ public class Pis {
 	
 	private static final SpringApplication springApplication = new SpringApplication(Pis.class);
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		final List<String> arguments = Arrays.stream(args).map(arg -> arg.toLowerCase()).toList();
 		if (arguments.contains("--no-caching")) SpringConfiguration.caching = false;
 		if (arguments.contains("--no-indexing")) SpringConfiguration.indexing = false;

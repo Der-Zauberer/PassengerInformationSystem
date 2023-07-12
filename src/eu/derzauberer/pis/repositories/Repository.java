@@ -58,6 +58,8 @@ public abstract class Repository<T extends Entity<T>> {
 	
 	public abstract List<T> getList();
 	
+	public abstract List<T> getRange(int beginn, int end);
+	
 	public abstract int size();
 	
 	public boolean isEmpty() {
@@ -107,6 +109,27 @@ public abstract class Repository<T extends Entity<T>> {
 			return new ArrayList<>();
 		}
 	}
+	
+	protected List<T> loadEntitiesInRange(int beginn, int end) {
+		try {
+			final List<T> entities = new ArrayList<>();
+			int i = 0;
+			for (Path path : Files.list(Paths.get(DIRECTORY, name)).toList()) {
+				if (!Files.exists(path)) continue;
+				if (i++ >= beginn) {
+					final String content = Files.readString(path);
+					final T entity = OBJECT_MAPPER.readValue(content, type);
+					entities.add(entity);
+				}
+				if (i > end) return entities;
+			}
+			return entities;
+		} catch (IOException exception) {
+			logger.error("Couldn't load entities from {}: {} {}!", getName(), exception.getClass().getSimpleName(), exception.getMessage());
+			return new ArrayList<>();
+		}
+	}
+	
 	
 	protected boolean containsEntity(String id) {
 		final Path path = Paths.get(DIRECTORY, name, id + FILE_TYPE);

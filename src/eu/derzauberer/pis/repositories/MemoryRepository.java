@@ -1,5 +1,6 @@
 package eu.derzauberer.pis.repositories;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -61,6 +62,16 @@ public class MemoryRepository<T extends Entity<T>> extends Repository<T>{
 	@Override
 	public List<T> getList() {
 		return Collections.unmodifiableList(entities.values().stream().toList());
+	}
+	
+	@Override
+	public List<T> getRange(int beginn, int end) {
+		final List<T> list = this.entities.values().stream().toList();
+		final List<T> entities = new ArrayList<>();
+		for (int i = beginn; i < end; i++) {
+			entities.add(list.get(i));
+		}
+		return entities;
 	}
 
 	@Override

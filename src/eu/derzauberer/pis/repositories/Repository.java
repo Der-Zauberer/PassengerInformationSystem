@@ -113,15 +113,11 @@ public abstract class Repository<T extends Entity<T>> {
 	protected List<T> loadEntitiesInRange(int beginn, int end) {
 		try {
 			final List<T> entities = new ArrayList<>();
-			int i = 0;
-			for (Path path : Files.list(Paths.get(DIRECTORY, name)).toList()) {
+			for (Path path : Files.list(Paths.get(DIRECTORY, name)).toList().subList(beginn, end)) {
 				if (!Files.exists(path)) continue;
-				if (i++ >= beginn) {
-					final String content = Files.readString(path);
-					final T entity = OBJECT_MAPPER.readValue(content, type);
-					entities.add(entity);
-				}
-				if (i > end) return entities;
+				final String content = Files.readString(path);
+				final T entity = OBJECT_MAPPER.readValue(content, type);
+				entities.add(entity);
 			}
 			return entities;
 		} catch (IOException exception) {

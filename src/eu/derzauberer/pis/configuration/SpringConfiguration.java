@@ -17,9 +17,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
@@ -49,7 +47,6 @@ import eu.derzauberer.pis.repositories.MemoryRepository;
 import eu.derzauberer.pis.repositories.Repository;
 
 @Configuration
-@EnableWebMvc
 public class SpringConfiguration implements ApplicationContextAware, WebMvcConfigurer {
 	
 	public static boolean caching = true;
@@ -65,12 +62,6 @@ public class SpringConfiguration implements ApplicationContextAware, WebMvcConfi
 	public static <T> T getBean(Class<T> bean) {
         return applicationContext.getBean(bean);
     }
-	
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/**")
-		.addResourceLocations(new String[] { "classpath:/static/" });
-	}
 	
 	@Bean
     public CookieSameSiteSupplier applicationCookieSameSiteSupplier() {

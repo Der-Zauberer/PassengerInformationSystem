@@ -2,6 +2,6 @@
 	<div class="navigation" th:with="url=${#ctx.springRequestContext.requestUri}">
 		<h2 class="menu-title">PIS Studio</h2>
 		<a href="/studio" th:text="#{navigation.dashboard}" th:classappend="${url == '/studio' ? 'menu-active' : ''}"></a>
-		<a href="/studio/stations" th:text="#{navigation.stations}" th:classappend="${url == '/studio/stations' ? 'menu-active' : ''}"></a>
+		<a href="/studio/stations" th:text="#{navigation.stations}" th:classappend="${url.startsWith('/studio/stations') ? 'menu-active' : ''}"></a>
 	</div>
 </th:block>

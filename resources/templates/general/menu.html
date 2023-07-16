@@ -1,7 +1,9 @@
 <th:block th:fragment="menu">
-	<div class="menu" th:with="url=${#ctx.springRequestContext.requestUri}">
+	<div class="menu mobile-menu" th:with="url=${#ctx.springRequestContext.requestUri}">
+		<img src="https://der-zauberer.github.io/SimpleWebDesign/resources/icons/hamburger_white.svg" class="only-mobile" onclick="swd.toggleMobileNavigationMenu()">
 		<a class="menu-title" href="/">Passenger Information System</a>
+		<a class="only-mobile" href="/" th:text="#{menu.home}" th:classappend="${url == '/' ? 'menu-active' : ''}"></a>
 		<div class="width-100"></div>
-		<a href="/stations" th:text="#{menu.stations}" th:classappend="${url == '/stations' ? 'menu-active' : ''}"></a>
+		<a href="/stations" th:text="#{menu.stations}" th:classappend="${url.startsWith('/stations') ? 'menu-active' : ''}"></a>
 	</div>
 </th:block>

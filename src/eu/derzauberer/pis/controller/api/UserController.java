@@ -1,7 +1,5 @@
 package eu.derzauberer.pis.controller.api;
 
-import java.util.List;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,19 +33,17 @@ public class UserController {
 	
 	@GetMapping
 	public ListDto<UserInfoDto> getUsers(
-			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit,
-			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset
+			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
+			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
-		final List<UserInfoDto> users = userService.getList()
-				.stream()
-				.map(this::mapUserToUserInfoDto)
-				.toList();
-		return new ListDto<>(users, limit == -1 ? userService.size() : limit, offset);
+		return new ListDto<>(userService, offset, limit == -1 ? userService.size() : limit).map((user) -> modelMapper.map(user, UserInfoDto.class));
 	}
 	
 	@GetMapping("{id}")
 	public UserInfoDto getUser(@PathVariable("id") String id) {
-		return userService.getById(id).map(this::mapUserToUserInfoDto).orElseThrow(() -> getNotFoundException(id));
+		return userService.getById(id)
+				.map((user) -> modelMapper.map(user, UserInfoDto.class))
+				.orElseThrow(() -> getNotFoundException(id));
 	}
 	
 	@PostMapping
@@ -73,10 +69,6 @@ public class UserController {
 	
 	private ResponseStatusException getNotFoundException(String id) {
 		return new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id " + id + " does not exist!");
-	}
-	
-	private UserInfoDto mapUserToUserInfoDto(User user) {
-		return modelMapper.map(user, UserInfoDto.class);
 	}
 
 }

@@ -30,10 +30,10 @@ public class TypeController {
 	
 	@GetMapping
 	public ListDto<TrainType> getTrainTypes(
-			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit,
-			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset
+			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
+			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
-		return new ListDto<>(typeService.getList(), limit == -1 ? typeService.size() : limit, offset);
+		return new ListDto<>(typeService, offset, limit == -1 ? typeService.size() : limit);
 	}
 
 	@GetMapping("{id}")

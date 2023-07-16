@@ -33,11 +33,14 @@ public class StationController {
 	@GetMapping
 	public ListDto<Station> getStations(
 			@RequestParam(name = "query", required = false) String query,
-			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit,
-			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset
+			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
+			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
-		final List<Station> stations = query != null ? stationService.searchByName(query) : stationService.getList();
-		return new ListDto<>(stations, limit == -1 ? stations.size() : limit, offset);
+		if (query != null) {
+			final List<Station> stations = stationService.searchByName(query);
+			return new ListDto<>(stations, offset, limit == -1 ? stations.size() : limit);
+		}
+		return new ListDto<>(stationService, offset, limit == -1 ? stationService.size() : limit);
 	}
 	
 	@GetMapping("{id}")

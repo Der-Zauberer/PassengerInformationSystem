@@ -42,10 +42,10 @@ public class LineController {
 			@PathVariable("stationId") String stationId,
 			@PathVariable("date") String date,
 			@RequestParam(name = "hour", required = false, defaultValue = "0") int hour,
-			@RequestParam(name = "limit", required = false, defaultValue = "10") int limit,
-			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset
+			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
+			@RequestParam(name = "limit", required = false, defaultValue = "10") int limit
 			) {
-		return getTraffic(false, stationId, date, hour, limit, offset);
+		return getTraffic(false, stationId, date, hour, offset, limit);
 	}
 	
 	@GetMapping("/departures/{stationId}/{date}")
@@ -53,13 +53,13 @@ public class LineController {
 			@PathVariable("stationId") String stationId,
 			@PathVariable("date") String date,
 			@RequestParam(name = "hour", required = false, defaultValue = "0") int hour,
-			@RequestParam(name = "limit", required = false, defaultValue = "10") int limit,
-			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset
+			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
+			@RequestParam(name = "limit", required = false, defaultValue = "10") int limit
 			) {
-		return getTraffic(true, stationId, date, hour, limit, offset);
+		return getTraffic(true, stationId, date, hour, offset, limit);
 	}
 	
-	private ListDto<StationTrafficEntry> getTraffic(boolean arrival, String stationId, String date, int hour, int limit, int offset) {
+	private ListDto<StationTrafficEntry> getTraffic(boolean arrival, String stationId, String date, int hour, int offset, int limit) {
 		final Station station = stationService.getById(stationId).orElseThrow(() -> getNotFoundException("Station", stationId));
 		if (!date.matches("^\\d{8}$")) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date format " + date + " is invalid, it has to be YYYYMMDD");
 		final LocalDateTime dateTime = LocalDateTime.of(Integer.parseInt(date.substring(0, 4)), Integer.parseInt(date.substring(4, 6)), Integer.parseInt(date.substring(6, 8)), hour, 0);

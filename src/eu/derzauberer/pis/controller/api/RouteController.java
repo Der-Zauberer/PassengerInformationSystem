@@ -30,10 +30,10 @@ public class RouteController {
 	
 	@GetMapping
 	public ListDto<Route> getRoutes(
-			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit,
-			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset
+			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
+			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
-		return new ListDto<>(routeService.getList(), limit == -1 ? routeService.size() : limit, offset);
+		return new ListDto<>(routeService, offset, limit == -1 ? routeService.size() : limit);
 	}
 	
 	@GetMapping("{id}")

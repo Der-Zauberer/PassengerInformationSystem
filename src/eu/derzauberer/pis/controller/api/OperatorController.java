@@ -30,10 +30,10 @@ public class OperatorController {
 	
 	@GetMapping
 	public ListDto<TrainOperator> getOperators(
-			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit,
-			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset
+			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
+			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
-		return new ListDto<>(operatorService.getList(), limit == -1 ? operatorService.size() : limit, offset);
+		return new ListDto<>(operatorService, offset, limit == -1 ? operatorService.size() : limit);
 	}
 	
 	@GetMapping("{id}")

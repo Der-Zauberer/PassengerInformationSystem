@@ -493,8 +493,13 @@ input:invalid[dirty], select:invalid[dirty], textarea:invalid[dirty] {
     -ms-user-select: none;
 }
 
-.button:hover {
+.button:hover, input[type=submit]:hover{
     text-decoration: none;
+    background-color: var(--theme-secondary);
+}
+
+.button-active {
+    background-color: var(--theme-secondary);
 }
 
 .button-left {border-top-right-radius: 0px; border-bottom-right-radius: 0px}
@@ -942,27 +947,27 @@ ol li:last-child {padding-bottom: 0px}
     background-color: transparent;
 }
 
-.white {background-color: white;  border-color: white; color: black} @media (prefers-color-scheme: dark) {.white {background-color: black; border-color: black; color: white}} .lightmode .white {background-color: white; border-color: white; color: black} .darkmode .white {background-color: black; border-color: black; color: white}
-.black {background-color: black; border-color: black; color: white} @media (prefers-color-scheme: dark) {.black {background-color: white; border-color: white; color: black}} .lightmode .black {background-color: black; border-color: black; color: white} .darkmode .black {background-color: white; border-color: white; color: black}
+.white, .white:hover {background-color: white;  border-color: white; color: black} @media (prefers-color-scheme: dark) {.white, .white:hover {background-color: black; border-color: black; color: white}} .lightmode .white, .lightmode .white:hover {background-color: white; border-color: white; color: black} .darkmode .white, .darkmode .white:hover {background-color: black; border-color: black; color: white}
+.black, .black:hover {background-color: black; border-color: black; color: white} @media (prefers-color-scheme: dark) {.black, .white:hover {background-color: white; border-color: white; color: black}} .lightmode .black, .lightmode .black:hover {background-color: black; border-color: black; color: white} .darkmode .black, .darkmode .black:hover {background-color: white; border-color: white; color: black}
 
-.dark-grey {background-color: #c2c2c2; border-color: #c2c2c2; color: black} @media (prefers-color-scheme: dark) {.dark-grey {background-color: #3d3d3d; border-color: #3d3d3d; color: white}} .lightmode .dark-grey {background-color: #c2c2c2; border-color: #c2c2c2; color: black} .darkmode .dark-grey {background-color: #3d3d3d; border-color: #3d3d3d; color: white}
-.grey {background-color: #e0e0e0; border-color: #e0e0e0; color: black} @media (prefers-color-scheme: dark) {.grey {background-color: #1f1f1f; border-color: #1f1f1f; color: white}} .lightmode .grey {background-color: #e0e0e0; border-color: #e0e0e0; color: black} .darkmode .grey {background-color: #1f1f1f; border-color: #1f1f1f; color: white}
+.dark-grey, .dark-grey:hover {background-color: #c2c2c2; border-color: #c2c2c2; color: black} @media (prefers-color-scheme: dark) {.dark-grey, .dark-grey:hover {background-color: #3d3d3d; border-color: #3d3d3d; color: white}} .lightmode .dark-grey, .lightmode .dark-grey:hover {background-color: #c2c2c2; border-color: #c2c2c2; color: black} .darkmode .dark-grey, .darkmode .dark-grey:hover {background-color: #3d3d3d; border-color: #3d3d3d; color: white}
+.grey, .grey:hover {background-color: #e0e0e0; border-color: #e0e0e0; color: black} @media (prefers-color-scheme: dark) {.grey, .grey:hover {background-color: #1f1f1f; border-color: #1f1f1f; color: white}} .lightmode .grey, .lightmode .grey:hover {background-color: #e0e0e0; border-color: #e0e0e0; color: black} .darkmode .grey, .darkmode .grey:hover {background-color: #1f1f1f; border-color: #1f1f1f; color: white}
 
-.dark-blue {background-color: #0024b3; border-color: #0024b3; color: white}
-.blue {background-color: #0033ff; border-color: #0033ff; color: white}
-.blue-transparent {background-color: #0033ff66; border-color: #0033ff}
+.dark-blue, .dark-blue:hover {background-color: #0024b3; border-color: #0024b3; color: white}
+.blue, .blue:hover {background-color: #0033ff; border-color: #0033ff; color: white}
+.blue-transparent, .blue-transparent:hover {background-color: #0033ff66; border-color: #0033ff}
 
-.dark-green {background-color: #0f4d00; border-color: #0f4d00; color: white}
-.green {background-color: #1f9900; border-color: #1f9900; color: white}
-.green-transparent {background-color: #1f990066; border-color: #1f9900}
+.dark-green, .dark-green:hover {background-color: #0f4d00; border-color: #0f4d00; color: white}
+.green, .green:hover {background-color: #1f9900; border-color: #1f9900; color: white}
+.green-transparent, .green-transparent:hover {background-color: #1f990066; border-color: #1f9900}
 
-.dark-yellow {background-color: #997a00; border-color: #997a00; color: white}
-.yellow {background-color: #e5b800; border-color: #e5b800; color: white}
-.yellow-transparent {background-color: #e5b80066; border-color: #e5b800}
+.dark-yellow, .dark-yellow:hover {background-color: #997a00; border-color: #997a00; color: white}
+.yellow, .yellow:hover {background-color: #e5b800; border-color: #e5b800; color: white}
+.yellow-transparent, .yellow-transparent:hover {background-color: #e5b80066; border-color: #e5b800}
 
-.dark-red {background-color: #990000; border-color: #990000; color: white}
-.red {background-color: #e60000; border-color: #e60000; color: white}
-.red-transparent {background-color: #e6000066; border-color: #e60000;}
+.dark-red, .dark-red:hover {background-color: #990000; border-color: #990000; color: white}
+.red, .red:hover {background-color: #e60000; border-color: #e60000; color: white}
+.red-transparent, .red-transparent:hover {background-color: #e6000066; border-color: #e60000;}
 
 /* hover colors */
 

@@ -8,12 +8,12 @@
 		<div th:replace="~{studio/navigation :: navigation}"></div>
 		<div class="navigation-content">
 		
-			<div class="container">
+			<div class="container-xl">
 		
 				<h2 th:text="#{navigation.stations}"></h2>
-				<p th:text="${page.page}"></p>
-				<p th:text="${page.pageSize}"></p>
-				<p th:text="${page.pageAmount}"></p>
+				<p th:text="${stations.page}"></p>
+				<p th:text="${stations.pageSize}"></p>
+				<p th:text="${stations.pageAmount}"></p>
 				
 				<table>
 					<tr>
@@ -21,12 +21,15 @@
 						<th>Id</th>
 						<th>Name</th>
 					</tr>
-					<tr th:each="station, status : ${page.results}">
+					<tr th:each="station, status : ${stations.results}">
 						<td th:text="${status.index}"></td>
 					    <td th:text="${station.id}"></td>
 					    <td th:text="${station.name}"></td>
 					</tr>
 				</table>
+				
+				<div th:replace="~{general/pager :: pager(page=${stations.page}, pageAmount=${stations.pageAmount})}"></div>
+				
 			</div>
 		
 		</div>

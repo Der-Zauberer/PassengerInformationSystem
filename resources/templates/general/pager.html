@@ -1,0 +1,31 @@
+<th:block th:fragment="pager(page, pageAmount)">
+	<div class="flex flex-no-gap">
+		<div class="width-100"></div>
+		<a class="button button-left"><img class="icon" src="https://der-zauberer.github.io/SimpleWebDesign/resources/icons/arrow_left_white.svg"></a><th:block th:each="i: ${#numbers.sequence(1, pageAmount)}"><a class="button button-middle" th:attr="onclick='toPage(' + ${i} + ')'" th:classappend=" ${page == i} ? 'button-active' : ''" th:text="${i}"></a></th:block><a class="button button-right"><img class="icon" src="https://der-zauberer.github.io/SimpleWebDesign/resources/icons/arrow_right_white.svg"></a>
+	</div>
+	<script>
+		
+		function previousPage(currentPage) {
+			
+		}
+		
+		function nextPage(currentPage) {
+			
+		}
+		
+		function toPage(page) {
+			currentUrl = window.location.href;
+			if (currentUrl.includes('?')) {
+				const parameterString = '?' + currentUrl.split('?')[1];
+				if (parameterString.includes('?page=') || parameterString.includes('&page=')) {
+					currentUrl = currentUrl.replace(/((\?|\&)page=)([^&]+)/gm, '$1' + page);
+				} else {
+					currentUrl += '&page=' + page;
+				}
+			} else {
+				currentUrl += '?page=' + page;
+			}			
+			window.location.href = currentUrl;
+		}
+	</script>
+</th:block>

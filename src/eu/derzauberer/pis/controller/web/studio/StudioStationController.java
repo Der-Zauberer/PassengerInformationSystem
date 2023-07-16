@@ -23,7 +23,6 @@ public class StudioStationController {
 			@RequestParam(name = "page", defaultValue = "1") int page,
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
 			) {
-		System.out.println(pageSize);
 		model.addAttribute("page", new PageDto<Station>(stationService, page, pageSize));
 		return "/studio/stations.html";
 	}

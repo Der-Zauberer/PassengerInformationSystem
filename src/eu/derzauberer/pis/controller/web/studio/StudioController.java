@@ -12,10 +12,5 @@ public class StudioController {
 	public String getDashboardPage() {
 		return "/studio/dashboard.html";
 	}
-	
-	@GetMapping("/stations")
-	public String getStationsPage() {
-		return "/studio/stations.html";
-	}
 
 }

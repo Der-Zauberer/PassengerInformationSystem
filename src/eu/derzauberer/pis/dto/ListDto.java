@@ -77,6 +77,7 @@ public class ListDto<T> {
 	public <R> ListDto<R> map(Function<T, R> mapper) {
 		final List<R> result = getResults().stream().map(mapper).toList();
 		final ListDto<R> dto = new ListDto<>(result, getOffset(), getLimit());
+		dto.total = this.total;
 		return dto;
 	}
 	

@@ -5,5 +5,6 @@
 		<a class="only-mobile" href="/" th:text="#{menu.home}" th:classappend="${url == '/' ? 'menu-active' : ''}"></a>
 		<div class="width-100"></div>
 		<a href="/stations" th:text="#{menu.stations}" th:classappend="${url.startsWith('/stations') ? 'menu-active' : ''}"></a>
+		<a href="/studio" th:text="#{menu.studio}" th:classappend="${url.startsWith('/studio') ? 'menu-active' : ''}"></a>
 	</div>
 </th:block>

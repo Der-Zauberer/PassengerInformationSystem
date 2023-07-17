@@ -132,6 +132,45 @@ class SWD {
     addLanguage(locale, src) {
         this.#languages.set(locale, src)
     }
+
+    // *********************
+    // * Parameters        *
+    // *********************
+
+    setParameter(param, value) {
+        let currentUrl = window.location.href;
+		if (currentUrl.includes('?')) {
+			const parameterString = '?' + currentUrl.split('?')[1];
+			if (parameterString.includes('?' + param + '=') || parameterString.includes('&' + param + '=')) {
+				currentUrl = currentUrl.replace(new RegExp('((\\?|&)' + param + '=)[^&]+', 'gm'), '$1' + value);
+			} else {
+                if (currentUrl.substring(currentUrl.length - 1) != '?' && currentUrl.substring(currentUrl.length - 1) != '&') currentUrl += '&';
+				currentUrl += param + '=' + value;
+			}
+		} else {
+			currentUrl += '?' + param + '=' + value;
+		}			
+		window.location.href = currentUrl;
+        
+    }
+
+    removeParameter(param) {
+        let currentUrl = window.location.href;
+		if (currentUrl.includes('?')) {
+			const parameterString = '?' + currentUrl.split('?')[1];
+			if (parameterString.includes('?' + param + '=') || parameterString.includes('&' + param + '=')) {
+				currentUrl = currentUrl.replace(new RegExp('&?' + param + '=[^&]+', 'gm'), '');
+                if (currentUrl.substring(currentUrl.length - 1) == '&') currentUrl = currentUrl.substring(0, currentUrl.length - 1);
+                currentUrl = currentUrl.replace('?&', '?');
+                if (currentUrl.substring(currentUrl.length - 1) == '?') currentUrl = currentUrl.substring(0, currentUrl.length - 1);
+			}
+		}
+		window.location.href = currentUrl;
+    }
+
+    getParameter(param) {
+        return new URLSearchParams(window.location.search).get(param);
+    }
     
     // *********************
     // * Table of Contents *
@@ -172,7 +211,7 @@ class SWD {
         }
         if (!this.#mobileNavigationMenu) return;
         for (const element of this.#mobileNavigationMenu.getElementsByTagName('A')) {
-            if (element.innerText == string) element.classList.add('menu-active');
+            if (element.innerText == string || (element.hasAttribute('value') && element.getAttribute('value') == string)) element.classList.add('menu-active');
             else element.classList.remove('menu-active');
         }
     }
@@ -227,7 +266,7 @@ class SWD {
         if (string == undefined || string == '' || !this.#navigation) return;
         for (const element of this.#navigation.getElementsByTagName('A')) {
             if (element.parentElement.classList.contains('navigation-menu')) continue;
-            if (element.innerText == string) element.classList.add('navigation-active');
+            if (element.innerText == string  || (element.hasAttribute('value') && element.getAttribute('value') == string)) element.classList.add('navigation-active');
             else element.classList.remove('menu-active');
         }
     }

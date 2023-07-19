@@ -20,10 +20,16 @@ public class StudioStationController {
 	
 	@GetMapping
 	public String getStationsPage(Model model, 
+			@RequestParam(name = "query", required = false) String query,
 			@RequestParam(name = "page", defaultValue = "1") int page,
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
 			) {
-		model.addAttribute("stations", new PageDto<Station>(stationService, page, pageSize));
+		if (query != null && !query.isEmpty()) {
+			final String serach = query.replace('+', ' ');
+			model.addAttribute("page", new PageDto<>(stationService.searchByName(serach), page, pageSize));
+		} else {			
+			model.addAttribute("page", new PageDto<Station>(stationService, page, pageSize));
+		}
 		return "/studio/stations.html";
 	}
 	

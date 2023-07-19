@@ -9,11 +9,9 @@
 		<div class="navigation-content">
 		
 			<div class="container-xl">
-		
+			
 				<h2 th:text="#{navigation.stations}"></h2>
-				<p th:text="${stations.page}"></p>
-				<p th:text="${stations.pageSize}"></p>
-				<p th:text="${stations.pageAmount}"></p>
+				<div th:replace="~{studio/actions :: actions}"></div>
 				
 				<table>
 					<tr>
@@ -21,14 +19,14 @@
 						<th>Id</th>
 						<th>Name</th>
 					</tr>
-					<tr th:each="station, status : ${stations.results}">
+					<tr th:each="station, status : ${page.results}">
 						<td th:text="${status.index}"></td>
 					    <td th:text="${station.id}"></td>
 					    <td th:text="${station.name}"></td>
 					</tr>
 				</table>
 				
-				<div th:replace="~{general/pager :: pager(page=${stations.page}, pageAmount=${stations.pageAmount})}"></div>
+				<div th:replace="~{general/pager :: pager}"></div>
 				
 			</div>
 		

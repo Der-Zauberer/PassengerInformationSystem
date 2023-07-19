@@ -21,7 +21,7 @@ public class ListDto<T> {
     }
 	
 	public ListDto(List<T> list, int offset, int limit) {
-		if (offset >= list.size()) {
+		if (offset != 0 && offset >= list.size()) {
 			throw new IllegalArgumentException("The offset is larger than the total amount of results!");
 		}
 		this.offset = offset;
@@ -42,7 +42,7 @@ public class ListDto<T> {
 	
     @SuppressWarnings("unchecked")
 	public ListDto(EntityService<?> service, int offset, int limit) {
-		if (offset >= service.size()) {
+		if (offset != 0 && offset >= service.size()) {
 			throw new IllegalArgumentException("The offset is larger than the total amount of results!");
 		}
 		this.offset = offset;

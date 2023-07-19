@@ -55,22 +55,25 @@ public class SearchTree<T extends Entity<T> & NameEntity> {
 	}
 	
 	
-	public List<T> searchByName(String name) {
+	public List<T> searchByName(String search) {
 		final List<T> results = new ArrayList<>();
 		final List<String> resultIds;
-		if ((resultIds = entries.get(name.toLowerCase())) == null) return results;
+		if ((resultIds = entries.get(normalizeSearchString(search))) == null) return results;
 		for (String id : resultIds) {
 			repository.getById(id).ifPresent(results::add);
 		}
 		return results;
 	}
 	
-	private String[] getSearchStrings(String string) {
+	private String normalizeSearchString(String string) {
 		return string.toLowerCase()
 				.replaceAll("-{1}", " ")
 				.replaceAll("[^A-Za-z0-9\\r\\n\\t\\f\\v ]", "")
-				.replaceAll("\\s{2,}", " ")
-				.split("\\s");
+				.replaceAll("\\s{2,}", " ");
+	}
+	
+	private String[] getSearchStrings(String string) {
+		return normalizeSearchString(string).split("\\s");
 	}
 
 }

@@ -58,7 +58,7 @@ public class SearchTree<T extends Entity<T> & NameEntity> {
 	public List<T> searchByName(String search) {
 		final List<T> results = new ArrayList<>();
 		final List<String> resultIds;
-		if ((resultIds = entries.get(normalizeSearchString(search))) == null) return results;
+		if ((resultIds = entries.get(normalizeSearchString(search).replaceAll("\\s", ""))) == null) return results;
 		for (String id : resultIds) {
 			repository.getById(id).ifPresent(results::add);
 		}
@@ -72,8 +72,16 @@ public class SearchTree<T extends Entity<T> & NameEntity> {
 				.replaceAll("\\s{2,}", " ");
 	}
 	
-	private String[] getSearchStrings(String string) {
-		return normalizeSearchString(string).split("\\s");
+	private List<String> getSearchStrings(String string) {
+		final String searchString = normalizeSearchString(string);
+		final List<String> searchStrings = new ArrayList<>();
+		searchStrings.add(searchString.replaceAll("\\s", ""));
+		int index = searchString.indexOf(' ');
+		while (index >= 0) {
+			searchStrings.add(searchString.substring(index).replaceAll("\\s", ""));
+		    index = searchString.indexOf(' ', index + 1);
+		}
+		return searchStrings;
 	}
 
 }

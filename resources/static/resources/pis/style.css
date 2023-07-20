@@ -1,3 +1,13 @@
+.pis-pager a:first-of-type {
+	border-top-left-radius: var(--theme-border-radius);
+	border-bottom-left-radius: var(--theme-border-radius);
+}
+
+.pis-pager a:last-of-type {
+	border-top-right-radius: var(--theme-border-radius);
+	border-bottom-right-radius: var(--theme-border-radius);
+}
+
 @media screen and (min-width: 769px) {
 	.pis-action-bar .input {
 		max-width: 400px;

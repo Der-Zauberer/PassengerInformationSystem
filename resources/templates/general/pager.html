@@ -1,6 +1,6 @@
 <th:block th:fragment="pager">
-	<div class="flex flex-no-gap">
+	<div class="flex flex-no-gap pis-pager" th:if="${page.pageAmount > 1}">
 		<div class="width-100"></div>
-		<a class="button button-left" th:attr="onclick='if (' + ${page.page} + ' > 1) swd.setParameter(\'page\', ' + ${page.page} + ' - 1)'"><img class="icon" src="https://der-zauberer.github.io/SimpleWebDesign/resources/icons/arrow_left_white.svg"></a><th:block th:each="i: ${#numbers.sequence(1, page.pageAmount)}"><a class="button button-middle" th:classappend="${page.page == i} ? 'button-active' : ''" th:attr="onclick='swd.setParameter(\'page\', ' + ${i} + ')'" th:text="${i}"></a></th:block><a class="button button-right" th:attr="onclick='if (' + ${page.page} + ' < ' + ${page.pageAmount} + ') swd.setParameter(\'page\', ' + ${page.page} + ' + 1)'"><img class="icon" src="https://der-zauberer.github.io/SimpleWebDesign/resources/icons/arrow_right_white.svg"></a>
+		<th:block th:each="i: ${#numbers.sequence(1, page.pageAmount)}"><a class="button button-middle" th:if="${i == 1 || i == page.pageAmount || (page.page >= i - 3 && page.page <= i + 3)}" th:classappend="|${page.page == i ? 'button-active' : ''} ${i == 1 || i == page.pageAmount || (page.page >= i - 1 && page.page <= i + 1) ? '' : 'not-mobile'}" th:attr="onclick='swd.setParameter(\'page\', ' + ${i} + ')'" th:text="${i}"></a></th:block>
 	</div>
 </th:block>

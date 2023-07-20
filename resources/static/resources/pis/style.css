@@ -1,0 +1,15 @@
+@media screen and (min-width: 769px) {
+	.pis-action-bar .input {
+		max-width: 400px;
+	}
+}
+@media screen and (max-width: 768px) {
+	.pis-action-bar {
+		flex-wrap: wrap;
+		align-items: flex-end;
+		justify-content: flex-end;
+	}
+	.pis-action-bar .input {
+		width: 100%
+	}
+}

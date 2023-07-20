@@ -141,8 +141,8 @@ class SWD {
         let currentUrl = window.location.href;
 		if (currentUrl.includes('?')) {
 			const parameterString = '?' + currentUrl.split('?')[1];
-			if (parameterString.includes('?' + param + '=') || parameterString.includes('&' + param + '=')) {
-				currentUrl = currentUrl.replace(new RegExp('((\\?|&)' + param + '=)[^&]+', 'gm'), '$1' + value);
+			if (parameterString.includes('?' + param) || parameterString.includes('&' + param)) {
+				currentUrl = currentUrl.replace(new RegExp('((\\?|&)' + param + ')(=[^&]*)?', 'gm'), '$1=' + value);
 			} else {
                 if (currentUrl.substring(currentUrl.length - 1) != '?' && currentUrl.substring(currentUrl.length - 1) != '&') currentUrl += '&';
 				currentUrl += param + '=' + value;
@@ -158,8 +158,8 @@ class SWD {
         let currentUrl = window.location.href;
 		if (currentUrl.includes('?')) {
 			const parameterString = '?' + currentUrl.split('?')[1];
-			if (parameterString.includes('?' + param + '=') || parameterString.includes('&' + param + '=')) {
-				currentUrl = currentUrl.replace(new RegExp('&?' + param + '=[^&]+', 'gm'), '');
+			if (parameterString.includes('?' + param) || parameterString.includes('&' + param)) {
+				currentUrl = currentUrl.replace(new RegExp('&?' + param + '(=[^&]*)?', 'gm'), '');
                 if (currentUrl.substring(currentUrl.length - 1) == '&') currentUrl = currentUrl.substring(0, currentUrl.length - 1);
                 currentUrl = currentUrl.replace('?&', '?');
                 if (currentUrl.substring(currentUrl.length - 1) == '?') currentUrl = currentUrl.substring(0, currentUrl.length - 1);

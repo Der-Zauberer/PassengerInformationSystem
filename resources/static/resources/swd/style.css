@@ -513,6 +513,7 @@ input[type=number] {appearance: textfield;}
 .input {
     display: block !important;
     position: relative;
+    width: 100%;
     margin-bottom: var(--theme-element-spacing);
 }
 
@@ -520,6 +521,15 @@ input[type=number] {appearance: textfield;}
     height: 60px;
     padding: 30px 10px 8px 10px;
     margin: 0px;
+}
+
+.input input.input-small {
+    height: 40px;
+    padding: 8px 10px;
+}
+
+.input input.input-icon {
+    padding-right: 35px;
 }
 
 .input textarea {height: 120px;}
@@ -581,6 +591,18 @@ input:invalid[dirty] + .input-name, textarea:invalid[dirty] + .input-name {
     background-color: var(--theme-primary);
 }
 
+img.input-icon {
+    cursor: pointer;
+    position: absolute;
+    bottom: 14px;
+    right: 10px;
+    filter: contrast(0%);
+}
+
+img.input-icon:hover {
+    filter: initial;
+}
+
 /* dropdown */
 
 .dropdown {
@@ -588,10 +610,6 @@ input:invalid[dirty] + .input-name, textarea:invalid[dirty] + .input-name {
     position: relative;
     width: fit-content;
     margin-bottom: var(--theme-element-spacing);
-}
-
-.input {
-    width: 100%;
 }
 
 .dropdown > *:first-child {

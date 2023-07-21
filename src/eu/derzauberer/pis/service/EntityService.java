@@ -1,6 +1,5 @@
 package eu.derzauberer.pis.service;
 
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,12 +50,12 @@ public abstract class EntityService<T extends Entity<T>> {
 		return repository.isEmpty();
 	}
 	
-	public void packageEntities(Path path) {
-		repository.packageEntities(path);
+	public String packageEntities() {
+		return repository.packageEntities();
 	}
 	
-	public void extractEntities(Path path) {
-		repository.extractEntities(path);
+	public void extractEntities(String content) {
+		repository.extractEntities(content);
 	}
 	
 }

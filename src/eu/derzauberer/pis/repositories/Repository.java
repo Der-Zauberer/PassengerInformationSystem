@@ -12,6 +12,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -66,20 +67,19 @@ public abstract class Repository<T extends Entity<T>> {
 		return size() == 0;
 	}
 	
-	public void packageEntities(Path path) {
+	public String packageEntities() {
 		try {
 			final Collection<T> entities = getList();
-			final String content = OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(entities);
-			Files.writeString(path, content);
-			logger.info("Extracted {} {}", entities.size(), name);
-		} catch (IOException exception) {
+			String content = OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(entities);
+			return content;
+		} catch (JsonProcessingException exception) {
 			logger.error("Couldn't package {}: {} {}",  name, exception.getClass().getSimpleName(), exception.getMessage());
+			return null;
 		}
 	}
 	
-	public void extractEntities(Path path) {
+	public void extractEntities(String content) {
 		try {
-			final String content = Files.readString(path);
 			final List<T> entities = OBJECT_MAPPER.readValue(content, new TypeReference<ArrayList<T>>() {});
 			entities.forEach(this::add);
 			logger.info("Extracted {} {}", entities.size(), name);

@@ -60,45 +60,6 @@ public class CommandController {
 		services.put(typeService.getName(), typeService);
 		services.put(userService.getName(), userService);
 	}
-
-	@GetMapping("/extract")
-	public void extractEntities(
-			@RequestParam(name = "type", required = true) String typeName, 
-			@RequestParam(name = "path", required = true) String pathString
-			) {
-		final EntityService<?> service = services.get(typeName);
-		Path path;
-		if (service == null) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Type " + typeName + " does not exist!");
-		}
-		try {
-			path = Paths.get(pathString);
-		} catch (Exception exception) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The path " + pathString + " is not valid!");
-		}
-		if (!Files.exists(path)) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The file " + pathString + " does not exist!");
-		}
-		service.extractEntities(path);
-	}
-	
-	@GetMapping("/package")
-	public void packageEntities(
-			@RequestParam(name = "type", required = true) String typeName, 
-			@RequestParam(name = "path", required = true) String pathString
-			) {
-		final EntityService<?> service = services.get(typeName);
-		Path path;
-		if (service == null) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Type " + typeName + " does not exist!");
-		}
-		try {
-			path = Paths.get(pathString);
-		} catch (Exception exception) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The path " + pathString + " is not valid!");
-		}
-		service.packageEntities(path);
-	}
 	
 	@GetMapping("/download")
 	public void downloadEntities(@RequestParam(name = "downloader", required = true) String donwloaderName) {

@@ -1,6 +1,6 @@
 <th:block th:fragment="pager">
 	<div class="flex flex-no-gap pis-pager" th:if="${page.pageAmount > 1}">
 		<div class="width-100"></div>
-		<th:block th:each="i: ${#numbers.sequence(1, page.pageAmount)}"><a class="button button-middle" th:if="${i == 1 || i == page.pageAmount || (page.page >= i - 3 && page.page <= i + 3)}" th:classappend="|${page.page == i ? 'button-active' : ''} ${i == 1 || i == page.pageAmount || (page.page >= i - 1 && page.page <= i + 1) ? '' : 'not-mobile'}" th:attr="onclick='swd.setParameter(\'page\', ' + ${i} + ')'" th:text="${i}"></a></th:block>
+		<th:block th:each="i: ${#numbers.sequence(1, page.pageAmount)}"><a class="button button-middle" th:if="${i == 1 || i == page.pageAmount || (page.page >= i - 3 && page.page <= i + 3)}" th:classappend="|${page.page == i ? 'button-active' : ''} ${i == 1 || i == page.pageAmount || (page.page >= i - 1 && page.page <= i + 1) ? '' : 'not-mobile'}" th:attr="onclick='pis.page(' + ${i} + ')'" th:text="${i}"></a></th:block>
 	</div>
 </th:block>

@@ -45,7 +45,7 @@ class PIS {
 		if (currentUrl.includes('?')) {
 			const parameterString = '?' + currentUrl.split('?')[1];
 			if (parameterString.includes('?' + param) || parameterString.includes('&' + param)) {
-				currentUrl = currentUrl.replace(new RegExp('&?' + param + '(=[^&]*)?', 'gm'), '');
+				currentUrl = currentUrl.replace(new RegExp('&?' + param + '((=[^&]*)|(?=&)|(?=$))', 'gm'), '');
                 if (currentUrl.substring(currentUrl.length - 1) == '&') currentUrl = currentUrl.substring(0, currentUrl.length - 1);
                 currentUrl = currentUrl.replace('?&', '?');
                 if (currentUrl.substring(currentUrl.length - 1) == '?') currentUrl = currentUrl.substring(0, currentUrl.length - 1);

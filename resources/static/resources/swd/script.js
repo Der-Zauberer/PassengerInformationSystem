@@ -132,8 +132,6 @@ class SWD {
     addLanguage(locale, src) {
         this.#languages.set(locale, src)
     }
-
-    
     
     // *********************
     // * Table of Contents *
@@ -419,6 +417,20 @@ class SWD {
             dialog.classList.add('show');
         } else {
             dialog.classList.remove('show');
+        }
+    }
+
+    // *********************
+    // * Notification      *
+    // *********************
+    
+    toggleNotification(notificationId) {
+        const Notification = document.getElementById(notificationId);
+        if (!Notification.classList.contains('show')) {
+            this.hideAllDropdowns();
+            Notification.classList.add('show');
+        } else {
+            Notification.classList.remove('show');
         }
     }
     

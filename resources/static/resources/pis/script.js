@@ -3,18 +3,23 @@ class PIS {
 	page(page) {
 		let currentUrl = window.location.href;
 		currentUrl = this.#setParameter(currentUrl, 'page', page);
-		console.log(currentUrl);
 		window.location.href = currentUrl;
 	}
 	
 	search() {
 		const input = document.getElementById('search');
-		console.log(input);
-		console.log(input.value);
 		let currentUrl = window.location.href;
 		currentUrl = this.#removeParameter(currentUrl, 'page');
 		currentUrl = this.#removeParameter(currentUrl, 'pageSize');
 		currentUrl = input.value ? this.#setParameter(currentUrl, 'query', input.value) : this.#removeParameter(currentUrl, 'query');
+		window.location.href = currentUrl;
+	}
+	
+	resetSearch() {
+		let currentUrl = window.location.href;
+		currentUrl = this.#removeParameter(currentUrl, 'query');
+		currentUrl = this.#removeParameter(currentUrl, 'page');
+		currentUrl = this.#removeParameter(currentUrl, 'pageSize');
 		window.location.href = currentUrl;
 	}
 

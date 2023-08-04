@@ -13,12 +13,12 @@
 				<h2 th:text="#{navigation.stations}"></h2>
 				<div th:replace="~{studio/actions :: actions}"></div>
 				
-				<div class="grid-table">
-					<div class="grid-table-row grid-table-headline">
+				<div class="pis-table">
+					<div class="pis-table-row pis-table-headline">
 						<div>Id</div>
 						<div>Name</div>
 					</div>
-					<div class="grid-table-row" th:each="station : ${page.results}">
+					<div class="pis-table-row" th:each="station : ${page.results}">
 						<div><label class="blue-transparent" th:text="${station.id}"></label></div>
 						<div><span th:text="${station.name}"></span></div>
 					</div>

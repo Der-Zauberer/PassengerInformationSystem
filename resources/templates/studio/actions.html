@@ -5,7 +5,6 @@
 			<img class="icon input-icon" th:if="${param.query == null}" src="https://der-zauberer.github.io/SimpleWebDesign/resources/icons/search.svg" onclick="pis.search()">
 			<img class="icon input-icon" th:if="${param.query != null}" src="https://der-zauberer.github.io/SimpleWebDesign/resources/icons/close.svg" onclick="pis.resetSearch()">
 		</div>
-		<div class="width-100"></div>
 		<a class="button grey dark-grey-hover">
 			<img class="icon" src="https://der-zauberer.github.io/SimpleWebDesign/resources/icons/arrow_up.svg">
 			&nbsp;<span th:text="#{action.import}"></span>

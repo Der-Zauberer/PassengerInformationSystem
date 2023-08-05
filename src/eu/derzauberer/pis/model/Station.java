@@ -13,7 +13,7 @@ public class Station implements Entity<Station>, NameEntity {
 	private Location location;
 	private StationServices services;
 	private ApiInformation api;
-
+	
 	public Station(String name) {
 		this(NameEntity.nameToId(name), name);
 	}

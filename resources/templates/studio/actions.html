@@ -1,15 +1,15 @@
-<th:block th:fragment="actions">
+<th:block th:fragment="actions(entity)">
 	<div class="flex pis-action-bar">
 		<div class="input">
 			<input id="search" class="input-small input-icon" th:placeholder="#{action.search}" th:value="${param.query}" onkeydown="if (event.keyCode == 13) pis.search()">
 			<img class="icon input-icon" th:if="${param.query == null}" src="https://der-zauberer.github.io/SimpleWebDesign/resources/icons/search.svg" onclick="pis.search()">
 			<img class="icon input-icon" th:if="${param.query != null}" src="https://der-zauberer.github.io/SimpleWebDesign/resources/icons/close.svg" onclick="pis.resetSearch()">
 		</div>
-		<a class="button grey dark-grey-hover">
+		<a class="button grey dark-grey-hover" th:attr="onclick=|pis.import('/api/${entity}/import')|">
 			<img class="icon" src="https://der-zauberer.github.io/SimpleWebDesign/resources/icons/arrow_up.svg">
 			&nbsp;<span th:text="#{action.import}"></span>
 		</a>
-		<a class="button grey dark-grey-hover" href="./export" download>
+		<a class="button grey dark-grey-hover" th:attr="onclick=|pis.export('/studio/${entity}/export')|">
 			<img class="icon" src="https://der-zauberer.github.io/SimpleWebDesign/resources/icons/arrow_down.svg">
 			&nbsp;<span th:text="#{action.export}"></span>
 		</a>

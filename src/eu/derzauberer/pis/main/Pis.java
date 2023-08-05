@@ -25,6 +25,8 @@ public class Pis {
 		
 		final Properties properties = new Properties();
 		properties.put("server.error.include-message", "always");
+		properties.put("spring.servlet.multipart.max-file-size", "50MB");
+		properties.put("spring.servlet.multipart.max-request-size", "50MB");
 		springApplication.setDefaultProperties(properties);
 		
 		springApplication.run();

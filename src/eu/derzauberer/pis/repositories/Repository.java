@@ -13,8 +13,9 @@ import java.util.Optional;
 import org.slf4j.Logger;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import eu.derzauberer.pis.configuration.SpringConfiguration;
 import eu.derzauberer.pis.model.Entity;
@@ -80,11 +81,16 @@ public abstract class Repository<T extends Entity<T>> {
 	
 	public void extractEntities(String content) {
 		try {
-			final List<T> entities = OBJECT_MAPPER.readValue(content, new TypeReference<ArrayList<T>>() {});
-			entities.forEach(this::add);
-			logger.info("Extracted {} {}", entities.size(), name);
+			final ArrayNode json =  new ObjectMapper().readValue(content, ArrayNode.class);
+			int i = 0;
+			for (JsonNode jsonEntity : json) {
+				final T entity = OBJECT_MAPPER.readValue(jsonEntity.toString(), type);
+				add(entity);
+				i++;
+			}
+			logger.info("Extracted {} {}", i, name);
 		} catch (IOException exception) {
-			logger.error("Couldn't extract {}: {} {}",  name, exception.getClass().getSimpleName(), exception.getMessage());
+			logger.error("Couldn't extract {}: {} {}", name, exception.getClass().getSimpleName(), exception.getMessage());
 		}
 	}
 	

@@ -1,10 +1,18 @@
 class PIS {
 	
+	/*******************/
+	/* page            */
+	/*******************/
+	
 	page(page) {
 		let currentUrl = window.location.href;
 		currentUrl = this.#setParameter(currentUrl, 'page', page);
 		window.location.href = currentUrl;
 	}
+	
+	/*******************/
+	/* search          */
+	/*******************/
 	
 	search() {
 		const input = document.getElementById('search');
@@ -22,6 +30,36 @@ class PIS {
 		currentUrl = this.#removeParameter(currentUrl, 'pageSize');
 		window.location.href = currentUrl;
 	}
+	
+	/*******************/
+	/* import          */
+	/*******************/
+	
+	import(url) {
+		const input = document.createElement('input');
+		input.type = 'file';
+		input.accept = "application/json"
+		input.onchange = event => {
+			if(!window.FileReader) return;
+			const fileReader = new FileReader();
+			fileReader.onload = function(event) {
+        		fetch(url, {method: 'POST', body: event.target.result, signal: AbortSignal.timeout(120000) }).then(event => {
+					location.reload();
+				});
+    		};
+    		fileReader.readAsText(event.target.files[0]);
+		};
+		input.click();
+	}
+	
+	export(url) {
+		window.location.href = url; 
+		//fetch(url, { signal: AbortSignal.timeout(120000) }).then((event) => console.log(event));
+	}
+	
+	/*******************/
+	/* parameter       */
+	/*******************/
 
     #setParameter(url, param, value) {
         let currentUrl = url;

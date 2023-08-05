@@ -66,6 +66,12 @@ public class StationController {
 	public void deleteStation(@PathVariable("id") String id) {
 		if (!stationService.removeById(id)) throw getNotFoundException(id);
 	}
+	
+	@PostMapping("/import")
+	public String importStations(@RequestBody String content) {
+		stationService.extractEntities(content);
+		return "Successful imported!";
+	}
 
 	private ResponseStatusException getNotFoundException(String id) {
 		return new ResponseStatusException(HttpStatus.NOT_FOUND, "Station with id " + id + " does not exist!");

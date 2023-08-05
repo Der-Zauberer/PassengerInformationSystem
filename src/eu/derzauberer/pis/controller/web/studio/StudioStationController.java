@@ -39,7 +39,7 @@ public class StudioStationController {
 	}
 	
 	@GetMapping("/export")
-	public void getStationsExportPage(Model model, HttpServletResponse response) throws UnsupportedEncodingException, IOException {
+	public void exportStations(Model model, HttpServletResponse response) throws UnsupportedEncodingException, IOException {
 		final String content = stationService.packageEntities();
 		response.setContentType("application/octet-stream");
 		final String headerKey = "Content-Disposition";
@@ -48,11 +48,6 @@ public class StudioStationController {
 		final ServletOutputStream outputStream = response.getOutputStream();
 		outputStream.write(content.getBytes("UTF-8"));
 		outputStream.close();
-	}
-	
-	@GetMapping("/import")
-	public String getStationsImportPage() {
-		return "/studio/stations.html";
 	}
 	
 }

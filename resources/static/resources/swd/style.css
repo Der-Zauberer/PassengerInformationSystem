@@ -239,7 +239,8 @@ body {
     top: 0;
     height: 50px;
     width: 100%;
-    padding: 0 10px;
+    padding: 0 20px;
+    gap: 20px;
     z-index: 2;
     font-size: 19px;
     margin-bottom: 0;
@@ -253,7 +254,6 @@ body {
 
 .menu *:not(div) {
     box-sizing: border-box;
-    padding: 0 10px;
     color: #ffffff99;
 }
 
@@ -274,7 +274,7 @@ body {
 .menu img {
     width: initial;
     height: 50px;
-    padding: 16px 10px 16px 10px;
+    padding: 16px 0px;
     margin: 0px;
     cursor: pointer;
 }
@@ -712,9 +712,7 @@ img.input-icon:hover {
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: var(--theme-grey-primary);
-    border-color: var(--theme-grey-secondary);
-    border-style: solid;
-    border-width: 3px;
+    border: solid 3px var(--theme-grey-secondary);
     border-radius: var(--theme-border-radius);
 }
 
@@ -758,6 +756,7 @@ img.input-icon:hover {
     max-width: calc(100% - var(--theme-element-spacing));
     background-color: var(--theme-grey-primary);
     border-radius: var(--theme-border-radius);
+    border: solid 3px var(--theme-grey-secondary);
 }
 
 .notification > *:first-child {margin-top: 0px}
@@ -904,6 +903,9 @@ table td, th {
     margin: initial;
     max-width: initial;
     object-fit: fill;
+    width: 14px;
+    height: 14px;
+    transform: translateY(1px);
 }
 
 @media (prefers-color-scheme: light) {.icon {filter: initial;}}

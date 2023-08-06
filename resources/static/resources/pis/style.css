@@ -2,7 +2,7 @@
 
 .pis-table {
 	display: grid;
-	grid-template-columns: fit-content(0) auto;
+	grid-template-columns: fit-content(0) auto fit-content(0);
 	gap: 3px 0px;
 	padding: 3px;
 	margin-bottom: var(--theme-element-spacing);
@@ -16,10 +16,13 @@
 }
 
 .pis-table > div.pis-table-row > div {
-	padding: 10px 20px;
+	padding: 10px;
 	background-color: var(--theme-background);
 }
 
+.pis-table > div.pis-table-row > div a{
+	margin: 0px;
+}
 
 .pis-table > div.pis-table-headline > div {
 	font-weight: bold;

@@ -40,7 +40,7 @@ public class StudioStationController {
 	
 	@GetMapping("/export")
 	public void exportStations(Model model, HttpServletResponse response) throws UnsupportedEncodingException, IOException {
-		final String content = stationService.packageEntities();
+		final String content = stationService.exportEntities();
 		response.setContentType("application/octet-stream");
 		final String headerKey = "Content-Disposition";
 		final String headerValue = "attachment; filename = " + stationService.getName() + ".json";

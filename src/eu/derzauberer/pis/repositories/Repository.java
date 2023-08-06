@@ -68,7 +68,7 @@ public abstract class Repository<T extends Entity<T>> {
 		return size() == 0;
 	}
 	
-	public String packageEntities() {
+	public String exportEntities() {
 		try {
 			final Collection<T> entities = getList();
 			String content = OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(entities);
@@ -79,7 +79,7 @@ public abstract class Repository<T extends Entity<T>> {
 		}
 	}
 	
-	public void extractEntities(String content) {
+	public void importEntities(String content) {
 		try {
 			final ArrayNode json =  new ObjectMapper().readValue(content, ArrayNode.class);
 			int i = 0;

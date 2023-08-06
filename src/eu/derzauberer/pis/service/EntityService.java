@@ -50,12 +50,12 @@ public abstract class EntityService<T extends Entity<T>> {
 		return repository.isEmpty();
 	}
 	
-	public String packageEntities() {
-		return repository.packageEntities();
+	public String exportEntities() {
+		return repository.exportEntities();
 	}
 	
-	public void extractEntities(String content) {
-		repository.extractEntities(content);
+	public void importEntities(String content) {
+		repository.importEntities(content);
 	}
 	
 }

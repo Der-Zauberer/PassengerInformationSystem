@@ -69,7 +69,7 @@ public class StationController {
 	
 	@PostMapping("/import")
 	public String importStations(@RequestBody String content) {
-		stationService.extractEntities(content);
+		stationService.importEntities(content);
 		return "Successful imported!";
 	}
 

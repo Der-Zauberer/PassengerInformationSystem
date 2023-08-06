@@ -47,6 +47,20 @@
 	}
 }
 
+/* form */
+
+.pis-form-2 {
+	display: grid;
+	grid-template-columns: 50% 50%;
+	gap: 0 var(--theme-element-spacing);
+}
+
+@media (max-width: 768px) {
+	.pis-form-2 {
+		grid-template-columns: 100%;
+	}
+}
+
 /* pager */
 
 .pis-pager a:first-of-type {

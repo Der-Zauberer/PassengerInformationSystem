@@ -9,7 +9,7 @@ public class Station implements Entity<Station>, NameEntity {
 	private final String id;
 	private final String name;
 	private TreeSet<Platform> platforms;
-	private Adress adress;
+	private Address address;
 	private Location location;
 	private StationServices services;
 	private ApiInformation api;
@@ -42,17 +42,17 @@ public class Station implements Entity<Station>, NameEntity {
 		this.platforms = platforms;
 	}
 	
-	public Adress getAdress() {
-		return adress;
+	public Address getAddress() {
+		return address;
 	}
 	
-	public Adress getOrCreateAdress() {
-		if (adress == null) adress = new Adress();
-		return adress;
+	public Address getOrCreateAdress() {
+		if (address == null) address = new Address();
+		return address;
 	}
 	
-	public void setAdress(Adress adress) {
-		this.adress = adress;
+	public void setAddress(Address adress) {
+		this.address = adress;
 	}
 	
 	public Location getLocation() {

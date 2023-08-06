@@ -10,18 +10,63 @@
 		
 			<div class="container-xl">
 				<form>
+				
+					<h2>Gneral</h2>
+					<div class="pis-form-2">
+						<div class="input">
+					        <input type="text" th:value="${station != null ? station.id : ''}" required>
+					        <span class="input-name">ID</span>
+					        <span class="input-error"></span>
+					    </div>
+					    <div class="input">
+					        <input type="text" th:value="${station != null ? station.name : ''}" required>
+					        <span class="input-name">Name</span>
+					        <span class="input-error"></span>
+					    </div>
+					</div>
 					
-					<div class="input">
-				        <input type="text" th:value="${station != null ? station.id : ''}" required>
-				        <span class="input-name">ID</span>
-				        <span class="input-error"></span>
-				    </div>
-				    
-				    <div class="input">
-				        <input type="text" th:value="${station != null ? station.name : ''}" required>
-				        <span class="input-name">Name</span>
-				        <span class="input-error"></span>
-				    </div>
+					<h2>Address</h2>
+					<div class="pis-form-2">
+						<div class="input">
+					        <input type="text" th:value="${station != null && station.address != null && station.address.name != null ? station.address.name : ''}">
+					        <span class="input-name">Name</span>
+					        <span class="input-error"></span>
+					    </div>
+					    <div class="input">
+					        <input type="text" th:value="${station != null && station.address != null && station.address.street != null ? station.address.street : ''}">
+					        <span class="input-name">Street</span>
+					        <span class="input-error"></span>
+					    </div>
+					    <div class="input">
+					        <input type="number" th:value="${station != null && station.address != null && station.address.postalCode != null ? station.address.postalCode : ''}">
+					        <span class="input-name">Postal Code</span>
+					        <span class="input-error"></span>
+					    </div>
+					    <div class="input">
+					        <input type="text" th:value="${station != null && station.address != null && station.address.city != null ? station.address.city : ''}">
+					        <span class="input-name">City</span>
+					        <span class="input-error"></span>
+					    </div>
+					    <div class="input">
+					        <input type="text" th:value="${station != null && station.address != null && station.address.country != null ? station.address.country : ''}">
+					        <span class="input-name">Country</span>
+					        <span class="input-error"></span>
+					    </div>
+					</div>
+					
+					<h2>Geolacation</h2>
+					<div class="pis-form-2">
+						<div class="input">
+					        <input type="text" th:value="${station != null && station.location != null && station.location.latitude != null ? station.location.latitude : ''}">
+					        <span class="input-name">Latitude</span>
+					        <span class="input-error"></span>
+					    </div>
+					    <div class="input">
+					        <input type="text" th:value="${station != null && station.location != null && station.location.longitude != null ? station.location.longitude : ''}">
+					        <span class="input-name">Longitude</span>
+					        <span class="input-error"></span>
+					    </div>
+					</div>
 				
 				</form>
 			</div>

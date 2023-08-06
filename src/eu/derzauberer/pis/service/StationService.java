@@ -33,6 +33,8 @@ public class StationService extends EntityService<Station> {
 	
 	@Override
 	public void add(Station station) {
+		if (station.getId() == null) throw new IllegalArgumentException("Id of entity is null!");
+		if (station.getName() == null) throw new IllegalArgumentException("Name of entity is null!");
 		stationRepository.add(station);
 		search.remove(station);
 		search.add(station);

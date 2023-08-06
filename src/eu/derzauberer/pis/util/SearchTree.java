@@ -39,6 +39,7 @@ public class SearchTree<T extends Entity<T> & NameEntity> {
 	}
 	
 	public void removeById(String id) {
+		if (originalNames.get(id) == null) return;
 		for (String searchString : getSearchStrings(originalNames.get(id))) {
 			for (int i = 0; i < searchString.length(); i++) {
 				final String subString = searchString.substring(0, i + 1);

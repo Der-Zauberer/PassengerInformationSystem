@@ -6,7 +6,7 @@ public class TrainOperator implements Entity<TrainOperator>, NameEntity {
 
 	private final String id;
 	private String name;
-	private Adress adress;
+	private Address address;
 	private int backgorundColor;
 	private int textColor;
 	private ApiInformation api;
@@ -37,17 +37,17 @@ public class TrainOperator implements Entity<TrainOperator>, NameEntity {
 		this.name = name;
 	}
 	
-	public Adress getAdress() {
-		return adress;
+	public Address getAddress() {
+		return address;
 	}
 	
-	public Adress getOrCreateAdress() {
-		if (adress == null) adress = new Adress();
-		return adress;
+	public Address getOrCreateAdress() {
+		if (address == null) address = new Address();
+		return address;
 	}
 	
-	public void setAdress(Adress adress) {
-		this.adress = adress;
+	public void setAdress(Address adress) {
+		this.address = adress;
 	}
 	
 	public int getPrimaryColor() {

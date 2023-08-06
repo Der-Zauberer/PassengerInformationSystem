@@ -50,4 +50,12 @@ public class StudioStationController {
 		outputStream.close();
 	}
 	
+	@GetMapping("/edit")
+	public String editStation(@RequestParam(value = "id", required = false) String id, Model model) {
+		stationService.getById(id).ifPresent(station -> {
+			model.addAttribute("station", station);
+		});
+		return "/studio/edit/station.html";
+	}
+	
 }

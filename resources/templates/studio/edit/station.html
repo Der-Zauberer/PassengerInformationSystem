@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<div th:replace="~{general/head :: head(title='PIS Studio - ' + #{navigation.stations})}"></div>
+	<body>
+	
+		<div th:replace="~{general/menu :: menu}"></div>
+		
+		<div th:replace="~{studio/navigation :: navigation}"></div>
+		<div class="navigation-content">
+		
+			<div class="container-xl">
+				<form>
+					
+					<div class="input">
+				        <input type="text" th:value="${station != null ? station.id : ''}" required>
+				        <span class="input-name">ID</span>
+				        <span class="input-error"></span>
+				    </div>
+				    
+				    <div class="input">
+				        <input type="text" th:value="${station != null ? station.name : ''}" required>
+				        <span class="input-name">Name</span>
+				        <span class="input-error"></span>
+				    </div>
+				
+				</form>
+			</div>
+			
+		</div>
+		
+	</body>
+</html>

@@ -13,7 +13,7 @@
 			<img class="icon" src="https://der-zauberer.github.io/SimpleWebDesign/resources/icons/arrow_down.svg">
 			&nbsp;<span th:text="#{action.export}"></span>
 		</a>
-		<a class="button">
+		<a class="button" th:href="@{/studio/{entity}/edit(entity = ${entity})}">
 			<img class="icon icon-white" src="https://der-zauberer.github.io/SimpleWebDesign/resources/icons/add.svg">
 			&nbsp;<span th:text="#{action.new}"></span>
 		</a>

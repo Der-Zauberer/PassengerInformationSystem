@@ -19,13 +19,13 @@ public class StudioUserController {
 	
 	@GetMapping
 	public String getUsersPage(Model model, 
-			@RequestParam(name = "query", required = false) String query,
+			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "page", defaultValue = "1") int page,
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
 			) {
-		if (query != null && !query.isEmpty()) {
-			final String serach = query.replace('+', ' ');
-			model.addAttribute("page", new PageDto<>(userService.searchByName(serach), page, pageSize));
+		if (search != null && !search.isEmpty()) {
+			final String searchString = search.replace('+', ' ');
+			model.addAttribute("page", new PageDto<>(userService.searchByName(searchString), page, pageSize));
 		} else {			
 			model.addAttribute("page", new PageDto<>(userService, page, pageSize));
 		}

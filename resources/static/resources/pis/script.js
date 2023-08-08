@@ -19,13 +19,13 @@ class PIS {
 		let currentUrl = window.location.href;
 		currentUrl = this.#removeParameter(currentUrl, 'page');
 		currentUrl = this.#removeParameter(currentUrl, 'pageSize');
-		currentUrl = input.value ? this.#setParameter(currentUrl, 'query', input.value) : this.#removeParameter(currentUrl, 'query');
+		currentUrl = input.value ? this.#setParameter(currentUrl, 'search', input.value) : this.#removeParameter(currentUrl, 'search');
 		window.location.href = currentUrl;
 	}
 	
 	resetSearch() {
 		let currentUrl = window.location.href;
-		currentUrl = this.#removeParameter(currentUrl, 'query');
+		currentUrl = this.#removeParameter(currentUrl, 'search');
 		currentUrl = this.#removeParameter(currentUrl, 'page');
 		currentUrl = this.#removeParameter(currentUrl, 'pageSize');
 		window.location.href = currentUrl;

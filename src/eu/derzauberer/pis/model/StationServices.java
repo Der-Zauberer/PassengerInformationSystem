@@ -7,7 +7,7 @@ public class StationServices {
 	private boolean localPublicTransport = false;
 	private boolean publicFacilities = false;
 	private boolean taxiRank = false;
-	private boolean hasCarRental = false;
+	private boolean carRental = false;
 	private boolean lockerSystem = false;
 	private boolean travelNecessities = false;
 	private boolean barrierFree = false;
@@ -15,7 +15,7 @@ public class StationServices {
 	private boolean travelCenter = false;
 	private boolean railwayMission = false;
 	
-	public boolean hasParking() {
+	public boolean isParking() {
 		return parking;
 	}
 	
@@ -23,7 +23,7 @@ public class StationServices {
 		this.parking = parking;
 	}
 	
-	public boolean hasBicycleParking() {
+	public boolean isBicycleParking() {
 		return bicycleParking;
 	}
 	
@@ -31,15 +31,15 @@ public class StationServices {
 		this.bicycleParking = bicycleParking;
 	}
 	
-	public boolean hasLocalPublicTransport() {
+	public boolean isLocalPublicTransport() {
 		return localPublicTransport;
 	}
 	
-	public void setLocalPublicTransport(boolean localPublicTransport) {
+	public void isLocalPublicTransport(boolean localPublicTransport) {
 		this.localPublicTransport = localPublicTransport;
 	}
 	
-	public boolean hasPublicFacilities() {
+	public boolean isPublicFacilities() {
 		return publicFacilities;
 	}
 	
@@ -47,7 +47,7 @@ public class StationServices {
 		this.publicFacilities = publicFacilities;
 	}
 	
-	public boolean hasTaxiRank() {
+	public boolean isTaxiRank() {
 		return taxiRank;
 	}
 	
@@ -55,15 +55,15 @@ public class StationServices {
 		this.taxiRank = taxiRank;
 	}
 	
-	public boolean hasHasCarRental() {
-		return hasCarRental;
+	public boolean isCarRental() {
+		return carRental;
 	}
 	
-	public void setHasCarRental(boolean hasCarRental) {
-		this.hasCarRental = hasCarRental;
+	public void setCarRental(boolean hasCarRental) {
+		this.carRental = hasCarRental;
 	}
 	
-	public boolean hasLockerSystem() {
+	public boolean isLockerSystem() {
 		return lockerSystem;
 	}
 	
@@ -71,7 +71,7 @@ public class StationServices {
 		this.lockerSystem = lockerSystem;
 	}
 	
-	public boolean hasTravelNecessities() {
+	public boolean isTravelNecessities() {
 		return travelNecessities;
 	}
 	
@@ -79,7 +79,7 @@ public class StationServices {
 		this.travelNecessities = travelNecessities;
 	}
 	
-	public boolean hasBarrierFree() {
+	public boolean isBarrierFree() {
 		return barrierFree;
 	}
 	
@@ -87,7 +87,7 @@ public class StationServices {
 		this.barrierFree = barrierFree;
 	}
 	
-	public boolean hasWifi() {
+	public boolean isWifi() {
 		return wifi;
 	}
 	
@@ -95,7 +95,7 @@ public class StationServices {
 		this.wifi = wifi;
 	}
 	
-	public boolean hasTravelCenter() {
+	public boolean isTravelCenter() {
 		return travelCenter;
 	}
 	
@@ -103,7 +103,7 @@ public class StationServices {
 		this.travelCenter = travelCenter;
 	}
 	
-	public boolean hasRailwayMission() {
+	public boolean isRailwayMission() {
 		return railwayMission;
 	}
 	

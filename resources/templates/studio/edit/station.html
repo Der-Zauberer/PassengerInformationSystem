@@ -67,6 +67,70 @@
 					        <span class="input-error"></span>
 					    </div>
 					</div>
+					
+					<h2>Services</h2>
+					<div class="pis-form-2">
+						<div class="input">
+					        <input type="text" th:value="${station != null && station.services != null && station.services.parking != null ? station.services.parking : ''}">
+					        <span class="input-name">Parking</span>
+					        <span class="input-error"></span>
+					    </div>
+					    <div class="input">
+					        <input type="text" th:value="${station != null && station.services != null && station.services.bicycleParking != null ? station.services.bicycleParking : ''}">
+					        <span class="input-name">Bicycle Parking</span>
+					        <span class="input-error"></span>
+					    </div>
+					    <div class="input">
+					        <input type="text" th:value="${station != null && station.services != null && station.services.localPublicTransport != null ? station.services.localPublicTransport : ''}">
+					        <span class="input-name">Local Public Transport</span>
+					        <span class="input-error"></span>
+					    </div>
+					    <div class="input">
+					        <input type="text" th:value="${station != null && station.services != null && station.services.publicFacilities != null ? station.services.publicFacilities : ''}">
+					        <span class="input-name">Public Facilities</span>
+					        <span class="input-error"></span>
+					    </div>
+					    <div class="input">
+					        <input type="text" th:value="${station != null && station.services != null && station.services.taxiRank != null ? station.services.taxiRank : ''}">
+					        <span class="input-name">Taxi Rank</span>
+					        <span class="input-error"></span>
+					    </div>
+					    <div class="input">
+					        <input type="text" th:value="${station != null && station.services != null && station.services.carRental != null ? station.services.carRental : ''}">
+					        <span class="input-name">Car Rental</span>
+					        <span class="input-error"></span>
+					    </div>
+					    <div class="input">
+					    	<input type="text" th:value="${station != null && station.services != null && station.services.lockerSystem != null ? station.services.lockerSystem : ''}">
+					        <span class="input-name">Locker System</span>
+					        <span class="input-error"></span>
+					    </div>
+					    <div class="input">
+					    	<input type="text" th:value="${station != null && station.services != null && station.services.travelNecessities != null ? station.services.travelNecessities : ''}">
+					        <span class="input-name">Travel Necessities</span>
+					        <span class="input-error"></span>
+					    </div>
+					    <div class="input">
+					    	<input type="text" th:value="${station != null && station.services != null && station.services.lockerSystem != null ? station.services.lockerSystem : ''}">
+					        <span class="input-name">Barrier Free</span>
+					        <span class="input-error"></span>
+					    </div>
+					    <div class="input">
+					    	<input type="text" th:value="${station != null && station.services != null && station.services.wifi != null ? station.services.wifi : ''}">
+					        <span class="input-name">Wifi</span>
+					        <span class="input-error"></span>
+					    </div>
+					    <div class="input">
+					    	<input type="text" th:value="${station != null && station.services != null && station.services.travelCenter != null ? station.services.travelCenter : ''}">
+					        <span class="input-name">Travel Center</span>
+					        <span class="input-error"></span>
+					    </div>
+					    <div class="input">
+					    	<input type="text" th:value="${station != null && station.services != null && station.services.railwayMission != null ? station.services.railwayMission : ''}">
+					        <span class="input-name">Railway Mission</span>
+					        <span class="input-error"></span>
+					    </div>
+					</div>
 				
 				</form>
 			</div>

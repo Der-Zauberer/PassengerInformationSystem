@@ -70,7 +70,7 @@ public class DbStadaStationDownloader {
 			}
 			station.getorCreateServices().setParking(extractBoolean(node, "hasParking"));
 			station.getorCreateServices().setBicycleParking(extractBoolean(node, "hasBicycleParking"));
-			station.getorCreateServices().setLocalPublicTransport(extractBoolean(node, "hasLocalPublicTransport"));
+			station.getorCreateServices().isLocalPublicTransport(extractBoolean(node, "hasLocalPublicTransport"));
 			station.getorCreateServices().setPublicFacilities(extractBoolean(node, "hasPublicFacilities"));
 			station.getorCreateServices().setLockerSystem(extractBoolean(node, "hasLockerSystem"));
 			station.getorCreateServices().setTaxiRank(extractBoolean(node, "hasTaxiRank"));
@@ -79,7 +79,7 @@ public class DbStadaStationDownloader {
 			station.getorCreateServices().setWifi(extractBoolean(node, "hasWiFi"));
 			station.getorCreateServices().setTravelCenter(extractBoolean(node, "hasTravelCenter"));
 			station.getorCreateServices().setRailwayMission(extractBoolean(node, "hasRailwayMission"));
-			station.getorCreateServices().setHasCarRental(extractBoolean(node, "hasCarRental"));
+			station.getorCreateServices().setCarRental(extractBoolean(node, "hasCarRental"));
 			station.getOrCreateApiInformation().addId("stada", node.get("number").asLong());
 			station.getOrCreateApiInformation().addSource(URL);
 			progress.count();

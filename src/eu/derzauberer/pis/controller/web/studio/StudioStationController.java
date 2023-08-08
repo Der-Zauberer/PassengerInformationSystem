@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import eu.derzauberer.pis.dto.PageDto;
-import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.service.StationService;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
@@ -33,7 +32,7 @@ public class StudioStationController {
 			final String serach = query.replace('+', ' ');
 			model.addAttribute("page", new PageDto<>(stationService.searchByName(serach), page, pageSize));
 		} else {			
-			model.addAttribute("page", new PageDto<Station>(stationService, page, pageSize));
+			model.addAttribute("page", new PageDto<>(stationService, page, pageSize));
 		}
 		return "/studio/stations.html";
 	}

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-public class User implements Entity<User> {
+public class User implements Entity<User>, NameEntity {
 	
 	private final String username;
 	private String displayName;
@@ -33,8 +33,13 @@ public class User implements Entity<User> {
 		return username;
 	}
 	
-	public String getUserName() {
+	public String getUsername() {
 		return username;
+	}
+	
+	@Override
+	public String getName() {
+		return displayName;
 	}
 	
 	public String getDisplayName() {

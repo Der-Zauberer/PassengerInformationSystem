@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<div th:replace="~{general/head :: head(title='PIS Studio - ' + #{navigation.users})}"></div>
+	<body>
+	
+		<div th:replace="~{general/menu :: menu}"></div>
+		
+		<div th:replace="~{studio/navigation :: navigation}"></div>
+		<div class="navigation-content">
+		
+			<div class="container-xl">
+			
+				<h2 th:text="#{navigation.users}"></h2>
+				<div th:replace="~{studio/actions :: actions('users')}"></div>
+				
+				<div class="pis-table">
+					<div class="pis-table-row pis-table-headline">
+						<div>Username</div>
+						<div>Display Name</div>
+						<div></div>
+					</div>
+					<div class="pis-table-row" th:each="user : ${page.results}">
+						<div><label class="blue-transparent" th:text="${user.username}"></label></div>
+						<div><span th:text="${user.displayName}"></span></div>
+						<div><a class="button" th:text="#{action.edit}" th:href="@{/studio/users/edit?id={id}(id = ${user.id})}"></a></div>
+					</div>
+				</div>
+				
+				<div th:replace="~{general/pager :: pager}"></div>
+				
+			</div>
+		
+		</div>
+		
+		<div th:replace="~{general/footer :: footer}"></div>
+		
+	</body>
+</html>

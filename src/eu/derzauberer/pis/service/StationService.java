@@ -12,18 +12,18 @@ import org.springframework.stereotype.Service;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.model.StationTraffic;
 import eu.derzauberer.pis.model.StationTrafficEntry;
-import eu.derzauberer.pis.repositories.Repository;
+import eu.derzauberer.pis.repositories.EntityRepository;
 import eu.derzauberer.pis.util.SearchTree;
 
 @Service
 public class StationService extends EntityService<Station> {
 	
-	private final Repository<Station> stationRepository;
-	private final Repository<StationTraffic> stationTrafficRepository;
+	private final EntityRepository<Station> stationRepository;
+	private final EntityRepository<StationTraffic> stationTrafficRepository;
 	private final SearchTree<Station> search;
 	
 	@Autowired
-	public StationService(Repository<Station> stationRepository, Repository<StationTraffic> stationTrafficRepository) {
+	public StationService(EntityRepository<Station> stationRepository, EntityRepository<StationTraffic> stationTrafficRepository) {
 		super(stationRepository);
 		this.stationRepository = stationRepository;
 		this.stationTrafficRepository = stationTrafficRepository;

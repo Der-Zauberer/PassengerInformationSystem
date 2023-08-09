@@ -14,14 +14,14 @@ import org.slf4j.LoggerFactory;
 import eu.derzauberer.pis.configuration.SpringConfiguration;
 import eu.derzauberer.pis.model.Entity;
 
-public class MemoryRepository<T extends Entity<T>> extends Repository<T>{
+public class MemoryEntityRepository<T extends Entity<T>> extends EntityRepository<T>{
 	
 	private final Map<String, T> entities = new TreeMap<>();
 	
 	private static final ModelMapper MODEL_MAPPER = SpringConfiguration.getBean(ModelMapper.class);
-	protected static final Logger LOGGER = LoggerFactory.getLogger(MemoryRepository.class);
+	protected static final Logger LOGGER = LoggerFactory.getLogger(MemoryEntityRepository.class);
 
-	public MemoryRepository(String name, Class<T> type) {
+	public MemoryEntityRepository(String name, Class<T> type) {
 		super(name, type, LOGGER);
 		final List<T> entities = loadEntities(true);
 		for (T entity : entities) {

@@ -9,18 +9,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.model.User;
-import eu.derzauberer.pis.repositories.Repository;
+import eu.derzauberer.pis.repositories.EntityRepository;
 import eu.derzauberer.pis.util.SearchTree;
 
 @Service
 public class UserService extends EntityService<User> {
 	
-	private final Repository<User> userRepository;
+	private final EntityRepository<User> userRepository;
 	private final SearchTree<User> search;
 	private final PasswordEncoder passwordEncoder;
 	
 	@Autowired
-	public UserService(Repository<User> userRepository, PasswordEncoder passwordEncoder) {
+	public UserService(EntityRepository<User> userRepository, PasswordEncoder passwordEncoder) {
 		super(userRepository);
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;

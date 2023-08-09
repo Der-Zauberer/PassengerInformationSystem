@@ -7,15 +7,15 @@ import java.util.Map;
 
 import eu.derzauberer.pis.model.Entity;
 import eu.derzauberer.pis.model.NameEntity;
-import eu.derzauberer.pis.repositories.Repository;
+import eu.derzauberer.pis.repositories.EntityRepository;
 
 public class SearchTree<T extends Entity<T> & NameEntity> {
 	
 	private final Map<String, String> originalNames = new HashMap<>();
 	private final Map<String, List<String>> entries = new HashMap<>();
-	private final Repository<T> repository;
+	private final EntityRepository<T> repository;
 	
-	public SearchTree(Repository<T> repository) {
+	public SearchTree(EntityRepository<T> repository) {
 		this.repository = repository;
 	}
 	

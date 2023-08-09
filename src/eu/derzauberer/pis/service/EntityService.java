@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import eu.derzauberer.pis.model.Entity;
-import eu.derzauberer.pis.repositories.Repository;
+import eu.derzauberer.pis.repositories.EntityRepository;
 
 public abstract class EntityService<T extends Entity<T>> {
 	
-	private final Repository<T> repository;
+	private final EntityRepository<T> repository;
 
-	public EntityService(Repository<T> repository) {
+	public EntityService(EntityRepository<T> repository) {
 		this.repository = repository;
 	}
 	

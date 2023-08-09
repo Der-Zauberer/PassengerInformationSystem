@@ -4,13 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.model.Route;
-import eu.derzauberer.pis.repositories.Repository;
+import eu.derzauberer.pis.repositories.EntityRepository;
 
 @Service
 public class RouteService extends EntityService<Route> {
 
 	@Autowired
-	public RouteService(Repository<Route> repository) {
+	public RouteService(EntityRepository<Route> repository) {
 		super(repository);
 	}
 	

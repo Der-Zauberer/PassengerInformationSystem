@@ -10,11 +10,11 @@ import org.slf4j.LoggerFactory;
 
 import eu.derzauberer.pis.model.Entity;
 
-public class FileRepository<T extends Entity<T>> extends Repository<T> {
+public class FileEntityRepository<T extends Entity<T>> extends EntityRepository<T> {
 	
-	protected static final Logger LOGGER = LoggerFactory.getLogger(FileRepository.class);
+	protected static final Logger LOGGER = LoggerFactory.getLogger(FileEntityRepository.class);
 
-	public FileRepository(String name, Class<T> type) {
+	public FileEntityRepository(String name, Class<T> type) {
 		super(name, type, LOGGER);
 		LOGGER.info("Loaded {} {}", size(), name);
 	}

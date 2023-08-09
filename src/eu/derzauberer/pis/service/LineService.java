@@ -14,17 +14,17 @@ import eu.derzauberer.pis.model.LineStop;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.model.StationTraffic;
 import eu.derzauberer.pis.model.StationTrafficEntry;
-import eu.derzauberer.pis.repositories.Repository;
+import eu.derzauberer.pis.repositories.EntityRepository;
 import eu.derzauberer.pis.util.ProgressStatus;
 
 @Service
 public class LineService extends EntityService<Line> {
 	
-	private final Repository<Line> lineRepository;
-	private final Repository<StationTraffic> stationTrafficRepository;
+	private final EntityRepository<Line> lineRepository;
+	private final EntityRepository<StationTraffic> stationTrafficRepository;
 	
 	@Autowired
-	public LineService(Repository<Line> lineRepository, Repository<StationTraffic> stationTrafficRepository) throws InterruptedException {
+	public LineService(EntityRepository<Line> lineRepository, EntityRepository<StationTraffic> stationTrafficRepository) throws InterruptedException {
 		super(lineRepository);
 		this.lineRepository = lineRepository;
 		this.stationTrafficRepository = stationTrafficRepository;

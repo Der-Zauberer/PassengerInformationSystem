@@ -21,7 +21,7 @@ import eu.derzauberer.pis.configuration.SpringConfiguration;
 import eu.derzauberer.pis.model.Entity;
 import eu.derzauberer.pis.util.ProgressStatus;
 
-public abstract class Repository<T extends Entity<T>> {
+public abstract class EntityRepository<T extends Entity<T>> {
 	
 	private final String name;
 	private final Class<T> type;
@@ -31,7 +31,7 @@ public abstract class Repository<T extends Entity<T>> {
 	protected static final String FILE_TYPE = ".json";
 	private static final ObjectMapper OBJECT_MAPPER = SpringConfiguration.getBean(ObjectMapper.class);
 	
-	public Repository(String name, Class<T> type, Logger logger) {
+	public EntityRepository(String name, Class<T> type, Logger logger) {
 		this.name = name;
 		this.type = type;
 		this.logger = logger;

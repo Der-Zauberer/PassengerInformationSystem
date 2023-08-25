@@ -1,13 +1,14 @@
 package eu.derzauberer.pis.model;
 
-import java.beans.ConstructorProperties;
-
 public class Location {
 	
-	private final double latitude;
-	private final double longitude;
+	private double latitude;
+	private double longitude;
 	
-	@ConstructorProperties({ "latitude", "longitude" })
+	public Location() {
+		this(0, 0);
+	}
+	
 	public Location(double latitude, double longitude) {
 		this.latitude = latitude;
 		this.longitude = longitude;
@@ -17,8 +18,16 @@ public class Location {
 		return latitude;
 	}
 	
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
+	
 	public double getLongitude() {
 		return longitude;
+	}
+	
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
 	}
 
 }

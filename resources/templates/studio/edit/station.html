@@ -9,46 +9,48 @@
 		<div class="navigation-content">
 		
 			<div class="container-xl">
-				<form>
+				<form action="#" th:action="@{/studio/stations/edit}" th:object="${station}" method="post">
 				
-					<h2>Gneral</h2>
+					<h2 class="mg-t-0">General</h2>
 					<div class="pis-form-2">
 						<div class="input">
-					        <input type="text" th:value="${station != null ? station.id : ''}" required>
+					        <input type="text" th:field="*{id}" required>
 					        <span class="input-name">ID</span>
 					        <span class="input-error"></span>
 					    </div>
 					    <div class="input">
-					        <input type="text" th:value="${station != null ? station.name : ''}" required>
+					        <input type="text" th:field="*{name}" required>
 					        <span class="input-name">Name</span>
 					        <span class="input-error"></span>
 					    </div>
 					</div>
 					
+					<h2>Platforms</h2>
+					
 					<h2>Address</h2>
 					<div class="pis-form-2">
 						<div class="input">
-					        <input type="text" th:value="${station != null && station.address != null && station.address.name != null ? station.address.name : ''}">
+					        <input type="text" th:field="*{address.name}">
 					        <span class="input-name">Name</span>
 					        <span class="input-error"></span>
 					    </div>
 					    <div class="input">
-					        <input type="text" th:value="${station != null && station.address != null && station.address.street != null ? station.address.street : ''}">
+					        <input type="text" th:field="*{address.street}">
 					        <span class="input-name">Street</span>
 					        <span class="input-error"></span>
 					    </div>
 					    <div class="input">
-					        <input type="number" th:value="${station != null && station.address != null && station.address.postalCode != null ? station.address.postalCode : ''}">
+					        <input type="number" th:field="*{address.postalCode}">
 					        <span class="input-name">Postal Code</span>
 					        <span class="input-error"></span>
 					    </div>
 					    <div class="input">
-					        <input type="text" th:value="${station != null && station.address != null && station.address.city != null ? station.address.city : ''}">
+					        <input type="text" th:field="*{address.city}">
 					        <span class="input-name">City</span>
 					        <span class="input-error"></span>
 					    </div>
 					    <div class="input">
-					        <input type="text" th:value="${station != null && station.address != null && station.address.country != null ? station.address.country : ''}">
+					        <input type="text" th:field="*{address.country}">
 					        <span class="input-name">Country</span>
 					        <span class="input-error"></span>
 					    </div>
@@ -57,12 +59,12 @@
 					<h2>Geolacation</h2>
 					<div class="pis-form-2">
 						<div class="input">
-					        <input type="text" th:value="${station != null && station.location != null && station.location.latitude != null ? station.location.latitude : ''}">
+					        <input type="text" th:field="*{location.latitude}">
 					        <span class="input-name">Latitude</span>
 					        <span class="input-error"></span>
 					    </div>
 					    <div class="input">
-					        <input type="text" th:value="${station != null && station.location != null && station.location.longitude != null ? station.location.longitude : ''}">
+					        <input type="text" th:field="*{location.longitude}">
 					        <span class="input-name">Longitude</span>
 					        <span class="input-error"></span>
 					    </div>
@@ -71,62 +73,62 @@
 					<h2>Services</h2>
 					<div class="pis-form-2">
 						<div class="input">
-					        <input type="text" th:value="${station != null && station.services != null && station.services.parking != null ? station.services.parking : ''}">
+					        <input type="text" th:field="*{services.parking}">
 					        <span class="input-name">Parking</span>
 					        <span class="input-error"></span>
 					    </div>
 					    <div class="input">
-					        <input type="text" th:value="${station != null && station.services != null && station.services.bicycleParking != null ? station.services.bicycleParking : ''}">
+					        <input type="text" th:field="*{services.bicycleParking}">
 					        <span class="input-name">Bicycle Parking</span>
 					        <span class="input-error"></span>
 					    </div>
 					    <div class="input">
-					        <input type="text" th:value="${station != null && station.services != null && station.services.localPublicTransport != null ? station.services.localPublicTransport : ''}">
+					        <input type="text" th:field="*{services.localPublicTransport}">
 					        <span class="input-name">Local Public Transport</span>
 					        <span class="input-error"></span>
 					    </div>
 					    <div class="input">
-					        <input type="text" th:value="${station != null && station.services != null && station.services.publicFacilities != null ? station.services.publicFacilities : ''}">
+					        <input type="text" th:field="*{services.publicFacilities}">
 					        <span class="input-name">Public Facilities</span>
 					        <span class="input-error"></span>
 					    </div>
 					    <div class="input">
-					        <input type="text" th:value="${station != null && station.services != null && station.services.taxiRank != null ? station.services.taxiRank : ''}">
+					        <input type="text" th:field="*{services.taxiRank}">
 					        <span class="input-name">Taxi Rank</span>
 					        <span class="input-error"></span>
 					    </div>
 					    <div class="input">
-					        <input type="text" th:value="${station != null && station.services != null && station.services.carRental != null ? station.services.carRental : ''}">
+					        <input type="text" th:field="*{services.carRental}">
 					        <span class="input-name">Car Rental</span>
 					        <span class="input-error"></span>
 					    </div>
 					    <div class="input">
-					    	<input type="text" th:value="${station != null && station.services != null && station.services.lockerSystem != null ? station.services.lockerSystem : ''}">
+					    	<input type="text" th:field="*{services.lockerSystem}">
 					        <span class="input-name">Locker System</span>
 					        <span class="input-error"></span>
 					    </div>
 					    <div class="input">
-					    	<input type="text" th:value="${station != null && station.services != null && station.services.travelNecessities != null ? station.services.travelNecessities : ''}">
+					    	<input type="text" th:field="*{services.travelNecessities}">
 					        <span class="input-name">Travel Necessities</span>
 					        <span class="input-error"></span>
 					    </div>
 					    <div class="input">
-					    	<input type="text" th:value="${station != null && station.services != null && station.services.lockerSystem != null ? station.services.lockerSystem : ''}">
+					    	<input type="text" th:field="*{services.lockerSystem}">
 					        <span class="input-name">Barrier Free</span>
 					        <span class="input-error"></span>
 					    </div>
 					    <div class="input">
-					    	<input type="text" th:value="${station != null && station.services != null && station.services.wifi != null ? station.services.wifi : ''}">
+					    	<input type="text" th:field="*{services.wifi}">
 					        <span class="input-name">Wifi</span>
 					        <span class="input-error"></span>
 					    </div>
 					    <div class="input">
-					    	<input type="text" th:value="${station != null && station.services != null && station.services.travelCenter != null ? station.services.travelCenter : ''}">
+					    	<input type="text" th:field="*{services.travelCenter}">
 					        <span class="input-name">Travel Center</span>
 					        <span class="input-error"></span>
 					    </div>
 					    <div class="input">
-					    	<input type="text" th:value="${station != null && station.services != null && station.services.railwayMission != null ? station.services.railwayMission : ''}">
+					    	<input type="text" th:field="*{services.railwayMission}">
 					        <span class="input-name">Railway Mission</span>
 					        <span class="input-error"></span>
 					    </div>

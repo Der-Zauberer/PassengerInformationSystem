@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import eu.derzauberer.pis.dto.PageDto;
+import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.service.StationService;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
@@ -51,8 +52,10 @@ public class StudioStationController {
 	
 	@GetMapping("/edit")
 	public String editStation(@RequestParam(value = "id", required = false) String id, Model model) {
-		stationService.getById(id).ifPresent(station -> {
+		stationService.getById(id).ifPresentOrElse(station -> {
 			model.addAttribute("station", station);
+		}, () -> {
+			model.addAttribute("station", new Station("unnamed", "Unnamed"));
 		});
 		return "/studio/edit/station.html";
 	}

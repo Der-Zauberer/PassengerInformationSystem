@@ -11,38 +11,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import eu.derzauberer.pis.dto.PageDto;
-import eu.derzauberer.pis.service.UserService;
+import eu.derzauberer.pis.service.TypeService;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping("/studio/users")
-public class StudioUserController {
+@RequestMapping("/studio/types")
+public class StudioTypeController {
 	
 	@Autowired
-	private UserService userService;
+	private TypeService typeService;
 	
 	@GetMapping
-	public String getUsersPage(Model model, 
-			@RequestParam(name = "search", required = false) String search,
+	public String getStationsPage(Model model,
 			@RequestParam(name = "page", defaultValue = "1") int page,
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
 			) {
-		if (search != null && !search.isEmpty()) {
-			final String searchString = search.replace('+', ' ');
-			model.addAttribute("page", new PageDto<>(userService.searchByName(searchString), page, pageSize));
-		} else {			
-			model.addAttribute("page", new PageDto<>(userService, page, pageSize));
-		}
-		return "/studio/users.html";
+		model.addAttribute("page", new PageDto<>(typeService, page, pageSize));
+		return "/studio/types.html";
 	}
 	
 	@GetMapping("/export")
 	public void exportStations(Model model, HttpServletResponse response) throws UnsupportedEncodingException, IOException {
-		final String content = userService.exportEntities();
+		final String content = typeService.exportEntities();
 		response.setContentType("application/octet-stream");
 		final String headerKey = "Content-Disposition";
-		final String headerValue = "attachment; filename = " + userService.getName() + ".json";
+		final String headerValue = "attachment; filename = " + typeService.getName() + ".json";
 		response.setHeader(headerKey, headerValue);
 		final ServletOutputStream outputStream = response.getOutputStream();
 		outputStream.write(content.getBytes("UTF-8"));

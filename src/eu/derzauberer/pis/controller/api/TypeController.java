@@ -60,6 +60,12 @@ public class TypeController {
 		if (!typeService.removeById(id)) throw getNotFoundException(id);
 	}
 	
+	@PostMapping("/import")
+	public String importStations(@RequestBody String content) {
+		typeService.importEntities(content);
+		return "Successful imported!";
+	}
+	
 	private ResponseStatusException getNotFoundException(String id) {
 		return new ResponseStatusException(HttpStatus.NOT_FOUND, "Type with id " + id + " does not exist!");
 	}

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-	<div th:replace="~{general/head :: head(title='PIS Studio - ' + #{navigation.stations})}"></div>
+	<div th:replace="~{general/head :: head(title='PIS Studio - ' + #{navigation.types})}"></div>
 	<body>
 	
 		<div th:replace="~{general/menu :: menu}"></div>
@@ -11,7 +11,7 @@
 			<div class="container-xl">
 			
 				<h2 th:text="#{navigation.stations}"></h2>
-				<div th:replace="~{studio/actions :: actions('stations', true)}"></div>
+				<div th:replace="~{studio/actions :: actions('types', false)}"></div>
 				
 				<div class="pis-table">
 					<div class="pis-table-row pis-table-headline">
@@ -19,10 +19,10 @@
 						<div>Name</div>
 						<div></div>
 					</div>
-					<div class="pis-table-row" th:each="station : ${page.results}">
-						<div><label class="blue-transparent" th:text="${station.id}"></label></div>
-						<div><span th:text="${station.name}"></span></div>
-						<div><a class="button" th:text="#{action.edit}" th:href="@{/studio/stations/edit?id={id}(id = ${station.id})}"></a></div>
+					<div class="pis-table-row" th:each="type : ${page.results}">
+						<div><label class="blue-transparent" th:text="${type.id}"></label></div>
+						<div><span th:text="${type.name}"></span></div>
+						<div><a class="button" th:text="#{action.edit}" th:href="@{/studio/types/edit?id={id}(id = ${type.id})}"></a></div>
 					</div>
 				</div>
 				

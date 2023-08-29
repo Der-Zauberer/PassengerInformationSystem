@@ -67,6 +67,12 @@ public class UserController {
 		if (!userService.removeById(id)) throw getNotFoundException(id);
 	}
 	
+	@PostMapping("/export")
+	public String importStations(@RequestBody String content) {
+		userService.importEntities(content);
+		return "Successful imported!";
+	}
+	
 	private ResponseStatusException getNotFoundException(String id) {
 		return new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id " + id + " does not exist!");
 	}

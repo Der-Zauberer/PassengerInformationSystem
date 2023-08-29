@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/studio")
-public class StudioController {
+public class StudioDashboardController {
 	
 	@GetMapping
 	public String getDashboardPage() {

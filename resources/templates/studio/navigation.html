@@ -3,6 +3,7 @@
 		<h2 class="menu-title">PIS Studio</h2>
 		<a href="/studio" th:text="#{navigation.dashboard}" th:classappend="${url == '/studio' ? 'menu-active' : ''}"></a>
 		<a href="/studio/stations" th:text="#{navigation.stations}" th:classappend="${url.startsWith('/studio/stations') ? 'menu-active' : ''}"></a>
+		<a href="/studio/types" th:text="#{navigation.types}" th:classappend="${url.startsWith('/studio/types') ? 'menu-active' : ''}"></a>
 		<a href="/studio/users" th:text="#{navigation.users}" th:classappend="${url.startsWith('/studio/users') ? 'menu-active' : ''}"></a>
 	</div>
 </th:block>

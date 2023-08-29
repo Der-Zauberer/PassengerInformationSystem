@@ -9,7 +9,6 @@ import eu.derzauberer.pis.repositories.EntityRepository;
 @Service
 public class TypeService extends EntityService<TrainType> {
 	
-	
 	@Autowired
 	public TypeService(EntityRepository<TrainType> typeRepository) {
 		super(typeRepository);

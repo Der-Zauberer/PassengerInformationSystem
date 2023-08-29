@@ -11,17 +11,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import eu.derzauberer.pis.dto.PageDto;
-import eu.derzauberer.pis.model.Station;
-import eu.derzauberer.pis.service.StationService;
+import eu.derzauberer.pis.service.OperatorService;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping("/studio/stations")
-public class StudioStationController {
-
+@RequestMapping("/studio/operators")
+public class StudioOperatorController {
+	
 	@Autowired
-	private StationService stationService;
+	private OperatorService operatorService;
 	
 	@GetMapping
 	public String getStationsPage(Model model,
@@ -31,33 +30,23 @@ public class StudioStationController {
 			) {
 		if (search != null && !search.isEmpty()) {
 			final String serachString = search.replace('+', ' ');
-			model.addAttribute("page", new PageDto<>(stationService.searchByName(serachString), page, pageSize));
+			model.addAttribute("page", new PageDto<>(operatorService.searchByName(serachString), page, pageSize));
 		} else {			
-			model.addAttribute("page", new PageDto<>(stationService, page, pageSize));
+			model.addAttribute("page", new PageDto<>(operatorService, page, pageSize));
 		}
-		return "/studio/stations.html";
+		return "/studio/operators.html";
 	}
 	
 	@GetMapping("/export")
 	public void exportStations(Model model, HttpServletResponse response) throws UnsupportedEncodingException, IOException {
-		final String content = stationService.exportEntities();
+		final String content = operatorService.exportEntities();
 		response.setContentType("application/octet-stream");
 		final String headerKey = "Content-Disposition";
-		final String headerValue = "attachment; filename = " + stationService.getName() + ".json";
+		final String headerValue = "attachment; filename = " + operatorService.getName() + ".json";
 		response.setHeader(headerKey, headerValue);
 		final ServletOutputStream outputStream = response.getOutputStream();
 		outputStream.write(content.getBytes("UTF-8"));
 		outputStream.close();
 	}
-	
-	@GetMapping("/edit")
-	public String editStation(@RequestParam(value = "id", required = false) String id, Model model) {
-		stationService.getById(id).ifPresentOrElse(station -> {
-			model.addAttribute("station", station);
-		}, () -> {
-			model.addAttribute("station", new Station("unnamed", "Unnamed"));
-		});
-		return "/studio/edit/station.html";
-	}
-	
+
 }

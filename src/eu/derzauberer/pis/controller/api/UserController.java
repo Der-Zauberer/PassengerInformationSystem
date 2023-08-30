@@ -1,8 +1,11 @@
 package eu.derzauberer.pis.controller.api;
 
+import java.io.IOException;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +23,8 @@ import eu.derzauberer.pis.dto.UserEditDto;
 import eu.derzauberer.pis.dto.UserInfoDto;
 import eu.derzauberer.pis.model.User;
 import eu.derzauberer.pis.service.UserService;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api/users")
@@ -67,10 +72,27 @@ public class UserController {
 		if (!userService.removeById(id)) throw getNotFoundException(id);
 	}
 	
-	@PostMapping("/export")
+	@PostMapping("/import")
 	public String importStations(@RequestBody String content) {
 		userService.importEntities(content);
 		return "Successful imported!";
+	}
+	
+	@GetMapping("/export")
+	public Object importStations(@RequestParam(name = "download", defaultValue = "false") boolean donwload, Model model, HttpServletResponse response) throws IOException {
+		if (donwload) {
+			final String content = userService.exportEntities();
+			response.setContentType("application/octet-stream");
+			final String headerKey = "Content-Disposition";
+			final String headerValue = "attachment; filename = " + userService.getName() + ".json";
+			response.setHeader(headerKey, headerValue);
+			final ServletOutputStream outputStream = response.getOutputStream();
+			outputStream.write(content.getBytes("UTF-8"));
+			outputStream.close();
+			return null;
+		} else {
+			return userService.getList();
+		}
 	}
 	
 	private ResponseStatusException getNotFoundException(String id) {

@@ -1,11 +1,13 @@
 package eu.derzauberer.pis.controller.api;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +25,8 @@ import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.model.StationTrafficEntry;
 import eu.derzauberer.pis.service.LineService;
 import eu.derzauberer.pis.service.StationService;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api/lines")
@@ -90,6 +94,29 @@ public class LineController {
 	@DeleteMapping("{id}")
 	public void deleteLine(@PathVariable("id") String id) {
 		if (!lineService.removeById(id)) throw getNotFoundException("Line", id);
+	}
+	
+	@PostMapping("/import")
+	public String importStations(@RequestBody String content) {
+		lineService.importEntities(content);
+		return "Successful imported!";
+	}
+	
+	@GetMapping("/export")
+	public Object importStations(@RequestParam(name = "download", defaultValue = "false") boolean donwload, Model model, HttpServletResponse response) throws IOException {
+		if (donwload) {
+			final String content = lineService.exportEntities();
+			response.setContentType("application/octet-stream");
+			final String headerKey = "Content-Disposition";
+			final String headerValue = "attachment; filename = " + lineService.getName() + ".json";
+			response.setHeader(headerKey, headerValue);
+			final ServletOutputStream outputStream = response.getOutputStream();
+			outputStream.write(content.getBytes("UTF-8"));
+			outputStream.close();
+			return null;
+		} else {
+			return lineService.getList();
+		}
 	}
 	
 	private ResponseStatusException getNotFoundException(String entity, String id) {

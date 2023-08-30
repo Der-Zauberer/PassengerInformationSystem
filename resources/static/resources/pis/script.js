@@ -32,7 +32,7 @@ class PIS {
 	}
 	
 	/*******************/
-	/* import          */
+	/* import / export */
 	/*******************/
 	
 	#importExportBlocker = false;

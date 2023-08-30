@@ -11,7 +11,7 @@
 			<img class="icon" src="https://der-zauberer.github.io/SimpleWebDesign/resources/icons/arrow_up.svg">
 			&nbsp;<span th:text="#{action.import}"></span>
 		</a>
-		<a class="button grey dark-grey-hover" th:attr="onclick=|pis.export('/studio/${entity}/export')|">
+		<a class="button grey dark-grey-hover" th:attr="onclick=|pis.export('/api/${entity}/export?download=true')|">
 			<img class="icon" src="https://der-zauberer.github.io/SimpleWebDesign/resources/icons/arrow_down.svg">
 			&nbsp;<span th:text="#{action.export}"></span>
 		</a>

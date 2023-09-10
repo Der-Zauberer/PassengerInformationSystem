@@ -50,4 +50,8 @@ Railway employees seem to love exceptions because they have one for every single
 
 ### Concepts
 
-(UI concepts coming soon)
+![image](images/conceptLine.jpg)
+![image](images/conceptTicket.jpg)
+![image](images/conceptConnection.jpg)
+
+These concepts are just ideas and may change over time. More concepts coming soon!

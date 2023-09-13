@@ -11,40 +11,52 @@
 	border-radius: var(--theme-border-radius);
 }
 
-.pis-table > div {
+.pis-table .pis-table-row, .pis-table .pis-table-row .pis-table-mobile-wrapper {
 	display: contents;
 }
 
-.pis-table > div.pis-table-row > div {
+.pis-table .pis-table-row > div:not(.pis-table-mobile-wrapper), .pis-table .pis-table-row .pis-table-mobile-wrapper > div {
 	padding: 10px;
 	background-color: var(--theme-background);
 }
 
-.pis-table > div.pis-table-row > div a{
+.pis-table .pis-table-row > div:not(.pis-table-mobile-wrapper) a, .pis-table .pis-table-row .pis-table-mobile-wrapper > div a {
 	margin: 0px;
 }
 
-.pis-table > div.pis-table-headline > div {
+.pis-table .pis-table-headline > div {
 	font-weight: bold;
-	background-color: var(--theme-grey-primary);
+	background-color: var(--theme-grey-primary) !important;
 }
 
 @media screen and (max-width: 1023px) {
+	
 	.pis-table {
 		grid-template-columns: auto;
 		max-width: 100%;
 	}
 	
-	.pis-table > div {
+	.pis-table .pis-table-row {
 		display: grid;
 		grid-template-columns: auto;
 		flex-wrap: wrap;
 		background-color: var(--theme-grey-primary);
-	}
-	
-	.pis-table > div.pis-table-row {
 		background-color: var(--theme-background);
 	}
+	
+	.pis-table .pis-table-row .pis-table-mobile-wrapper {
+		display: flex;
+		flex-wrap: wrap;
+	}
+	
+	.pis-table .pis-table-mobile-actions {
+		margin-left: auto;
+	}
+	
+	.pis-table .pis-table-headline {
+		display: none;
+	}
+	
 }
 
 /* form */
@@ -75,23 +87,39 @@
 
 /* action-bar */
 
+.pis-action-bar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	justify-content: flex-end;
+	column-gap: calc(var(--theme-element-spacing) / 2);;
+}
+
 .pis-action-bar a:first-of-type {
 	margin-left: auto;
 }
 
-@media screen and (min-width: 1024px) {
-	.pis-action-bar .input {
-		max-width: 300px;
-	}
+.pis-action-bar .input {
+	display: block;
+	width: 30%;
+	max-width: 300px;
 }
 
 @media screen and (max-width: 1023px) {
-	.pis-action-bar {
-		flex-wrap: wrap;
-		align-items: flex-end;
-		justify-content: flex-end;
+	
+	.pis-action-bar .not-mobile {
+		display: none;
 	}
+	
 	.pis-action-bar .input {
-		width: 100%
+		width: 40%;
+	}
+	
+}
+
+@media (max-width: 768px) {
+	.pis-action-bar .input {
+		max-width: inherit;
+		width: 100%;
 	}
 }

@@ -20,9 +20,13 @@
 						<div></div>
 					</div>
 					<div class="pis-table-row" th:each="line : ${page.results}">
-						<div><label class="blue-transparent" th:text="${line.id}"></label></div>
-						<div><span th:text="${line.name}"></span></div>
-						<div><a class="button" th:text="#{action.edit}" th:href="@{/studio/lines/edit?id={id}(id = ${line.id})}"></a></div>
+						<div class="pis-table-mobile-wrapper">
+							<div><label class="blue-transparent" th:text="${line.id}"></label></div>
+							<div><span th:text="${line.name}"></span></div>
+						</div>
+						<div class="pis-table-mobile-wrapper pis-table-mobile-actions">
+							<div><a class="button" th:text="#{action.edit}" th:href="@{/studio/lines/edit?id={id}(id = ${line.id})}"></a></div>						
+						</div>
 					</div>
 				</div>
 				

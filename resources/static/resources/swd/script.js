@@ -274,9 +274,18 @@ class SWD {
     initializeInputButtons(input) {
         const inputField = input.getElementsByTagName('input')[0];
         if (!inputField) return;
-        const buttons = input.getElementsByTagName('a');
-        inputField.addEventListener('focus', event => Array.from(buttons).forEach(button => button.classList.add('active')));
-        inputField.addEventListener('focusout', event => Array.from(buttons).forEach(button => button.classList.remove('active')));
+        const decrementButton = input.getElementsByClassName('button-decrement')[0];
+        const incrementButton = input.getElementsByClassName('button-increment')[0];
+        if (decrementButton) {
+            decrementButton.addEventListener('focus', event => decrementButton.classList.add('active'));
+            decrementButton.addEventListener('focusout', event => decrementButton.classList.remove('active'));
+            decrementButton.addEventListener('click', event => this.decrementInput(event.target));
+        }
+        if (incrementButton) {
+            incrementButton.addEventListener('focus', event => incrementButton.classList.add('active'));
+            incrementButton.addEventListener('focusout', event => incrementButton.classList.remove('active'));
+            incrementButton.addEventListener('click', event => this.incrementInput(event.target));
+        }
     }
     
     incrementInput(element) {

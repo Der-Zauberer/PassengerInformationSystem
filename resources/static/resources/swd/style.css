@@ -17,6 +17,7 @@
     --theme-text-grey: #666666;
     --theme-border-radius: 5px;
     --theme-border-width: 3px;
+    --theme-box-shadow: none;
     --theme-element-spacing: 30px;
     background-color: var(--theme-background);
     color: var(--theme-text);
@@ -32,8 +33,6 @@ body {
     margin: 0px;
     background-repeat: no-repeat;
 }
-
-@media screen and (max-width: 768px) {:root {font-size: 15px; line-height: 25px; --theme-element-spacing: 25px;}}
 
 /* darkmode and lightmode */
 
@@ -247,6 +246,7 @@ body {
     text-decoration: none;
     white-space: nowrap;
     background-color: var(--theme-primary);
+    box-shadow: var(--theme-box-shadow);
     user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
@@ -313,6 +313,7 @@ body {
     width: 210px;
     color: var(--theme-text);
     background-color: var(--theme-grey-primary);
+    box-shadow: var(--theme-box-shadow);
     z-index: 1;
     transition: left 0.2s;
     overflow-y: hidden;
@@ -323,7 +324,6 @@ body {
 
 .navigation:hover {overflow-y: auto}
 @media (hover: none) {.navigation {overflow-y: auto}}
-@media screen and (max-width: 768px) {.navigation {overflow-y: auto}}
 
 .navigation *:not(div) {
     display: block;
@@ -341,10 +341,6 @@ body {
 .navigation  > *:first-child {
     margin-top: 0px;
 }
-
-@media screen and (min-width: 769px) {.mobile-navigation + * {
-    margin-top: 0px !important;
-}}
 
 .navigation img {
     margin-top: 10px;
@@ -377,8 +373,19 @@ body {
     .navigation-content-hide {opacity: 0.5}
 }
 
+@media screen and (min-width: 769px) {.mobile-navigation + * {
+    margin-top: 0px !important;
+}}
+
 @media (max-width: 768px) {.navigation {left: -250px}}
 @media (max-width: 768px) {.navigation-content {margin-left: 0}}
+
+
+@media (max-width: 768px) {
+    .navigation {left: -250px; overflow-y: auto}
+    .navigation-content {margin-left: 0}
+}
+
 @media (max-width: 992px) {.navigation-content .container {width: 100%}}
 
 /* headlines */
@@ -408,6 +415,7 @@ h6 {font-size: 16px; line-height: 26px; letter-spacing: 1px; font-weight: bold; 
     padding: calc(var(--theme-element-spacing) / 2);
     margin-bottom: var(--theme-element-spacing);
     border-radius: var(--theme-border-radius);
+    box-shadow: var(--theme-box-shadow);
     background-repeat: no-repeat;
     background-size: 100% auto;
 }
@@ -419,7 +427,7 @@ img.box {
 .box-border {
     border-style: solid;
     border-width: 0px 0px 0px 5px;
-    border-color: var(--theme-grey-primary);
+    border-color: var(--theme-primary);
 }
 
 .box-top {border-radius: var(--theme-border-radius) var(--theme-border-radius) 0px 0px; margin-bottom: 0px;}
@@ -590,6 +598,7 @@ input:invalid[dirty] + .input-name, textarea:invalid[dirty] + .input-name {
 .input-buttons .button {
     display: flex;
     align-items: center;
+    background-color: var(--theme-grey-secondary);
 }
 
 .input-buttons .button.active {
@@ -638,6 +647,7 @@ img.input-icon:hover {
     position: absolute;
     background-color: var(--theme-grey-primary);
     border-color: var(--theme-grey-secondary);
+    box-shadow: var(--theme-box-shadow);
     border-style: solid;
     border-width: 3px;
     border-radius: var(--theme-border-radius);
@@ -659,6 +669,7 @@ img.input-icon:hover {
     border-radius: var(--theme-border-radius);
     color: white;
     background-color: rgba(12, 12, 12, 0.8);
+    box-shadow: none;
 }
 
 .dropdown .dropdown-content > *:first-child {margin-top: 0px}
@@ -712,8 +723,9 @@ img.input-icon:hover {
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: var(--theme-grey-primary);
-    border: solid 3px var(--theme-grey-secondary);
+    border: solid var(--theme-border-radius) var(--theme-grey-secondary);
     border-radius: var(--theme-border-radius);
+    box-shadow: var(--theme-box-shadow);
 }
 
 .dialog-content > *:first-child {margin-top: 0px}
@@ -755,8 +767,9 @@ img.input-icon:hover {
     margin: var(--theme-element-spacing);
     max-width: calc(100% - var(--theme-element-spacing));
     background-color: var(--theme-grey-primary);
+    box-shadow: var(--theme-box-shadow);
     border-radius: var(--theme-border-radius);
-    border: solid 3px var(--theme-grey-secondary);
+    border: solid var(--theme-border-radius) var(--theme-grey-secondary);
 }
 
 .notification > *:first-child {margin-top: 0px}
@@ -1167,6 +1180,7 @@ ol li:last-child {padding-bottom: 0px}
 .border {
     border-style: solid;
     border-width: var(--theme-border-width);
+    border-color: var(--theme-primary);
 }
 
 .r-0 {border-radius: 0px}

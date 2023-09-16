@@ -5,10 +5,16 @@
 	grid-template-columns: fit-content(0) auto fit-content(0);
 	gap: 3px 0px;
 	padding: 3px;
+	font-size: 16px;
 	margin-bottom: var(--theme-element-spacing);
 	box-sizing: border-box;
 	background-color: var(--theme-grey-primary);
 	border-radius: var(--theme-border-radius);
+}
+
+.pis-table .button {
+	font-size: 16px;
+  	line-height: 30px;
 }
 
 .pis-table .pis-table-row, .pis-table .pis-table-row .pis-table-mobile-wrapper {

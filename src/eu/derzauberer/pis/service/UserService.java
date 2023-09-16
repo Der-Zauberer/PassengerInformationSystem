@@ -24,9 +24,9 @@ public class UserService extends EntityService<User> {
 		super(userRepository);
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
-		if (isEmpty()) add(new User("admin", "Admin", hashPassword("admin")));
 		this.search = new SearchTree<>(userRepository);
 		userRepository.getList().forEach(search::add);
+		if (isEmpty()) add(new User("admin", "Admin", hashPassword("admin")));
 	}
 	
 	@Override

@@ -27,7 +27,7 @@ public abstract class EntityRepository<T extends Entity<T>> {
 	private final Class<T> type;
 	private final Logger logger;
 	
-	protected static final String DIRECTORY = "data";
+	protected static final String DIRECTORY = "data/entities";
 	protected static final String FILE_TYPE = ".json";
 	private static final ObjectMapper OBJECT_MAPPER = SpringConfiguration.getBean(ObjectMapper.class);
 	
@@ -152,6 +152,9 @@ public abstract class EntityRepository<T extends Entity<T>> {
 	}
 	
 	protected void saveEntity(T entity) {
+		if (entity.getId() == null || entity.getId().isEmpty()) {
+			throw new IllegalArgumentException("Entity id must be not null and not empty!");
+		}
 		try {
 			final Path path = Paths.get(DIRECTORY, name, entity.getId() + FILE_TYPE);
 			final String content = OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(entity);

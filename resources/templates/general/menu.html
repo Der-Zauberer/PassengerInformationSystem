@@ -1,6 +1,6 @@
 <th:block th:fragment="menu">
 	<div class="menu mobile-menu" th:with="url=${#ctx.springRequestContext.requestUri}">
-		<img class="icon icon-white only-mobile" src="https://der-zauberer.github.io/SimpleWebDesign/resources/icons/hamburger.svg" onclick="swd.toggleMobileNavigationMenu()">
+		<img class="icon icon-white only-mobile" src="/resources/swd/icons/hamburger.svg" onclick="swd.toggleMobileNavigationMenu()">
 		<a class="menu-title" href="/">Passenger Information System</a>
 		<a class="only-mobile" href="/" th:text="#{menu.home}" th:classappend="${url == '/' ? 'menu-active' : ''}"></a>
 		<div class="width-100"></div>

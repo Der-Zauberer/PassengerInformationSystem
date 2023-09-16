@@ -3,20 +3,20 @@
 		<div th:if="${showSearchBar}" style="display: contents;">
 			<div class="input">
 				<input id="search" class="input-small input-icon" th:placeholder="#{action.search}" th:value="${param.query}" onkeydown="if (event.keyCode == 13) pis.search()">
-				<img class="icon input-icon" th:if="${param.query == null}" src="https://der-zauberer.github.io/SimpleWebDesign/resources/icons/search.svg" onclick="pis.search()">
-				<img class="icon input-icon" th:if="${param.query != null}" src="https://der-zauberer.github.io/SimpleWebDesign/resources/icons/close.svg" onclick="pis.resetSearch()">
+				<img class="icon input-icon" th:if="${param.query == null}" src="/resources/swd/icons/search.svg" onclick="pis.search()">
+				<img class="icon input-icon" th:if="${param.query != null}" src="/resources/swd/icons/close.svg" onclick="pis.resetSearch()">
 			</div>
 		</div>
 		<a class="button grey dark-grey-hover" th:attr="onclick=|pis.import('/api/${entity}/import')|">
-			<img class="icon" src="https://der-zauberer.github.io/SimpleWebDesign/resources/icons/arrow_up.svg">
+			<img class="icon" src="/resources/swd/icons/arrow_up.svg">
 			<span class="not-mobile">&nbsp;<span th:text="#{action.import}"></span></span>
 		</a>
 		<a class="button grey dark-grey-hover" th:attr="onclick=|pis.export('/api/${entity}/export?download=true')|">
-			<img class="icon" src="https://der-zauberer.github.io/SimpleWebDesign/resources/icons/arrow_down.svg">
+			<img class="icon" src="/resources/swd/icons/arrow_down.svg">
 			<span class="not-mobile">&nbsp;<span th:text="#{action.export}"></span></span>
 		</a>
 		<a class="button" th:href="@{/studio/{entity}/edit(entity = ${entity})}">
-			<img class="icon icon-white" src="https://der-zauberer.github.io/SimpleWebDesign/resources/icons/add.svg">
+			<img class="icon icon-white" src="/resources/swd/icons/add.svg">
 			&nbsp;<span th:text="#{action.new}"></span>
 		</a>
 	</div>

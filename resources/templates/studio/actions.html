@@ -1,11 +1,9 @@
-<th:block th:fragment="actions(entity, showSearchBar)">
+<th:block th:fragment="actions(entity)">
 	<div class="pis-action-bar">
-		<div th:if="${showSearchBar}" style="display: contents;">
-			<div class="input">
-				<input id="search" class="input-small input-icon" th:placeholder="#{action.search}" th:value="${param.query}" onkeydown="if (event.keyCode == 13) pis.search()">
-				<img class="icon input-icon" th:if="${param.query == null}" src="/resources/swd/icons/search.svg" onclick="pis.search()">
-				<img class="icon input-icon" th:if="${param.query != null}" src="/resources/swd/icons/close.svg" onclick="pis.resetSearch()">
-			</div>
+		<div class="input">
+			<input id="search" class="input-small input-icon" th:placeholder="#{action.search}" th:value="${param.query}" onkeydown="if (event.keyCode == 13) pis.search()">
+			<img class="icon input-icon" th:if="${param.query == null}" src="/resources/swd/icons/search.svg" onclick="pis.search()">
+			<img class="icon input-icon" th:if="${param.query != null}" src="/resources/swd/icons/close.svg" onclick="pis.resetSearch()">
 		</div>
 		<a class="button grey dark-grey-hover" th:attr="onclick=|pis.import('/api/${entity}/import')|">
 			<img class="icon" src="/resources/swd/icons/arrow_up.svg">

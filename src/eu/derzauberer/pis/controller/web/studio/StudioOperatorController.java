@@ -7,12 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import eu.derzauberer.pis.dto.PageDto;
 import eu.derzauberer.pis.service.OperatorService;
 
 @Controller
 @RequestMapping("/studio/operators")
-public class StudioOperatorController {
+public class StudioOperatorController extends StudioController {
 	
 	@Autowired
 	private OperatorService operatorService;
@@ -23,12 +22,7 @@ public class StudioOperatorController {
 			@RequestParam(name = "page", defaultValue = "1") int page,
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
 			) {
-		if (search != null && !search.isEmpty()) {
-			final String serachString = search.replace('+', ' ');
-			model.addAttribute("page", new PageDto<>(operatorService.search(serachString), page, pageSize));
-		} else {			
-			model.addAttribute("page", new PageDto<>(operatorService, page, pageSize));
-		}
+		getAll(operatorService, model, search, page, pageSize);
 		return "/studio/operators.html";
 	}
 

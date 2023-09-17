@@ -7,13 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import eu.derzauberer.pis.dto.PageDto;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.service.StationService;
 
 @Controller
 @RequestMapping("/studio/stations")
-public class StudioStationController {
+public class StudioStationController extends StudioController {
 
 	@Autowired
 	private StationService stationService;
@@ -24,12 +23,7 @@ public class StudioStationController {
 			@RequestParam(name = "page", defaultValue = "1") int page,
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
 			) {
-		if (search != null && !search.isEmpty()) {
-			final String serachString = search.replace('+', ' ');
-			model.addAttribute("page", new PageDto<>(stationService.search(serachString), page, pageSize));
-		} else {			
-			model.addAttribute("page", new PageDto<>(stationService, page, pageSize));
-		}
+		getAll(stationService, model, search, page, pageSize);
 		return "/studio/stations.html";
 	}
 	

@@ -1,22 +1,30 @@
-package eu.derzauberer.pis.util;
+package eu.derzauberer.pis.components;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import eu.derzauberer.pis.model.Entity;
 import eu.derzauberer.pis.model.NameEntity;
-import eu.derzauberer.pis.repositories.EntityRepository;
+import eu.derzauberer.pis.service.EntityService;
 
-public class SearchTree<T extends Entity<T> & NameEntity> {
-	
+@JsonIncludeProperties({ "originalNames", "entries" })
+@JsonPropertyOrder({ "originalNames", "entries" })
+public class SearchComponent<T extends Entity<T> & NameEntity> extends Component<EntityService<T>, Object> {
+
 	private final Map<String, String> originalNames = new HashMap<>();
 	private final Map<String, List<String>> entries = new HashMap<>();
-	private final EntityRepository<T> repository;
 	
-	public SearchTree(EntityRepository<T> repository) {
-		this.repository = repository;
+	public SearchComponent(EntityService<T> service) {
+		super("search", service, LoggerFactory.getLogger(SearchComponent.class));
+		getService().addOnAdd(entity -> { removeById(entity.getId()); add(entity); });
+		getService().addOnRemove(this::removeById);
 	}
 	
 	public void add(T entity) {
@@ -32,10 +40,6 @@ public class SearchTree<T extends Entity<T> & NameEntity> {
 			}
 		}
 		originalNames.put(entity.getId(), entity.getName());
-	}
-	
-	public void remove(T entity) {
-		removeById(entity.getId());
 	}
 	
 	public void removeById(String id) {
@@ -55,17 +59,6 @@ public class SearchTree<T extends Entity<T> & NameEntity> {
 		originalNames.remove(id);
 	}
 	
-	
-	public List<T> searchByName(String search) {
-		final List<T> results = new ArrayList<>();
-		final List<String> resultIds;
-		if ((resultIds = entries.get(normalizeSearchString(search).replaceAll("\\s", ""))) == null) return results;
-		for (String id : resultIds) {
-			repository.getById(id).ifPresent(results::add);
-		}
-		return results;
-	}
-	
 	private String normalizeSearchString(String string) {
 		return string.toLowerCase()
 				.replaceAll("-{1}", " ")
@@ -83,6 +76,16 @@ public class SearchTree<T extends Entity<T> & NameEntity> {
 		    index = searchString.indexOf(' ', index + 1);
 		}
 		return searchStrings;
+	}
+	
+	public List<T> search(String search) {
+		final List<T> results = new ArrayList<>();
+		final List<String> resultIds;
+		if ((resultIds = entries.get(normalizeSearchString(search).replaceAll("\\s", ""))) == null) return results;
+		for (String id : resultIds) {
+			getService().getById(id).ifPresent(results::add);
+		}
+		return results;
 	}
 
 }

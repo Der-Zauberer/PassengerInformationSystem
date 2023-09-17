@@ -26,7 +26,7 @@ public class StudioStationController {
 			) {
 		if (search != null && !search.isEmpty()) {
 			final String serachString = search.replace('+', ' ');
-			model.addAttribute("page", new PageDto<>(stationService.searchByName(serachString), page, pageSize));
+			model.addAttribute("page", new PageDto<>(stationService.search(serachString), page, pageSize));
 		} else {			
 			model.addAttribute("page", new PageDto<>(stationService, page, pageSize));
 		}

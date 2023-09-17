@@ -41,7 +41,7 @@ public class StationController {
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
 		if (query != null) {
-			final List<Station> stations = stationService.searchByName(query);
+			final List<Station> stations = stationService.search(query);
 			return new ListDto<>(stations, offset, limit == -1 ? stations.size() : limit);
 		}
 		return new ListDto<>(stationService, offset, limit == -1 ? stationService.size() : limit);

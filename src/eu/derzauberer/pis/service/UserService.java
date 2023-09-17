@@ -8,42 +8,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import eu.derzauberer.pis.components.SearchComponent;
 import eu.derzauberer.pis.model.User;
 import eu.derzauberer.pis.repositories.EntityRepository;
-import eu.derzauberer.pis.util.SearchTree;
 
 @Service
 public class UserService extends EntityService<User> {
 	
 	private final EntityRepository<User> userRepository;
-	private final SearchTree<User> search;
 	private final PasswordEncoder passwordEncoder;
+	private final SearchComponent<User> searchComponent;
 	
 	@Autowired
 	public UserService(EntityRepository<User> userRepository, PasswordEncoder passwordEncoder) {
 		super(userRepository);
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
-		this.search = new SearchTree<>(userRepository);
-		userRepository.getList().forEach(search::add);
+		this.searchComponent = new SearchComponent<>(this);
+		getList().forEach(searchComponent::add);
 		if (isEmpty()) add(new User("admin", "Admin", hashPassword("admin")));
 	}
 	
-	@Override
-	public void add(User user) {
-		userRepository.add(user);
-		search.remove(user);
-		search.add(user);
-	}
-	
-	@Override
-	public boolean removeById(String userId) {
-		search.removeById(userId);
-		return userRepository.removeById(userId);
-	}
-	
-	public List<User> searchByName(String name) {
-		return search.searchByName(name);
+	public List<User> search(String search) {
+		return searchComponent.search(search);
 	}
 	
 	public Optional<User> login(String username, String password) {

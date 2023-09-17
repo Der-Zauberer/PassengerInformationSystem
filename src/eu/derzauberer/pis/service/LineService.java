@@ -2,12 +2,14 @@ package eu.derzauberer.pis.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import eu.derzauberer.pis.components.SearchComponent;
 import eu.derzauberer.pis.configuration.SpringConfiguration;
 import eu.derzauberer.pis.model.Line;
 import eu.derzauberer.pis.model.LineStop;
@@ -22,12 +24,15 @@ public class LineService extends EntityService<Line> {
 	
 	private final EntityRepository<Line> lineRepository;
 	private final EntityRepository<StationTraffic> stationTrafficRepository;
+	private final SearchComponent<Line> searchComponent;
 	
 	@Autowired
 	public LineService(EntityRepository<Line> lineRepository, EntityRepository<StationTraffic> stationTrafficRepository) throws InterruptedException {
 		super(lineRepository);
 		this.lineRepository = lineRepository;
 		this.stationTrafficRepository = stationTrafficRepository;
+		searchComponent = new SearchComponent<>(this);
+		getList().forEach(searchComponent::add);
 		if (SpringConfiguration.indexing) {
 			ProgressStatus progress = new ProgressStatus("Indexing", lineRepository.getName(), lineRepository.size());
 			for (Line line : lineRepository.getList()) {
@@ -50,6 +55,11 @@ public class LineService extends EntityService<Line> {
 	public boolean removeById(String lineId) {
 		lineRepository.getById(lineId).ifPresent(this::removeLineToTrafficIndex);
 		return lineRepository.removeById(lineId);
+	}
+	
+	@Override
+	public List<Line> search(String search) {
+		return searchComponent.search(search);
 	}
 	
 	public SortedSet<StationTrafficEntry> findArrivalsSinceHour(Station station, LocalDateTime dateTime, int limit) {

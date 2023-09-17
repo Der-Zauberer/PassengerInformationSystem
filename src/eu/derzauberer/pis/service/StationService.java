@@ -9,43 +9,28 @@ import java.util.SortedSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import eu.derzauberer.pis.components.SearchComponent;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.model.StationTraffic;
 import eu.derzauberer.pis.model.StationTrafficEntry;
 import eu.derzauberer.pis.repositories.EntityRepository;
-import eu.derzauberer.pis.util.SearchTree;
 
 @Service
 public class StationService extends EntityService<Station> {
 	
-	private final EntityRepository<Station> stationRepository;
 	private final EntityRepository<StationTraffic> stationTrafficRepository;
-	private final SearchTree<Station> search;
+	private final SearchComponent<Station> searchComponent;
 	
 	@Autowired
 	public StationService(EntityRepository<Station> stationRepository, EntityRepository<StationTraffic> stationTrafficRepository) {
 		super(stationRepository);
-		this.stationRepository = stationRepository;
 		this.stationTrafficRepository = stationTrafficRepository;
-		this.search = new SearchTree<>(stationRepository);
-		stationRepository.getList().forEach(search::add);
+		this.searchComponent = new SearchComponent<>(this	);
+		getList().forEach(searchComponent::add);
 	}
 	
-	@Override
-	public void add(Station station) {
-		stationRepository.add(station);
-		search.remove(station);
-		search.add(station);
-	}
-	
-	@Override
-	public boolean removeById(String stationId) {
-		search.removeById(stationId);
-		return stationRepository.removeById(stationId);
-	}
-	
-	public List<Station> searchByName(String name) {
-		final List<Station> results = search.searchByName(name);
+	public List<Station> search(String name) {
+		final List<Station> results = searchComponent.search(name);
 		Collections.sort(results, (station1, station2) -> {
 			final boolean station1startsWithName = station1.getName().toLowerCase().startsWith(name.toLowerCase());
 			final boolean station2startsWithName = station2.getName().toLowerCase().startsWith(name.toLowerCase());

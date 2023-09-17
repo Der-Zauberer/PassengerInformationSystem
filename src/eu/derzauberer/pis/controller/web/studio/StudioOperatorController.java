@@ -25,7 +25,7 @@ public class StudioOperatorController {
 			) {
 		if (search != null && !search.isEmpty()) {
 			final String serachString = search.replace('+', ' ');
-			model.addAttribute("page", new PageDto<>(operatorService.searchByName(serachString), page, pageSize));
+			model.addAttribute("page", new PageDto<>(operatorService.search(serachString), page, pageSize));
 		} else {			
 			model.addAttribute("page", new PageDto<>(operatorService, page, pageSize));
 		}

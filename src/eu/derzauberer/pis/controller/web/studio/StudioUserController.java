@@ -25,7 +25,7 @@ public class StudioUserController {
 			) {
 		if (search != null && !search.isEmpty()) {
 			final String searchString = search.replace('+', ' ');
-			model.addAttribute("page", new PageDto<>(userService.searchByName(searchString), page, pageSize));
+			model.addAttribute("page", new PageDto<>(userService.search(searchString), page, pageSize));
 		} else {			
 			model.addAttribute("page", new PageDto<>(userService, page, pageSize));
 		}

@@ -35,7 +35,7 @@ public class StudioTypeController extends StudioController {
 		}, () -> {
 			model.addAttribute("type", new TrainType("unnamed", "UNNAMED", TrainClassifican.PASSENGER_REGIONAL));
 		});
-		return "/studio/edit/station.html";
+		return "/studio/edit/types.html";
 	}
 
 }

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<div th:replace="~{general/head :: head(title='PIS Studio - ' + #{navigation.stations})}"></div>
+	<body>
+	
+		<div th:replace="~{general/menu :: menu}"></div>
+		
+		<div th:replace="~{studio/navigation :: navigation}"></div>
+		<div class="navigation-content">
+		
+			<div class="container-xl">
+				<form action="#" th:action="@{/studio/types/edit}" th:object="${type}" method="post">
+				
+					<h2 class="mg-t-0">General</h2>
+					<div class="pis-form-2">
+						<div class="input">
+					        <input type="text" th:field="*{id}" required>
+					        <span class="input-name">ID</span>
+					        <span class="input-error"></span>
+					    </div>
+					    <div class="input">
+					        <input type="text" th:field="*{name}" required>
+					        <span class="input-name">Name</span>
+					        <span class="input-error"></span>
+					    </div>
+					</div>
+					
+					<h2 class="mg-t-0">Color</h2>
+					<div class="pis-form-2">
+						<div class="input">
+					        <input type="text" th:field="*{backgroundColor}">
+					        <span class="input-name">Background Color</span>
+					        <span class="input-error"></span>
+					    </div>
+					    <div class="input">
+					        <input type="text" th:field="*{textColor}">
+					        <span class="input-name">Text Color</span>
+					        <span class="input-error"></span>
+					    </div>
+					</div>
+				
+				</form>
+			</div>
+			
+		</div>
+		
+	</body>
+</html>

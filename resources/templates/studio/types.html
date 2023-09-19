@@ -28,6 +28,10 @@
 							<div><a class="button" th:text="#{action.edit}" th:href="@{/studio/types/edit?id={id}(id = ${type.id})}"></a></div>
 						</div>
 					</div>
+					<div class="pis-table-row pis-table-empty" th:if="${page.results.isEmpty()}">
+						<div th:if="${param.search == null}" th:text="#{entity.empty}"></div>
+						<div th:if="${param.search != null}" th:text="#{entity.emptyquery}"></div>
+					</div>
 				</div>
 				
 				<div th:replace="~{general/pager :: pager}"></div>

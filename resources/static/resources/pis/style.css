@@ -35,6 +35,15 @@
 	background-color: var(--theme-grey-primary) !important;
 }
 
+.pis-table .pis-table-empty {
+	display: block;
+	grid-column: span 3;
+}
+
+.pis-table .pis-table-empty div {
+	text-align: center;
+}
+
 @media screen and (max-width: 1023px) {
 	
 	.pis-table {

@@ -12,7 +12,7 @@ public class Line implements Entity<Line>, NameEntity {
 	private final String id;
 	private final String routeId;
 	private String name;
-	private TrainType type;
+	private Type type;
 	private int number;
 	private String operatorId;
 	private String driver;
@@ -42,7 +42,7 @@ public class Line implements Entity<Line>, NameEntity {
 	}
 	
 	@ConstructorProperties({ "id", "routeId", "type", "number" })
-	private Line(String id, String routeId, TrainType type, int number) {
+	private Line(String id, String routeId, Type type, int number) {
 		this.id = id;
 		this.routeId = routeId;
 		this.type = type;
@@ -67,11 +67,11 @@ public class Line implements Entity<Line>, NameEntity {
 		this.name = name;
 	}
 	
-	public TrainType getType() {
+	public Type getType() {
 		return type;
 	}
 
-	public void setType(TrainType type) {
+	public void setType(Type type) {
 		this.type = type;
 	}
 

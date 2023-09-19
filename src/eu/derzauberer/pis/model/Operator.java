@@ -2,7 +2,7 @@ package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
 
-public class TrainOperator implements Entity<TrainOperator>, NameEntity {
+public class Operator implements Entity<Operator>, NameEntity {
 
 	private final String id;
 	private String name;
@@ -11,12 +11,12 @@ public class TrainOperator implements Entity<TrainOperator>, NameEntity {
 	private int textColor;
 	private ApiInformation api;
 	
-	public TrainOperator(String name) {
+	public Operator(String name) {
 		this(NameEntity.nameToId(name), name);
 	}
 	
 	@ConstructorProperties({ "id", "name" })
-	public TrainOperator(String id, String name) {
+	public Operator(String id, String name) {
 		this.id = id;
 		this.name = name;
 		this.backgorundColor = 0x000000;

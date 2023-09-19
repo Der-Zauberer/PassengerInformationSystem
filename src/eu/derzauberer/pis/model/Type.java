@@ -2,9 +2,9 @@ package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
 
-public class TrainType implements Entity<TrainType>, NameEntity {
+public class Type implements Entity<Type>, NameEntity {
 	
-	public enum TrainClassifican {
+	public enum Classifican {
 		FREIGHT,
 		PASSENGER_REGIONAL,
 		PASSENGER_DISTANCE
@@ -12,13 +12,13 @@ public class TrainType implements Entity<TrainType>, NameEntity {
 
 	private final String id;
 	private final String name;
-	private final TrainClassifican classification;
+	private final Classifican classification;
 	private int backgroundColor;
 	private int textColor;
 	private ApiInformation api;
 	
 	@ConstructorProperties({ "id", "name", "classification" })
-	public TrainType(String id, String name, TrainClassifican classification) {
+	public Type(String id, String name, Classifican classification) {
 		this.id = id;
 		this.name = name;
 		this.classification = classification;
@@ -35,7 +35,7 @@ public class TrainType implements Entity<TrainType>, NameEntity {
 		return name;
 	}
 	
-	public TrainClassifican getClassification() {
+	public Classifican getClassification() {
 		return classification;
 	}
 	

@@ -40,8 +40,8 @@ import eu.derzauberer.pis.model.Line;
 import eu.derzauberer.pis.model.Route;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.model.StationTraffic;
-import eu.derzauberer.pis.model.TrainOperator;
-import eu.derzauberer.pis.model.TrainType;
+import eu.derzauberer.pis.model.Operator;
+import eu.derzauberer.pis.model.Type;
 import eu.derzauberer.pis.model.User;
 import eu.derzauberer.pis.repositories.FileEntityRepository;
 import eu.derzauberer.pis.repositories.MemoryEntityRepository;
@@ -144,8 +144,8 @@ public class SpringConfiguration implements ApplicationContextAware, WebMvcConfi
 	}
 	
 	@Bean
-	public EntityRepository<TrainOperator> getOperatorRepository() {
-		return caching ? new MemoryEntityRepository<>("operators", TrainOperator.class) : new FileEntityRepository<>("operators", TrainOperator.class);
+	public EntityRepository<Operator> getOperatorRepository() {
+		return caching ? new MemoryEntityRepository<>("operators", Operator.class) : new FileEntityRepository<>("operators", Operator.class);
 	}
 	
 	@Bean
@@ -164,8 +164,8 @@ public class SpringConfiguration implements ApplicationContextAware, WebMvcConfi
 	}
 	
 	@Bean
-	public EntityRepository<TrainType> getTypeRepository() {
-		return caching ? new MemoryEntityRepository<>("types", TrainType.class) : new FileEntityRepository<>("types", TrainType.class);
+	public EntityRepository<Type> getTypeRepository() {
+		return caching ? new MemoryEntityRepository<>("types", Type.class) : new FileEntityRepository<>("types", Type.class);
 	}
 	
 	@Bean

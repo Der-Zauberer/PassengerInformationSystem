@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import eu.derzauberer.pis.dto.ListDto;
-import eu.derzauberer.pis.model.TrainOperator;
+import eu.derzauberer.pis.model.Operator;
 import eu.derzauberer.pis.service.OperatorService;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
@@ -34,7 +34,7 @@ public class OperatorController {
 	private ModelMapper modelMapper;
 	
 	@GetMapping
-	public ListDto<TrainOperator> getOperators(
+	public ListDto<Operator> getOperators(
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
@@ -42,19 +42,19 @@ public class OperatorController {
 	}
 	
 	@GetMapping("{id}")
-	public TrainOperator getOperator(@PathVariable("id") String id) {
+	public Operator getOperator(@PathVariable("id") String id) {
 		return operatorService.getById(id).orElseThrow(() -> getNotFoundException(id));
 	}
 	
 	@PostMapping
-	public TrainOperator setOperator(@RequestBody TrainOperator operator) {
+	public Operator setOperator(@RequestBody Operator operator) {
 		operatorService.add(operator);
 		return operator;
 	}
 	
 	@PutMapping
-	public TrainOperator updateOperator(@RequestBody TrainOperator operator) {
-		final TrainOperator existingOperator = operatorService.getById(operator.getId()).orElseThrow(() -> getNotFoundException(operator.getId()));
+	public Operator updateOperator(@RequestBody Operator operator) {
+		final Operator existingOperator = operatorService.getById(operator.getId()).orElseThrow(() -> getNotFoundException(operator.getId()));
 		modelMapper.map(operator, existingOperator);
 		operatorService.add(existingOperator);
 		return existingOperator;

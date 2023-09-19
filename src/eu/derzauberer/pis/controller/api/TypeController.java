@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import eu.derzauberer.pis.dto.ListDto;
-import eu.derzauberer.pis.model.TrainType;
+import eu.derzauberer.pis.model.Type;
 import eu.derzauberer.pis.service.TypeService;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
@@ -34,7 +34,7 @@ public class TypeController {
 	private ModelMapper modelMapper;
 	
 	@GetMapping
-	public ListDto<TrainType> getTrainTypes(
+	public ListDto<Type> getTrainTypes(
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
@@ -42,19 +42,19 @@ public class TypeController {
 	}
 
 	@GetMapping("{id}")
-	public TrainType getTrainType(@PathVariable("id") String id) {
+	public Type getTrainType(@PathVariable("id") String id) {
 		return typeService.getById(id).orElseThrow(() -> getNotFoundException(id));
 	}
 	
 	@PostMapping
-	public TrainType setType(@RequestBody TrainType type) {
+	public Type setType(@RequestBody Type type) {
 		typeService.add(type);
 		return type;
 	}
 	
 	@PutMapping
-	public TrainType updateType(@RequestBody TrainType type) {
-		final TrainType existingType = typeService.getById(type.getId()).orElseThrow(() -> getNotFoundException(type.getId()));
+	public Type updateType(@RequestBody Type type) {
+		final Type existingType = typeService.getById(type.getId()).orElseThrow(() -> getNotFoundException(type.getId()));
 		modelMapper.map(type, existingType);
 		typeService.add(existingType);
 		return existingType;

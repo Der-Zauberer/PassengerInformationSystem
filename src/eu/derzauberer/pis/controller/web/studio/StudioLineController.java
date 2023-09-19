@@ -17,7 +17,7 @@ public class StudioLineController extends StudioController {
 	private LineService lineService;
 	
 	@GetMapping
-	public String getStationsPage(Model model,
+	public String getLinesPage(Model model,
 			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "page", defaultValue = "1") int page,
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize

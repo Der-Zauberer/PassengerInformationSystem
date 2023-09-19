@@ -17,7 +17,7 @@ public class StudioRouteController extends StudioController {
 	private RouteService routeService;
 	
 	@GetMapping
-	public String getStationsPage(Model model,
+	public String getRoutesPage(Model model,
 			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "page", defaultValue = "1") int page,
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize

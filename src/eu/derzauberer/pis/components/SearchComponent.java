@@ -3,60 +3,72 @@ package eu.derzauberer.pis.components;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.annotation.JsonIncludeProperties;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
 import eu.derzauberer.pis.model.Entity;
 import eu.derzauberer.pis.model.NameEntity;
+import eu.derzauberer.pis.model.SearchIndex;
 import eu.derzauberer.pis.service.EntityService;
 
-@JsonIncludeProperties({ "originalNames", "entries" })
-@JsonPropertyOrder({ "originalNames", "entries" })
-public class SearchComponent<T extends Entity<T> & NameEntity> extends Component<EntityService<T>, Object> {
+public class SearchComponent<T extends Entity<T> & NameEntity> extends Component<EntityService<T>, SearchIndex> {
 
-	private final Map<String, String> originalNames = new HashMap<>();
-	private final Map<String, List<String>> entries = new HashMap<>();
+	private final SearchIndex index;
+	private boolean generateIndex = false;
 	
 	public SearchComponent(EntityService<T> service) {
 		super("search", service, LoggerFactory.getLogger(SearchComponent.class));
-		getService().addOnAdd(entity -> { removeById(entity.getId()); add(entity); });
-		getService().addOnRemove(this::removeById);
+		index = loadAsOptional(SearchIndex.class).orElseGet(() -> {
+			generateIndex = true;
+			return new SearchIndex(new HashMap<>(), new HashMap<>());
+		});
+		if (generateIndex) {
+			getService().getList().forEach(this::add);
+			save(index);
+		}
+		getService().addOnAdd(entity -> {
+			final String originalName = index.getOriginalNames().get(entity.getId());
+			if (originalName != null && originalName.equals(entity.getName())) return;
+			removeById(entity.getId());
+			add(entity);
+			save(index);
+		});
+		getService().addOnRemove(id -> {
+			removeById(id);
+			save(index);
+		});
 	}
 	
-	public void add(T entity) {
+	private void add(T entity) {
 		for (String searchString : getSearchStrings(entity.getName())) {
 			for (int i = 0; i < searchString.length(); i++) {
 				final String subString = searchString.substring(0, i + 1);
 				List<String> results;
-				if ((results = entries.get(subString)) == null) {
+				if ((results = index.getEntries().get(subString)) == null) {
 					results = new ArrayList<>();
-					entries.put(subString, results);
+					index.getEntries().put(subString, results);
 				}
 				results.add(entity.getId());
 			}
 		}
-		originalNames.put(entity.getId(), entity.getName());
+		index.getOriginalNames().put(entity.getId(), entity.getName());
 	}
 	
-	public void removeById(String id) {
-		if (originalNames.get(id) == null) return;
-		for (String searchString : getSearchStrings(originalNames.get(id))) {
+	private void removeById(String id) {
+		if (index.getOriginalNames().get(id) == null) return;
+		for (String searchString : getSearchStrings(index.getOriginalNames().get(id))) {
 			for (int i = 0; i < searchString.length(); i++) {
 				final String subString = searchString.substring(0, i + 1);
 				List<String> results;
-				if ((results = entries.get(subString)) != null) {
+				if ((results = index.getEntries().get(subString)) != null) {
 					results.remove(id);
 					if (results.isEmpty()) {
-						entries.remove(subString);
+						index.getEntries().remove(subString);
 					}
 				}
 			}
 		}
-		originalNames.remove(id);
+		index.getOriginalNames().remove(id);
 	}
 	
 	private String normalizeSearchString(String string) {
@@ -81,7 +93,7 @@ public class SearchComponent<T extends Entity<T> & NameEntity> extends Component
 	public List<T> search(String search) {
 		final List<T> results = new ArrayList<>();
 		final List<String> resultIds;
-		if ((resultIds = entries.get(normalizeSearchString(search).replaceAll("\\s", ""))) == null) return results;
+		if ((resultIds = index.getEntries().get(normalizeSearchString(search).replaceAll("\\s", ""))) == null) return results;
 		for (String id : resultIds) {
 			getService().getById(id).ifPresent(results::add);
 		}

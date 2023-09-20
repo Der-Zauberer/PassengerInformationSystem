@@ -18,7 +18,6 @@ public class TypeService extends EntityService<Type> {
 	public TypeService(EntityRepository<Type> typeRepository) {
 		super(typeRepository);
 		searchComponent = new SearchComponent<>(this);
-		getList().forEach(searchComponent::add);
 	}
 	
 	@Override

@@ -18,7 +18,6 @@ public class OperatorService extends EntityService<Operator> {
 	public OperatorService(EntityRepository<Operator> operatorRepository) {
 		super(operatorRepository);
 		this.searchComponent = new SearchComponent<>(this);
-		getList().forEach(searchComponent::add);
 	}
 	
 	public List<Operator> search(String name) {

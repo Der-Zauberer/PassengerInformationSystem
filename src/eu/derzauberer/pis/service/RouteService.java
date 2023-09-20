@@ -18,7 +18,6 @@ public class RouteService extends EntityService<Route> {
 	public RouteService(EntityRepository<Route> repository) {
 		super(repository);
 		searchComponent = new SearchComponent<>(this);
-		getList().forEach(searchComponent::add);
 	}
 	
 	@Override

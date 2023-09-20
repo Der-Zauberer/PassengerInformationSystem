@@ -25,8 +25,7 @@ public class StationService extends EntityService<Station> {
 	public StationService(EntityRepository<Station> stationRepository, EntityRepository<StationTraffic> stationTrafficRepository) {
 		super(stationRepository);
 		this.stationTrafficRepository = stationTrafficRepository;
-		this.searchComponent = new SearchComponent<>(this	);
-		getList().forEach(searchComponent::add);
+		this.searchComponent = new SearchComponent<>(this);
 	}
 	
 	public List<Station> search(String name) {

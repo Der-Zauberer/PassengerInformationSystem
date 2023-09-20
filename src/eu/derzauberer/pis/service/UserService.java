@@ -25,7 +25,6 @@ public class UserService extends EntityService<User> {
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.searchComponent = new SearchComponent<>(this);
-		getList().forEach(searchComponent::add);
 		if (isEmpty()) add(new User("admin", "Admin", hashPassword("admin")));
 	}
 	

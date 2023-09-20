@@ -32,7 +32,6 @@ public class LineService extends EntityService<Line> {
 		this.lineRepository = lineRepository;
 		this.stationTrafficRepository = stationTrafficRepository;
 		searchComponent = new SearchComponent<>(this);
-		getList().forEach(searchComponent::add);
 		if (SpringConfiguration.indexing) {
 			ProgressStatus progress = new ProgressStatus("Indexing", lineRepository.getName(), lineRepository.size());
 			for (Line line : lineRepository.getList()) {

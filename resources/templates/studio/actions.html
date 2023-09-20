@@ -1,14 +1,7 @@
 <th:block th:fragment="actions(entity)">
 	<div class="pis-action-bar">
 		<div class="input">
-			<input 
-				id="search" 
-				class="input-small input-icon" 
-				th:placeholder="#{action.search}" 
-				th:value="${param.search}"
-				oninput="this.value = this.value.replaceAll(/[^\s\w\d-_.]/g, '')"
-				onkeydown="if (event.keyCode == 13) pis.search()"
-			>
+			<input id="search" class="input-small input-icon" th:placeholder="#{action.search}" th:value="${param.search}" onkeydown="if (event.keyCode == 13) pis.search()">
 			<img class="icon input-icon" th:if="${param.search == null}" src="/resources/swd/icons/search.svg" onclick="pis.search()">
 			<img class="icon input-icon" th:if="${param.search != null}" src="/resources/swd/icons/close.svg" onclick="pis.resetSearch()">
 		</div>

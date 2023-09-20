@@ -19,7 +19,7 @@ class PIS {
 		let currentUrl = window.location.href;
 		currentUrl = this.#removeParameter(currentUrl, 'page');
 		currentUrl = this.#removeParameter(currentUrl, 'pageSize');
-		currentUrl = input.value ? this.#setParameter(currentUrl, 'search', input.value) : this.#removeParameter(currentUrl, 'search');
+		currentUrl = input.value ? this.#setParameter(currentUrl, 'search', encodeURIComponent(input.value)) : this.#removeParameter(currentUrl, 'search');
 		window.location.href = currentUrl;
 	}
 	

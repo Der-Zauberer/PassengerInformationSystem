@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 
 import eu.derzauberer.pis.model.Entity;
@@ -72,8 +73,7 @@ public class SearchComponent<T extends Entity<T> & NameEntity> extends Component
 	}
 	
 	private String normalizeSearchString(String string) {
-		return string.toLowerCase()
-				.replaceAll("-{1}", " ")
+		return StringUtils.stripAccents(string.toLowerCase().replaceAll("-{1}", " "))
 				.replaceAll("[^A-Za-z0-9\\r\\n\\t\\f\\v ]", "")
 				.replaceAll("\\s{2,}", " ");
 	}

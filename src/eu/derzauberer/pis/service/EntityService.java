@@ -73,8 +73,8 @@ public abstract class EntityService<T extends Entity<T> & NameEntity> extends Se
 		return repository.exportEntities();
 	}
 	
-	public void importEntities(String content) {
-		repository.importEntities(content);
+	public void importEntities(String json) {
+		repository.importEntities(json);
 	}
 	
 	public void addOnAdd(Consumer<T> action) {

@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +17,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import eu.derzauberer.pis.configuration.SpringConfiguration;
 import eu.derzauberer.pis.model.Entity;
@@ -71,24 +73,30 @@ public abstract class EntityRepository<T extends Entity<T>> {
 	public String exportEntities() {
 		try {
 			final Collection<T> entities = getList();
-			String content = OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(entities);
-			return content;
+			final HashMap<String, Collection<T>> types = new HashMap<>();
+			types.put(name, entities);
+			String json = OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(types);
+			logger.info("Exported {} {}", entities.size(), name);
+			return json;
 		} catch (JsonProcessingException exception) {
 			logger.error("Couldn't package {}: {} {}",  name, exception.getClass().getSimpleName(), exception.getMessage());
 			return null;
 		}
 	}
 	
-	public void importEntities(String content) {
+	public void importEntities(String json) {
 		try {
-			final ArrayNode json =  new ObjectMapper().readValue(content, ArrayNode.class);
+			final ObjectNode jsonTypes = new ObjectMapper().readValue(json, ObjectNode.class);
+			final ArrayNode jsonEntities = (ArrayNode) jsonTypes.get(name);
 			int i = 0;
-			for (JsonNode jsonEntity : json) {
-				final T entity = OBJECT_MAPPER.readValue(jsonEntity.toString(), type);
-				add(entity);
-				i++;
+			if (jsonEntities != null) {
+				for (JsonNode jsonEntity : jsonEntities) {
+					final T entity = OBJECT_MAPPER.readValue(jsonEntity.toString(), type);
+					add(entity);
+					i++;
+				}
 			}
-			logger.info("Extracted {} {}", i, name);
+			logger.info("Imported {} {}", i, name);
 		} catch (IOException exception) {
 			logger.error("Couldn't extract {}: {} {}", name, exception.getClass().getSimpleName(), exception.getMessage());
 		}

@@ -17,9 +17,15 @@ class PIS {
 	search() {
 		const input = document.getElementById('search');
 		let currentUrl = window.location.href;
+		const search = encodeURIComponent(input.value)
+			.replace('~', '%7E')
+			.replace('!', '%21')
+			.replace('*', '%2A')
+			.replace('(', '%28')
+			.replace(')', '%29');
 		currentUrl = this.#removeParameter(currentUrl, 'page');
 		currentUrl = this.#removeParameter(currentUrl, 'pageSize');
-		currentUrl = input.value ? this.#setParameter(currentUrl, 'search', encodeURIComponent(input.value)) : this.#removeParameter(currentUrl, 'search');
+		currentUrl = input.value ? this.#setParameter(currentUrl, 'search', search) : this.#removeParameter(currentUrl, 'search');
 		window.location.href = currentUrl;
 	}
 	

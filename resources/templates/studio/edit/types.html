@@ -54,8 +54,19 @@
 					</div>
 					
 					<div class="pis-form-buttons">
-						<a class="button red" th:text=#{action.delete}></a>
+						<a class="button red dark-red-hover" th:text="#{action.delete}" th:if="${param.id}" onclick="swd.toggleDialog('delete-dialog')"></a>
 						<input type="submit" th:value="#{action.save}">
+					</div>
+					
+					<div class="dialog" id="delete-dialog">
+						<div class="dialog-content">
+							<h3 th:text="#{action.delete} + ' ' + ${type.name}"></h3>
+					        <p>Are you sure to delete {entity}?</p>
+							<div class="dialog-button">
+								<a class="button width-100 grey dark-grey-hover" onclick="swd.toggleDialog('delete-dialog')">Cancel</a>
+								<a class="button width-100 red dark-red-hover" onclick="swd.toggleDialog('delete-dialog')">Confirm</a>
+							</div>
+						</div>
 					</div>
 					
 					<script>pis.initializeLeaveChecker()</script>

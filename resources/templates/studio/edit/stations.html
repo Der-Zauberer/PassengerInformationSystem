@@ -135,7 +135,7 @@
 					</div>
 					
 					<div class="pis-form-buttons">
-						<a class="button red" th:text=#{action.delete}></a>
+						<a class="button red dark-red-hover" th:text=#{action.delete} th:if="${param.id}"></a>
 						<input type="submit" th:value="#{action.save}">
 					</div>
 				

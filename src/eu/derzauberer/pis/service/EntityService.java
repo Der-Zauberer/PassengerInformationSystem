@@ -38,16 +38,10 @@ public abstract class EntityService<T extends Entity<T> & NameEntity> extends Se
 	}
 	
 	public boolean containsById(String id) {
-		if (id == null || id.isEmpty()) {
-			throw new IllegalArgumentException("Id must be not null and not empty!");
-		}
 		return repository.containsById(id);
 	}
 	
 	public Optional<T> getById(String id) {
-		if (id == null || id.isEmpty()) {
-			throw new IllegalArgumentException("Id must be not null and not empty!");
-		}
 		return repository.getById(id);
 	}
 	

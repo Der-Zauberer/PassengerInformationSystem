@@ -450,7 +450,7 @@ input, select, textarea {
     padding: 8px 10px;
     margin-bottom: var(--theme-element-spacing);
     border: solid 0px var(--theme-grey-secondary);
-    border-bottom-width: 3px;
+    border-bottom-width: var(--theme-border-width);
     border-radius: var(--theme-border-radius);
     width: 100%;
 }
@@ -723,7 +723,7 @@ img.input-icon:hover {
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: var(--theme-grey-primary);
-    border: solid var(--theme-border-radius) var(--theme-grey-secondary);
+    border: solid var(--theme-border-width) var(--theme-grey-secondary);
     border-radius: var(--theme-border-radius);
     box-shadow: var(--theme-box-shadow);
 }
@@ -769,7 +769,7 @@ img.input-icon:hover {
     background-color: var(--theme-grey-primary);
     box-shadow: var(--theme-box-shadow);
     border-radius: var(--theme-border-radius);
-    border: solid var(--theme-border-radius) var(--theme-grey-secondary);
+    border: solid var(--theme-border-width) var(--theme-grey-secondary);
 }
 
 .notification > *:first-child {margin-top: 0px}
@@ -904,7 +904,7 @@ table tr th {
 table td, th {
     padding: 10px;
     text-align: left;
-    border: solid 3px var(--theme-grey-primary);
+    border: solid var(--theme-border-width) var(--theme-grey-primary);
 }
 
 @media (max-width: 768px) {table tr th {padding: 2px 7px} table tr td {padding: 2px 7px}}

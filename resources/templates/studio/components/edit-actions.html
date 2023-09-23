@@ -8,7 +8,8 @@
 	<div class="dialog" id="delete-dialog">
 		<div class="dialog-content">
 			<h3 th:text="#{action.delete} + ' ' + ${name}"></h3>
-			<p>Are you sure to delete {entity}?</p>
+			<p th:text=#{action.delete.areYouSure}></p>
+			<p><label class="blue-transparent" th:text="${id}"></label>&nbsp;&nbsp;<span th:text="${name}"></span></p>
 			<div class="dialog-button">
 				<a class="button width-100 grey dark-grey-hover" onclick="swd.toggleDialog('delete-dialog')">Cancel</a>
 				<a class="button width-100 red dark-red-hover" onclick="swd.toggleDialog('delete-dialog')">Confirm</a>

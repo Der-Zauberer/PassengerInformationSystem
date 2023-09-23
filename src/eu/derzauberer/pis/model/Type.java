@@ -2,25 +2,24 @@ package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
 
+import eu.derzauberer.pis.enums.TransportationClassification;
+import eu.derzauberer.pis.enums.TransportationType;
+
 public class Type implements Entity<Type>, NameEntity {
-	
-	public enum Classifican {
-		FREIGHT,
-		PASSENGER_REGIONAL,
-		PASSENGER_DISTANCE
-	}
 
 	private final String id;
 	private final String name;
-	private final Classifican classification;
+	private final TransportationType type;
+	private final TransportationClassification classification;
 	private int backgroundColor;
 	private int textColor;
 	private ApiInformation api;
 	
-	@ConstructorProperties({ "id", "name", "classification" })
-	public Type(String id, String name, Classifican classification) {
+	@ConstructorProperties({ "id", "name", "type", "classification" })
+	public Type(String id, String name, TransportationType type, TransportationClassification classification) {
 		this.id = id;
 		this.name = name;
+		this.type = type;
 		this.classification = classification;
 		this.backgroundColor = 0x000000;
 		this.textColor = 0xffffff;
@@ -34,8 +33,12 @@ public class Type implements Entity<Type>, NameEntity {
 	public String getName() {
 		return name;
 	}
-	
-	public Classifican getClassification() {
+
+	public TransportationType getType() {
+		return type;
+	}
+
+	public TransportationClassification getClassification() {
 		return classification;
 	}
 	

@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import eu.derzauberer.pis.enums.TransportationClassification;
+import eu.derzauberer.pis.enums.TransportationType;
 import eu.derzauberer.pis.model.Type;
-import eu.derzauberer.pis.model.Type.Classifican;
 import eu.derzauberer.pis.service.TypeService;
 
 @Controller
@@ -33,7 +34,7 @@ public class StudioTypeController extends StudioController {
 		typeService.getById(id).ifPresentOrElse(type -> {
 			model.addAttribute("type", type);
 		}, () -> {
-			model.addAttribute("type", new Type("unnamed", "UNNAMED", Classifican.PASSENGER_REGIONAL));
+			model.addAttribute("type", new Type("unnamed", "UNNAMED", TransportationType.TRAIN, TransportationClassification.REGIONAL));
 		});
 		return "/studio/edit/types.html";
 	}

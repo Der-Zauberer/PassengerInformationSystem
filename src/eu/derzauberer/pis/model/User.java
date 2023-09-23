@@ -7,8 +7,8 @@ import java.util.Set;
 
 public class User implements Entity<User>, NameEntity {
 	
-	private final String username;
-	private String displayName;
+	private final String id;
+	private String name;
 	private String mail;
 	private String passwordHash;
 	private boolean disabled = false;
@@ -17,10 +17,10 @@ public class User implements Entity<User>, NameEntity {
 	private LocalDateTime lastLogin;
 	private final Set<String> permissions;
 	
-	@ConstructorProperties({ "username", "displayName", "passwordHash" })
-	public User(String username, String displayName, String passwordHash) {
-		this.username = username;
-		this.displayName = displayName;
+	@ConstructorProperties({ "id", "name", "passwordHash" })
+	public User(String id, String name, String passwordHash) {
+		this.id = id;
+		this.name = name;
 		this.passwordHash = passwordHash;
 		this.disabled = false;
 		this.forcePasswordChange = false;
@@ -30,24 +30,12 @@ public class User implements Entity<User>, NameEntity {
 	
 	@Override
 	public String getId() {
-		return username;
-	}
-	
-	public String getUsername() {
-		return username;
+		return id;
 	}
 	
 	@Override
 	public String getName() {
-		return displayName;
-	}
-	
-	public String getDisplayName() {
-		return displayName;
-	}
-	
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
+		return name;
 	}
 	
 	public String getMail() {

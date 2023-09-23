@@ -15,14 +15,14 @@
 				
 				<div class="pis-table">
 					<div class="pis-table-row pis-table-headline">
-						<div>Username</div>
-						<div>Display Name</div>
+						<div th:text="#{entity.user.username}"></div>
+						<div th:text="#{entity.user.displayName}"></div>
 						<div></div>
 					</div>
 					<div class="pis-table-row" th:each="user : ${page.results}">
 						<div class="pis-table-mobile-wrapper">
-							<div><label class="blue-transparent" th:text="${user.username}"></label></div>
-							<div><span th:text="${user.displayName}"></span></div>							
+							<div><label class="blue-transparent" th:text="${user.id}"></label></div>
+							<div><span th:text="${user.name}"></span></div>							
 						</div>
 						<div class="pis-table-mobile-wrapper pis-table-mobile-actions">
 							<div><a class="button" th:text="#{action.edit}" th:href="@{/studio/users/edit?id={id}(id = ${user.id})}"></a></div>

@@ -15,8 +15,8 @@
 				
 				<div class="pis-table">
 					<div class="pis-table-row pis-table-headline">
-						<div>Id</div>
-						<div>Name</div>
+						<div th:text="#{entity.id}"></div>
+						<div th:text="#{entity.name}"></div>
 						<div></div>
 					</div>
 					<div class="pis-table-row" th:each="route : ${page.results}">

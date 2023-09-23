@@ -1,6 +1,5 @@
 package eu.derzauberer.pis.enums;
 
-
 public enum TransportationType {
 	
 	BUS("entity.transportationType.bus"),

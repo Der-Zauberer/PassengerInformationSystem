@@ -76,9 +76,9 @@
 
 /* form */
 
-.pis-form-2 {
+.pis-form-grid-2 {
 	display: grid;
-	grid-template-columns: 50% 50%;
+	grid-template-columns: repeat(2, calc(50% - var(--theme-element-spacing) / 2));
 	gap: 0 var(--theme-element-spacing);
 }
 
@@ -86,6 +86,13 @@
 	.pis-form-2 {
 		grid-template-columns: 100%;
 	}
+}
+
+.pis-form-buttons {
+	display: grid;
+	grid-template-columns: fit-content(0px) auto;
+	gap: 0 var(--theme-element-spacing);
+	margin-top: var(--theme-element-spacing);
 }
 
 /* pager */

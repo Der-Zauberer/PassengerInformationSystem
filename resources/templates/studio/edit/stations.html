@@ -9,10 +9,10 @@
 		<div class="navigation-content">
 		
 			<div class="container-xl">
-				<form action="#" th:action="@{/studio/stations/edit}" th:object="${station}" method="post">
+				<form class="pis-form" action="#" th:action="@{/studio/stations/edit}" th:object="${station}" method="post">
 				
-					<h2 class="mg-t-0">General</h2>
-					<div class="pis-form-2">
+					<h3 class="mg-t-0">General</h3>
+					<div class="pis-form-grid-2">
 						<div class="input">
 					        <input type="text" th:field="*{id}" required>
 					        <span class="input-name">ID</span>
@@ -25,10 +25,10 @@
 					    </div>
 					</div>
 					
-					<h2>Platforms</h2>
+					<h3 class="mg-t-0">Platforms</h3>
 					
-					<h2>Address</h2>
-					<div class="pis-form-2">
+					<h3 class="mg-t-0">Address</h3>
+					<div class="pis-form-grid-2">
 						<div class="input">
 					        <input type="text" th:field="*{address.name}">
 					        <span class="input-name">Name</span>
@@ -56,8 +56,8 @@
 					    </div>
 					</div>
 					
-					<h2>Geolacation</h2>
-					<div class="pis-form-2">
+					<h3 class="mg-t-0">Geolacation</h3>
+					<div class="pis-form-grid-2">
 						<div class="input">
 					        <input type="text" th:field="*{location.latitude}">
 					        <span class="input-name">Latitude</span>
@@ -70,8 +70,8 @@
 					    </div>
 					</div>
 					
-					<h2>Services</h2>
-					<div class="pis-form-2">
+					<h3 class="mg-t-0">Services</h3>
+					<div class="pis-form-grid-2">
 						<div class="input">
 					        <input type="text" th:field="*{services.parking}">
 					        <span class="input-name">Parking</span>
@@ -132,6 +132,11 @@
 					        <span class="input-name">Railway Mission</span>
 					        <span class="input-error"></span>
 					    </div>
+					</div>
+					
+					<div class="pis-form-buttons">
+						<a class="button red" th:text=#{action.delete}></a>
+						<input type="submit" th:value="#{action.save}">
 					</div>
 				
 				</form>

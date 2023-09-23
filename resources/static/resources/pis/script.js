@@ -38,6 +38,25 @@ class PIS {
 	}
 	
 	/*******************/
+	/* forms           */
+	/*******************/
+	
+	initializeLeaveChecker() {
+		window.onhashchange = (event) => this.#checkForDirtyForm();
+		window.onbeforeunload = (event) => this.#checkForDirtyForm();
+	}
+	
+	#checkForDirtyForm() {
+		let dirty = false;
+		for (const input of document.getElementsByTagName('input')) {
+			if (input.hasAttribute('dirty')) {
+				dirty = true;
+			}
+		}
+		return dirty ? "" : null;
+	}
+	
+	/*******************/
 	/* import / export */
 	/*******************/
 	

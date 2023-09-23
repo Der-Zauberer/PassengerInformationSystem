@@ -9,10 +9,10 @@
 		<div class="navigation-content">
 		
 			<div class="container-xl">
-				<form action="#" th:action="@{/studio/types/edit}" th:object="${type}" method="post">
+				<form class="pis-form" action="#" th:action="@{/studio/types/edit}" th:object="${type}" method="post">
 				
-					<h2 class="mg-t-0">General</h2>
-					<div class="pis-form-2">
+					<h3 class="mg-t-0">General</h3>
+					<div class="pis-form-grid-2">
 						<div class="input">
 					        <input type="text" th:field="*{id}" required>
 					        <span class="input-name">ID</span>
@@ -25,8 +25,8 @@
 					    </div>
 					</div>
 					
-					<h2>Transportation</h2>
-					<div class="pis-form-2">
+					<h3 class="mg-t-0">Transportation</h3>
+					<div class="pis-form-grid-2">
 						<div class="input">
 					        <input type="text" th:field="*{type}" required>
 					        <span class="input-name">Type</span>
@@ -39,8 +39,8 @@
 					    </div>
 					</div>
 					
-					<h2 class="mg-t-0">Color</h2>
-					<div class="pis-form-2">
+					<h3 class="mg-t-0">Color</h3>
+					<div class="pis-form-grid-2">
 						<div class="input">
 					        <input type="text" th:field="*{backgroundColor}">
 					        <span class="input-name">Background Color</span>
@@ -52,6 +52,13 @@
 					        <span class="input-error"></span>
 					    </div>
 					</div>
+					
+					<div class="pis-form-buttons">
+						<a class="button red" th:text=#{action.delete}></a>
+						<input type="submit" th:value="#{action.save}">
+					</div>
+					
+					<script>pis.initializeLeaveChecker()</script>
 				
 				</form>
 			</div>

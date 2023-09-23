@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
-	<div th:replace="~{general/head :: head(title='PIS Studio - ' + #{navigation.stations})}"></div>
+	<div th:replace="~{components/head :: head(title='PIS Studio - ' + #{navigation.stations})}"></div>
 	<body>
 	
-		<div th:replace="~{general/menu :: menu}"></div>
+		<div th:replace="~{components/menu :: menu}"></div>
 		
-		<div th:replace="~{studio/navigation :: navigation}"></div>
+		<div th:replace="~{studio/components/navigation :: navigation}"></div>
 		<div class="navigation-content">
 		
 			<div class="container-xl">
 			
 				<h2 th:text="#{navigation.stations}"></h2>
-				<div th:replace="~{studio/actions :: actions('stations')}"></div>
+				<div th:replace="~{studio/components/table-actions :: actions('stations')}"></div>
 				
 				<div class="pis-table">
 					<div class="pis-table-row pis-table-headline">
@@ -29,18 +29,18 @@
 						</div>
 					</div>
 					<div class="pis-table-row pis-table-empty" th:if="${page.results.isEmpty()}">
-						<div th:if="${param.search == null}" th:text="#{entity.empty}"></div>
-						<div th:if="${param.search != null}" th:text="#{entity.emptyQuery}"></div>
+						<div th:unless="${param.search}" th:text="#{entity.empty}"></div>
+						<div th:if="${param.search}" th:text="#{entity.emptyQuery}"></div>
 					</div>
 				</div>
 				
-				<div th:replace="~{general/pager :: pager}"></div>
+				<div th:replace="~{components/pager :: pager}"></div>
 				
 			</div>
 		
 		</div>
 		
-		<div th:replace="~{general/footer :: footer}"></div>
+		<div th:replace="~{components/footer :: footer}"></div>
 		
 	</body>
 </html>

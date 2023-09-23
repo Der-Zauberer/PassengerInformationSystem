@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
-	<div th:replace="~{general/head :: head(title='PIS Studio - ' + #{navigation.stations})}"></div>
+	<div th:replace="~{components/head :: head(title='PIS Studio - ' + #{navigation.stations})}"></div>
 	<body>
 	
-		<div th:replace="~{general/menu :: menu}"></div>
+		<div th:replace="~{components/menu :: menu}"></div>
 		
-		<div th:replace="~{studio/navigation :: navigation}"></div>
+		<div th:replace="~{studio/components/navigation :: navigation}"></div>
 		<div class="navigation-content">
 		
 			<div class="container-xl">
 				<form class="pis-form" action="#" th:action="@{/studio/types/edit}" th:object="${type}" method="post">
 				
-					<h3 class="mg-t-0">General</h3>
+					<h3 class="mg-t-0">components</h3>
 					<div class="pis-form-grid-2">
 						<div class="input">
 					        <input type="text" th:field="*{id}" required>
@@ -53,23 +53,7 @@
 					    </div>
 					</div>
 					
-					<div class="pis-form-buttons">
-						<a class="button red dark-red-hover" th:text="#{action.delete}" th:if="${param.id}" onclick="swd.toggleDialog('delete-dialog')"></a>
-						<input type="submit" th:value="#{action.save}">
-					</div>
-					
-					<div class="dialog" id="delete-dialog">
-						<div class="dialog-content">
-							<h3 th:text="#{action.delete} + ' ' + ${type.name}"></h3>
-					        <p>Are you sure to delete {entity}?</p>
-							<div class="dialog-button">
-								<a class="button width-100 grey dark-grey-hover" onclick="swd.toggleDialog('delete-dialog')">Cancel</a>
-								<a class="button width-100 red dark-red-hover" onclick="swd.toggleDialog('delete-dialog')">Confirm</a>
-							</div>
-						</div>
-					</div>
-					
-					<script>pis.initializeLeaveChecker()</script>
+					<div th:replace="~{studio/components/edit-actions :: actions('stations', ${type.id}, ${type.name})}"></div>
 				
 				</form>
 			</div>

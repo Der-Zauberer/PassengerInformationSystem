@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
-	<div th:replace="~{general/head :: head(title='PIS Studio - ' + #{navigation.stations})}"></div>
+	<div th:replace="~{components/head :: head(title='PIS Studio - ' + #{navigation.stations})}"></div>
 	<body>
 	
-		<div th:replace="~{general/menu :: menu}"></div>
+		<div th:replace="~{components/menu :: menu}"></div>
 		
-		<div th:replace="~{studio/navigation :: navigation}"></div>
+		<div th:replace="~{studio/components/navigation :: navigation}"></div>
 		<div class="navigation-content">
 		
 			<div class="container-xl">
 				<form class="pis-form" action="#" th:action="@{/studio/stations/edit}" th:object="${station}" method="post">
 				
-					<h3 class="mg-t-0">General</h3>
+					<h3 class="mg-t-0">components</h3>
 					<div class="pis-form-grid-2">
 						<div class="input">
 					        <input type="text" th:field="*{id}" required>

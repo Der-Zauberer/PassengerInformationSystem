@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
-	<div th:replace="~{general/head :: head(title='PIS Studio - ' + #{navigation.dashboard})}"></div>
+	<div th:replace="~{components/head :: head(title='PIS Studio - ' + #{navigation.dashboard})}"></div>
 	<body>
 	
-		<div th:replace="~{general/menu :: menu}"></div>
+		<div th:replace="~{components/menu :: menu}"></div>
 		
-		<div th:replace="~{studio/navigation :: navigation}"></div>
+		<div th:replace="~{studio/components/navigation :: navigation}"></div>
 		<div class="navigation-content">
 		
 			<div class="container-xl">
@@ -16,7 +16,7 @@
 		
 		</div>
 		
-		<div th:replace="~{general/footer :: footer}"></div>
+		<div th:replace="~{components/footer :: footer}"></div>
 		
 	</body>
 </html>

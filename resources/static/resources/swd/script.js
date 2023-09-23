@@ -15,7 +15,7 @@ class SWD {
                 if (element.classList.contains("code-html")) this.highlightHtml(element);
                 else if (element.classList.contains("code-css")) this.highlightCss(element);
             }
-            if (element.nodeName === 'INPUT') this.initializeInput(element);
+            if (element.nodeName === 'INPUT' || element.nodeName === 'TEXTAREA') this.initializeInput(element);
             if (element.hasAttribute('localization')) this.#localizations.push(element);
             else {
                 for (const attribute of element.attributes) {
@@ -248,10 +248,7 @@ class SWD {
     // *********************
     
     initializeInput(input) {
-        input.addEventListener('input', event => input.setAttribute('dirty', ''));
-        input.addEventListener('focusout', event => {
-            if (input.value !== 0 && input.value !== '') input.setAttribute('dirty', '');
-        });
+        input.addEventListener('input', event => input.setAttribute('dirty', 'true'));
     }
     
     initializeInputObject(input) {
@@ -292,14 +289,18 @@ class SWD {
         const input = element.parentElement.getElementsByTagName('input')[0];
         if (!input || !(!input.hasAttribute('max') || input.getAttribute('max') > input.value)) return;
         input.value++;
-        input.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
+        const inputEvent = document.createEvent('Event');
+        inputEvent.initEvent('input', true, false);
+        input.dispatchEvent(inputEvent);
     }
     
     decrementInput(element) {
         const input = element.parentElement.getElementsByTagName('input')[0];
         if (!input || !(!input.hasAttribute('min') || input.getAttribute('min') < input.value)) return;
         input.value--;
-        input.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
+        const inputEvent = document.createEvent('Event');
+        inputEvent.initEvent('input', true, false);
+        input.dispatchEvent(inputEvent);
     }
     
     // *********************
@@ -332,6 +333,9 @@ class SWD {
             if (!valueElements[i].hasAttribute('value')) valueElements[i].setAttribute('value', valueElements[i].innerHTML);
             valueElements[i].addEventListener('click', event => {
                 input.value = event.target.getAttribute('value');
+                const inputEvent = document.createEvent('Event');
+                inputEvent.initEvent('input', true, false);
+                input.dispatchEvent(inputEvent);
                 event.target.classList.remove('dropdown-active');
                 activeElement = -1;
             });

@@ -1,6 +1,6 @@
 package eu.derzauberer.pis.enums;
 
-public enum TransportationType {
+public enum TransportationVehicle {
 	
 	BUS("entity.transportationType.bus"),
 	TRAM("entity.transportationType.tram"),
@@ -10,7 +10,7 @@ public enum TransportationType {
 	
 	private final String localization;
 	
-	private TransportationType(String localization) {
+	private TransportationVehicle(String localization) {
 		this.localization = localization;
 	}
 	

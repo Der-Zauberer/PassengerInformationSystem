@@ -6,22 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.components.SearchComponent;
-import eu.derzauberer.pis.model.Type;
+import eu.derzauberer.pis.model.TransportationType;
 import eu.derzauberer.pis.repositories.EntityRepository;
 
 @Service
-public class TypeService extends EntityService<Type> {
+public class TypeService extends EntityService<TransportationType> {
 	
-	private final SearchComponent<Type> searchComponent;
+	private final SearchComponent<TransportationType> searchComponent;
 	
 	@Autowired
-	public TypeService(EntityRepository<Type> typeRepository) {
+	public TypeService(EntityRepository<TransportationType> typeRepository) {
 		super(typeRepository);
 		searchComponent = new SearchComponent<>(this);
 	}
 	
 	@Override
-	public List<Type> search(String search) {
+	public List<TransportationType> search(String search) {
 		return searchComponent.search(search);
 	}
 

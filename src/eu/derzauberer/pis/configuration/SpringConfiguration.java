@@ -37,15 +37,15 @@ import eu.derzauberer.pis.configuration.SerializationConfiguration.PrettyPrinter
 import eu.derzauberer.pis.configuration.SerializationConfiguration.TimeDeserializer;
 import eu.derzauberer.pis.configuration.SerializationConfiguration.TimeSerializer;
 import eu.derzauberer.pis.model.Line;
+import eu.derzauberer.pis.model.Operator;
 import eu.derzauberer.pis.model.Route;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.model.StationTraffic;
-import eu.derzauberer.pis.model.Operator;
-import eu.derzauberer.pis.model.Type;
+import eu.derzauberer.pis.model.TransportationType;
 import eu.derzauberer.pis.model.User;
+import eu.derzauberer.pis.repositories.EntityRepository;
 import eu.derzauberer.pis.repositories.FileEntityRepository;
 import eu.derzauberer.pis.repositories.MemoryEntityRepository;
-import eu.derzauberer.pis.repositories.EntityRepository;
 
 @Configuration
 public class SpringConfiguration implements ApplicationContextAware, WebMvcConfigurer {
@@ -164,8 +164,8 @@ public class SpringConfiguration implements ApplicationContextAware, WebMvcConfi
 	}
 	
 	@Bean
-	public EntityRepository<Type> getTypeRepository() {
-		return caching ? new MemoryEntityRepository<>("types", Type.class) : new FileEntityRepository<>("types", Type.class);
+	public EntityRepository<TransportationType> getTypeRepository() {
+		return caching ? new MemoryEntityRepository<>("types", TransportationType.class) : new FileEntityRepository<>("types", TransportationType.class);
 	}
 	
 	@Bean

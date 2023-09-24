@@ -27,14 +27,26 @@
 					
 					<h3 class="mg-t-0">Transportation</h3>
 					<div class="pis-form-grid-2">
-						<div class="input">
-					        <input type="text" th:field="*{type}" required>
-					        <span class="input-name">Type</span>
+						<div class="input dropdown">
+					        <input type="text" th:field="*{vehicle}" readonly required>
+					        <span class="input-name">Vehicle</span>
+					        <img class="icon input-icon" src="/resources/swd/icons/more_down.svg" onclick="swd.focusDropdown(this)">
+					        <div class="dropdown-content">
+						        <th:block th:each="vehicle : ${transportationVehicles}">
+					        		<a th:text="${vehicle}"></a>
+					        	</th:block>
+						    </div>
 					        <span class="input-error"></span>
 					    </div>
-					    <div class="input">
-					        <input type="text" th:field="*{classification}" required>
+					    <div class="input  dropdown">
+					        <input type="text" th:field="*{classification}" readonly required>
 					        <span class="input-name">Classification</span>
+					        <img class="icon input-icon" src="/resources/swd/icons/more_down.svg" onclick="swd.focusDropdown(this)">
+					        <div class="dropdown-content">
+					        	<th:block th:each="classification : ${transportationClassifications}">
+					        		<a th:text="${classification}"></a>
+					        	</th:block>
+						    </div>
 					        <span class="input-error"></span>
 					    </div>
 					</div>

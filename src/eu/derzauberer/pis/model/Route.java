@@ -10,7 +10,7 @@ public class Route implements Entity<Route>, NameEntity {
 	
 	private final String id;
 	private String name;
-	private Type type;
+	private TransportationType type;
 	private int number;
 	private String operatorId;
 	private List<RouteStop> stops;
@@ -19,7 +19,7 @@ public class Route implements Entity<Route>, NameEntity {
 	private ApiInformation api;
 	
 	@ConstructorProperties({ "id", "name", "type" , "number"})
-	public Route(String id, String name, Type type, int number) {
+	public Route(String id, String name, TransportationType type, int number) {
 		this.id = id;
 		this.name = name;
 		this.type = type;
@@ -41,11 +41,11 @@ public class Route implements Entity<Route>, NameEntity {
 		this.name = name;
 	}
 	
-	public Type getType() {
+	public TransportationType getType() {
 		return type;
 	}
 	
-	public void setType(Type type) {
+	public void setType(TransportationType type) {
 		this.type = type;
 	}
 	

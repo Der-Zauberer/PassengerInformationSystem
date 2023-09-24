@@ -321,14 +321,9 @@ class SWD {
     
     initializeInputDropdown(dropdown, content, input) {
         const valueElements = content.getElementsByTagName('a');
-        input.setAttribute("autocomplete", "off");
+        input.setAttribute('autocomplete', 'off');
         let activeElement = -1;
         let visibleElemnts = [];
-        input.addEventListener('click', event => {
-            visibleElemnts = valueElements;
-            activeElement = -1;
-            for (var i = 0; i < valueElements.length; i++) valueElements[i].classList.remove('hide');
-        });
         for (var i = 0; i < valueElements.length; i++) {
             if (!valueElements[i].hasAttribute('value')) valueElements[i].setAttribute('value', valueElements[i].innerHTML);
             valueElements[i].addEventListener('click', event => {
@@ -340,12 +335,17 @@ class SWD {
                 activeElement = -1;
             });
         }
+        dropdown.addEventListener('click', event => {
+            visibleElemnts = valueElements;
+            activeElement = -1;
+            for (var i = 0; i < valueElements.length; i++) valueElements[i].classList.remove('hide');
+        });
         input.addEventListener('input', event => {
             content.classList.add('show');
             if (activeElement != -1 && visibleElemnts.length > 0) visibleElemnts[activeElement].classList.remove('dropdown-active');
             visibleElemnts = [];
             activeElement = -1;
-             if (input.value == '') {
+            if (input.value == '') {
                 visibleElemnts = valueElements;
                 for (var i = 0; i < valueElements.length; i++) valueElements[i].classList.remove('hide');
             } else {
@@ -363,7 +363,11 @@ class SWD {
         });
         input.addEventListener('keydown', event => {
             if (!content.classList.contains('show')) {
+                visibleElemnts = valueElements;
+                activeElement = -1;
+                for (var i = 0; i < valueElements.length; i++) valueElements[i].classList.remove('hide');
                 if (event.keyCode == 13) content.classList.add('show');
+                event.preventDefault();
                 return;
             }
             if ((event.keyCode == 40 || event.keyCode == 38) && visibleElemnts.length > 0) {
@@ -389,6 +393,7 @@ class SWD {
                 else if (elementOffset < content.scrollTop) content.scrollTop = elementOffset;
             } else if (event.keyCode == 13 && activeElement != -1) {
                 valueElements[activeElement].click();
+                event.preventDefault();
             }
         });
     }
@@ -401,6 +406,11 @@ class SWD {
         } else {
             content.classList.remove('show');
         }
+    }
+
+    focusDropdown(button) {
+        const inputs = button.parentElement.getElementsByTagName('input');
+        if (inputs && inputs.length > 0)  inputs[0].focus();
     }
     
     hideAllDropdowns() {

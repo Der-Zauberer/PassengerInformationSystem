@@ -41,7 +41,10 @@ class PIS {
 	/* forms           */
 	/*******************/
 	
+	#unBlock = false;
+	
 	initializeLeaveChecker() {
+		if (this.#unBlock) return;
 		window.onhashchange = (event) => this.#checkForDirtyForm();
 		window.onbeforeunload = (event) => this.#checkForDirtyForm();
 	}

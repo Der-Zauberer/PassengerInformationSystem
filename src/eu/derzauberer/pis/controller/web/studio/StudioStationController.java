@@ -34,7 +34,7 @@ public class StudioStationController extends StudioController {
 		}, () -> {
 			model.addAttribute("station", new Station("unnamed", "Unnamed"));
 		});
-		return "/studio/edit/stations.html";
+		return "/studio/edit/edit_stations.html";
 	}
 	
 }

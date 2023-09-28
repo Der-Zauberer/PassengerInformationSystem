@@ -34,11 +34,11 @@ public class StudioTypeController extends StudioController {
 		typeService.getById(id).ifPresentOrElse(type -> {
 			model.addAttribute("type", type);
 		}, () -> {
-			model.addAttribute("type", new TransportationType("unnamed", "UNNAMED", TransportationVehicle.TRAIN, TransportationClassification.REGIONAL));
+			model.addAttribute("type", new TransportationType(null, null, TransportationVehicle.TRAIN, TransportationClassification.REGIONAL));
 		});
 		model.addAttribute("transportationVehicles", TransportationVehicle.values());
 		model.addAttribute("transportationClassifications", TransportationClassification.values());
-		return "/studio/edit/types.html";
+		return "/studio/edit/edit_types.html";
 	}
 
 }

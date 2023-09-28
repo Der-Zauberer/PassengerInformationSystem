@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-	<div th:replace="~{components/head :: head(title='PIS Studio - ' + #{navigation.stations})}"></div>
+	<div th:replace="~{components/head :: head(title='PIS Studio - ' + #{navigation.types} + ': ' + ${type.id})}"></div>
 	<body>
 	
 		<div th:replace="~{components/menu :: menu}"></div>
@@ -9,9 +9,9 @@
 		<div class="navigation-content">
 		
 			<div class="container-xl">
-				<form class="pis-form" action="#" th:action="@{/studio/types/edit}" th:object="${type}" method="post">
+				<form class="pis-form" action="#" th:action="@{/studio/types/edit?id={id}(id = ${type.id})}" th:object="${type}" method="post">
 				
-					<h3 class="mg-t-0">components</h3>
+					<h3 class="mg-t-0">General</h3>
 					<div class="pis-form-grid-2">
 						<div class="input">
 					        <input type="text" th:field="*{id}" required>
@@ -65,7 +65,7 @@
 					    </div>
 					</div>
 					
-					<div th:replace="~{studio/components/edit-actions :: actions('stations', ${type.id}, ${type.name})}"></div>
+					<div th:replace="~{studio/components/edit-actions :: actions(${type.id}, ${type.name})}"></div>
 				
 				</form>
 			</div>

@@ -9,9 +9,9 @@
 		<div class="navigation-content">
 		
 			<div class="container-xl">
-				<form class="pis-form" action="#" th:action="@{/studio/stations/edit}" th:object="${station}" method="post">
+				<form class="pis-form" action="#" th:action="@{/studio/stations/edit?id={id}(id = ${type.id})}" th:object="${station}" method="post">
 				
-					<h3 class="mg-t-0">components</h3>
+					<h3 class="mg-t-0">General</h3>
 					<div class="pis-form-grid-2">
 						<div class="input">
 					        <input type="text" th:field="*{id}" required>
@@ -134,10 +134,7 @@
 					    </div>
 					</div>
 					
-					<div class="pis-form-buttons">
-						<a class="button red dark-red-hover" th:text=#{action.delete} th:if="${param.id}"></a>
-						<input type="submit" th:value="#{action.save}">
-					</div>
+					<div th:replace="~{studio/components/edit-actions :: actions(${station.id}, ${station.name})}"></div>
 				
 				</form>
 			</div>

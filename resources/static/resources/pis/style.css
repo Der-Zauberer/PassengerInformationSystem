@@ -79,7 +79,6 @@
 .pis-form-grid-2 {
 	display: grid;
 	grid-template-columns: repeat(2, calc(50% - var(--theme-element-spacing) / 2));
-	gap: 0 var(--theme-element-spacing);
 }
 
 @media (max-width: 768px) {
@@ -91,7 +90,6 @@
 .pis-form-buttons {
 	display: grid;
 	grid-template-columns: fit-content(0px) auto;
-	gap: 0 var(--theme-element-spacing);
 	margin-top: var(--theme-element-spacing);
 }
 

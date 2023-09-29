@@ -28,6 +28,9 @@ hs_err_pid*
 /.settings/
 .project
 
+#IntelliJ
+/.idea/
+
 # Maven files
 /target/
 

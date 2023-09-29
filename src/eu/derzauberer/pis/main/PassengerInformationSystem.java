@@ -14,9 +14,9 @@ import eu.derzauberer.pis.configuration.SpringConfiguration;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 @ComponentScan(basePackages = {"eu.derzauberer.pis"})
-public class Pis {
+public class PassengerInformationSystem {
 	
-	private static final SpringApplication springApplication = new SpringApplication(Pis.class);
+	private static final SpringApplication springApplication = new SpringApplication(PassengerInformationSystem.class);
 	
 	public static void main(String[] args) throws IOException {
 		final List<String> arguments = Arrays.stream(args).map(arg -> arg.toLowerCase()).toList();

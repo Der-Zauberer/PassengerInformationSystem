@@ -26,7 +26,7 @@ public class StudioTypeController extends StudioController {
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
 			) {
 		getAll(typeService, model, search, page, pageSize);
-		return "/studio/types.html";
+		return "studio/types.html";
 	}
 	
 	@GetMapping("/edit")
@@ -38,7 +38,7 @@ public class StudioTypeController extends StudioController {
 		});
 		model.addAttribute("transportationVehicles", TransportationVehicle.values());
 		model.addAttribute("transportationClassifications", TransportationClassification.values());
-		return "/studio/edit/edit_types.html";
+		return "studio/edit/edit_types.html";
 	}
 
 }

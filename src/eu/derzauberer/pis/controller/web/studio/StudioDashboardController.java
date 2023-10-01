@@ -10,7 +10,7 @@ public class StudioDashboardController {
 	
 	@GetMapping
 	public String getDashboardPage() {
-		return "/studio/dashboard.html";
+		return "studio/dashboard.html";
 	}
 
 }

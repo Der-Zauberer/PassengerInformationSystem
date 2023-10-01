@@ -23,7 +23,7 @@ public class StudioUserController extends StudioController {
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
 			) {
 		getAll(userService, model, search, page, pageSize);
-		return "/studio/users.html";
+		return "studio/users.html";
 	}
 
 }

@@ -23,7 +23,7 @@ public class StudioLineController extends StudioController {
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
 			) {
 		getAll(lineService, model, search, page, pageSize);
-		return "/studio/lines.html";
+		return "studio/lines.html";
 	}
 
 }

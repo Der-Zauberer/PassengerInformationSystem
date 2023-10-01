@@ -23,7 +23,7 @@ public class StudioOperatorController extends StudioController {
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
 			) {
 		getAll(operatorService, model, search, page, pageSize);
-		return "/studio/operators.html";
+		return "studio/operators.html";
 	}
 
 }

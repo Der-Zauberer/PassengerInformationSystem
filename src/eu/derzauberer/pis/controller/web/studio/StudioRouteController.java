@@ -23,7 +23,7 @@ public class StudioRouteController extends StudioController {
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
 			) {
 		getAll(routeService, model, search, page, pageSize);
-		return "/studio/routes.html";
+		return "studio/routes.html";
 	}
 
 }

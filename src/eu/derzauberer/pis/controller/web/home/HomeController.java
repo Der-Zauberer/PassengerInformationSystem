@@ -8,7 +8,7 @@ public class HomeController {
 	
 	@GetMapping
 	public String getHomePage() {
-		return "/home/home.html";
+		return "home/home.html";
 	}
 
 }

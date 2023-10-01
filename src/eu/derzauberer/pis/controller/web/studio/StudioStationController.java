@@ -24,7 +24,7 @@ public class StudioStationController extends StudioController {
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
 			) {
 		getAll(stationService, model, search, page, pageSize);
-		return "/studio/stations.html";
+		return "studio/stations.html";
 	}
 	
 	@GetMapping("/edit")
@@ -34,7 +34,7 @@ public class StudioStationController extends StudioController {
 		}, () -> {
 			model.addAttribute("station", new Station("unnamed", "Unnamed"));
 		});
-		return "/studio/edit/edit_stations.html";
+		return "studio/edit/edit_stations.html";
 	}
 	
 }

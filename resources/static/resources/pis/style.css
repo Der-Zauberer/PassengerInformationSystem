@@ -81,8 +81,8 @@
 	grid-template-columns: repeat(2, calc(50% - var(--theme-element-spacing) / 2));
 }
 
-@media (max-width: 768px) {
-	.pis-form-2 {
+@media screen and (max-width: 768px) {
+	.pis-form-grid-2 {
 		grid-template-columns: 100%;
 	}
 }

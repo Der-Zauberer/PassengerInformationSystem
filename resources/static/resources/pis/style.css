@@ -93,6 +93,27 @@
 	margin-top: var(--theme-element-spacing);
 }
 
+.pis-auth-form {
+	max-width: 400px;
+	padding: var(--theme-element-spacing);
+}
+
+@media screen and (min-width: 601px) {
+	.pis-auth-form {
+		margin-top: calc(var(--theme-element-spacing) * 2);
+		border: solid var(--theme-primary) var(--theme-border-width);
+		border-radius: calc(var(--theme-border-radius) * 2);
+	}
+}
+
+.pis-auth-form > *:first-child {
+	margin-top: 0px;
+}
+
+.pis-auth-form > *:last-child {
+	margin-bottom: 0px;
+}
+
 /* pager */
 
 .pis-pager a:first-of-type {

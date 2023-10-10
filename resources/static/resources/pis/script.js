@@ -118,6 +118,27 @@ class PIS {
 	}
 	
 	/*******************/
+	/* authorization   */
+	/*******************/
+	
+	#labelErrorPassswordDontMatch;
+	
+	initializePasswordFields(password1, password2) {
+		this.#labelErrorPassswordDontMatch = document.getElementById('label-error-different-passwords').innerText;
+		password1.addEventListener('input', event => {
+			if (event.target.value.length === 0) return;
+			const inputEvent = document.createEvent('Event');
+	        inputEvent.initEvent('input', true, false);
+	        password2.dispatchEvent(inputEvent);
+		});
+		password2.addEventListener('input', event => { 
+			if (event.target.value.length === 0) return;
+			if (password1.value !== password2.value) password2.setCustomValidity(this.#labelErrorPassswordDontMatch);
+			else password2.setCustomValidity('');
+		});
+	}
+	
+	/*******************/
 	/* parameter       */
 	/*******************/
 

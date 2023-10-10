@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<div th:replace="~{components/head :: head(title='Passenger Information System')}"></div>
+	<body>
+	
+		<div th:replace="~{components/menu :: menu}"></div>
+		<form class="container pis-auth-form" action="#" th:action="@{/login}" th:object="${login}" method="post">
+			
+			<h2 class="mg-t-0" th:text="#{authentification.login}">Login</h2>
+				
+			<div class="input">
+				<input type="text" th:field="*{username}" required>
+				<span class="input-name" th:text="#{authentification.username}"></span>
+				<span class="input-error"></span>
+			</div>
+				
+			<div class="input">
+				<input type="password" th:field="*{password}" required>
+				<span class="input-name" th:text="#{authentification.password}"></span>
+				<span class="input-error"></span>
+			</div>
+			
+			<div class="box red" th:if="${param.error}" th:text="#{authentification.password.wrong}"></div>
+				
+			<input type="submit" th:value="#{authentification.login}">
+				
+		</form>
+		<div th:replace="~{components/footer :: footer}"></div>
+		
+	</body>
+</html>

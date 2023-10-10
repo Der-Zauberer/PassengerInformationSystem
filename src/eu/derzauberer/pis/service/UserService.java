@@ -34,7 +34,7 @@ public class UserService extends EntityService<User> {
 	
 	public Optional<User> login(String username, String password) {
 		return userRepository.getById(username)
-			.filter(processingUser -> passwordEncoder.matches(password, processingUser.getPasswordHash()))
+			.filter(processingUser -> passwordEncoder.matches(password, processingUser.getPassword()))
 			.map(processingUser -> {
 				processingUser.setLastLogin(LocalDateTime.now());
 				add(processingUser);

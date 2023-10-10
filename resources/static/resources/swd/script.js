@@ -263,8 +263,8 @@ class SWD {
             inputField.addEventListener('input', event => inputRange.innerText = event.target.value.length + (attribute ? '/' + attribute : ''));
         }
         if (inputError) {
-            inputError.innerText = inputField.validationMessage;
-            inputField.addEventListener('input', event => inputError.innerText = inputField.validationMessage);
+			inputField.addEventListener('input', event => { if (inputField.checkValidity()) inputError.innerText = '' });
+            inputField.addEventListener('invalid', event => inputError.innerText = inputField.validationMessage);
         }
     }
     

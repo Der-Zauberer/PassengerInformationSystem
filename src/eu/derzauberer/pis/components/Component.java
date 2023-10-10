@@ -11,9 +11,9 @@ import org.slf4j.Logger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import eu.derzauberer.pis.configuration.SpringConfiguration;
-import eu.derzauberer.pis.service.Service;
+import eu.derzauberer.pis.service.EntityService;
 
-public abstract class Component<T extends Service, M> {
+public abstract class Component<T extends EntityService<?>, M> {
 
 	private final T service;
 	private final String name;

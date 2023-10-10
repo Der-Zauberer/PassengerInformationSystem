@@ -9,16 +9,18 @@ import eu.derzauberer.pis.model.Entity;
 import eu.derzauberer.pis.model.NameEntity;
 import eu.derzauberer.pis.repositories.EntityRepository;
 
-public abstract class EntityService<T extends Entity<T> & NameEntity> extends Service {
+public abstract class EntityService<T extends Entity<T> & NameEntity> {
 	
 	private final EntityRepository<T> repository;
-	
 	private List<Consumer<T>> onAdd = new ArrayList<>();
 	private List<Consumer<String>> onRemove = new ArrayList<>();
 
 	public EntityService(EntityRepository<T> repository) {
-		super(repository.getName());
 		this.repository = repository;
+	}
+	
+	public String getName() {
+		return repository.getName();
 	}
 	
 	public void add(T entity) {

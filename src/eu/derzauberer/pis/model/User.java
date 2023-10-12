@@ -15,7 +15,7 @@ public class User implements Entity<User>, NameEntity {
 	private boolean forcePasswordChange;
 	private LocalDateTime created;
 	private LocalDateTime lastLogin;
-	private final Set<String> permissions;
+	private final Set<String> roles;
 	
 	@ConstructorProperties({ "id", "name", "passwordHash" })
 	public User(String id, String name, String passwordHash) {
@@ -25,7 +25,7 @@ public class User implements Entity<User>, NameEntity {
 		this.disabled = false;
 		this.forcePasswordChange = false;
 		created = LocalDateTime.now();
-		this.permissions = new HashSet<>();
+		this.roles = new HashSet<>();
 	}
 	
 	@Override
@@ -82,8 +82,8 @@ public class User implements Entity<User>, NameEntity {
 		this.lastLogin = lastLogin;
 	}
 	
-	public Set<String> getPermissions() {
-		return permissions;
+	public Set<String> getRoles() {
+		return roles;
 	}
 	
 }

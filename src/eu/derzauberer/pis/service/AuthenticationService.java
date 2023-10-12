@@ -30,19 +30,19 @@ public class AuthenticationService implements UserDetailsService {
 	@SuppressWarnings("serial")
 	private UserDetails convertUserDetails(User user) {
 		return new UserDetails() {
-			@Override public boolean isEnabled() { return true; }
+			@Override public boolean isEnabled() { return !user.isDisabled(); }
 			@Override public boolean isCredentialsNonExpired() { return true; }
 			@Override public boolean isAccountNonLocked() {	return true; }
 			@Override public boolean isAccountNonExpired() { return true; }
 			@Override public String getUsername() { return user.getId(); }
 			@Override public String getPassword() { return user.getPasswordHash(); }
-			@Override public Collection<? extends GrantedAuthority> getAuthorities() { return convertGrantedAuthorities(user.getPermissions()); }
+			@Override public Collection<? extends GrantedAuthority> getAuthorities() { return convertGrantedAuthorities(user.getRoles()); }
 		};
 	}
 	
-	private Collection<? extends GrantedAuthority> convertGrantedAuthorities(Set<String> permissions) {
+	private Collection<? extends GrantedAuthority> convertGrantedAuthorities(Set<String> roles) {
 		final Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-		permissions.forEach(permission -> grantedAuthorities.add(() -> permission));
+		roles.forEach(role -> grantedAuthorities.add(() -> role));
 		return grantedAuthorities;
 	}
 

@@ -33,10 +33,21 @@ public class UserService extends EntityService<User> {
 	
 	@Override
 	public void add(User entity) {
-		final User existing = emailIdentification.get(entity.getId()).orElse(null); 
-		if (existing != null && !existing.getId().equals(entity.getId())) {
-			throw new IllegalArgumentException("Identification " + entity.getId() + " already exists!");
-		}
+		getById(entity.getEmail()).ifPresent(existing -> {
+			if (!existing.getId().equals(entity.getId())) {
+				throw new IllegalArgumentException("Identification email " + entity.getEmail() + " already exists as id!");
+			}
+		});
+		emailIdentification.get(entity.getEmail()).ifPresent(existing -> {
+			if (!existing.getId().equals(entity.getId())) {
+				throw new IllegalArgumentException("Identification email " + entity.getEmail() + " already exists as email!");
+			}
+		});
+		emailIdentification.get(entity.getId()).ifPresent(existing -> {
+			if (!existing.getId().equals(entity.getId())) {
+				throw new IllegalArgumentException("Identification id " + entity.getId() + " already exists as email!");
+			}
+		});
 		super.add(entity);
 	}
 	

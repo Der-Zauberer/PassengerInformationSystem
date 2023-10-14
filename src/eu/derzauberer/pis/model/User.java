@@ -2,24 +2,17 @@ package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-@SuppressWarnings("serial")
-public class User implements Entity<User>, NameEntity, UserDetails {
+public class User implements Entity<User>, NameEntity {
 	
 	private final String id;
 	private String name;
-	private String mail;
+	private String email;
 	private String password;
 	private boolean enabled;
-	private boolean locked;
-	private boolean expired;
-	private boolean credentialsExpired;
+	private boolean passwordChangeRequired;
 	private LocalDateTime created;
 	private LocalDateTime lastLogin;
 	private final Set<String> roles;
@@ -30,9 +23,7 @@ public class User implements Entity<User>, NameEntity, UserDetails {
 		this.name = name;
 		this.password = password;
 		this.enabled = true;
-		this.locked = false;
-		this.expired = false;
-		this.credentialsExpired = false;
+		this.passwordChangeRequired = false;
 		created = LocalDateTime.now();
 		this.roles = new HashSet<>();
 	}
@@ -43,24 +34,22 @@ public class User implements Entity<User>, NameEntity, UserDetails {
 	}
 	
 	@Override
-	public String getUsername() {
-		return id;
-	}
-	
-	@Override
 	public String getName() {
 		return name;
 	}
 	
-	public String getMail() {
-		return mail;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
-	public void setMail(String mail) {
-		this.mail = mail;
+	public String getEmail() {
+		return email;
+	}	
+	
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
-	@Override
 	public String getPassword() {
 		return password;
 	}
@@ -69,7 +58,6 @@ public class User implements Entity<User>, NameEntity, UserDetails {
 		this.password = password;
 	}
 	
-	@Override
 	public boolean isEnabled() {
 		return enabled;
 	}
@@ -78,31 +66,12 @@ public class User implements Entity<User>, NameEntity, UserDetails {
 		this.enabled = enabled;
 	}
 	
-	@Override
-	public boolean isAccountNonLocked() {
-		return !locked;
+	public boolean isPasswordChangeRequired() {
+		return passwordChangeRequired;
 	}
 	
-	public void setAccountLocked(boolean locked) {
-		this.locked = locked;
-	}
-	
-	@Override
-	public boolean isAccountNonExpired() {
-		return !expired;
-	}
-	
-	public void setAccountExpired(boolean expired) {
-		this.expired = expired;
-	}
-	
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return !credentialsExpired;
-	}
-	
-	public void setCredentialsExpired(boolean credentialsExpired) {
-		this.credentialsExpired = credentialsExpired;
+	public void setPasswordChangeRequired(boolean passwordChangeRequired) {
+		this.passwordChangeRequired = passwordChangeRequired;
 	}
 	
 	public LocalDateTime getCreated() {
@@ -119,13 +88,6 @@ public class User implements Entity<User>, NameEntity, UserDetails {
 	
 	public Set<String> getRoles() {
 		return roles;
-	}
-	
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		final Set<GrantedAuthority> authorities = new HashSet<>();
-		roles.forEach(role -> authorities.add(() -> role));
-		return authorities;
 	}
 	
 }

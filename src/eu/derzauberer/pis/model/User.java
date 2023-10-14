@@ -124,7 +124,7 @@ public class User implements Entity<User>, NameEntity, UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		final Set<GrantedAuthority> authorities = new HashSet<>();
-		permissions.forEach(permission -> authorities.add(() -> permission));
+		roles.forEach(role -> authorities.add(() -> role));
 		return authorities;
 	}
 	

@@ -30,12 +30,12 @@ public class AuthenticationService implements UserDetailsService {
 	@SuppressWarnings("serial")
 	private UserDetails convertUserDetails(User user) {
 		return new UserDetails() {
-			@Override public boolean isEnabled() { return !user.isDisabled(); }
+			@Override public boolean isEnabled() { return !user.isEnabled(); }
 			@Override public boolean isCredentialsNonExpired() { return true; }
 			@Override public boolean isAccountNonLocked() {	return true; }
 			@Override public boolean isAccountNonExpired() { return true; }
 			@Override public String getUsername() { return user.getId(); }
-			@Override public String getPassword() { return user.getPasswordHash(); }
+			@Override public String getPassword() { return user.getPassword(); }
 			@Override public Collection<? extends GrantedAuthority> getAuthorities() { return convertGrantedAuthorities(user.getRoles()); }
 		};
 	}

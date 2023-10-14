@@ -22,7 +22,7 @@ public class User implements Entity<User>, NameEntity, UserDetails {
 	private boolean credentialsExpired;
 	private LocalDateTime created;
 	private LocalDateTime lastLogin;
-	private final Set<String> permissions;
+	private final Set<String> roles;
 	
 	@ConstructorProperties({ "id", "name", "password" })
 	public User(String id, String name, String password) {
@@ -34,7 +34,7 @@ public class User implements Entity<User>, NameEntity, UserDetails {
 		this.expired = false;
 		this.credentialsExpired = false;
 		created = LocalDateTime.now();
-		this.permissions = new HashSet<>();
+		this.roles = new HashSet<>();
 	}
 	
 	@Override
@@ -117,8 +117,8 @@ public class User implements Entity<User>, NameEntity, UserDetails {
 		this.lastLogin = lastLogin;
 	}
 	
-	public Set<String> getPermissions() {
-		return permissions;
+	public Set<String> getRoles() {
+		return roles;
 	}
 	
 	@Override

@@ -25,6 +25,11 @@ public class AuthenticationController {
 		return "redirect:/studio";
 	}
 	
+	@GetMapping("/logout")
+	public String logout(Model model) {
+		return "redirect:/";
+	}
+	
 	@GetMapping("/password/change")
 	public String changePassword(@RequestParam(name = "user") String user, Model model) {
 		model.addAttribute("user", user);

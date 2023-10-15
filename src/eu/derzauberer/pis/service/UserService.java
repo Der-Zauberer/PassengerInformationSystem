@@ -73,4 +73,8 @@ public class UserService extends EntityService<User> {
 		return passwordEncoder.encode(password);
 	}
 	
+	public boolean matchPassword(String password, User user) {
+		return passwordEncoder.matches(password, user.getPassword());
+	}
+	
 }

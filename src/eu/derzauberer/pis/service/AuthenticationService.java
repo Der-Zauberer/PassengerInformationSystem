@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,20 +15,31 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.model.User;
-import eu.derzauberer.pis.repositories.EntityRepository;
 
 @Service
-public class AuthenticationService implements UserDetailsService {
+public class AuthenticationService implements UserDetailsService, AuthenticationProvider {
 
-	private final EntityRepository<User> userRepository;
+	private final UserService userService;
 	
-	public AuthenticationService(EntityRepository<User> userRepository) {
-		this.userRepository = userRepository;
+	public AuthenticationService(UserService userService) {
+		this.userService = userService;
 	}
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		return convertUserDetails(userRepository.getById(username).orElseThrow(() -> new UsernameNotFoundException("Username not found for \"" + username + "\"")));
+		return convertUserDetails(userService.getByIdOrEmail(username).orElseThrow(() -> new UsernameNotFoundException("Username not found for \"" + username + "\"")));
+	}
+	
+	@Override
+	@SuppressWarnings("serial")
+	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+		String username = authentication.getPrincipal().toString();
+        String password = authentication.getCredentials().toString();
+		final User user = userService.getByIdOrEmail(username).orElse(null);
+		if (user != null && user.isEnabled() && userService.matchPassword(password, user)) {
+	        return new UsernamePasswordAuthenticationToken(username, password, convertGrantedAuthorities(user.getRoles()));
+	    }
+		throw new AuthenticationException("Your credentials aren't correct, please try again!") {};
 	}
 	
 	@SuppressWarnings("serial")
@@ -46,4 +61,9 @@ public class AuthenticationService implements UserDetailsService {
 		return grantedAuthorities;
 	}
 
+	@Override
+	public boolean supports(Class<?> authentication) {
+		return true;
+	}
+	
 }

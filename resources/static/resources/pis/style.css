@@ -122,6 +122,28 @@
 	margin-bottom: 0px;
 }
 
+.pis-user-menu {
+	margin: 0px !important;
+	transform: translateY(8px);
+}
+
+.pis-user-menu-spacer {
+	margin-top: 16px;
+	transform: translateX(15px);
+}
+
+.pis-user-menu-details {
+	min-width: 150px;
+	padding: 10px;
+	margin-bottom: 10px;
+	font-size: 14px;
+}
+
+.pis-user-menu-details-title {
+	font-size: 18px;
+	font-weight: bold;
+}
+
 /* pager */
 
 .pis-pager a:first-of-type {

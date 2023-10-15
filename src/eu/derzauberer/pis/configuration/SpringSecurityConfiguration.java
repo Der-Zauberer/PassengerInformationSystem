@@ -27,11 +27,13 @@ public class SpringSecurityConfiguration {
 			.formLogin((form) -> form
 				.loginPage("/login")
 				.permitAll()
+				.successHandler(authenticationService)
 			)
 			.logout((logout) -> logout
 				.logoutUrl("/logout")
 				.invalidateHttpSession(true)
 				.deleteCookies("JSESSIONID")
+				.logoutSuccessHandler(authenticationService)
 			);
 		return http.build();
 	}

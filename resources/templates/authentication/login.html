@@ -8,25 +8,25 @@
 			
 			<form action="#" th:action="@{/login}" th:object="${login}" method="post">
 			
-				<h2 class="mg-t-0" th:text="#{authentification.login}">Login</h2>
+				<h2 class="mg-t-0" th:text="#{authentication.login}">Login</h2>
 					
 				<div class="input">
 					<input type="text" th:field="*{username}" required>
-					<span class="input-name" th:text="#{authentification.username}"></span>
+					<span class="input-name" th:text="#{authentication.username}"></span>
 					<span class="input-error"></span>
 				</div>
 					
 				<div class="input">
 					<input type="password" th:field="*{password}" required>
-					<span class="input-name" th:text="#{authentification.password}"></span>
+					<span class="input-name" th:text="#{authentication.password}"></span>
 					<span class="input-error"></span>
 				</div>
 					
-				<input type="submit" th:value="#{authentification.login}">
+				<input type="submit" th:value="#{authentication.login}">
 					
 			</form>
 			
-			<div class="box red" th:if="${param.error}" th:text="#{authentification.password.wrong}"></div>
+			<div class="box red" th:if="${param.error}" th:text="#{authentication.password.wrong}"></div>
 			
 		</div>
 		<div th:replace="~{components/footer :: footer}"></div>

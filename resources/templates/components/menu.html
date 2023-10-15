@@ -1,10 +1,31 @@
 <th:block th:fragment="menu">
 	<div class="menu mobile-menu" th:with="url=${#ctx.springRequestContext.requestUri}">
+	
 		<img class="icon icon-white only-mobile" src="/resources/swd/icons/hamburger.svg" onclick="swd.toggleMobileNavigationMenu()">
-		<a class="menu-title" href="/">Passenger Information System</a>
+		<a class="menu-title not-mobile" href="/">Passenger Information System</a>
+		<a class="menu-title only-mobile" href="/">PIS</a>
 		<a class="only-mobile" href="/" th:text="#{menu.home}" th:classappend="${url == '/' ? 'menu-active' : ''}"></a>
+		
 		<div class="width-100"></div>
+		
 		<a href="/stations" th:text="#{menu.stations}" th:classappend="${url.startsWith('/stations') ? 'menu-active' : ''}"></a>
-		<a href="/studio" th:text="#{menu.studio}" th:classappend="${url.startsWith('/studio') ? 'menu-active' : ''}"></a>
+		<a href="/login" th:text="#{authentication.login}" th:unless="${session.authenticated}"></a>
+		
+		<div class="dropdown dropdown-hover pis-user-menu" th:if="${session.authenticated}">
+			<a class="menu-active" th:text="${session.name}"></a>
+			<div class="pis-user-menu-spacer">
+				<div class="dropdown-content">
+					<div class="pis-user-menu-details">
+						<div class="black-text pis-user-menu-details-title" style="font-weight: bold;" th:text="${session.name}"></div>
+						<div class="grey-text" th:text="${session.id}"></div>
+						<div class="grey-text" th:if="${session.email}" th:text="${session.email}"></div>
+					</div>
+					<a href="/studio" th:text="#{menu.studio}"></a>
+					<a href="/settings" th:text="#{user.settings}"></a>
+					<a href="/logout" th:text="#{authentication.logout}"></a>
+				</div>
+			</div>
+		</div>
+		
 	</div>
 </th:block>

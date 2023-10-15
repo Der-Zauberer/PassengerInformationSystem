@@ -1,5 +1,6 @@
 package eu.derzauberer.pis.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
@@ -12,12 +13,18 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.model.User;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Service
-public class AuthenticationService implements UserDetailsService, AuthenticationProvider {
+public class AuthenticationService implements UserDetailsService, AuthenticationProvider, AuthenticationSuccessHandler, LogoutSuccessHandler {
 
 	private final UserService userService;
 	
@@ -40,6 +47,32 @@ public class AuthenticationService implements UserDetailsService, Authentication
 	        return new UsernamePasswordAuthenticationToken(username, password, convertGrantedAuthorities(user.getRoles()));
 	    }
 		throw new AuthenticationException("Your credentials aren't correct, please try again!") {};
+	}
+	
+	@Override
+	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+		final HttpSession session = request.getSession();
+		if (session != null) {
+			session.setAttribute("authenticated", true);
+			userService.getById(authentication.getName()).ifPresent(user -> {
+				session.setAttribute("id", user.getId());
+				session.setAttribute("name", user.getName());
+				session.setAttribute("email", user.getEmail());
+			});
+		}
+		response.sendRedirect("/studio");
+	}
+	
+	@Override
+	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+		final HttpSession session = request.getSession(false);
+		if (session != null) {
+			session.setAttribute("authenticated", false);
+			session.removeAttribute("id");
+			session.removeAttribute("name");
+			session.removeAttribute("email");
+		}
+		response.sendRedirect("/");
 	}
 	
 	@SuppressWarnings("serial")

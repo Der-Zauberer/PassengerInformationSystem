@@ -20,11 +20,6 @@ public class AuthenticationController {
 		return "authentication/login.html";
 	}
 	
-	@PostMapping("/login")
-	public String login(LoginDto login) {
-		return "redirect:/studio";
-	}
-	
 	@GetMapping("/password/change")
 	public String changePassword(@RequestParam(name = "user") String user, Model model) {
 		model.addAttribute("user", user);

@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @Service
-public class AuthenticationService implements UserDetailsService, AuthenticationProvider, AuthenticationSuccessHandler, LogoutSuccessHandler {
+public class AuthenticationService extends SavedRequestAwareAuthenticationSuccessHandler implements UserDetailsService, AuthenticationProvider, AuthenticationSuccessHandler, LogoutSuccessHandler {
 
 	private final UserService userService;
 	
@@ -60,7 +61,7 @@ public class AuthenticationService implements UserDetailsService, Authentication
 				session.setAttribute("email", user.getEmail());
 			});
 		}
-		response.sendRedirect("/studio");
+		super.onAuthenticationSuccess(request, response, authentication);
 	}
 	
 	@Override

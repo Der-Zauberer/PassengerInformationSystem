@@ -25,17 +25,19 @@ public class SpringSecurityConfiguration {
 				.anyRequest().permitAll()
 			)
 			.authenticationProvider(authenticationService)
-			.formLogin((form) -> form
+			.formLogin(form -> form
 				.loginPage("/login")
 				.permitAll()
 				.successHandler(authenticationService)
 			)
-			.logout((logout) -> logout
+			.logout(logout -> logout
 				.logoutUrl("/logout")
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 				.invalidateHttpSession(true)
 				.deleteCookies("JSESSIONID")
 				.logoutSuccessHandler(authenticationService)
+			).rememberMe(rememberMe -> rememberMe
+				.key("remember-me-key")
 			);
 		return http.build();
 	}

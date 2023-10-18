@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,6 +30,7 @@ public class AuthenticationService extends SavedRequestAwareAuthenticationSucces
 
 	private final UserService userService;
 	
+	@Autowired
 	public AuthenticationService(UserService userService) {
 		this.userService = userService;
 	}

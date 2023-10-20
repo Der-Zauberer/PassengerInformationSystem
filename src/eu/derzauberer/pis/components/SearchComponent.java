@@ -9,9 +9,9 @@ import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 
+import eu.derzauberer.pis.index.SearchIndex;
 import eu.derzauberer.pis.model.Entity;
 import eu.derzauberer.pis.model.NameEntity;
-import eu.derzauberer.pis.model.SearchIndex;
 import eu.derzauberer.pis.service.EntityService;
 import eu.derzauberer.pis.util.SearchComparator;
 

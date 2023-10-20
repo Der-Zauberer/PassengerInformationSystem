@@ -6,8 +6,8 @@ import java.util.function.Function;
 
 import org.slf4j.LoggerFactory;
 
+import eu.derzauberer.pis.index.IdentificationIndex;
 import eu.derzauberer.pis.model.Entity;
-import eu.derzauberer.pis.model.IdentificationIndex;
 import eu.derzauberer.pis.model.NameEntity;
 import eu.derzauberer.pis.service.EntityService;
 

@@ -57,7 +57,7 @@ public class AuthenticationService extends SavedRequestAwareAuthenticationSucces
 		final HttpSession session = request.getSession();
 		if (session != null) {
 			session.setAttribute("authenticated", true);
-			userService.getById(authentication.getName()).ifPresent(user -> {
+			userService.getByIdOrEmail(authentication.getName()).ifPresent(user -> {
 				session.setAttribute("id", user.getId());
 				session.setAttribute("name", user.getName());
 				session.setAttribute("email", user.getEmail());

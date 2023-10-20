@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.TreeMap;
 
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import eu.derzauberer.pis.configuration.SpringConfiguration;
 import eu.derzauberer.pis.model.Entity;
+import eu.derzauberer.pis.model.NameEntity;
 
 public class MemoryEntityRepository<T extends Entity<T>> extends EntityRepository<T>{
 	
@@ -33,6 +35,9 @@ public class MemoryEntityRepository<T extends Entity<T>> extends EntityRepositor
 	@SuppressWarnings("unchecked")
 	@Override
 	public void add(T entity) {
+		Objects.requireNonNull(entity);
+		Objects.requireNonNull(entity.getId());
+		if (entity instanceof NameEntity) Objects.requireNonNull(((NameEntity) entity).getName());
 		final T copy = (T) MODEL_MAPPER.map(entity, entity.getClass());
 		entities.put(entity.getId(), copy);
 		saveEntity(copy);
@@ -40,6 +45,7 @@ public class MemoryEntityRepository<T extends Entity<T>> extends EntityRepositor
 	
 	@Override
 	public boolean removeById(String id) {
+		Objects.requireNonNull(id);
 		final boolean exist = entities.containsKey(id);
 		entities.remove(id);
 		deleteEnity(id);
@@ -48,13 +54,14 @@ public class MemoryEntityRepository<T extends Entity<T>> extends EntityRepositor
 	
 	@Override
 	public boolean containsById(String id) {
+		Objects.requireNonNull(id);
 		return entities.containsKey(id);
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public Optional<T> getById(String id) {
-		if (id == null) return Optional.empty();
+		Objects.requireNonNull(id);
 		final T entity = entities.get(id);
 		if (entity == null) return Optional.empty();
 		return Optional.of((T) MODEL_MAPPER.map(entities.get(id), entity.getClass()));

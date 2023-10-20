@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
@@ -49,6 +50,7 @@ public class SearchComponent<T extends Entity<T> & NameEntity> extends Component
 	}
 	
 	public List<T> search(String search) {
+		Objects.requireNonNull(search);
 		final List<T> results = new ArrayList<>();
 		final List<String> resultIds;
 		if ((resultIds = index.getEntries().get(normalizeSearchString(search).replaceAll("\\s", ""))) != null) {

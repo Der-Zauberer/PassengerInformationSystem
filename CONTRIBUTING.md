@@ -32,7 +32,7 @@ The commits have to be in present tense and rarely contain verbs (ex. `feat: aut
 ```
 <persona> wants <feature> because of <benefit>
 
-Acceptance criteria:
+**Acceptance criteria:**
   * ...
   * ...
 ```
@@ -43,7 +43,7 @@ Example:
 ```
 The passenger wants a departure board of trains for a specific train station because he wants to see if his next train connections are on time and depart at the scheduled platform.
 
-Acceptance criteria:
+**Acceptance criteria:**
 - Departure boards display the next 7 trains at a station
 - Station is defined by a URL parameter
 - Departures are sorted by departure time with the next departure first
@@ -65,14 +65,17 @@ Add the `bug` label on the creation of the issue.
 ### Bug Template
 
 ```
+**Expected Behavior:**
 <expected behavior description>
 
+**Actual Behavior:**
 <actual behavior description>
 
+**Steps to Reproduce:**
 <steps to reproduce description>
 
-<tested with plattform and sortware>
-
+**Tested with platform:**
+<tested with plattform and sortware and screenshots>
 ```
 
 ## Pull Request

@@ -37,6 +37,7 @@ public class IdentificationComponent<T extends Entity<T> & NameEntity> extends C
 	}
 	
 	public Optional<T> get(String id) {
+		if (id == null) return Optional.empty();
 		return getService().getById(index.getEntries().get(id));
 	}
 

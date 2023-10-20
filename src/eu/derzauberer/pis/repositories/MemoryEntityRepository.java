@@ -54,6 +54,7 @@ public class MemoryEntityRepository<T extends Entity<T>> extends EntityRepositor
 	@Override
 	@SuppressWarnings("unchecked")
 	public Optional<T> getById(String id) {
+		if (id == null) return Optional.empty();
 		final T entity = entities.get(id);
 		if (entity == null) return Optional.empty();
 		return Optional.of((T) MODEL_MAPPER.map(entities.get(id), entity.getClass()));

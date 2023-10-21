@@ -53,7 +53,7 @@ public class UserController {
 	
 	@PostMapping
 	public UserDto setUser(@RequestBody UserEditDto user) {
-		final User mappedUser = new User(user.getUsername(), user.getDisplayName(), null);
+		final User mappedUser = new User(user.getId(), user.getName(), null);
 		modelMapper.map(user, mappedUser);
 		userService.add(mappedUser);
 		return modelMapper.map(mappedUser, UserDto.class);

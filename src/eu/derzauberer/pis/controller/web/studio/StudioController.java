@@ -10,7 +10,8 @@ import eu.derzauberer.pis.service.EntityService;
 public abstract class StudioController {
 	
 	public int[] calculatePageRange(int page, int pageSize, int totalSize) {
-		final int pageAmount = (int) Math.ceil(totalSize / pageSize) + 1;
+		final double pageRawAmount = Math.ceil(totalSize / pageSize);
+		final int pageAmount = (int) pageRawAmount + (pageRawAmount % 1 == 0 ? 0 : 1);
 		if (page > pageAmount) throw new IllegalArgumentException("The page is larger than the total amount of pages!");
 		final int[] range = new int[3];
 		range[0] = (page - 1) * pageSize;

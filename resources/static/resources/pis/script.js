@@ -5,9 +5,9 @@ class PIS {
 	/*******************/
 	
 	page(page) {
-		let currentUrl = window.location.href;
-		currentUrl = this.#setParameter(currentUrl, 'page', page);
-		window.location.href = currentUrl;
+		const currentUrl = new URL(window.location.href);
+		currentUrl.searchParams.set('page', page);
+		window.location.href = currentUrl.toString();
 	}
 	
 	/*******************/
@@ -16,25 +16,19 @@ class PIS {
 	
 	search() {
 		const input = document.getElementById('search');
-		let currentUrl = window.location.href;
-		const search = encodeURIComponent(input.value)
-			.replace('~', '%7E')
-			.replace('!', '%21')
-			.replace('*', '%2A')
-			.replace('(', '%28')
-			.replace(')', '%29');
-		currentUrl = this.#removeParameter(currentUrl, 'page');
-		currentUrl = this.#removeParameter(currentUrl, 'pageSize');
-		currentUrl = input.value ? this.#setParameter(currentUrl, 'search', search) : this.#removeParameter(currentUrl, 'search');
-		window.location.href = currentUrl;
+		const currentUrl = new URL(window.location.href);
+		currentUrl.searchParams.delete('page');
+		currentUrl.searchParams.delete('pageSize');
+		input.value ? currentUrl.searchParams.set('search', input.value) : currentUrl.searchParams.delete('search');
+		window.location.href = currentUrl.toString();
 	}
 	
 	resetSearch() {
-		let currentUrl = window.location.href;
-		currentUrl = this.#removeParameter(currentUrl, 'search');
-		currentUrl = this.#removeParameter(currentUrl, 'page');
-		currentUrl = this.#removeParameter(currentUrl, 'pageSize');
-		window.location.href = currentUrl;
+		const currentUrl = new URL(window.location.href);
+		currentUrl.searchParams.delete('search');
+		currentUrl.searchParams.delete('page');
+		currentUrl.searchParams.delete('pageSize');
+		window.location.href = currentUrl.toString();
 	}
 	
 	/*******************/
@@ -137,45 +131,6 @@ class PIS {
 			else password2.setCustomValidity('');
 		});
 	}
-	
-	/*******************/
-	/* parameter       */
-	/*******************/
-
-    #setParameter(url, param, value) {
-        let currentUrl = url;
-		if (currentUrl.includes('?')) {
-			const parameterString = '?' + currentUrl.split('?')[1];
-			if (parameterString.includes('?' + param) || parameterString.includes('&' + param)) {
-				currentUrl = currentUrl.replace(new RegExp('((\\?|&)' + param + ')(=[^&]*)?', 'gm'), '$1=' + value);
-			} else {
-                if (currentUrl.substring(currentUrl.length - 1) != '?' && currentUrl.substring(currentUrl.length - 1) != '&') currentUrl += '&';
-				currentUrl += param + '=' + value;
-			}
-		} else {
-			currentUrl += '?' + param + '=' + value;
-		}	
-		return currentUrl;
-        
-    }
-
-    #removeParameter(url, param) {
-        let currentUrl = url;
-		if (currentUrl.includes('?')) {
-			const parameterString = '?' + currentUrl.split('?')[1];
-			if (parameterString.includes('?' + param) || parameterString.includes('&' + param)) {
-				currentUrl = currentUrl.replace(new RegExp('&?' + param + '((=[^&]*)|(?=&)|(?=$))', 'gm'), '');
-                if (currentUrl.substring(currentUrl.length - 1) == '&') currentUrl = currentUrl.substring(0, currentUrl.length - 1);
-                currentUrl = currentUrl.replace('?&', '?');
-                if (currentUrl.substring(currentUrl.length - 1) == '?') currentUrl = currentUrl.substring(0, currentUrl.length - 1);
-			}
-		}
-		return currentUrl;
-    }
-
-    #getParameter(param) {
-        return new URLSearchParams(window.location.search).get(param);
-    }
 	
 }
 

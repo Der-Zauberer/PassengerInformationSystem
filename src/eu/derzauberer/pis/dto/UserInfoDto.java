@@ -1,32 +1,24 @@
 package eu.derzauberer.pis.dto;
 
-import eu.derzauberer.pis.model.Entity;
-import eu.derzauberer.pis.model.User;
-
-public class UserInfoDto implements Entity<User> {
+public class UserInfoDto {
 	
-	private String username;
-	private String displayName;
+	private String id;
+	private String name;
 	
-	@Override
 	public String getId() {
-		return username;
+		return id;
 	}
 	
-	public String getUsername() {
-		return username;
+	public void setId(String id) {
+		this.id = id;
 	}
 	
-	public void setUsername(String username) {
-		this.username = username;
+	public String getName() {
+		return name;
 	}
 	
-	public String getDisplayName() {
-		return displayName;
-	}
-	
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 }

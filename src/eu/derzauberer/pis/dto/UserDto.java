@@ -1,63 +1,60 @@
 package eu.derzauberer.pis.dto;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import eu.derzauberer.pis.model.Entity;
 import eu.derzauberer.pis.model.User;
 
 public class UserDto implements Entity<User> {
 
-	private String username;
-	private String displayName;
-	private String mail;
-	private boolean disabled = false;
-	private boolean forcePasswordChange;
+	private String id;
+	private String name;
+	private String email;
+	private boolean enabled;
+	private boolean passwordChangeRequired;
 	private LocalDateTime created;
 	private LocalDateTime lastLogin;
+	private Set<String> roles;
 	
-	@Override
 	public String getId() {
-		return username;
+		return id;
 	}
 	
-	public String getUsername() {
-		return username;
+	public void setId(String id) {
+		this.id = id;
 	}
 	
-	public void setUsername(String username) {
-		this.username = username;
+	public String getName() {
+		return name;
 	}
 	
-	public String getDisplayName() {
-		return displayName;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
+	public String getEmail() {
+		return email;
 	}
 	
-	public String getMail() {
-		return mail;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
-	public void setMail(String mail) {
-		this.mail = mail;
+	public boolean isEnabled() {
+		return enabled;
 	}
 	
-	public boolean isDisabled() {
-		return disabled;
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 	
-	public void setDisabled(boolean disabled) {
-		this.disabled = disabled;
+	public boolean isPasswordChangeRequired() {
+		return passwordChangeRequired;
 	}
 	
-	public boolean isForcePasswordChange() {
-		return forcePasswordChange;
-	}
-	
-	public void setForcePasswordChange(boolean forcePasswordChange) {
-		this.forcePasswordChange = forcePasswordChange;
+	public void setPasswordChangeRequired(boolean passwordChangeRequired) {
+		this.passwordChangeRequired = passwordChangeRequired;
 	}
 	
 	public LocalDateTime getCreated() {
@@ -74,6 +71,14 @@ public class UserDto implements Entity<User> {
 	
 	public void setLastLogin(LocalDateTime lastLogin) {
 		this.lastLogin = lastLogin;
+	}
+	
+	public Set<String> getRoles() {
+		return roles;
+	}
+	
+	public void setRoles(Set<String> roles) {
+		this.roles = roles;
 	}
 	
 }

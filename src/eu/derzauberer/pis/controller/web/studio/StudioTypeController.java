@@ -25,7 +25,7 @@ public class StudioTypeController extends StudioController {
 			@RequestParam(name = "page", defaultValue = "1") int page,
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
 			) {
-		getAll(typeService, model, search, page, pageSize);
+		setPageModel(typeService, model, search, page, pageSize);
 		return "studio/types.html";
 	}
 	

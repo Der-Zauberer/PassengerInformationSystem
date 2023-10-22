@@ -1,7 +1,6 @@
 package eu.derzauberer.pis.service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 
@@ -13,6 +12,7 @@ import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.model.StationTraffic;
 import eu.derzauberer.pis.model.StationTrafficEntry;
 import eu.derzauberer.pis.repositories.EntityRepository;
+import eu.derzauberer.pis.util.Collectable;
 import eu.derzauberer.pis.util.SearchComparator;
 
 @Service
@@ -28,7 +28,7 @@ public class StationService extends EntityService<Station> {
 		this.searchComponent = new SearchComponent<>(this, getStationSearchComperator());
 	}
 	
-	public List<Station> search(String search) {
+	public Collectable<Station> search(String search) {
 		return searchComponent.search(search);
 	}
 	

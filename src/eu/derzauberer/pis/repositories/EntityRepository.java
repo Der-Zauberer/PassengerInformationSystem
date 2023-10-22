@@ -60,7 +60,7 @@ public abstract class EntityRepository<T extends Entity<T>> {
 	
 	public abstract Optional<T> getById(String id);
 	
-	public abstract List<T> getList();
+	public abstract List<T> getAll();
 	
 	public abstract List<T> getRange(int beginn, int end);
 	
@@ -72,7 +72,7 @@ public abstract class EntityRepository<T extends Entity<T>> {
 	
 	public String exportEntities() {
 		try {
-			final Collection<T> entities = getList();
+			final Collection<T> entities = getAll();
 			final HashMap<String, Collection<T>> types = new HashMap<>();
 			types.put(name, entities);
 			String json = OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(types);

@@ -40,7 +40,7 @@ public class DbRisPlatformsDownloader {
 		request.getHeader().put("DB-Client-Id", config.getDbClientId());
 		request.getHeader().put("DB-Api-Key", config.getDbApiKey());
 		request.setExceptionAction(exception -> LOGGER.error("Downloading {} from {} failed: {} {}", stationService.getName(), NAME, exception.getClass().getSimpleName(), exception.getMessage()));
-		final List<Station> stations = stationService.getList();
+		final List<Station> stations = stationService.getAll();
 		int counter = 0;
 		long millis = System.currentTimeMillis();
 		final ProgressStatus progress = new ProgressStatus("Processing", NAME, stations.size());

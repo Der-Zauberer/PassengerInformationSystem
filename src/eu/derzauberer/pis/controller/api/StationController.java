@@ -1,7 +1,6 @@
 package eu.derzauberer.pis.controller.api;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 import eu.derzauberer.pis.dto.ListDto;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.service.StationService;
+import eu.derzauberer.pis.util.Collectable;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -36,15 +36,13 @@ public class StationController {
 	
 	@GetMapping
 	public ListDto<Station> getStations(
-			@RequestParam(name = "query", required = false) String query,
+			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
-		if (query != null) {
-			final List<Station> stations = stationService.search(query);
-			return new ListDto<>(stations, offset, limit == -1 ? stations.size() : limit);
-		}
-		return new ListDto<>(stationService, offset, limit == -1 ? stationService.size() : limit);
+		final boolean hasSearch = search != null && !search.isBlank();
+		final Collectable<Station> collectable = hasSearch ? stationService.search(search) : stationService;
+		return collectable.getList(offset, limit == -1 ? collectable.size() : limit);
 	}
 	
 	@GetMapping("{id}")
@@ -90,7 +88,7 @@ public class StationController {
 			outputStream.close();
 			return null;
 		} else {
-			return stationService.getList();
+			return stationService.getAll();
 		}
 	}
 

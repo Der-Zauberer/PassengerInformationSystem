@@ -8,8 +8,9 @@ import java.util.function.Consumer;
 import eu.derzauberer.pis.model.Entity;
 import eu.derzauberer.pis.model.NameEntity;
 import eu.derzauberer.pis.repositories.EntityRepository;
+import eu.derzauberer.pis.util.Collectable;
 
-public abstract class EntityService<T extends Entity<T> & NameEntity> {
+public abstract class EntityService<T extends Entity<T> & NameEntity> implements Collectable<T> {
 	
 	private final EntityRepository<T> repository;
 	private List<Consumer<T>> onAdd = new ArrayList<>();
@@ -47,20 +48,24 @@ public abstract class EntityService<T extends Entity<T> & NameEntity> {
 		return repository.getById(id);
 	}
 	
-	public abstract List<T> search(String search);
+	public abstract Collectable<T> search(String search);
 	
-	public List<T> getList() {
-		return repository.getList();
+	@Override
+	public List<T> getAll() {
+		return repository.getAll();
 	}
 	
+	@Override
 	public List<T> getRange(int beginn, int end) {
 		return repository.getRange(beginn, end);
 	}
 	
+	@Override
 	public int size() {
 		return repository.size();
 	}
 	
+	@Override
 	public boolean isEmpty() {
 		return repository.isEmpty();
 	}

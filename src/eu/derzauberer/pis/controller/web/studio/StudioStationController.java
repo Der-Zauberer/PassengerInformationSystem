@@ -9,10 +9,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.service.StationService;
+import eu.derzauberer.pis.util.Collectable;
 
 @Controller
 @RequestMapping("/studio/stations")
-public class StudioStationController extends StudioController {
+public class StudioStationController {
 
 	@Autowired
 	private StationService stationService;
@@ -23,7 +24,9 @@ public class StudioStationController extends StudioController {
 			@RequestParam(name = "page", defaultValue = "1") int page,
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
 			) {
-		setPageModel(stationService, model, search, page, pageSize);
+		final boolean hasSearch = search != null && !search.isBlank();
+		final Collectable<Station> collectable = hasSearch ? stationService.search(search) : stationService;
+		model.addAttribute("page", collectable.getPage(page, pageSize));
 		return "studio/stations.html";
 	}
 	

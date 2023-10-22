@@ -48,7 +48,7 @@ public class FileEntityRepository<T extends Entity<T>> extends EntityRepository<
 	}
 
 	@Override
-	public List<T> getList() {
+	public List<T> getAll() {
 		return Collections.unmodifiableList(loadEntities());
 	}
 	

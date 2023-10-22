@@ -68,7 +68,7 @@ public class MemoryEntityRepository<T extends Entity<T>> extends EntityRepositor
 	}
 	
 	@Override
-	public List<T> getList() {
+	public List<T> getAll() {
 		return Collections.unmodifiableList(entities.values().stream().toList());
 	}
 	

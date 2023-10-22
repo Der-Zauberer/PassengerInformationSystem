@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 import eu.derzauberer.pis.dto.ListDto;
 import eu.derzauberer.pis.model.Route;
 import eu.derzauberer.pis.service.RouteService;
+import eu.derzauberer.pis.util.Collectable;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -35,10 +36,13 @@ public class RouteController {
 	
 	@GetMapping
 	public ListDto<Route> getRoutes(
+			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
-		return new ListDto<>(routeService, offset, limit == -1 ? routeService.size() : limit);
+		final boolean hasSearch = search != null && !search.isBlank();
+		final Collectable<Route> collectable = hasSearch ? routeService.search(search) : routeService;
+		return collectable.getList(offset, limit == -1 ? collectable.size() : limit);
 	}
 	
 	@GetMapping("{id}")
@@ -84,7 +88,7 @@ public class RouteController {
 			outputStream.close();
 			return null;
 		} else {
-			return routeService.getList();
+			return routeService.getAll();
 		}
 	}
 	

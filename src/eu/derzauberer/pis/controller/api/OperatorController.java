@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 import eu.derzauberer.pis.dto.ListDto;
 import eu.derzauberer.pis.model.Operator;
 import eu.derzauberer.pis.service.OperatorService;
+import eu.derzauberer.pis.util.Collectable;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -35,10 +36,13 @@ public class OperatorController {
 	
 	@GetMapping
 	public ListDto<Operator> getOperators(
+			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
-		return new ListDto<>(operatorService, offset, limit == -1 ? operatorService.size() : limit);
+		final boolean hasSearch = search != null && !search.isBlank();
+		final Collectable<Operator> collectable = hasSearch ? operatorService.search(search) : operatorService;
+		return collectable.getList(offset, limit == -1 ? collectable.size() : limit);
 	}
 	
 	@GetMapping("{id}")
@@ -84,7 +88,7 @@ public class OperatorController {
 			outputStream.close();
 			return null;
 		} else {
-			return operatorService.getList();
+			return operatorService.getAll();
 		}
 	}
 	

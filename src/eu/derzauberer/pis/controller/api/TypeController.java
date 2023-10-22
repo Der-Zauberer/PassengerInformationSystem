@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 import eu.derzauberer.pis.dto.ListDto;
 import eu.derzauberer.pis.model.TransportationType;
 import eu.derzauberer.pis.service.TypeService;
+import eu.derzauberer.pis.util.Collectable;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -35,10 +36,13 @@ public class TypeController {
 	
 	@GetMapping
 	public ListDto<TransportationType> getTypes(
+			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
-		return new ListDto<>(typeService, offset, limit == -1 ? typeService.size() : limit);
+		final boolean hasSearch = search != null && !search.isBlank();
+		final Collectable<TransportationType> collectable = hasSearch ? typeService.search(search) : typeService;
+		return collectable.getList(offset, limit == -1 ? collectable.size() : limit);
 	}
 
 	@GetMapping("{id}")
@@ -84,7 +88,7 @@ public class TypeController {
 			outputStream.close();
 			return null;
 		} else {
-			return typeService.getList();
+			return typeService.getAll();
 		}
 	}
 	

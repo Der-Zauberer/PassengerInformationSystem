@@ -2,7 +2,6 @@ package eu.derzauberer.pis.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -17,6 +16,7 @@ import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.model.StationTraffic;
 import eu.derzauberer.pis.model.StationTrafficEntry;
 import eu.derzauberer.pis.repositories.EntityRepository;
+import eu.derzauberer.pis.util.Collectable;
 import eu.derzauberer.pis.util.ProgressStatus;
 
 @Service
@@ -34,7 +34,7 @@ public class LineService extends EntityService<Line> {
 		searchComponent = new SearchComponent<>(this);
 		if (SpringConfiguration.indexing) {
 			ProgressStatus progress = new ProgressStatus("Indexing", lineRepository.getName(), lineRepository.size());
-			for (Line line : lineRepository.getList()) {
+			for (Line line : lineRepository.getAll()) {
 				addLineToTrafficIndex(line);
 				progress.count();
 			}
@@ -57,7 +57,7 @@ public class LineService extends EntityService<Line> {
 	}
 	
 	@Override
-	public List<Line> search(String search) {
+	public Collectable<Line> search(String search) {
 		return searchComponent.search(search);
 	}
 	

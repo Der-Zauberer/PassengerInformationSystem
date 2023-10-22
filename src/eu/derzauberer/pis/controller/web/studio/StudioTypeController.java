@@ -11,10 +11,11 @@ import eu.derzauberer.pis.enums.TransportationClassification;
 import eu.derzauberer.pis.enums.TransportationVehicle;
 import eu.derzauberer.pis.model.TransportationType;
 import eu.derzauberer.pis.service.TypeService;
+import eu.derzauberer.pis.util.Collectable;
 
 @Controller
 @RequestMapping("/studio/types")
-public class StudioTypeController extends StudioController {
+public class StudioTypeController {
 	
 	@Autowired
 	private TypeService typeService;
@@ -25,7 +26,9 @@ public class StudioTypeController extends StudioController {
 			@RequestParam(name = "page", defaultValue = "1") int page,
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
 			) {
-		setPageModel(typeService, model, search, page, pageSize);
+		final boolean hasSearch = search != null && !search.isBlank();
+		final Collectable<TransportationType> collectable = hasSearch ? typeService.search(search) : typeService;
+		model.addAttribute("page", collectable.getPage(page, pageSize));
 		return "studio/types.html";
 	}
 	

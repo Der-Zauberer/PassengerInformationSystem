@@ -23,6 +23,7 @@ import eu.derzauberer.pis.dto.UserEditDto;
 import eu.derzauberer.pis.dto.UserInfoDto;
 import eu.derzauberer.pis.model.User;
 import eu.derzauberer.pis.service.UserService;
+import eu.derzauberer.pis.util.Collectable;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -38,10 +39,13 @@ public class UserController {
 	
 	@GetMapping
 	public ListDto<UserInfoDto> getUsers(
+			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
-		return new ListDto<>(userService, offset, limit == -1 ? userService.size() : limit).map((user) -> modelMapper.map(user, UserInfoDto.class));
+		final boolean hasSearch = search != null && !search.isBlank();
+		final Collectable<User> collectable = hasSearch ? userService.search(search) : userService;
+		return collectable.map((user) -> modelMapper.map(user, UserInfoDto.class)).getList(offset, limit == -1 ? collectable.size() : limit);
 	}
 	
 	@GetMapping("{id}")
@@ -91,7 +95,7 @@ public class UserController {
 			outputStream.close();
 			return null;
 		} else {
-			return userService.getList();
+			return userService.getAll();
 		}
 	}
 	

@@ -25,6 +25,7 @@ import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.model.StationTrafficEntry;
 import eu.derzauberer.pis.service.LineService;
 import eu.derzauberer.pis.service.StationService;
+import eu.derzauberer.pis.util.CollectableList;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -68,8 +69,8 @@ public class LineController {
 		if (!date.matches("^\\d{8}$")) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date format " + date + " is invalid, it has to be YYYYMMDD");
 		final LocalDateTime dateTime = LocalDateTime.of(Integer.parseInt(date.substring(0, 4)), Integer.parseInt(date.substring(4, 6)), Integer.parseInt(date.substring(6, 8)), hour, 0);
 		final List<StationTrafficEntry> entries = (!arrival ? lineService.findArrivalsSinceHour(station, dateTime, limit) : lineService.findDeparturesSinceHour(station, dateTime, limit)).stream().toList();
-		final int total = !arrival ? lineService.getAmountOfArrivalsSinceHour(station, dateTime, limit) : lineService.getAmountOfDeparturesSinceHour(station, dateTime, limit);
-		return new ListDto<>(entries, limit == -1 ? entries.size() : limit, offset).manipulteTotal(total);
+		//final int total = !arrival ? lineService.getAmountOfArrivalsSinceHour(station, dateTime, limit) : lineService.getAmountOfDeparturesSinceHour(station, dateTime, limit);
+		return new CollectableList<StationTrafficEntry>(entries).getList(offset, limit == -1 ? entries.size() : limit);
 	}
 	
 	@GetMapping("{id}")
@@ -115,7 +116,7 @@ public class LineController {
 			outputStream.close();
 			return null;
 		} else {
-			return lineService.getList();
+			return lineService.getAll();
 		}
 	}
 	

@@ -23,7 +23,7 @@ public class IdentificationComponent<T extends Entity<T> & NameEntity> extends C
 			return new IdentificationIndex(new HashMap<>());
 		});
 		if (generateIndex) {
-			getService().getList().forEach(entity -> index.getEntries().put(identification.apply(entity), entity.getId()));
+			getService().getAll().forEach(entity -> index.getEntries().put(identification.apply(entity), entity.getId()));
 			save(index);
 		}
 		getService().addOnAdd(entity -> {

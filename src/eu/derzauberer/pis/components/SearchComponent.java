@@ -13,6 +13,8 @@ import eu.derzauberer.pis.index.SearchIndex;
 import eu.derzauberer.pis.model.Entity;
 import eu.derzauberer.pis.model.NameEntity;
 import eu.derzauberer.pis.service.EntityService;
+import eu.derzauberer.pis.util.Collectable;
+import eu.derzauberer.pis.util.CollectableList;
 import eu.derzauberer.pis.util.SearchComparator;
 
 public class SearchComponent<T extends Entity<T> & NameEntity> extends Component<EntityService<T>, SearchIndex> {
@@ -33,7 +35,7 @@ public class SearchComponent<T extends Entity<T> & NameEntity> extends Component
 			return new SearchIndex(new HashMap<>(), new HashMap<>());
 		});
 		if (generateIndex) {
-			getService().getList().forEach(this::add);
+			getService().getAll().forEach(this::add);
 			save(index);
 		}
 		getService().addOnAdd(entity -> {
@@ -49,7 +51,7 @@ public class SearchComponent<T extends Entity<T> & NameEntity> extends Component
 		});
 	}
 	
-	public List<T> search(String search) {
+	public Collectable<T> search(String search) {
 		Objects.requireNonNull(search);
 		final List<T> results = new ArrayList<>();
 		final List<String> resultIds;
@@ -63,7 +65,7 @@ public class SearchComponent<T extends Entity<T> & NameEntity> extends Component
 			results.remove(entity);
 			results.add(0, entity);
 		});
-		return results;
+		return new CollectableList<>(results);
 	}
 	
 	private void add(T entity) {

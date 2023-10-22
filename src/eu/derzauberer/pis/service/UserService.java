@@ -1,7 +1,6 @@
 package eu.derzauberer.pis.service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import eu.derzauberer.pis.components.IdentificationComponent;
 import eu.derzauberer.pis.components.SearchComponent;
 import eu.derzauberer.pis.model.User;
 import eu.derzauberer.pis.repositories.EntityRepository;
+import eu.derzauberer.pis.util.Collectable;
 
 @Service
 public class UserService extends EntityService<User> {
@@ -60,7 +60,7 @@ public class UserService extends EntityService<User> {
 		return super.getById(id).or(() -> emailIdentification.get(id));
 	}
 	
-	public List<User> search(String search) {
+	public Collectable<User> search(String search) {
 		return this.search.search(search);
 	}
 	

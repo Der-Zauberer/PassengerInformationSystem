@@ -21,6 +21,8 @@ public interface Collectable<T> {
 	}
 	
 	default ListDto<T> getList(int offset, int limit) {
+		if (offset < 1) throw new IllegalArgumentException("Offset has to be larger than zero!");
+		if (limit < 1) throw new IllegalArgumentException("Limit has to be larger than zero!");
 		if (offset != 0 && offset >= size()) {
 			throw new IllegalArgumentException("The offset is larger than the total amount of results!");
 		}
@@ -35,6 +37,8 @@ public interface Collectable<T> {
 	}
 	
 	default PageDto<T> getPage(int page, int pageSize) {
+		if (page < 1) throw new IllegalArgumentException("Page has to be larger than zero!");
+		if (pageSize < 1) throw new IllegalArgumentException("PageSize has to be larger than zero!");
 		final double pageRawAmount = Math.ceil(size() / pageSize);
 		final int pageAmount = (int) pageRawAmount + (pageRawAmount % 1 == 0 && pageRawAmount != 0 ? 0 : 1);
 		if (page > pageAmount) throw new IllegalArgumentException("The page is larger than the total amount of pages!");

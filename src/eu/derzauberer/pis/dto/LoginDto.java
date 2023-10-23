@@ -1,28 +1,24 @@
 package eu.derzauberer.pis.dto;
 
-import java.beans.ConstructorProperties;
-
 public class LoginDto {
 	
-	private final String username;
-	private final String password;
-	
-	@ConstructorProperties({ "username", "password" })
-	public LoginDto(String username, String password) {
-		this.username = username;
-		this.password = password;
-	}
+	private String username;
+	private String password;
 	
 	public String getUsername() {
 		return username;
+	}
+	
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	
 	public String getPassword() {
 		return password;
 	}
 	
-	public static LoginDto empty() {
-		return new LoginDto(null, null);
+	public void setPassword(String password) {
+		this.password = password;
 	}
-
+	
 }

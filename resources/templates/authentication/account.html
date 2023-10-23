@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<div th:replace="~{components/head :: head(title='Passenger Information System')}"></div>
+	<body>
+	
+		<div th:replace="~{components/menu :: menu}"></div>
+		<div class="container">
+			
+			<div class="grid-2 grid-md-1" style="column-gap: calc(var(--theme-element-spacing) * 2);">
+				
+				<from class="mg-b" th:action="@{/account}" th:object="${user}" method="post">
+					
+					<h2 class="mg-t-0" th:text="#{authentication.account.settings}"></h2>
+					
+					<input style="display: none;" type="text" th:field="*{name}">
+						
+					<div class="input">
+						<input type="text" th:field="${user.id}" disabled required>
+						<span class="input-name" th:text="#{entity.user.username}"></span>
+						<span class="input-error"></span>
+					</div>
+					
+					<div class="input">
+						<input type="text" th:field="*{name}" required>
+						<span class="input-name" th:text="#{entity.user.displayName}"></span>
+						<span class="input-error"></span>
+					</div>
+					    
+					<div class="input">
+						<input type="email" th:field="*{email}">
+						<span class="input-name" th:text="#{entity.user.email}"></span>
+						<span class="input-error"></span>
+					</div>
+					    
+					<input type="submit" th:value="#{action.save}">
+					
+				</from>
+				
+				<from th:action="@{/settings/account}" th:object="${password}" method="post">
+					
+					<h2 class="mg-t-0" th:text="#{authentication.password.change}"></h2>
+					
+					<input class="hide" type="text" th:value="${user}" readonly>
+					
+					<div class="input">
+						<input type="password" th:field="*{oldPassword}" required>
+						<span class="input-name" th:text="#{authentication.password.old}"></span>
+						<span class="input-error"></span>
+					</div>
+						
+					<div class="input">
+						<input type="password" th:field="*{newPassword}" id="password1" required>
+						<span class="input-name" th:text="#{authentication.password.new}"></span>
+						<span class="input-error"></span>
+					</div>
+					
+					<div class="input">
+						<input type="password" id="password2" required>
+						<span class="input-name" th:text="#{authentication.password.repeat}"></span>
+						<span class="input-error"></span>
+					</div>
+					
+					<input type="submit" th:value="#{action.save}">
+					
+					<span id="label-error-different-passwords" class="hide" th:text="#{authentication.password.match}"></span>
+					<script>pis.initializePasswordFields(document.getElementById('password1'), document.getElementById('password2'))</script>
+					
+				</from>
+				
+			</div>
+		
+		</div>
+		<div th:replace="~{components/footer :: footer}"></div>
+		
+	</body>
+</html>

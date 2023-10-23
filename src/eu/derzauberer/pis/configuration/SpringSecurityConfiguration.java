@@ -28,6 +28,7 @@ public class SpringSecurityConfiguration {
 	        )
 			.authorizeHttpRequests((requests) -> requests
 				.requestMatchers("/studio/**").authenticated()
+				.requestMatchers("/account").authenticated()
 				.anyRequest().permitAll()
 			)
 			.authenticationProvider(authenticationService)

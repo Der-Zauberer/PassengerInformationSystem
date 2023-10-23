@@ -61,11 +61,20 @@ public class AuthenticationController {
 	@GetMapping("/account")
 	public String getSettings(Model model, Principal principal) {
 		final User user = userService.getByIdOrEmail(principal.getName()).get();
-		final UserProfileEditDto userProfileEditDto = modelMapper.map(user, UserProfileEditDto.class);
-		
-		model.addAttribute("user", userProfileEditDto);
+		final UserProfileEditDto userDto = modelMapper.map(user, UserProfileEditDto.class);
+		model.addAttribute("user", userDto);
 		model.addAttribute("password", new PasswordDto());
 		return "authentication/account.html";
+	}
+	
+	@PostMapping("/account")
+	public String getSettings(Model model, Principal principal, UserProfileEditDto userDto) {
+		final User user = userService.getByIdOrEmail(principal.getName()).get();
+		user.setName(userDto.getName());
+		user.setEmail(userDto.getEmail());
+		userService.add(user);
+		model.addAttribute("success", true);
+		return getSettings(model, principal);
 	}
 	
 }

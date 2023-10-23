@@ -6,13 +6,13 @@
 		<div th:replace="~{components/menu :: menu}"></div>
 		<div class="container">
 			
+			<div class="box green" th:if="${success}" th:text="#{authentication.account.success}"></div>
+			
 			<div class="grid-2 grid-md-1" style="column-gap: calc(var(--theme-element-spacing) * 2);">
 				
-				<from class="mg-b" th:action="@{/account}" th:object="${user}" method="post">
+				<form class="mg-b" action="#" th:action="@{/account}" th:object="${user}" method="post">
 					
-					<h2 class="mg-t-0" th:text="#{authentication.account.settings}"></h2>
-					
-					<input style="display: none;" type="text" th:field="*{name}">
+					<h2 class="mg-t-0" th:text="#{authentication.account}"></h2>
 						
 					<div class="input">
 						<input type="text" th:field="${user.id}" disabled required>
@@ -34,9 +34,9 @@
 					    
 					<input type="submit" th:value="#{action.save}">
 					
-				</from>
+				</form>
 				
-				<from th:action="@{/settings/account}" th:object="${password}" method="post">
+				<form action="#" th:action="@{/settings/account}" th:object="${password}" method="post">
 					
 					<h2 class="mg-t-0" th:text="#{authentication.password.change}"></h2>
 					
@@ -65,7 +65,7 @@
 					<span id="label-error-different-passwords" class="hide" th:text="#{authentication.password.match}"></span>
 					<script>pis.initializePasswordFields(document.getElementById('password1'), document.getElementById('password2'))</script>
 					
-				</from>
+				</form>
 				
 			</div>
 		

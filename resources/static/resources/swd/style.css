@@ -485,6 +485,10 @@ input:invalid[dirty], select:invalid[dirty], textarea:invalid[dirty] {
     border-color: #e60000;
 }
 
+input:disabled {
+    color: var(--theme-text-grey);
+}
+
 .button {
     font-size: 18px;
     line-height: 35px;

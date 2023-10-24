@@ -6,7 +6,9 @@
 		<div th:replace="~{components/menu :: menu}"></div>
 		<div class="container">
 			
-			<div class="box green" th:if="${success}" th:text="#{authentication.account.success}"></div>
+			<div class="box green" th:if="${accountSuccess}" th:text="#{authentication.account.success}"></div>
+			<div class="box green" th:if="${passwordSuccess}" th:text="#{authentication.password.success}"></div>
+			<div class="box red" th:if="${passwordError}" th:text="#{authentication.password.wrong.old}"></div>
 			
 			<div class="grid-2 grid-md-1" style="column-gap: calc(var(--theme-element-spacing) * 2);">
 				
@@ -36,7 +38,7 @@
 					
 				</form>
 				
-				<form action="#" th:action="@{/settings/account}" th:object="${password}" method="post">
+				<form action="#" th:action="@{/account/password}" th:object="${password}" method="post">
 					
 					<h2 class="mg-t-0" th:text="#{authentication.password.change}"></h2>
 					

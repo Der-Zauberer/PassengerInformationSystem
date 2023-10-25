@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<div th:replace="~{components/head :: head(title='Passenger Information System')}"></div>
+<body>
+
+<div th:replace="~{components/menu :: menu}"></div>
+<div class="container">
+
+    <h1 class="pis-error-code mg-b-0" th:text="${status} + '  ' + ${error}"></h1>
+    <span th:unless="${message.equals('No message available')}" th:text="${message}"></span>
+    <span th:if="${status == 404 && message.equals('No message available')}" th:text="${'Page not found'}"></span>
+    <span th:if="${status == 500 && message.equals('No message available')}" th:text="${'Internal server error'}"></span>
+    <span th:if="${status == 400 && message.equals('No message available')}" th:text="${'Bad request'}"></span>
+    <img class="mg-t" th:src="${'https://http.cat/' + status}"/>
+
+</div>
+<div th:replace="~{components/footer :: footer}"></div>
+
+</body>
+</html>

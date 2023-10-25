@@ -195,3 +195,9 @@
 		width: 100%;
 	}
 }
+
+/* error */
+
+.pis-error-code {
+	font-weight: bold;
+}

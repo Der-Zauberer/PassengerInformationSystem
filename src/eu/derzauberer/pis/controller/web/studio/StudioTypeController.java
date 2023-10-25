@@ -41,7 +41,7 @@ public class StudioTypeController {
 		});
 		model.addAttribute("transportationVehicles", TransportationVehicle.values());
 		model.addAttribute("transportationClassifications", TransportationClassification.values());
-		return "studio/edit/edit_types.html";
+		return "studio/edit/edit_type.html";
 	}
 
 }

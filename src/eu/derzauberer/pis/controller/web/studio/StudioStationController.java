@@ -37,7 +37,7 @@ public class StudioStationController {
 		}, () -> {
 			model.addAttribute("station", new Station("unnamed", "Unnamed"));
 		});
-		return "studio/edit/edit_stations.html";
+		return "studio/edit/edit_station.html";
 	}
 	
 }

@@ -43,7 +43,7 @@ public class StudioUserController {
 		}, () -> {
 			model.addAttribute("user", new UserEditDto());
 		});
-		return "studio/edit/edit_users.html";
+		return "studio/edit/edit_user.html";
 	}
 
 }

@@ -9,7 +9,7 @@
 		<div class="navigation-content">
 		
 			<div class="container-xl">
-				<form class="pis-form" action="#" th:action="@{/studio/stations/edit?id={id}(id = ${type.id})}" th:object="${station}" method="post">
+				<form class="pis-form" action="#" th:action="@{/studio/stations/edit?id={id}(id = ${station.id})}" th:object="${station}" method="post">
 				
 					<h3 class="mg-t-0">General</h3>
 					<div class="pis-form-grid-2">

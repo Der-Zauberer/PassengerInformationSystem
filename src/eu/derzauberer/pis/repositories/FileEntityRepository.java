@@ -43,7 +43,7 @@ public class FileEntityRepository<T extends Entity<T>> extends EntityRepository<
 
 	@Override
 	public Optional<T> getById(String id) {
-		Objects.requireNonNull(id);
+		if (id == null) return Optional.empty();
 		return loadEntity(id);
 	}
 

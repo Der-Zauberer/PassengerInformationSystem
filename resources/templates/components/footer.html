@@ -1,3 +1,21 @@
-<th:block th:fragment="footer">
-	<p>Footer test</p>
+<th:block th:fragment="footer" style="position: absolute; bottom: 0; width: 100%;">
+	<div class="footer-spacer" style="display: flex; justify-content: flex-end;">
+		<div class="grey">
+			<div class="container footer" style="display: flex; justify-content: space-between; align-items: center;">
+				<div class="nowrap grey-text width-100">
+					&copy; 2023 Der Zauberer
+				</div>
+				<div>
+					<strong class="grey-text uppercase" style="letter-spacing: 1px;">English</strong><br>
+					<a href="/PassengerInformationSystem/imprint/" class="grey-text">Imprint</a><br>
+					<a href="/PassengerInformationSystem/privacy-policy/" class="grey-text nowrap">Privacy policy</a>
+				</div>
+				<div>
+					<strong class="grey-text uppercase" style="letter-spacing: 1px;">German</strong><br>
+					<a href="/PassengerInformationSystem/impressum/" class="grey-text">Impressum</a><br>
+					<a href="/PassengerInformationSystem/datenschutzerklaerung/" class="grey-text">Datenschutzerklärung</a>
+				</div>
+			</div>
+		</div>
+	</div>
 </th:block>

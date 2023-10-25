@@ -26,6 +26,12 @@ public class SpringSecurityConfiguration {
 			.requestCache((cache) -> cache
 	            .requestCache(requestCache)
 	        )
+			.cors(cors -> cors 
+				.disable()
+			)
+			.csrf(csrf -> csrf
+				.disable()
+			)
 			.authorizeHttpRequests((requests) -> requests
 				.requestMatchers("/studio/**").authenticated()
 				.requestMatchers("/account").authenticated()

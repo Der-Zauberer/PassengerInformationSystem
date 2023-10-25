@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-	<div th:replace="~{components/head :: head(title='PIS Studio - ' + #{navigation.stations})}"></div>
+	<div th:replace="~{components/head :: head(title='PIS Studio - ' + #{navigation.stations} + ': ' + ${station.id})}"></div>
 	<body>
 	
 		<div th:replace="~{components/menu :: menu}"></div>

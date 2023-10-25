@@ -11,4 +11,9 @@ public class HomeController {
 		return "home/home.html";
 	}
 
+	@GetMapping("/error")
+	public String getErrorPage() {
+		return "home/error.html";
+	}
+
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import eu.derzauberer.pis.dto.UserDto;
+import eu.derzauberer.pis.dto.UserEditDto;
 import eu.derzauberer.pis.model.User;
 import eu.derzauberer.pis.service.UserService;
 import eu.derzauberer.pis.util.Collectable;
@@ -33,6 +34,16 @@ public class StudioUserController {
 		final Collectable<User> collectable = hasSearch ? userService.search(search) : userService;
 		model.addAttribute("page", collectable.map(user -> modelMapper.map(user, UserDto.class)).getPage(page, pageSize));
 		return "studio/users.html";
+	}
+	
+	@GetMapping("/edit")
+	public String editType(@RequestParam(value = "id", required = false) String id, Model model) {
+		userService.getById(id).ifPresentOrElse(user -> {
+			model.addAttribute("user", modelMapper.map(user, UserEditDto.class));
+		}, () -> {
+			model.addAttribute("user", new UserEditDto());
+		});
+		return "studio/edit/edit_users.html";
 	}
 
 }

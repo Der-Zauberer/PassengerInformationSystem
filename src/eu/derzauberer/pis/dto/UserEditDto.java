@@ -1,5 +1,7 @@
 package eu.derzauberer.pis.dto;
 
+import java.util.Set;
+
 public class UserEditDto {
 	
 	private String id;
@@ -7,6 +9,7 @@ public class UserEditDto {
 	private String email;
 	private boolean enabled;
 	private boolean passwordChangeRequired;
+	private Set<String> roles;
 	
 	public String getId() {
 		return id;
@@ -46,6 +49,14 @@ public class UserEditDto {
 	
 	public void setPasswordChangeRequired(boolean passwordChangeRequired) {
 		this.passwordChangeRequired = passwordChangeRequired;
+	}
+	
+	public Set<String> getRoles() {
+		return roles;
+	}
+	
+	public void setRoles(Set<String> roles) {
+		this.roles = roles;
 	}
 
 }

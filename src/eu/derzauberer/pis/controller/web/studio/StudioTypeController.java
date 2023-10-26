@@ -21,7 +21,7 @@ public class StudioTypeController {
 	private TypeService typeService;
 	
 	@GetMapping
-	public String getTypesPage(Model model,
+	public String getTypes(Model model,
 			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "page", defaultValue = "1") int page,
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize

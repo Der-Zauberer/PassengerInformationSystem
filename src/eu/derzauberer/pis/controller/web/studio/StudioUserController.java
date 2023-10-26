@@ -25,7 +25,7 @@ public class StudioUserController {
 	private ModelMapper modelMapper;
 	
 	@GetMapping
-	public String getUsersPage(Model model, 
+	public String getUsers(Model model, 
 			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "page", defaultValue = "1") int page,
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
@@ -37,7 +37,7 @@ public class StudioUserController {
 	}
 	
 	@GetMapping("/edit")
-	public String editType(@RequestParam(value = "id", required = false) String id, Model model) {
+	public String editUsers(@RequestParam(value = "id", required = false) String id, Model model) {
 		userService.getById(id).ifPresentOrElse(user -> {
 			model.addAttribute("user", modelMapper.map(user, UserEditDto.class));
 		}, () -> {

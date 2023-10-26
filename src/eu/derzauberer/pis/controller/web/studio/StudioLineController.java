@@ -19,7 +19,7 @@ public class StudioLineController {
 	private LineService lineService;
 	
 	@GetMapping
-	public String getLinesPage(Model model,
+	public String getLines(Model model,
 			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "page", defaultValue = "1") int page,
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize

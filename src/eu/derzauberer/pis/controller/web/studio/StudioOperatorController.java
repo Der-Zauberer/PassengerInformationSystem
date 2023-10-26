@@ -19,7 +19,7 @@ public class StudioOperatorController {
 	private OperatorService operatorService;
 	
 	@GetMapping
-	public String getOperatorsPage(Model model,
+	public String getOperators(Model model,
 			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "page", defaultValue = "1") int page,
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize

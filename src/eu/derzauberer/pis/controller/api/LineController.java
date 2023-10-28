@@ -80,7 +80,7 @@ public class LineController {
 	
 	@PostMapping
 	public Line setLine(@RequestBody Line line) {
-		lineService.add(line);
+		lineService.save(line);
 		return line;
 	}
 	
@@ -88,7 +88,7 @@ public class LineController {
 	public Line updateLine(@RequestBody Line line) {
 		final Line existingLine = lineService.getById(line.getId()).orElseThrow(() -> getNotFoundException("Line", line.getId()));
 		modelMapper.map(line, existingLine);
-		lineService.add(existingLine);
+		lineService.save(existingLine);
 		return existingLine;
 	}
 	

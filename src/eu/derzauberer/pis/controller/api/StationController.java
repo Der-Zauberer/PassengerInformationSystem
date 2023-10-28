@@ -52,7 +52,7 @@ public class StationController {
 	
 	@PostMapping
 	public Station setStation(@RequestBody Station station) {
-		stationService.add(station);
+		stationService.save(station);
 		return station;
 	}
 	
@@ -60,7 +60,7 @@ public class StationController {
 	public Station updateStation(@RequestBody Station station) {
 		final Station existingStation = stationService.getById(station.getId()).orElseThrow(() -> getNotFoundException(station.getId()));
 		modelMapper.map(station, existingStation);
-		stationService.add(existingStation);
+		stationService.save(existingStation);
 		return existingStation;
 	}
 	

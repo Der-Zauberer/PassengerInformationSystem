@@ -59,7 +59,7 @@ public class UserController {
 	public UserDto setUser(@RequestBody UserEditDto user) {
 		final User mappedUser = new User(user.getId(), user.getName(), null);
 		modelMapper.map(user, mappedUser);
-		userService.add(mappedUser);
+		userService.save(mappedUser);
 		return modelMapper.map(mappedUser, UserDto.class);
 	}
 	
@@ -67,7 +67,7 @@ public class UserController {
 	public UserDto updateUser(@RequestBody UserEditDto user) {
 		final User existingUser = userService.getById(user.getId()).orElseThrow(() -> getNotFoundException(user.getId()));
 		modelMapper.map(user, existingUser);
-		userService.add(existingUser);
+		userService.save(existingUser);
 		return modelMapper.map(existingUser, UserDto.class);
 	}
 	

@@ -42,11 +42,11 @@ public class LineService extends EntityService<Line> {
 	}
 	
 	@Override
-	public void add(Line line) {
+	public void save(Line line) {
 		if (lineRepository.containsById(line.getId())) {
 			removeLineToTrafficIndex(line);
 		}
-		lineRepository.add(line);
+		lineRepository.save(line);
 		addLineToTrafficIndex(line);
 	}
 	
@@ -118,10 +118,10 @@ public class LineService extends EntityService<Line> {
 		for (LineStop stop : line.getStops()) {
 			final StationTraffic arrivalStationTraffic = getOrCreateStationTraffic(stop.getStationId(), stop.getDeparture().toLocalDate());
 			arrivalStationTraffic.addArrival(new StationTrafficEntry(stop.getArrival().toLocalTime(), line.getId(), i, stop.getPlatform(), stop.getPlatfromArea(), line.getLastStop().equals(stop) ? true : false));
-			stationTrafficRepository.add(arrivalStationTraffic);
+			stationTrafficRepository.save(arrivalStationTraffic);
 			final StationTraffic departureStationTraffic = getOrCreateStationTraffic(stop.getStationId(), stop.getArrival().toLocalDate());
 			departureStationTraffic.addDeparture(new StationTrafficEntry(stop.getDeparture().toLocalTime(), line.getId(), i++, stop.getPlatform(), stop.getPlatfromArea(), line.getLastStop().equals(stop) ? true : false));
-			stationTrafficRepository.add(departureStationTraffic);
+			stationTrafficRepository.save(departureStationTraffic);
 		}
 	}
 	
@@ -129,10 +129,10 @@ public class LineService extends EntityService<Line> {
 		for (LineStop stop : line.getStops()) {
 			final StationTraffic arrivalStationTraffic = getOrCreateStationTraffic(stop.getStationId(), stop.getDeparture().toLocalDate());
 			arrivalStationTraffic.removeArrival(stop.getArrival().toLocalTime(), line.getId());
-			stationTrafficRepository.add(arrivalStationTraffic);
+			stationTrafficRepository.save(arrivalStationTraffic);
 			final StationTraffic departureStationTraffic = getOrCreateStationTraffic(stop.getStationId(), stop.getArrival().toLocalDate());
 			departureStationTraffic.removeDeparture(stop.getDeparture().toLocalTime(), line.getId());
-			stationTrafficRepository.add(departureStationTraffic);
+			stationTrafficRepository.save(departureStationTraffic);
 		}
 	}
 	

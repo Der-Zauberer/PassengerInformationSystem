@@ -84,7 +84,7 @@ public class DbStadaStationDownloader {
 			station.getOrCreateApiInformation().addSource(URL);
 			progress.count();
 			counter++;
-			stationService.add(station);
+			stationService.save(station);
 		}
 		for (String warn : warns) {
 			LOGGER.warn(warn);

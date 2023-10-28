@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.derzauberer.pis.model.Entity;
+import eu.derzauberer.pis.model.NameEntity;
 
 public class FileEntityRepository<T extends Entity<T>> extends EntityRepository<T> {
 	
@@ -21,9 +22,10 @@ public class FileEntityRepository<T extends Entity<T>> extends EntityRepository<
 	}
 
 	@Override
-	public void add(T entity) {
+	public void save(T entity) {
 		Objects.requireNonNull(entity);
 		Objects.requireNonNull(entity.getId());
+		if (entity instanceof NameEntity) Objects.requireNonNull(((NameEntity) entity).getName());
 		saveEntity(entity);
 	}
 

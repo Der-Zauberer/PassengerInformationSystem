@@ -24,11 +24,17 @@ public abstract class EntityService<T extends Entity<T> & NameEntity> implements
 		return repository.getName();
 	}
 	
-	public void add(T entity) {
+	public void save(T entity) {
+		if (entity == null) {
+			throw new IllegalArgumentException("Entity must be not null!");
+		}
 		if (entity.getId() == null || entity.getId().isEmpty()) {
 			throw new IllegalArgumentException("Entity id must be not null and not empty!");
 		}
-		repository.add(entity);
+		if (entity.getName() == null || entity.getName().isEmpty()) {
+			throw new IllegalArgumentException("Entity name must be not null and not empty!");
+		}
+		repository.save(entity);
 		onAdd.forEach(consumer -> consumer.accept(entity));
 	}
 	

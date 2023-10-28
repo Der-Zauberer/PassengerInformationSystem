@@ -28,11 +28,11 @@ public class UserService extends EntityService<User> {
 		this.passwordEncoder = passwordEncoder;
 		this.search = new SearchComponent<>(this);
 		this.emailIdentification = new IdentificationComponent<>(this, User::getEmail);
-		if (isEmpty()) add(new User("admin", "Admin", hashPassword("admin")));
+		if (isEmpty()) save(new User("admin", "Admin", hashPassword("admin")));
 	}
 	
 	@Override
-	public void add(User entity) {
+	public void save(User entity) {
 		if (entity.getEmail() != null) {
 			getById(entity.getEmail()).ifPresent(existing -> {
 				if (!existing.getId().equals(entity.getId())) {
@@ -53,7 +53,7 @@ public class UserService extends EntityService<User> {
 			});
 		}
 		
-		super.add(entity);
+		super.save(entity);
 	}
 	
 	public Optional<User> getByIdOrEmail(String id) {
@@ -69,7 +69,7 @@ public class UserService extends EntityService<User> {
 			.filter(processingUser -> passwordEncoder.matches(password, processingUser.getPassword()))
 			.map(processingUser -> {
 				processingUser.setLastLogin(LocalDateTime.now());
-				add(processingUser);
+				save(processingUser);
 				return processingUser;
 			});
 	}

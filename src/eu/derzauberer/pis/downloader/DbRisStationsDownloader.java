@@ -68,7 +68,7 @@ public class DbRisStationsDownloader {
 			station.getOrCreateApiInformation().addSource(URL);
 			progress.count();
 			counter++;
-			stationService.add(station);
+			stationService.save(station);
 		}
 		LOGGER.info("Downloaded {} stations from {}", counter, NAME, URL);
 	}

@@ -47,7 +47,7 @@ public class AuthenticationController {
 		final User user = userService.getByIdOrEmail(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Station with id " + username + " does not exist!"));
 		if (userService.matchPassword(passwordDto.getOldPassword(), user)) {
 			user.setPassword(userService.hashPassword(passwordDto.getNewPassword()));
-			userService.add(user);
+			userService.save(user);
 			return "redirect:/studio";
 		} else {
 			model.addAttribute("passwordError", true);
@@ -82,7 +82,7 @@ public class AuthenticationController {
 		final User user = userService.getByIdOrEmail(principal.getName()).get();
 		user.setName(userDto.getName());
 		user.setEmail(userDto.getEmail());
-		userService.add(user);
+		userService.save(user);
 		model.addAttribute("accountSuccess", true);
 		return getAccount(model, principal);
 	}
@@ -92,7 +92,7 @@ public class AuthenticationController {
 		final User user = userService.getByIdOrEmail(principal.getName()).get();
 		if (userService.matchPassword(passwordDto.getOldPassword(), user)) {
 			user.setPassword(userService.hashPassword(passwordDto.getNewPassword()));
-			userService.add(user);
+			userService.save(user);
 			model.addAttribute("passwordSuccess", true);
 		} else {
 			model.addAttribute("passwordError", true);

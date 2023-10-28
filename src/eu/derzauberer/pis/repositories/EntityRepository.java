@@ -52,7 +52,7 @@ public abstract class EntityRepository<T extends Entity<T>> {
 		return type;
 	}
 	
-	public abstract void add(T entity);
+	public abstract void save(T entity);
 	
 	public abstract boolean removeById(String id);
 	
@@ -92,7 +92,7 @@ public abstract class EntityRepository<T extends Entity<T>> {
 			if (jsonEntities != null) {
 				for (JsonNode jsonEntity : jsonEntities) {
 					final T entity = OBJECT_MAPPER.readValue(jsonEntity.toString(), type);
-					add(entity);
+					save(entity);
 					i++;
 				}
 			}

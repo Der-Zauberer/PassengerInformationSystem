@@ -52,7 +52,7 @@ public class TypeController {
 	
 	@PostMapping
 	public TransportationType setType(@RequestBody TransportationType type) {
-		typeService.add(type);
+		typeService.save(type);
 		return type;
 	}
 	
@@ -60,7 +60,7 @@ public class TypeController {
 	public TransportationType updateType(@RequestBody TransportationType type) {
 		final TransportationType existingType = typeService.getById(type.getId()).orElseThrow(() -> getNotFoundException(type.getId()));
 		modelMapper.map(type, existingType);
-		typeService.add(existingType);
+		typeService.save(existingType);
 		return existingType;
 	}
 	

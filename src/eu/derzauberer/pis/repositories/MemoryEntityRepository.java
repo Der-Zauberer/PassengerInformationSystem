@@ -34,7 +34,7 @@ public class MemoryEntityRepository<T extends Entity<T>> extends EntityRepositor
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public void add(T entity) {
+	public void save(T entity) {
 		Objects.requireNonNull(entity);
 		Objects.requireNonNull(entity.getId());
 		if (entity instanceof NameEntity) Objects.requireNonNull(((NameEntity) entity).getName());

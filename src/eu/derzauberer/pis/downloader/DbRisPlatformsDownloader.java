@@ -75,7 +75,7 @@ public class DbRisPlatformsDownloader {
 			}
 			station.getOrCreateApiInformation().addSource(URL);
 		}
-		stationService.add(station);
+		stationService.save(station);
 	}
 	
 	public static String getName() {

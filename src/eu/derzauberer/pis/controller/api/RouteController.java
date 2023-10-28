@@ -52,7 +52,7 @@ public class RouteController {
 	
 	@PostMapping
 	public Route setRoute(@RequestBody Route operator) {
-		routeService.add(operator);
+		routeService.save(operator);
 		return operator;
 	}
 	
@@ -60,7 +60,7 @@ public class RouteController {
 	public Route updateRoute(@RequestBody Route operator) {
 		final Route existingRoute = routeService.getById(operator.getId()).orElseThrow(() -> getNotFoundException(operator.getId()));
 		modelMapper.map(operator, existingRoute);
-		routeService.add(existingRoute);
+		routeService.save(existingRoute);
 		return existingRoute;
 	}
 	

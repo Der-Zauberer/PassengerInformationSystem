@@ -52,7 +52,7 @@ public class OperatorController {
 	
 	@PostMapping
 	public Operator setOperator(@RequestBody Operator operator) {
-		operatorService.add(operator);
+		operatorService.save(operator);
 		return operator;
 	}
 	
@@ -60,7 +60,7 @@ public class OperatorController {
 	public Operator updateOperator(@RequestBody Operator operator) {
 		final Operator existingOperator = operatorService.getById(operator.getId()).orElseThrow(() -> getNotFoundException(operator.getId()));
 		modelMapper.map(operator, existingOperator);
-		operatorService.add(existingOperator);
+		operatorService.save(existingOperator);
 		return existingOperator;
 	}
 	

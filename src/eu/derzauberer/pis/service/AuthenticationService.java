@@ -1,6 +1,7 @@
 package eu.derzauberer.pis.service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
@@ -37,7 +38,7 @@ public class AuthenticationService extends SavedRequestAwareAuthenticationSucces
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		return convertUserDetails(userService.getByIdOrEmail(username).orElseThrow(() -> new UsernameNotFoundException("Username not found for \"" + username + "\"")));
+		return convertUserDetails(userService.getById(username).orElseThrow(() -> new UsernameNotFoundException("Username not found for \"" + username + "\"")));
 	}
 	
 	@Override
@@ -45,8 +46,10 @@ public class AuthenticationService extends SavedRequestAwareAuthenticationSucces
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		String username = authentication.getPrincipal().toString();
         String password = authentication.getCredentials().toString();
-		final User user = userService.getByIdOrEmail(username).orElse(null);
+		final User user = userService.getById(username).orElse(null);
 		if (user != null && user.isEnabled() && userService.matchPassword(password, user)) {
+			user.setLastLogin(LocalDateTime.now());
+			userService.save(user);
 	        return new UsernamePasswordAuthenticationToken(username, password, convertGrantedAuthorities(user.getRoles()));
 	    }
 		throw new AuthenticationException("Your credentials aren't correct, please try again!") {};
@@ -57,7 +60,7 @@ public class AuthenticationService extends SavedRequestAwareAuthenticationSucces
 		final HttpSession session = request.getSession();
 		if (session != null) {
 			session.setAttribute("authenticated", true);
-			userService.getByIdOrEmail(authentication.getName()).ifPresent(user -> {
+			userService.getById(authentication.getName()).ifPresent(user -> {
 				session.setAttribute("id", user.getId());
 				session.setAttribute("name", user.getName());
 				session.setAttribute("email", user.getEmail());

@@ -44,7 +44,7 @@ public class AuthenticationController {
 	
 	@PostMapping("/password/change")
 	public String changePassword(@RequestParam(name = "user") String username, PasswordDto passwordDto, Model model) {
-		final User user = userService.getByIdOrEmail(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Station with id " + username + " does not exist!"));
+		final User user = userService.getById(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Station with id " + username + " does not exist!"));
 		if (userService.matchPassword(passwordDto.getOldPassword(), user)) {
 			user.setPassword(userService.hashPassword(passwordDto.getNewPassword()));
 			userService.save(user);
@@ -70,7 +70,7 @@ public class AuthenticationController {
 	
 	@GetMapping("/account")
 	public String getAccount(Model model, Principal principal) {
-		final User user = userService.getByIdOrEmail(principal.getName()).get();
+		final User user = userService.getById(principal.getName()).get();
 		final UserProfileEditDto userDto = modelMapper.map(user, UserProfileEditDto.class);
 		model.addAttribute("user", userDto);
 		model.addAttribute("password", new PasswordDto());
@@ -79,7 +79,7 @@ public class AuthenticationController {
 	
 	@PostMapping("/account")
 	public String setAccount(Model model, Principal principal, UserProfileEditDto userDto) {
-		final User user = userService.getByIdOrEmail(principal.getName()).get();
+		final User user = userService.getById(principal.getName()).get();
 		user.setName(userDto.getName());
 		user.setEmail(userDto.getEmail());
 		userService.save(user);
@@ -89,7 +89,7 @@ public class AuthenticationController {
 	
 	@PostMapping("/account/password")
 	public String setAccountPassword(Model model, Principal principal, PasswordDto passwordDto) {
-		final User user = userService.getByIdOrEmail(principal.getName()).get();
+		final User user = userService.getById(principal.getName()).get();
 		if (userService.matchPassword(passwordDto.getOldPassword(), user)) {
 			user.setPassword(userService.hashPassword(passwordDto.getNewPassword()));
 			userService.save(user);

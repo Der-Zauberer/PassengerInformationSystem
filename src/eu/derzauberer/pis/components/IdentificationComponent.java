@@ -15,9 +15,11 @@ public class IdentificationComponent<T extends Entity<T> & NameEntity> extends C
 	
 	private IdentificationIndex index;
 	private boolean generateIndex = false;
+	Function<T, String> identification;
 	
 	public IdentificationComponent(EntityService<T> service, Function<T, String> identification) {
 		super("identification", service, LoggerFactory.getLogger(SearchComponent.class));
+		this.identification = identification;
 		index = loadAsOptional(IdentificationIndex.class).orElseGet(() -> {
 			generateIndex = true;
 			return new IdentificationIndex(new HashMap<>());
@@ -26,14 +28,16 @@ public class IdentificationComponent<T extends Entity<T> & NameEntity> extends C
 			getService().getAll().forEach(entity -> index.getEntries().put(identification.apply(entity), entity.getId()));
 			save(index);
 		}
-		getService().addOnAdd(entity -> {
-			index.getEntries().put(identification.apply(entity), entity.getId());
-			save(index);
-		});
-		getService().addOnRemove(id -> {
-			index.getEntries().remove(id);
-			save(index);
-		});
+	}
+	
+	public void add(T entity) {
+		index.getEntries().put(identification.apply(entity), entity.getId());
+		save(index);
+	}
+	
+	public void remove(String id) {
+		index.getEntries().remove(id);
+		save(index);
 	}
 	
 	public Optional<T> get(String identification) {

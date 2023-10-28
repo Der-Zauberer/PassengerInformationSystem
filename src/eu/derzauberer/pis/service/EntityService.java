@@ -26,13 +26,13 @@ public abstract class EntityService<T extends Entity<T> & NameEntity> implements
 	
 	public void save(T entity) {
 		if (entity == null) {
-			throw new IllegalArgumentException("Entity must be not null!");
+			throw new IllegalArgumentException("Entity must not be null!");
 		}
 		if (entity.getId() == null || entity.getId().isEmpty()) {
-			throw new IllegalArgumentException("Entity id must be not null and not empty!");
+			throw new IllegalArgumentException("Entity id must not be null or empty!");
 		}
 		if (entity.getName() == null || entity.getName().isEmpty()) {
-			throw new IllegalArgumentException("Entity name must be not null and not empty!");
+			throw new IllegalArgumentException("Entity name must not be null or empty!");
 		}
 		repository.save(entity);
 		onAdd.forEach(consumer -> consumer.accept(entity));
@@ -40,7 +40,7 @@ public abstract class EntityService<T extends Entity<T> & NameEntity> implements
 	
 	public boolean removeById(String id) {
 		if (id == null || id.isEmpty()) {
-			throw new IllegalArgumentException("Id must be not null and not empty!");
+			throw new IllegalArgumentException("Id must not be null or empty!");
 		}
 		onRemove.forEach(consumer -> consumer.accept(id));
 		return repository.removeById(id);

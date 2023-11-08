@@ -17,7 +17,9 @@ import eu.derzauberer.pis.dto.LoginDto;
 import eu.derzauberer.pis.dto.PasswordDto;
 import eu.derzauberer.pis.dto.UserProfileEditDto;
 import eu.derzauberer.pis.model.User;
+import eu.derzauberer.pis.service.AuthenticationService;
 import eu.derzauberer.pis.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/")
@@ -25,6 +27,9 @@ public class AuthenticationController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private AuthenticationService authenticationService;
 	
 	@Autowired
 	private ModelMapper modelMapper;
@@ -78,11 +83,12 @@ public class AuthenticationController {
 	}
 	
 	@PostMapping("/account")
-	public String setAccount(Model model, Principal principal, UserProfileEditDto userDto) {
+	public String setAccount(Model model, Principal principal, HttpServletRequest request, UserProfileEditDto userDto) {
 		final User user = userService.getById(principal.getName()).get();
 		user.setName(userDto.getName());
 		user.setEmail(userDto.getEmail());
 		userService.save(user);
+		authenticationService.updateUserSession(user, request.getSession());
 		model.addAttribute("accountSuccess", true);
 		return getAccount(model, principal);
 	}

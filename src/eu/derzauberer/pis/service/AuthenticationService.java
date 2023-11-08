@@ -46,7 +46,14 @@ public class AuthenticationService extends SavedRequestAwareAuthenticationSucces
 		String username = authentication.getPrincipal().toString();
         String password = authentication.getCredentials().toString();
         final User user = userService.login(username, password).orElseThrow(() -> new AuthenticationException("Your credentials aren't correct, please try again!") {});
-        return new UsernamePasswordAuthenticationToken(username, password, convertGrantedAuthorities(user.getRoles()));
+        return new UsernamePasswordAuthenticationToken(user.getId(), password, convertGrantedAuthorities(user.getRoles()));
+	}
+	
+	public HttpSession updateUserSession(User user, HttpSession session) {
+		session.setAttribute("id", user.getId());
+		session.setAttribute("name", user.getName());
+		session.setAttribute("email", user.getEmail());
+		return session;
 	}
 	
 	@Override
@@ -55,9 +62,7 @@ public class AuthenticationService extends SavedRequestAwareAuthenticationSucces
 		if (session != null) {
 			session.setAttribute("authenticated", true);
 			userService.getById(authentication.getName()).ifPresent(user -> {
-				session.setAttribute("id", user.getId());
-				session.setAttribute("name", user.getName());
-				session.setAttribute("email", user.getEmail());
+				updateUserSession(user, session);
 			});
 		}
 		super.onAuthenticationSuccess(request, response, authentication);

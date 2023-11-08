@@ -16,7 +16,6 @@ import eu.derzauberer.pis.util.Collectable;
 @Service
 public class UserService extends EntityService<User> {
 	
-	private final EntityRepository<User> userRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final IdentificationComponent<User> emailIdentification;
 	private final SearchComponent<User> search;
@@ -24,7 +23,6 @@ public class UserService extends EntityService<User> {
 	@Autowired
 	public UserService(EntityRepository<User> userRepository, PasswordEncoder passwordEncoder) {
 		super(userRepository);
-		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.search = new SearchComponent<>(this);
 		this.emailIdentification = new IdentificationComponent<>(this, User::getEmail);
@@ -39,14 +37,14 @@ public class UserService extends EntityService<User> {
 					throw new IllegalArgumentException("Identification email " + entity.getEmail() + " already exists as id!");
 				}
 			});
-			emailIdentification.get(entity.getEmail()).ifPresent(existing -> {
+			emailIdentification.getByIdentification(entity.getEmail()).ifPresent(existing -> {
 				if (!existing.getId().equals(entity.getId())) {
 					throw new IllegalArgumentException("Identification email " + entity.getEmail() + " already exists as email!");
 				}
 			});
 		}
 		if (entity.getId() != null) {
-			emailIdentification.get(entity.getId()).ifPresent(existing -> {
+			emailIdentification.getByIdentification(entity.getId()).ifPresent(existing -> {
 				if (!existing.getId().equals(entity.getId())) {
 					throw new IllegalArgumentException("Identification id " + entity.getId() + " already exists as email!");
 				}
@@ -59,13 +57,13 @@ public class UserService extends EntityService<User> {
 	@Override
 	public boolean removeById(String id) {
 		final boolean removed = super.removeById(id);
-		if (removed) emailIdentification.remove(id);
+		if (removed) emailIdentification.removeById(id);
 		return removed;
 	}
 	
 	@Override
 	public Optional<User> getById(String id) {
-		return super.getById(id).or(() -> emailIdentification.get(id));
+		return super.getById(id).or(() -> emailIdentification.getByIdentification(id));
 	}
 	
 	public Collectable<User> search(String search) {
@@ -73,7 +71,8 @@ public class UserService extends EntityService<User> {
 	}
 	
 	public Optional<User> login(String username, String password) {
-		return userRepository.getById(username)
+		if (username == null || username.isEmpty()) throw new IllegalArgumentException("Username must not be null or empty!");
+		return getById(username)
 			.filter(processingUser -> passwordEncoder.matches(password, processingUser.getPassword()))
 			.map(processingUser -> {
 				processingUser.setLastLogin(LocalDateTime.now());

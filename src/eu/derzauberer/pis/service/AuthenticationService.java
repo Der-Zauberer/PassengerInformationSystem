@@ -1,7 +1,6 @@
 package eu.derzauberer.pis.service;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
@@ -46,13 +45,8 @@ public class AuthenticationService extends SavedRequestAwareAuthenticationSucces
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		String username = authentication.getPrincipal().toString();
         String password = authentication.getCredentials().toString();
-		final User user = userService.getById(username).orElse(null);
-		if (user != null && user.isEnabled() && userService.matchPassword(password, user)) {
-			user.setLastLogin(LocalDateTime.now());
-			userService.save(user);
-	        return new UsernamePasswordAuthenticationToken(username, password, convertGrantedAuthorities(user.getRoles()));
-	    }
-		throw new AuthenticationException("Your credentials aren't correct, please try again!") {};
+        final User user = userService.login(username, password).orElseThrow(() -> new AuthenticationException("Your credentials aren't correct, please try again!") {});
+        return new UsernamePasswordAuthenticationToken(username, password, convertGrantedAuthorities(user.getRoles()));
 	}
 	
 	@Override

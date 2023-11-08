@@ -35,12 +35,12 @@ public class IdentificationComponent<T extends Entity<T> & NameEntity> extends C
 		save(index);
 	}
 	
-	public void remove(String id) {
+	public void removeById(String id) {
 		index.getEntries().remove(id);
 		save(index);
 	}
 	
-	public Optional<T> get(String identification) {
+	public Optional<T> getByIdentification(String identification) {
 		final String id = index.getEntries().get(identification);
 		if (id == null) return Optional.empty();
 		return getService().getById(id);

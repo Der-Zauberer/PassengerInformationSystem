@@ -51,14 +51,6 @@ public class UserService extends EntityService<User> {
 			});
 		}
 		super.save(entity);
-		emailIdentification.add(entity);
-	}
-	
-	@Override
-	public boolean removeById(String id) {
-		final boolean removed = super.removeById(id);
-		if (removed) emailIdentification.removeById(id);
-		return removed;
 	}
 	
 	@Override

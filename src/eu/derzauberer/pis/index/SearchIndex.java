@@ -6,17 +6,11 @@ import java.util.Map;
 
 public class SearchIndex {
 	
-	private final Map<String, String> originalNames;
 	private final Map<String, List<String>> entries;
 	
-	@ConstructorProperties({ "originalNames", "entries" })
-	public SearchIndex(Map<String, String> originalNames, Map<String, List<String>> entries) {
-		this.originalNames = originalNames;
+	@ConstructorProperties({ "entries" })
+	public SearchIndex(Map<String, List<String>> entries) {
 		this.entries = entries;
-	}
-	
-	public Map<String, String> getOriginalNames() {
-		return originalNames;
 	}
 	
 	public Map<String, List<String>> getEntries() {

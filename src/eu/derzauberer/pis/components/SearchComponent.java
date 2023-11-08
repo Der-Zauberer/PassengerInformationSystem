@@ -32,21 +32,22 @@ public class SearchComponent<T extends Entity<T> & NameEntity> extends Component
 		this.comparator = comparator;
 		index = loadAsOptional(SearchIndex.class).orElseGet(() -> {
 			generateIndex = true;
-			return new SearchIndex(new HashMap<>(), new HashMap<>());
+			return new SearchIndex(new HashMap<>());
 		});
 		if (generateIndex) {
 			getService().getAll().forEach(this::add);
 			save(index);
 		}
-		getService().addOnAdd(entity -> {
-			final String originalName = index.getOriginalNames().get(entity.getId());
-			if (originalName != null && originalName.equals(entity.getName())) return;
-			removeById(entity.getId());
-			add(entity);
-			save(index);
+		getService().addOnSave(event -> {
+			final boolean newIndexRequired = event.oldEntity().filter(oldEntity -> oldEntity.getName().equals(event.newEntity().getName())).isEmpty();
+			if (newIndexRequired) {
+				event.oldEntity().ifPresent(this::remove);
+				add(event.newEntity());
+				save(index);
+			}
 		});
-		getService().addOnRemove(id -> {
-			removeById(id);
+		getService().addOnRemove(event -> {
+			remove(event.oldEntity());
 			save(index);
 		});
 	}
@@ -81,24 +82,22 @@ public class SearchComponent<T extends Entity<T> & NameEntity> extends Component
 				Collections.sort(results);
 			}
 		}
-		index.getOriginalNames().put(entity.getId(), entity.getName());
 	}
 	
-	private void removeById(String id) {
-		if (index.getOriginalNames().get(id) == null) return;
-		for (String searchString : getSearchStrings(index.getOriginalNames().get(id))) {
+	private void remove(T entity) {
+		for (String searchString : getSearchStrings(entity.getName())) {
 			for (int i = 0; i < searchString.length(); i++) {
 				final String subString = searchString.substring(0, i + 1);
 				List<String> results;
 				if ((results = index.getEntries().get(subString)) != null) {
-					results.remove(id);
+					results.remove(entity.getId());
 					if (results.isEmpty()) {
 						index.getEntries().remove(subString);
 					}
 				}
 			}
 		}
-		index.getOriginalNames().remove(id);
+		save(index);
 	}
 	
 	private String normalizeSearchString(String string) {

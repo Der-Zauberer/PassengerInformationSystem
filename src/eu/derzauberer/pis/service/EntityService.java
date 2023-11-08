@@ -13,8 +13,8 @@ import eu.derzauberer.pis.util.Collectable;
 public abstract class EntityService<T extends Entity<T> & NameEntity> implements Collectable<T> {
 	
 	private final EntityRepository<T> repository;
-	private List<Consumer<T>> onAdd = new ArrayList<>();
-	private List<Consumer<String>> onRemove = new ArrayList<>();
+	private List<Consumer<SaveEvent<T>>> onSave = new ArrayList<>();
+	private List<Consumer<RemoveEvent<T>>> onRemove = new ArrayList<>();
 
 	public EntityService(EntityRepository<T> repository) {
 		this.repository = repository;
@@ -34,16 +34,23 @@ public abstract class EntityService<T extends Entity<T> & NameEntity> implements
 		if (entity.getName() == null || entity.getName().isEmpty()) {
 			throw new IllegalArgumentException("Entity name must not be null or empty!");
 		}
+		final Optional<T> oldEntity = repository.getById(entity.getId());
 		repository.save(entity);
-		onAdd.forEach(consumer -> consumer.accept(entity));
+		final SaveEvent<T> saveEvent = new SaveEvent<>(oldEntity, entity);
+		onSave.forEach(consumer -> consumer.accept(saveEvent));
 	}
 	
 	public boolean removeById(String id) {
 		if (id == null || id.isEmpty()) {
 			throw new IllegalArgumentException("Id must not be null or empty!");
 		}
-		onRemove.forEach(consumer -> consumer.accept(id));
-		return repository.removeById(id);
+		final Optional<T> oldEntity = repository.getById(id);
+		final boolean removed = repository.removeById(id);
+		if (removed) {
+			final RemoveEvent<T> removeEvent = new RemoveEvent<>(oldEntity.orElse(null));
+			onRemove.forEach(consumer -> consumer.accept(removeEvent));
+		}
+		return removed;
 	}
 	
 	public boolean containsById(String id) {
@@ -84,12 +91,12 @@ public abstract class EntityService<T extends Entity<T> & NameEntity> implements
 		repository.importEntities(json);
 	}
 	
-	public void addOnAdd(Consumer<T> action) {
-		onAdd.add(action);
+	public void addOnSave(Consumer<SaveEvent<T>> event) {
+		onSave.add(event);
 	}
 	
-	public void addOnRemove(Consumer<String> action) {
-		onRemove.add(action);
+	public void addOnRemove(Consumer<RemoveEvent<T>> event) {
+		onRemove.add(event);
 	}
 	
 }

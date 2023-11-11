@@ -5,11 +5,11 @@
 			<img class="icon input-icon" th:if="${param.search == null}" src="/resources/swd/icons/search.svg" onclick="pis.search()">
 			<img class="icon input-icon" th:if="${param.search != null}" src="/resources/swd/icons/close.svg" onclick="pis.resetSearch()">
 		</div>
-		<a class="button grey dark-grey-hover" th:attr="onclick=|pis.import('/api/${entity}/import')|">
+		<a class="button grey dark-grey-hover" th:attr="onclick=|pis.import('/api/${entity}/import')|" href="#">
 			<img class="icon" src="/resources/swd/icons/arrow_up.svg">
 			<span class="not-mobile">&nbsp;<span th:text="#{action.import}"></span></span>
 		</a>
-		<a class="button grey dark-grey-hover" th:attr="onclick=|pis.export('/api/${entity}/export?download=true')|">
+		<a class="button grey dark-grey-hover" th:attr="onclick=|pis.export('/api/${entity}/export?download=true')|" href="#">
 			<img class="icon" src="/resources/swd/icons/arrow_down.svg">
 			<span class="not-mobile">&nbsp;<span th:text="#{action.export}"></span></span>
 		</a>

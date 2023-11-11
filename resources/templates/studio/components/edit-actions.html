@@ -7,9 +7,9 @@
 	
 	<div class="dialog" id="delete-dialog" th:if="${id}">
 		<div class="dialog-content">
-			<h3 th:text="#{action.delete} + ' ' + ${name}"></h3>
+			<h3 th:text="#{action.delete} + ' ' + ${name}" class="text-overflow"></h3>
 			<p th:text=#{action.delete.areYouSure}></p>
-			<p><label class="blue-transparent" th:text="${id}"></label>&nbsp;&nbsp;<span th:text="${name}"></span></p>
+			<p class="text-overflow"><label class="blue-transparent" th:text="${id}"></label>&nbsp;&nbsp;<span th:text="${name}"></span></p>
 			<div class="dialog-button">
 				<a class="button width-100 grey dark-grey-hover" th:text="#{action.cancel}" onclick="swd.toggleDialog('delete-dialog');"></a>
 				<a class="button width-100 red dark-red-hover" th:text="#{action.delete}" onclick="swd.toggleDialog('delete-dialog');" th:href="@{delete?id={id}(id = ${id})}"></a>

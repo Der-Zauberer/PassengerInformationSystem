@@ -40,9 +40,19 @@ class SWD {
         this.hideAllDropdowns();
     }
 
+    onPageScroll(event) {
+        if (this.#navigation && this.#navigation.classList.contains('show')) this.toggleMobileNavigationMenu();
+    }
+
     onPageClick(event) {
         if (this.#navigation && this.#navigation.classList.contains('show') && event.clientX > 250) this.toggleMobileNavigationMenu();
         if (!event.target.parentNode.classList || !event.target.parentNode.classList.contains('dropdown')) this.hideAllDropdowns();
+    }
+
+    onKeyDown(event) {
+        if (event.keyCode == 27) {
+            this.hideAllDropdowns();
+        }
     }
     
     // *********************
@@ -362,6 +372,7 @@ class SWD {
             else content.classList.remove('hide');
         });
         input.addEventListener('keydown', event => {
+            if (event.keyCode == 9) nextElementByTabIndex.focus();
             if (!content.classList.contains('show')) {
                 visibleElemnts = valueElements;
                 activeElement = -1;
@@ -484,11 +495,11 @@ class SWD {
                 i += 3;
                 lastAddedIndex = i + 1;
             } else if (tag && !comment && !attribute && string.charAt(i) == ' ') {
-                codeString += string.substring(lastAddedIndex, i) + '<span class="green-text">';
+                codeString += string.substring(lastAddedIndex, i) + '<span class="aqua-text">';
                 attribute = true;
                 lastAddedIndex = i;
             } else if (tag && !comment && attribute && string.charAt(i) == '"') {
-                codeString += value ? string.substring(lastAddedIndex, i) + '"</span>' : string.substring(lastAddedIndex, i) + '<span class="red-text">"';
+                codeString += value ? string.substring(lastAddedIndex, i) + '"</span>' : string.substring(lastAddedIndex, i) + '<span class="green-text">"';
                 value = !value;
                 lastAddedIndex = i + 1;
             } else if (!tag && !comment && i + 7 < string.length && string.substring(i, i + 7) == '&lt;!--') {
@@ -516,11 +527,11 @@ class SWD {
         let lastAddedIndex = 0;
         for (let i = 0; i < string.length; i++) {
             if (!comment && !key && string.charAt(i) == '{') {
-                codeString += string.substring(lastAddedIndex, i) + '</span>{<span class="green-text">';
+                codeString += string.substring(lastAddedIndex, i) + '</span>{<span class="aqua-text">';
                 key = true;
                 lastAddedIndex = ++i;
             } else if (!comment && key && string.charAt(i) == ':') {
-                codeString += string.substring(lastAddedIndex, i) + '</span>:<span class="red-text">';
+                codeString += string.substring(lastAddedIndex, i) + '</span>:<span class="green-text">';
                 value = true;
                 lastAddedIndex = ++i;
             } else if (!comment && key && string.charAt(i) == '}') {
@@ -529,7 +540,7 @@ class SWD {
                 value = false;
                 lastAddedIndex = ++i;
             } else if (!comment && value && string.charAt(i) == ';') {
-                codeString += string.substring(lastAddedIndex, i) + '</span>;<span class="green-text">';
+                codeString += string.substring(lastAddedIndex, i) + '</span>;<span class="aqua-text">';
                 key = true;
                 value = false;
                 lastAddedIndex = ++i;
@@ -560,6 +571,12 @@ document.addEventListener('readystatechange', event => {
         });
         window.addEventListener('resize', (event) => {
             swd.onPageResize(event);
+        });
+        document.addEventListener("scroll", (event) => {
+            swd.onPageScroll(event);
+        });
+        window.addEventListener('keydown', (event) => {
+            swd.onKeyDown(event);
         });
         swd.onLoad(document);
     }

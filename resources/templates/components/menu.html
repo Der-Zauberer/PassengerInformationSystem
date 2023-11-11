@@ -11,7 +11,7 @@
 		<a href="/stations" th:text="#{menu.stations}" th:classappend="${url.startsWith('/stations') ? 'menu-active' : ''}"></a>
 		<a href="/login" th:text="#{authentication.login}" th:unless="${session.authenticated}"></a>
 		
-		<div class="dropdown dropdown-hover pis-user-menu" th:if="${session.authenticated}">
+		<div class="dropdown dropdown-hover pis-user-menu" th:if="${session.authenticated}" tabindex="0">
 			<a class="menu-active" th:text="${session.name}"></a>
 			<div class="pis-user-menu-spacer">
 				<div class="dropdown-content">

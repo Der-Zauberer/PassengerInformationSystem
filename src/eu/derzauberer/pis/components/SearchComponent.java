@@ -3,8 +3,10 @@ package eu.derzauberer.pis.components;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
@@ -55,12 +57,16 @@ public class SearchComponent<T extends Entity<T> & NameEntity> extends Component
 	public Collectable<T> search(String search) {
 		Objects.requireNonNull(search);
 		final List<T> results = new ArrayList<>();
-		final List<String> resultIds;
+		final Set<String> resultIds;
 		if ((resultIds = index.getEntries().get(normalizeSearchString(search).replaceAll("\\s", ""))) != null) {
 			for (String id : resultIds) {
 				getService().getById(id).ifPresent(results::add);
 			}
-			if (comparator != null) Collections.sort(results, (o1, o2) -> comparator.compare(search, o1, o2));
+			if (comparator != null) {
+				Collections.sort(results, (o1, o2) -> comparator.compare(search, o1, o2));
+			} else {
+				Collections.sort(results, (o1, o2) -> o1.getName().compareTo(o2.getName()));
+			}
 		}
 		getService().getById(search).ifPresent(entity -> {
 			results.remove(entity);
@@ -73,13 +79,12 @@ public class SearchComponent<T extends Entity<T> & NameEntity> extends Component
 		for (String searchString : getSearchStrings(entity.getName())) {
 			for (int i = 0; i < searchString.length(); i++) {
 				final String subString = searchString.substring(0, i + 1);
-				List<String> results;
+				Set<String> results;
 				if ((results = index.getEntries().get(subString)) == null) {
-					results = new ArrayList<>();
+					results = new HashSet<>();
 					index.getEntries().put(subString, results);
 				}
 				results.add(entity.getId());
-				Collections.sort(results);
 			}
 		}
 	}
@@ -88,7 +93,7 @@ public class SearchComponent<T extends Entity<T> & NameEntity> extends Component
 		for (String searchString : getSearchStrings(entity.getName())) {
 			for (int i = 0; i < searchString.length(); i++) {
 				final String subString = searchString.substring(0, i + 1);
-				List<String> results;
+				Set<String> results;
 				if ((results = index.getEntries().get(subString)) != null) {
 					results.remove(entity.getId());
 					if (results.isEmpty()) {

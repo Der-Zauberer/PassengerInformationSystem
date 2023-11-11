@@ -1,10 +1,12 @@
 package eu.derzauberer.pis.controller.web.studio;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -24,6 +26,9 @@ public class StudioUserController {
 	@Autowired
 	private ModelMapper modelMapper;
 	
+	@Autowired
+	private TypeMap<UserEditDto, User> userModelMapper;
+	
 	@GetMapping
 	public String getUsers(Model model, 
 			@RequestParam(name = "search", required = false) String search,
@@ -37,7 +42,7 @@ public class StudioUserController {
 	}
 	
 	@GetMapping("/edit")
-	public String editUsers(@RequestParam(value = "id", required = false) String id, Model model) {
+	public String editUser(@RequestParam(value = "id", required = false) String id, Model model) {
 		userService.getById(id).ifPresentOrElse(user -> {
 			model.addAttribute("user", modelMapper.map(user, UserEditDto.class));
 		}, () -> {
@@ -45,5 +50,21 @@ public class StudioUserController {
 		});
 		return "studio/edit/edit_user.html";
 	}
-
+	
+	@PostMapping("/edit")
+	public String editUser(@RequestParam(value = "id", required = false) String id, Model model, UserEditDto userDto) {
+		id = id.split(",")[0];
+		userDto.setId(userDto.getId().split(",")[1]);
+		final User user = userService.getById(id).orElseGet(() -> new User(userDto.getId(), userDto.getName(), ""));
+		userModelMapper.map(userDto, user);
+		userService.save(user);
+		return "redirect:/studio/users";
+	}
+	
+	@GetMapping("/delete")
+	public String deleteUser(@RequestParam(value = "id", required = false) String id) {
+		userService.removeById(id);
+		return "redirect:/studio/users";
+	}
+	
 }

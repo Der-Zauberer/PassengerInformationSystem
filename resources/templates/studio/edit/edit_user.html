@@ -13,7 +13,7 @@
 					<h3 class="mg-t-0">General</h3>
 					<div class="pis-form-grid-2">
 						<div class="input">
-					        <input type="text" th:field="*{id}" required>
+					        <input type="text" th:field="*{id}" th:readonly="${user.id != null}" required>
 					        <span class="input-name">ID</span>
 					        <span class="input-error"></span>
 					    </div>
@@ -33,8 +33,8 @@
 					        <span class="input-name">Enabled</span>
 					        <img class="icon input-icon" src="/resources/swd/icons/more_down.svg" onclick="swd.focusDropdown(this)">
 					        <div class="dropdown-content">
-								<a>True</a>
-								<a>False</a>
+								<a>true</a>
+								<a>false</a>
 						    </div>
 					        <span class="input-error"></span>
 					    </div>
@@ -43,8 +43,8 @@
 					        <span class="input-name">Force user to change passwort on next login</span>
 					        <img class="icon input-icon" src="/resources/swd/icons/more_down.svg" onclick="swd.focusDropdown(this)">
 					        <div class="dropdown-content">
-								<a>True</a>
-								<a>False</a>
+								<a>true</a>
+								<a>false</a>
 						    </div>
 					        <span class="input-error"></span>
 					    </div>

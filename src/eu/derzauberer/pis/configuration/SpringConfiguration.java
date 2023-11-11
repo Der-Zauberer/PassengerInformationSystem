@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.web.servlet.server.CookieSameSiteSupplier;
 import org.springframework.context.ApplicationContext;
@@ -36,6 +37,7 @@ import eu.derzauberer.pis.configuration.SerializationConfiguration.DateTimeSeria
 import eu.derzauberer.pis.configuration.SerializationConfiguration.PrettyPrinter;
 import eu.derzauberer.pis.configuration.SerializationConfiguration.TimeDeserializer;
 import eu.derzauberer.pis.configuration.SerializationConfiguration.TimeSerializer;
+import eu.derzauberer.pis.dto.UserEditDto;
 import eu.derzauberer.pis.model.Line;
 import eu.derzauberer.pis.model.Operator;
 import eu.derzauberer.pis.model.Route;
@@ -131,6 +133,13 @@ public class SpringConfiguration implements ApplicationContextAware, WebMvcConfi
 		final ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setSkipNullEnabled(true);
 		return modelMapper;
+	}
+	
+	@Bean
+	public TypeMap<UserEditDto, User> getUserModelMapper() {
+		final TypeMap<UserEditDto, User> userModelMapper = getModelMapper().createTypeMap(UserEditDto.class, User.class);
+		userModelMapper.addMappings(mapper -> mapper.skip(User::setPassword));
+		return userModelMapper;
 	}
 	
 	@Bean

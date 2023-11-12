@@ -21,7 +21,7 @@ public interface Collectable<T> {
 	}
 	
 	default ListDto<T> getList(int offset, int limit) {
-		if (offset < 1) throw new IllegalArgumentException("Offset has to be larger than zero!");
+		if (offset < 0) throw new IllegalArgumentException("Offset has to be larger or same than zero!");
 		if (limit < 1) throw new IllegalArgumentException("Limit has to be larger than zero!");
 		if (offset != 0 && offset >= size()) {
 			throw new IllegalArgumentException("The offset is larger than the total amount of results!");

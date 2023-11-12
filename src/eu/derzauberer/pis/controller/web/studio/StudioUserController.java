@@ -44,11 +44,10 @@ public class StudioUserController {
 	
 	@GetMapping("/edit")
 	public String editUser(@RequestParam(value = "id", required = false) String id, Model model) {
-		userService.getById(id).ifPresentOrElse(user -> {
-			model.addAttribute("user", modelMapper.map(user, UserEditDto.class));
-		}, () -> {
-			model.addAttribute("user", new UserEditDto());
-		});
+		final UserEditDto userDto = userService.getById(id)
+				.map(user -> modelMapper.map(user, UserEditDto.class))
+				.orElseGet(() -> new UserEditDto());
+		model.addAttribute("user", userDto);
 		model.addAttribute("roles", UserRole.values());
 		return "studio/edit/edit_user.html";
 	}

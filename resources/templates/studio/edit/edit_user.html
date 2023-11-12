@@ -10,59 +10,62 @@
 			<div class="container-xl">
 				<form class="pis-form" action="#" th:action="@{/studio/users/edit?entity={id}(id = ${user.id})}" th:object="${user}" method="post">
 				
-					<h3 class="mg-t-0">General</h3>
+					<h3 class="mg-t-0" th:text="#{entity.general}"></h3>
 					<div class="pis-form-grid-2">
 					
 						<div class="input">
-					        <input type="text" th:field="*{id}" th:readonly="${user.id != null}" required>
-					        <span class="input-name">ID</span>
-					        <span class="input-error"></span>
+							<input type="text" th:field="*{id}" th:readonly="${user.id != null}" required>
+							<span class="input-name" th:text="#{entity.user.username}"></span>
+							<span class="input-error"></span>
 					    </div>
 					    
 					    <div class="input">
-					        <input type="text" th:field="*{name}" required>
-					        <span class="input-name">Name</span>
-					        <span class="input-error"></span>
+							<input type="text" th:field="*{name}" required>
+							<span class="input-name" th:text="#{entity.user.displayName}"></span>
+							<span class="input-error"></span>
 					    </div>
 					    
 					    <div class="input">
-					        <input type="email" th:field="*{email}">
-					        <span class="input-name">Email</span>
-					        <span class="input-error"></span>
+							<input type="email" th:field="*{email}">
+							<span class="input-name" th:text="#{entity.user.email}"></span>
+							<span class="input-error"></span>
 					    </div>
 					    
-					    <div></div>
-					    
+					</div>
+					
+					<h3 class="mg-t-0" th:text="#{entity.user.permissions}"></h3>
+					<div class="pis-form-grid-2">
+
 					    <div class="input dropdown">
-					        <input type="text" th:field="*{enabled}" readonly required>
-					        <span class="input-name">Enabled</span>
-					        <img class="icon input-icon" src="/resources/swd/icons/more_down.svg" onclick="swd.focusDropdown(this)">
-					        <div class="dropdown-content">
+							<input type="text" th:field="*{enabled}" readonly required>
+							<span class="input-name" th:text="#{entity.user.enabled}"></span>
+							<img class="icon input-icon" src="/resources/swd/icons/more_down.svg" onclick="swd.focusDropdown(this)">
+							<div class="dropdown-content">
 								<a>true</a>
 								<a>false</a>
 						    </div>
-					        <span class="input-error"></span>
+							<span class="input-error"></span>
 					    </div>
 					    
 					    <div class="input dropdown">
-					        <input type="text" th:field="*{passwordChangeRequired}" readonly required>
-					        <span class="input-name">Force user to change passwort on next login</span>
-					        <img class="icon input-icon" src="/resources/swd/icons/more_down.svg" onclick="swd.focusDropdown(this)">
-					        <div class="dropdown-content">
+							<input type="text" th:field="*{passwordChangeRequired}" readonly required>
+							<span class="input-name" th:text="#{entity.user.passwordChangeRequired}"></span>
+							<img class="icon input-icon" src="/resources/swd/icons/more_down.svg" onclick="swd.focusDropdown(this)">
+							<div class="dropdown-content">
 								<a>true</a>
 								<a>false</a>
 						    </div>
-					        <span class="input-error"></span>
+							<span class="input-error"></span>
 					    </div>
 					    
-					     <div class="input dropdown">
-					        <input type="text" th:field="*{role}" readonly required>
-					        <span class="input-name">Role</span>
-					        <img class="icon input-icon" src="/resources/swd/icons/more_down.svg" onclick="swd.focusDropdown(this)">
-					        <div class="dropdown-content">
+						<div class="input dropdown">
+							<input type="text" th:field="*{role}" readonly required>
+						 	<span class="input-name"  th:text="#{entity.user.role}"></span>
+							<img class="icon input-icon" src="/resources/swd/icons/more_down.svg" onclick="swd.focusDropdown(this)">
+							<div class="dropdown-content">
 								<a th:each="selectableRole : ${roles}" th:text="${selectableRole}"></a>
 						    </div>
-					        <span class="input-error"></span>
+							<span class="input-error"></span>
 					    </div>
 					    
 					</div>

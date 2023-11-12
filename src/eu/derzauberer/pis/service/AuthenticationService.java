@@ -3,7 +3,6 @@ package eu.derzauberer.pis.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -19,6 +18,7 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.stereotype.Service;
 
+import eu.derzauberer.pis.enums.UserRole;
 import eu.derzauberer.pis.model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -46,7 +46,7 @@ public class AuthenticationService extends SavedRequestAwareAuthenticationSucces
 		String username = authentication.getPrincipal().toString();
         String password = authentication.getCredentials().toString();
         final User user = userService.login(username, password).orElseThrow(() -> new AuthenticationException("Your credentials aren't correct, please try again!") {});
-        return new UsernamePasswordAuthenticationToken(user.getId(), password, convertGrantedAuthorities(user.getRoles()));
+        return new UsernamePasswordAuthenticationToken(user.getId(), password, convertGrantedAuthorities(user.getRole()));
 	}
 	
 	public HttpSession updateUserSession(User user, HttpSession session) {
@@ -89,13 +89,13 @@ public class AuthenticationService extends SavedRequestAwareAuthenticationSucces
 			@Override public boolean isAccountNonExpired() { return true; }
 			@Override public String getUsername() { return user.getId(); }
 			@Override public String getPassword() { return user.getPassword(); }
-			@Override public Collection<? extends GrantedAuthority> getAuthorities() { return convertGrantedAuthorities(user.getRoles()); }
+			@Override public Collection<? extends GrantedAuthority> getAuthorities() { return convertGrantedAuthorities(user.getRole()); }
 		};
 	}
 	
-	private Collection<? extends GrantedAuthority> convertGrantedAuthorities(Set<String> roles) {
+	private Collection<? extends GrantedAuthority> convertGrantedAuthorities(UserRole role) {
 		final Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-		roles.forEach(role -> grantedAuthorities.add(() -> role));
+		role.getPermissions().forEach(permission -> grantedAuthorities.add(() -> permission));
 		return grantedAuthorities;
 	}
 

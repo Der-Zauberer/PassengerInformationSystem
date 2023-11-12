@@ -1,6 +1,6 @@
 package eu.derzauberer.pis.dto;
 
-import java.util.Set;
+import eu.derzauberer.pis.enums.UserRole;
 
 public class UserEditDto {
 	
@@ -9,7 +9,7 @@ public class UserEditDto {
 	private String email;
 	private boolean enabled;
 	private boolean passwordChangeRequired;
-	private Set<String> roles;
+	private UserRole role;
 	
 	public String getId() {
 		return id;
@@ -51,12 +51,12 @@ public class UserEditDto {
 		this.passwordChangeRequired = passwordChangeRequired;
 	}
 	
-	public Set<String> getRoles() {
-		return roles;
+	public void setRole(UserRole role) {
+		this.role = role;
 	}
 	
-	public void setRoles(Set<String> roles) {
-		this.roles = roles;
+	public UserRole getRole() {
+		return role;
 	}
 
 }

@@ -57,7 +57,7 @@ public class UserController {
 	
 	@PostMapping
 	public UserDto setUser(@RequestBody UserEditDto user) {
-		final User mappedUser = new User(user.getId(), user.getName(), null);
+		final User mappedUser = new User(user.getId(), user.getName());
 		modelMapper.map(user, mappedUser);
 		userService.save(mappedUser);
 		return modelMapper.map(mappedUser, UserDto.class);

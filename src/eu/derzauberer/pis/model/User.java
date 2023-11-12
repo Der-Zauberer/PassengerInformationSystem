@@ -2,8 +2,8 @@ package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+
+import eu.derzauberer.pis.enums.UserRole;
 
 public class User implements Entity<User>, NameEntity {
 	
@@ -15,17 +15,16 @@ public class User implements Entity<User>, NameEntity {
 	private boolean passwordChangeRequired;
 	private LocalDateTime created;
 	private LocalDateTime lastLogin;
-	private final Set<String> roles;
+	private UserRole role;
 	
-	@ConstructorProperties({ "id", "name", "password" })
-	public User(String id, String name, String password) {
+	@ConstructorProperties({ "id", "name" })
+	public User(String id, String name) {
 		this.id = id;
 		this.name = name;
-		this.password = password;
 		this.enabled = true;
 		this.passwordChangeRequired = false;
 		created = LocalDateTime.now();
-		this.roles = new HashSet<>();
+		this.role = UserRole.USER;
 	}
 	
 	@Override
@@ -86,8 +85,12 @@ public class User implements Entity<User>, NameEntity {
 		this.lastLogin = lastLogin;
 	}
 	
-	public Set<String> getRoles() {
-		return roles;
+	public void setRole(UserRole role) {
+		this.role = role;
+	}
+	
+	public UserRole getRole() {
+		return role;
 	}
 	
 }

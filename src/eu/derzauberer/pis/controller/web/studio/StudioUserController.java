@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import eu.derzauberer.pis.dto.UserDto;
 import eu.derzauberer.pis.dto.UserEditDto;
+import eu.derzauberer.pis.enums.UserRole;
 import eu.derzauberer.pis.model.User;
 import eu.derzauberer.pis.service.UserService;
 import eu.derzauberer.pis.util.Collectable;
@@ -48,14 +49,13 @@ public class StudioUserController {
 		}, () -> {
 			model.addAttribute("user", new UserEditDto());
 		});
+		model.addAttribute("roles", UserRole.values());
 		return "studio/edit/edit_user.html";
 	}
 	
 	@PostMapping("/edit")
-	public String editUser(@RequestParam(value = "id", required = false) String id, Model model, UserEditDto userDto) {
-		id = id.split(",")[0];
-		userDto.setId(userDto.getId().split(",")[1]);
-		final User user = userService.getById(id).orElseGet(() -> new User(userDto.getId(), userDto.getName(), ""));
+	public String editUser(@RequestParam(value = "entity", required = false) String id, Model model, UserEditDto userDto) {
+		final User user = userService.getById(id).orElseGet(() -> new User(userDto.getId(), userDto.getName()));
 		userModelMapper.map(userDto, user);
 		userService.save(user);
 		return "redirect:/studio/users";

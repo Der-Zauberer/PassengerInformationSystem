@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.components.IdentificationComponent;
 import eu.derzauberer.pis.components.SearchComponent;
+import eu.derzauberer.pis.enums.UserRole;
 import eu.derzauberer.pis.model.User;
 import eu.derzauberer.pis.repositories.EntityRepository;
 import eu.derzauberer.pis.util.Collectable;
@@ -26,7 +27,12 @@ public class UserService extends EntityService<User> {
 		this.passwordEncoder = passwordEncoder;
 		this.search = new SearchComponent<>(this);
 		this.emailIdentification = new IdentificationComponent<>(this, User::getEmail);
-		if (isEmpty()) save(new User("admin", "Admin", hashPassword("admin")));
+		if (isEmpty()) {
+			final User admin = new User("admin", "Admin");
+			admin.setPassword(hashPassword("admin"));
+			admin.setRole(UserRole.ADMIN);
+			save(admin);
+		}
 	}
 	
 	@Override
@@ -65,7 +71,7 @@ public class UserService extends EntityService<User> {
 	public Optional<User> login(String username, String password) {
 		if (username == null || username.isEmpty()) throw new IllegalArgumentException("Username must not be null or empty!");
 		return getById(username)
-			.filter(processingUser -> passwordEncoder.matches(password, processingUser.getPassword()))
+			.filter(processingUser -> matchPassword(password, processingUser))
 			.map(processingUser -> {
 				processingUser.setLastLogin(LocalDateTime.now());
 				save(processingUser);
@@ -78,6 +84,7 @@ public class UserService extends EntityService<User> {
 	}
 	
 	public boolean matchPassword(String password, User user) {
+		if (user.getPassword() == null || user.getPassword().isEmpty()) return false;
 		return passwordEncoder.matches(password, user.getPassword());
 	}
 	

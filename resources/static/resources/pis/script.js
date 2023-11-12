@@ -1,7 +1,7 @@
 class PIS {
 	
 	/*******************/
-	/* page            */
+	/* Page            */
 	/*******************/
 	
 	page(page) {
@@ -11,7 +11,7 @@ class PIS {
 	}
 	
 	/*******************/
-	/* search          */
+	/* Search          */
 	/*******************/
 	
 	search() {
@@ -32,7 +32,7 @@ class PIS {
 	}
 	
 	/*******************/
-	/* forms           */
+	/* Forms           */
 	/*******************/
 	
 	initializeLeaveChecker() {
@@ -55,7 +55,7 @@ class PIS {
 	}
 	
 	/*******************/
-	/* import / export */
+	/* Import / Export */
 	/*******************/
 	
 	#importExportBlocker = false;
@@ -112,7 +112,7 @@ class PIS {
 	}
 	
 	/*******************/
-	/* authorization   */
+	/* Authorization   */
 	/*******************/
 	
 	#labelErrorPassswordDontMatch;
@@ -132,6 +132,29 @@ class PIS {
 		});
 	}
 	
+	/*******************/
+	/* Dropdown        */
+	/*******************/
+	
+	initializeLocalizedInputDropdown(dropdown) {
+		const content = dropdown.getElementsByClassName('dropdown-content')[0];
+		const valueElements = content.getElementsByTagName('a');
+		for (const valueElement of valueElements) {
+			valueElement.addEventListener('click', event => { 
+				const input = dropdown.getElementsByTagName('input')[1];
+				if (input) input.value = event.target.innerText;
+			});
+		}
+	}
+	
 }
 
 const pis = new PIS();
+
+document.addEventListener('readystatechange', event => { 
+    if (event.target.readyState === 'interactive') {
+		Array.from(document.getElementsByClassName('dropdown'))
+			.filter(dropdown => dropdown.classList.contains('input'))
+			.forEach(dropdown => pis.initializeLocalizedInputDropdown(dropdown));
+	}
+});

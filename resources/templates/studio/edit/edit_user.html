@@ -59,11 +59,12 @@
 					    </div>
 					    
 						<div class="input dropdown">
-							<input type="text" th:field="*{role}" readonly required>
+							<input class="hide" type="text" th:field="*{role}" readonly required>
+							<input type="text" th:value="#{__${user.role != null ? user.role.getLocalization() : defaultRole.getLocalization()}__}" readonly required>
 						 	<span class="input-name"  th:text="#{entity.user.role}"></span>
 							<img class="icon input-icon" src="/resources/swd/icons/more_down.svg" onclick="swd.focusDropdown(this)">
 							<div class="dropdown-content">
-								<a th:each="selectableRole : ${roles}" th:text="${selectableRole}"></a>
+								<a th:each="selectableRole : ${roles}" th:value="${selectableRole}" th:text="#{__${selectableRole.getLocalization()}__}"></a>
 						    </div>
 							<span class="input-error"></span>
 					    </div>

@@ -49,6 +49,7 @@ public class StudioUserController {
 				.orElseGet(() -> new UserEditDto());
 		model.addAttribute("user", userDto);
 		model.addAttribute("roles", UserRole.values());
+		model.addAttribute("defaultRole", UserRole.USER);
 		return "studio/edit/edit_user.html";
 	}
 	

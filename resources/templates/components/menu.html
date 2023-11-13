@@ -9,16 +9,16 @@
 		<div class="width-100"></div>
 		
 		<a href="/stations" th:text="#{menu.stations}" th:classappend="${url.startsWith('/stations') ? 'menu-active' : ''}"></a>
-		<a href="/login" th:text="#{authentication.login}" th:unless="${session.authenticated}"></a>
+		<a href="/login" th:text="#{authentication.login}" th:if="${session.user == null}"></a>
 		
-		<div class="dropdown dropdown-hover pis-user-menu" th:if="${session.authenticated}" tabindex="0">
-			<a class="menu-active" th:text="${session.name}"></a>
+		<div class="dropdown dropdown-hover pis-user-menu" th:if="${session.user != null}" tabindex="0">
+			<a class="menu-active" th:text="${session.user.name}"></a>
 			<div class="pis-user-menu-spacer">
 				<div class="dropdown-content">
 					<div class="pis-user-menu-details">
-						<div class="black-text pis-user-menu-details-title" style="font-weight: bold;" th:text="${session.name}"></div>
-						<div class="grey-text" th:text="${session.id}"></div>
-						<div class="grey-text" th:if="${session.email}" th:text="${session.email}"></div>
+						<div class="black-text pis-user-menu-details-title" style="font-weight: bold;" th:text="${session.user.name}"></div>
+						<div class="grey-text" th:text="${session.user.id}"></div>
+						<div class="grey-text" th:if="${session.user.email}" th:text="${session.user.email}"></div>
 					</div>
 					<a href="/studio" th:text="#{menu.studio}"></a>
 					<a href="/account" th:text="#{authentication.account}"></a>

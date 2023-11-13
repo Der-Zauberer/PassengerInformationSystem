@@ -1,6 +1,10 @@
 package eu.derzauberer.pis.enums;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Set;
+
+import org.springframework.security.core.GrantedAuthority;
 
 public enum UserRole {
 	
@@ -28,6 +32,12 @@ public enum UserRole {
 	
 	public boolean hasPermission(String permission) {
 		return permissions.contains(permission);
+	}
+	
+	public Collection<? extends GrantedAuthority> getGrantedAuthorities() {
+		final Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+		permissions.forEach(permission -> grantedAuthorities.add(() -> permission));
+		return grantedAuthorities;
 	}
 
 }

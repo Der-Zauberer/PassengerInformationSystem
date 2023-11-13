@@ -1,6 +1,5 @@
 package eu.derzauberer.pis.service;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,17 +65,6 @@ public class UserService extends EntityService<User> {
 	
 	public Collectable<User> search(String search) {
 		return this.search.search(search);
-	}
-	
-	public Optional<User> login(String username, String password) {
-		if (username == null || username.isEmpty()) throw new IllegalArgumentException("Username must not be null or empty!");
-		return getById(username)
-			.filter(processingUser -> matchPassword(password, processingUser))
-			.map(processingUser -> {
-				processingUser.setLastLogin(LocalDateTime.now());
-				save(processingUser);
-				return processingUser;
-			});
 	}
 	
 	public String hashPassword(String password) {

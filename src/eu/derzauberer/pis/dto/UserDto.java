@@ -1,8 +1,8 @@
 package eu.derzauberer.pis.dto;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
+import eu.derzauberer.pis.enums.UserRole;
 import eu.derzauberer.pis.model.Entity;
 import eu.derzauberer.pis.model.User;
 
@@ -15,7 +15,7 @@ public class UserDto implements Entity<User> {
 	private boolean passwordChangeRequired;
 	private LocalDateTime created;
 	private LocalDateTime lastLogin;
-	private Set<String> roles;
+	private UserRole role;
 	
 	public String getId() {
 		return id;
@@ -73,12 +73,12 @@ public class UserDto implements Entity<User> {
 		this.lastLogin = lastLogin;
 	}
 	
-	public Set<String> getRoles() {
-		return roles;
+	public UserRole getRole() {
+		return role;
 	}
 	
-	public void setRoles(Set<String> roles) {
-		this.roles = roles;
+	public void setRole(UserRole role) {
+		this.role = role;
 	}
 	
 }

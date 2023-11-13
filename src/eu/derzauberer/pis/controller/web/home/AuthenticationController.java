@@ -88,7 +88,7 @@ public class AuthenticationController {
 		user.setName(userDto.getName());
 		user.setEmail(userDto.getEmail());
 		userService.save(user);
-		authenticationService.updateUserSession(user, request.getSession());
+		authenticationService.updateSession(request.getSession());
 		model.addAttribute("accountSuccess", true);
 		return getAccount(model, principal);
 	}

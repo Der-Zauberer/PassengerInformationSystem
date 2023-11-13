@@ -66,6 +66,17 @@ public class SpringConfiguration implements ApplicationContextAware, WebMvcConfi
         return applicationContext.getBean(bean);
     }
 	
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(localeChangeInterceptor()).excludePathPatterns("/api/**","/resources/**");
+        registry.addInterceptor(somePageInterceptor()).excludePathPatterns("/api/**","/resources/**");
+    }
+    
+    @Bean
+    public HomePageInterceptor somePageInterceptor() {
+        return new HomePageInterceptor();
+    }
+	
 	@Bean
     public CookieSameSiteSupplier applicationCookieSameSiteSupplier() {
         return CookieSameSiteSupplier.ofStrict();
@@ -90,11 +101,6 @@ public class SpringConfiguration implements ApplicationContextAware, WebMvcConfi
 		interceptor.setParamName("lang");
 		return interceptor;
 	}
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(localeChangeInterceptor());
-    }
     
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

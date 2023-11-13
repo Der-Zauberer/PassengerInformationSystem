@@ -16,7 +16,7 @@ import eu.derzauberer.pis.service.AuthenticationService;
 public class SpringSecurityConfiguration {
 	
 	@Autowired
-	private AuthenticationService authenticationService;
+	private AuthenticationService auth;
 	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -37,18 +37,18 @@ public class SpringSecurityConfiguration {
 				.requestMatchers("/account").authenticated()
 				.anyRequest().permitAll()
 			)
-			.authenticationProvider(authenticationService)
+			.authenticationProvider(auth)
 			.formLogin(form -> form
 				.loginPage("/login")
 				.permitAll()
-				.successHandler(authenticationService)
+				.successHandler(auth::createSession)
 			)
 			.logout(logout -> logout
 				.logoutUrl("/logout")
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 				.invalidateHttpSession(true)
 				.deleteCookies("JSESSIONID")
-				.logoutSuccessHandler(authenticationService)
+				.logoutSuccessHandler(auth::destroySession)
 			).rememberMe(rememberMe -> rememberMe
 				.key("remember-me-key")
 			);

@@ -318,7 +318,7 @@ body {
     box-shadow: var(--theme-box-shadow);
     z-index: 2;
     transition: left 0.2s;
-    overflow-y: scroll;
+    overflow-y: none;
     user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
@@ -457,6 +457,16 @@ input, select, textarea {
     width: 100%;
 }
 
+textarea, select, input, button {outline: none}
+
+input:autofill, input:autofill:hover, input:autofill:focus,
+textarea:autofill, textarea:autofill:hover, textarea:autofill:focus, 
+select:autofill, select:autofill:hover, select:autofill:focus {
+	filter: none;
+ 	box-shadow: 0 0 0 1000px var(--theme-grey-primary) inset;
+ 	color: #1f9900;
+}
+
 textarea {
     height: auto;
     resize: vertical;
@@ -491,6 +501,9 @@ input:disabled {
     color: var(--theme-text-grey);
 }
 
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0;}
+input[type=number] {appearance: textfield;}
+
 .button {
     font-size: 18px;
     line-height: 35px;
@@ -524,10 +537,6 @@ input:disabled {
 .button-left {border-top-right-radius: 0px; border-bottom-right-radius: 0px}
 .button-middle {border-radius: 0px}
 .button-right {border-top-left-radius: 0px; border-bottom-left-radius: 0px}
-
-textarea, select, input, button {outline: none}
-input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0;}
-input[type=number] {appearance: textfield;}
 
 .input {
     display: block !important;

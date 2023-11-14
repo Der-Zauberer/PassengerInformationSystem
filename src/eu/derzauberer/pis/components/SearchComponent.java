@@ -5,13 +5,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 
-import eu.derzauberer.pis.index.SearchIndex;
 import eu.derzauberer.pis.model.Entity;
 import eu.derzauberer.pis.model.NameEntity;
 import eu.derzauberer.pis.service.EntityService;
@@ -19,9 +19,9 @@ import eu.derzauberer.pis.util.Collectable;
 import eu.derzauberer.pis.util.CollectableList;
 import eu.derzauberer.pis.util.SearchComparator;
 
-public class SearchComponent<T extends Entity<T> & NameEntity> extends Component<EntityService<T>, SearchIndex> {
+public class SearchComponent<T extends Entity<T> & NameEntity> extends Component<EntityService<T>, SearchComponent.Index> {
 
-	private final SearchIndex index;
+	private final Index index;
 	private final SearchComparator<T> comparator;
 	private boolean generateIndex = false;
 	
@@ -32,9 +32,9 @@ public class SearchComponent<T extends Entity<T> & NameEntity> extends Component
 	public SearchComponent(EntityService<T> service, SearchComparator<T> comparator) {
 		super("search", service, LoggerFactory.getLogger(SearchComponent.class));
 		this.comparator = comparator;
-		index = loadAsOptional(SearchIndex.class).orElseGet(() -> {
+		index = loadAsOptional(Index.class).orElseGet(() -> {
 			generateIndex = true;
-			return new SearchIndex(new HashMap<>());
+			return new Index(new HashMap<>());
 		});
 		if (generateIndex) {
 			getService().getAll().forEach(this::add);
@@ -58,7 +58,7 @@ public class SearchComponent<T extends Entity<T> & NameEntity> extends Component
 		Objects.requireNonNull(search);
 		final List<T> results = new ArrayList<>();
 		final Set<String> resultIds;
-		if ((resultIds = index.getEntries().get(normalizeSearchString(search).replaceAll("\\s", ""))) != null) {
+		if ((resultIds = index.entries().get(normalizeSearchString(search).replaceAll("\\s", ""))) != null) {
 			for (String id : resultIds) {
 				getService().getById(id).ifPresent(results::add);
 			}
@@ -80,9 +80,9 @@ public class SearchComponent<T extends Entity<T> & NameEntity> extends Component
 			for (int i = 0; i < searchString.length(); i++) {
 				final String subString = searchString.substring(0, i + 1);
 				Set<String> results;
-				if ((results = index.getEntries().get(subString)) == null) {
+				if ((results = index.entries().get(subString)) == null) {
 					results = new HashSet<>();
-					index.getEntries().put(subString, results);
+					index.entries().put(subString, results);
 				}
 				results.add(entity.getId());
 			}
@@ -94,10 +94,10 @@ public class SearchComponent<T extends Entity<T> & NameEntity> extends Component
 			for (int i = 0; i < searchString.length(); i++) {
 				final String subString = searchString.substring(0, i + 1);
 				Set<String> results;
-				if ((results = index.getEntries().get(subString)) != null) {
+				if ((results = index.entries().get(subString)) != null) {
 					results.remove(entity.getId());
 					if (results.isEmpty()) {
-						index.getEntries().remove(subString);
+						index.entries().remove(subString);
 					}
 				}
 			}
@@ -122,5 +122,7 @@ public class SearchComponent<T extends Entity<T> & NameEntity> extends Component
 		}
 		return searchStrings;
 	}
+	
+	public record Index(Map<String, Set<String>> entries) {}
 
 }

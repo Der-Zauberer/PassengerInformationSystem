@@ -1,32 +1,32 @@
 package eu.derzauberer.pis.components;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
 import org.slf4j.LoggerFactory;
 
-import eu.derzauberer.pis.index.IdentificationIndex;
 import eu.derzauberer.pis.model.Entity;
 import eu.derzauberer.pis.model.NameEntity;
 import eu.derzauberer.pis.service.EntityService;
 
-public class IdentificationComponent<T extends Entity<T> & NameEntity> extends Component<EntityService<T>, IdentificationIndex> {
+public class IdentificationComponent<T extends Entity<T> & NameEntity> extends Component<EntityService<T>, IdentificationComponent.Index> {
 	
-	private IdentificationIndex index;
+	private Index index;
 	private boolean generateIndex = false;
 	
 	public IdentificationComponent(EntityService<T> service, Function<T, String> attribute) {
 		super("identification", service, LoggerFactory.getLogger(SearchComponent.class));
-		index = loadAsOptional(IdentificationIndex.class).orElseGet(() -> {
+		index = loadAsOptional(Index.class).orElseGet(() -> {
 			generateIndex = true;
-			return new IdentificationIndex(new HashMap<>());
+			return new Index(new HashMap<>());
 		});
 		if (generateIndex) {
 			getService().getAll().forEach(entity -> {
 				final String identification = attribute.apply(entity);
 				if (identification != null && !identification.isEmpty()) {
-					index.getEntries().put(identification, entity.getId());
+					index.entries().put(identification, entity.getId());
 				}
 			});
 			save(index);
@@ -35,23 +35,25 @@ public class IdentificationComponent<T extends Entity<T> & NameEntity> extends C
 			final String newIdentification = attribute.apply(event.newEntity());
 			final boolean newIndexRequired = event.oldEntity().map(attribute::apply).filter(identification -> identification.equals(newIdentification)).isEmpty();
 			if (newIndexRequired) {
-				event.oldEntity().ifPresent(entity -> index.getEntries().remove(attribute.apply(entity)));
+				event.oldEntity().ifPresent(entity -> index.entries().remove(attribute.apply(entity)));
 				if (newIdentification != null && !newIdentification.isEmpty()) {
-					index.getEntries().put(newIdentification, event.newEntity().getId());
+					index.entries().put(newIdentification, event.newEntity().getId());
 				}
 				save(index);
 			}
 		});
 		getService().addOnRemove(event -> {
-			index.getEntries().remove(attribute.apply(event.oldEntity()));
+			index.entries().remove(attribute.apply(event.oldEntity()));
 			save(index);
 		});
 	}
 	
 	public Optional<T> getByIdentification(String identification) {
-		final String id = index.getEntries().get(identification);
+		final String id = index.entries().get(identification);
 		if (id == null) return Optional.empty();
 		return getService().getById(id);
 	}
+	
+	public record Index(Map<String, String> entries) {}
 
 }

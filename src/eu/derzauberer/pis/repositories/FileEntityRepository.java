@@ -40,7 +40,7 @@ public class FileEntityRepository<T extends Entity<T>> extends EntityRepository<
 	@Override
 	public boolean containsById(String id) {
 		Objects.requireNonNull(id);
-		return containsEntity(id);
+		return getById(id).isPresent();
 	}
 
 	@Override

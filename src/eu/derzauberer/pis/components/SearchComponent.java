@@ -60,7 +60,7 @@ public class SearchComponent<T extends Entity<T> & NameEntity> extends Component
 		final Set<String> resultIds;
 		if ((resultIds = index.entries().get(normalizeSearchString(search).replaceAll("\\s", ""))) != null) {
 			for (String id : resultIds) {
-				getService().getById(id).ifPresent(results::add);
+				getService().getById(id).filter(entity -> !entity.getId().equals(search)).ifPresent(results::add);
 			}
 			if (comparator != null) {
 				Collections.sort(results, (o1, o2) -> comparator.compare(search, o1, o2));
@@ -69,7 +69,6 @@ public class SearchComponent<T extends Entity<T> & NameEntity> extends Component
 			}
 		}
 		getService().getById(search).ifPresent(entity -> {
-			results.remove(entity);
 			results.add(0, entity);
 		});
 		return new CollectableList<>(results);

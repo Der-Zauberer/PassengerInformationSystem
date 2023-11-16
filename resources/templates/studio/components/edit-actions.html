@@ -1,6 +1,6 @@
 <th:block th:fragment="actions(id, name)">
 
-	<div class="pis-form-buttons">
+	<div class="pis-form-actions">
 		<div><a class="button red dark-red-hover mg-r" th:text="#{action.delete}" th:if="${id}" onclick="swd.toggleDialog('delete-dialog')" href="#"></a></div>
 		<input type="submit" th:value="#{action.save}">
 	</div>

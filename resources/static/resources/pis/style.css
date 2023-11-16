@@ -87,7 +87,12 @@
 	}
 }
 
-.pis-form-buttons {
+.pis-form-button {
+	display: block;
+	margin-bottom: var(--theme-element-spacing);
+}
+
+.pis-form-actions {
 	display: grid;
 	grid-template-columns: fit-content(0px) auto;
 	margin-top: var(--theme-element-spacing);

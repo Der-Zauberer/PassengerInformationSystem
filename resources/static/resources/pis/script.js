@@ -132,6 +132,15 @@ class PIS {
 		});
 	}
 	
+	generatePassword(input) {
+	    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789#!*+-_?&%';
+		let password = '';
+		for (let i = 0; i < 15; i++) {
+			password += characters.charAt(Math.floor(Math.random() * characters.length));
+		}
+		input.value = password;
+	}
+	
 	/*******************/
 	/* Dropdown        */
 	/*******************/

@@ -33,6 +33,22 @@
 					    
 					</div>
 					
+					<h3 class="mg-t-0" th:text="#{entity.user.password}"></h3>
+					
+					<a id="passowrd-button" class="pis-form-button" th:if="${user.id != null}" th:text="#{authentication.password.new}" href="#" onclick="swd.expose('password'); swd.cover('passowrd-button')"></a>
+					
+					<div id="password" class="pis-form-grid-2" th:classappend="${user.id != null ? 'hide' : ''}">
+						
+						 <div class="input">
+							<input id="password-input" type="text" th:field="*{password}">
+							<span class="input-name" th:text="#{entity.user.password}"></span>
+							<span class="input-error"></span>
+					    </div>
+					    
+					    <a class="pis-form-button" th:text="#{authentication.password.generate}" href="#" onclick="pis.generatePassword(document.getElementById('password-input'))"></a>
+						
+					</div>
+					
 					<h3 class="mg-t-0" th:text="#{entity.user.permissions}"></h3>
 					<div class="pis-form-grid-2">
 

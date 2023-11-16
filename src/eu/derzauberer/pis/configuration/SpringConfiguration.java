@@ -142,6 +142,13 @@ public class SpringConfiguration implements ApplicationContextAware, WebMvcConfi
 	}
 	
 	@Bean
+	public TypeMap<User, UserEditDto> getUserEditDtoModelMapper() {
+		final TypeMap<User, UserEditDto> userModelMapper = getModelMapper().createTypeMap(User.class, UserEditDto.class);
+		userModelMapper.addMappings(mapper -> mapper.skip(UserEditDto::setPassword));
+		return userModelMapper;
+	}
+	
+	@Bean
 	public TypeMap<UserEditDto, User> getUserModelMapper() {
 		final TypeMap<UserEditDto, User> userModelMapper = getModelMapper().createTypeMap(UserEditDto.class, User.class);
 		userModelMapper.addMappings(mapper -> mapper.skip(User::setPassword));

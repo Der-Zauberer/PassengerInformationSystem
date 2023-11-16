@@ -28,7 +28,11 @@ public class StudioUserController {
 	private ModelMapper modelMapper;
 	
 	@Autowired
+	private TypeMap<User, UserEditDto> userEditDtoModelMapper;
+
+	@Autowired
 	private TypeMap<UserEditDto, User> userModelMapper;
+	
 	
 	@GetMapping
 	public String getUsers(Model model, 
@@ -44,10 +48,10 @@ public class StudioUserController {
 	
 	@GetMapping("/edit")
 	public String editUser(@RequestParam(value = "id", required = false) String id, Model model) {
-		final UserEditDto userDto = userService.getById(id)
-				.map(user -> modelMapper.map(user, UserEditDto.class))
+		final UserEditDto user = userService.getById(id)
+				.map(userEditDtoModelMapper::map)
 				.orElseGet(() -> new UserEditDto());
-		model.addAttribute("user", userDto);
+		model.addAttribute("user", user);
 		model.addAttribute("roles", UserRole.values());
 		model.addAttribute("defaultRole", UserRole.USER);
 		return "studio/edit/edit_user.html";
@@ -57,6 +61,9 @@ public class StudioUserController {
 	public String editUser(@RequestParam(value = "entity", required = false) String id, Model model, UserEditDto userDto) {
 		final User user = userService.getById(id).orElseGet(() -> new User(userDto.getId(), userDto.getName()));
 		userModelMapper.map(userDto, user);
+		if (userDto.getPassword() != null && !userDto.getPassword().isEmpty()) {
+			user.setPassword(userService.hashPassword(userDto.getPassword()));
+		}
 		userService.save(user);
 		return "redirect:/studio/users";
 	}

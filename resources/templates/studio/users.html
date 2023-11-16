@@ -13,16 +13,18 @@
 				<h2 th:text="#{navigation.users}"></h2>
 				<div th:replace="~{studio/components/table-actions :: actions('users')}"></div>
 				
-				<div class="pis-table">
+				<div class="pis-table" style="grid-template-columns: minmax(min-content, 200px) minmax(min-content, 200px) auto fit-content(0);">
 					<div class="pis-table-row pis-table-headline">
 						<div th:text="#{entity.user.username}"></div>
 						<div th:text="#{entity.user.displayName}"></div>
+						<div th:text="#{entity.user.role}"></div>
 						<div></div>
 					</div>
 					<div class="pis-table-row" th:each="user : ${page.results}">
 						<div class="pis-table-mobile-wrapper">
 							<div><label class="blue-transparent" th:text="${user.id}"></label></div>
-							<div><span th:text="${user.name}"></span></div>							
+							<div><span th:text="${user.name}"></span></div>
+							<div><span class="grey-text" th:text="#{__${user.role.getLocalization()}__}"></span></div>
 						</div>
 						<div class="pis-table-mobile-wrapper pis-table-mobile-actions">
 							<div><a class="button" th:text="#{action.edit}" th:href="@{/studio/users/edit?id={id}(id = ${user.id})}"></a></div>

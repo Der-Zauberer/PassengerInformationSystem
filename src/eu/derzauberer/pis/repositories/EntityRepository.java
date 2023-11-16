@@ -146,7 +146,7 @@ public abstract class EntityRepository<T extends Entity<T>> {
 			if (!Files.exists(path)) return Optional.empty();
 			final String content = Files.readString(path);
 			final T entity = OBJECT_MAPPER.readValue(content, type);
-			if (entity.getId().equals(id)) return Optional.empty();
+			if (!entity.getId().equals(id)) return Optional.empty();
 			return Optional.of(entity);
 		} catch (IOException exception) {
 			logger.error("Couldn't load entity with id {} from {}: {} {}!", id, getName(), exception.getClass().getSimpleName(), exception.getMessage());

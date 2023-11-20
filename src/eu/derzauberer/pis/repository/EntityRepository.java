@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import eu.derzauberer.pis.configuration.SpringConfiguration;
-import eu.derzauberer.pis.model.Entity;
+import eu.derzauberer.pis.entity.Entity;
 import eu.derzauberer.pis.util.ProgressStatus;
 
 public abstract class EntityRepository<T extends Entity<T>> {

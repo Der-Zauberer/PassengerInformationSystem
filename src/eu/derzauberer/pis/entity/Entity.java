@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.model;
+package eu.derzauberer.pis.entity;
 
 public interface Entity<T extends Entity<T>> extends Comparable<T> {
 	

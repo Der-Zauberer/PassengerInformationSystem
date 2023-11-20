@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.model;
+package eu.derzauberer.pis.enums;
 
 
 public enum InformationType {

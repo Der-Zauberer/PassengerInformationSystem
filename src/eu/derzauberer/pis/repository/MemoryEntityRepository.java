@@ -13,8 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.derzauberer.pis.configuration.SpringConfiguration;
-import eu.derzauberer.pis.model.Entity;
-import eu.derzauberer.pis.model.NameEntity;
+import eu.derzauberer.pis.entity.Entity;
+import eu.derzauberer.pis.entity.NameEntity;
 
 public class MemoryEntityRepository<T extends Entity<T>> extends EntityRepository<T>{
 	

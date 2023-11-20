@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.model;
+package eu.derzauberer.pis.entity;
 
 import java.beans.ConstructorProperties;
 import java.time.LocalDate;
@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import eu.derzauberer.pis.model.StationTrafficEntry;
 
 public class StationTraffic implements Entity<StationTraffic> {
 	

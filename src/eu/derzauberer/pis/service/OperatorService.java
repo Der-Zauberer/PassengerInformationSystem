@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.components.SearchComponent;
-import eu.derzauberer.pis.model.Operator;
+import eu.derzauberer.pis.entity.Operator;
 import eu.derzauberer.pis.repository.EntityRepository;
 import eu.derzauberer.pis.util.Collectable;
 

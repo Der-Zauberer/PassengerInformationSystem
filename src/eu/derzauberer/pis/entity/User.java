@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.model;
+package eu.derzauberer.pis.entity;
 
 import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;

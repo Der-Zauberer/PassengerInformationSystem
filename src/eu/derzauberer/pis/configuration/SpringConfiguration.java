@@ -38,13 +38,13 @@ import eu.derzauberer.pis.configuration.SerializationConfiguration.PrettyPrinter
 import eu.derzauberer.pis.configuration.SerializationConfiguration.TimeDeserializer;
 import eu.derzauberer.pis.configuration.SerializationConfiguration.TimeSerializer;
 import eu.derzauberer.pis.dto.UserEditDto;
-import eu.derzauberer.pis.model.Line;
-import eu.derzauberer.pis.model.Operator;
-import eu.derzauberer.pis.model.Route;
-import eu.derzauberer.pis.model.Station;
-import eu.derzauberer.pis.model.StationTraffic;
-import eu.derzauberer.pis.model.TransportationType;
-import eu.derzauberer.pis.model.User;
+import eu.derzauberer.pis.entity.Line;
+import eu.derzauberer.pis.entity.Operator;
+import eu.derzauberer.pis.entity.Route;
+import eu.derzauberer.pis.entity.Station;
+import eu.derzauberer.pis.entity.StationTraffic;
+import eu.derzauberer.pis.entity.TransportationType;
+import eu.derzauberer.pis.entity.User;
 import eu.derzauberer.pis.repository.EntityRepository;
 import eu.derzauberer.pis.repository.FileEntityRepository;
 import eu.derzauberer.pis.repository.MemoryEntityRepository;
@@ -138,6 +138,7 @@ public class SpringConfiguration implements ApplicationContextAware, WebMvcConfi
 	public ModelMapper getModelMapper() {
 		final ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setSkipNullEnabled(true);
+		modelMapper.getConfiguration().setDeepCopyEnabled(true);
 		return modelMapper;
 	}
 	

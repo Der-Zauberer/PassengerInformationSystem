@@ -16,7 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import eu.derzauberer.pis.dto.LoginDto;
 import eu.derzauberer.pis.dto.PasswordDto;
 import eu.derzauberer.pis.dto.UserProfileEditDto;
-import eu.derzauberer.pis.model.User;
+import eu.derzauberer.pis.entity.User;
 import eu.derzauberer.pis.service.AuthenticationService;
 import eu.derzauberer.pis.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;

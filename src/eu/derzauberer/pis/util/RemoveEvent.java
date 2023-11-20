@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.service;
+package eu.derzauberer.pis.util;
 
 public record RemoveEvent<T>(T oldEntity) {
 

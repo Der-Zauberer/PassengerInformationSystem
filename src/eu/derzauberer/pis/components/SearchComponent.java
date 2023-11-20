@@ -12,8 +12,8 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 
-import eu.derzauberer.pis.model.Entity;
-import eu.derzauberer.pis.model.NameEntity;
+import eu.derzauberer.pis.entity.Entity;
+import eu.derzauberer.pis.entity.NameEntity;
 import eu.derzauberer.pis.service.EntityService;
 import eu.derzauberer.pis.util.Collectable;
 import eu.derzauberer.pis.util.CollectableList;

@@ -1,37 +1,68 @@
-package eu.derzauberer.pis.model;
+package eu.derzauberer.pis.entity;
 
 import java.beans.ConstructorProperties;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Route implements Entity<Route>, NameEntity {
+import eu.derzauberer.pis.model.ApiInformation;
+import eu.derzauberer.pis.model.Information;
+import eu.derzauberer.pis.model.LineStop;
+import eu.derzauberer.pis.model.RouteStop;
+
+public class Line implements Entity<Line>, NameEntity {
 	
 	private final String id;
+	private final String routeId;
 	private String name;
 	private TransportationType type;
 	private int number;
 	private String operatorId;
-	private List<RouteStop> stops;
-	private LineScedule scedule;
+	private String driver;
+	private boolean cancelled;
+	private Integer position;
+	private List<LineStop> stops;
 	private List<Information> informations;
 	private ApiInformation api;
 	
-	@ConstructorProperties({ "id", "name", "type" , "number"})
-	public Route(String id, String name, TransportationType type, int number) {
+	private Line(String id, Route route, LocalDateTime departure) {
 		this.id = id;
-		this.name = name;
-		this.type = type;
-		this.number = number;
-		this.scedule = new LineScedule();
+		this.routeId = route.getId();
+		this.name = route.getName();
+		this.type = route.getType();
+		this.number = route.getNumber();
+		this.operatorId = route.getOperatorId();
+		this.stops = new ArrayList<>();
+		for (RouteStop stop : route.getStops()) {
+			final LineStop lineStop = new LineStop(
+					stop.getStationId(), 
+					stop.getPlatform(), 
+					stop.getPlatfromArea(),
+					departure.plusMinutes(stop.getArrivalMinutesSinceStart()),
+					departure.plusMinutes(stop.getDepartureMinutesSinceStart()));
+			stops.add(lineStop);
+		}
 	}
 	
+	@ConstructorProperties({ "id", "routeId", "type", "number" })
+	private Line(String id, String routeId, TransportationType type, int number) {
+		this.id = id;
+		this.routeId = routeId;
+		this.type = type;
+		this.number = number;
+	}
+
 	@Override
 	public String getId() {
 		return id;
 	}
 	
+	public String getRouteId() {
+		return routeId;
+	}
+
 	@Override
 	public String getName() {
 		return name;
@@ -44,35 +75,59 @@ public class Route implements Entity<Route>, NameEntity {
 	public TransportationType getType() {
 		return type;
 	}
-	
+
 	public void setType(TransportationType type) {
 		this.type = type;
 	}
-	
+
 	public int getNumber() {
 		return number;
 	}
-	
+
 	public void setNumber(int number) {
 		this.number = number;
 	}
-	
+
 	public String getOperatorId() {
 		return operatorId;
 	}
-	
+
 	public void setOperatorId(String operatorId) {
 		this.operatorId = operatorId;
 	}
 	
-	public void addStop(RouteStop stop) {
+	public String getDriver() {
+		return driver;
+	}
+	
+	public void setDriver(String driver) {
+		this.driver = driver;
+	}
+	
+	public boolean isCancelled() {
+		return cancelled;
+	}
+	
+	public void setCancelled(boolean cancelled) {
+		this.cancelled = cancelled;
+	}
+	
+	public Integer getPosition() {
+		return position;
+	}
+	
+	public void setPosition(Integer position) {
+		this.position = position;
+	}
+	
+	public void addStop(LineStop stop) {
 		if (stops == null) stops = new ArrayList<>();
 		stops.add(stop);
 	}
 	
-	public void addStop(int position, RouteStop stop) {
+	public void addStop(int position, LineStop stop) {
 		if (stops == null) { 
-			final List<RouteStop> newStops = new ArrayList<>();
+			final List<LineStop> newStops = new ArrayList<>();
 			newStops.set(position, stop);
 			stops = newStops;
 		} else {
@@ -80,7 +135,7 @@ public class Route implements Entity<Route>, NameEntity {
 		}
 	}
 	
-	public void removeStop(RouteStop stop) {
+	public void removeStop(LineStop stop) {
 		if (stops.isEmpty()) return;
 		stops.remove(stop);
 		if (stops.isEmpty()) stop = null;
@@ -98,11 +153,11 @@ public class Route implements Entity<Route>, NameEntity {
 		if (stops.isEmpty()) stops = null;
 	}
 	
-	public RouteStop getStop(String stationId) {
+	public LineStop getStop(String stationId) {
 		return stops.stream().filter(stop -> stop.getStationId().equals(stationId)).findAny().orElse(null);
 	}
 	
-	public RouteStop getStop(int position) {
+	public LineStop getStop(int position) {
 		return stops.get(position);
 	}
 	
@@ -110,20 +165,16 @@ public class Route implements Entity<Route>, NameEntity {
 		return stops != null ? stops.size() : 0;
 	}
 	
-	public RouteStop getFirstStop() {
+	public LineStop getFirstStop() {
 		return stops != null && !stops.isEmpty() ? stops.get(0) : null;
 	}
 	
-	public RouteStop getLastStop() {
+	public LineStop getLastStop() {
 		return stops != null && !stops.isEmpty() ? stops.get(stops.size() - 1) : null;
 	}
 	
-	public List<RouteStop> getStops() {
+	public List<LineStop> getStops() {
 		return Collections.unmodifiableList(stops != null ? stops : new ArrayList<>());
-	}
-	
-	public LineScedule getScedule() {
-		return scedule;
 	}
 	
 	public void addInformation(Information information) {

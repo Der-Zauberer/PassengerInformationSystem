@@ -21,7 +21,7 @@ import eu.derzauberer.pis.dto.ListDto;
 import eu.derzauberer.pis.dto.UserDto;
 import eu.derzauberer.pis.dto.UserEditDto;
 import eu.derzauberer.pis.dto.UserInfoDto;
-import eu.derzauberer.pis.model.User;
+import eu.derzauberer.pis.entity.User;
 import eu.derzauberer.pis.service.UserService;
 import eu.derzauberer.pis.util.Collectable;
 import jakarta.servlet.ServletOutputStream;

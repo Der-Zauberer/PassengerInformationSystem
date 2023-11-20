@@ -1,9 +1,10 @@
-package eu.derzauberer.pis.model;
+package eu.derzauberer.pis.entity;
 
 import java.beans.ConstructorProperties;
 
 import eu.derzauberer.pis.enums.TransportationClassification;
 import eu.derzauberer.pis.enums.TransportationVehicle;
+import eu.derzauberer.pis.model.ApiInformation;
 
 public class TransportationType implements Entity<TransportationType>, NameEntity {
 

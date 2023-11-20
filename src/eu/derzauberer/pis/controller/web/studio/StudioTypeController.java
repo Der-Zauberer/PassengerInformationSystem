@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import eu.derzauberer.pis.entity.TransportationType;
 import eu.derzauberer.pis.enums.TransportationClassification;
 import eu.derzauberer.pis.enums.TransportationVehicle;
-import eu.derzauberer.pis.model.TransportationType;
 import eu.derzauberer.pis.service.TypeService;
 import eu.derzauberer.pis.util.Collectable;
 

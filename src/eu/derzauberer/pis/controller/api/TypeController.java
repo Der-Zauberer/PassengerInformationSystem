@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import eu.derzauberer.pis.dto.ListDto;
-import eu.derzauberer.pis.model.TransportationType;
+import eu.derzauberer.pis.entity.TransportationType;
 import eu.derzauberer.pis.service.TypeService;
 import eu.derzauberer.pis.util.Collectable;
 import jakarta.servlet.ServletOutputStream;

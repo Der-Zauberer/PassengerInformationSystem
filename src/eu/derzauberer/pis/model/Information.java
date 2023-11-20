@@ -2,6 +2,8 @@ package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
 
+import eu.derzauberer.pis.enums.InformationType;
+
 public class Information implements Comparable<Information> {
 	
 	private String title;

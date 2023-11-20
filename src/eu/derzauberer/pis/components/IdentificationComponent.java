@@ -7,8 +7,8 @@ import java.util.function.Function;
 
 import org.slf4j.LoggerFactory;
 
-import eu.derzauberer.pis.model.Entity;
-import eu.derzauberer.pis.model.NameEntity;
+import eu.derzauberer.pis.entity.Entity;
+import eu.derzauberer.pis.entity.NameEntity;
 import eu.derzauberer.pis.service.EntityService;
 
 public class IdentificationComponent<T extends Entity<T> & NameEntity> extends Component<EntityService<T>, IdentificationComponent.Index> {

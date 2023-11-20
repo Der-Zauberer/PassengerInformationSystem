@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import eu.derzauberer.pis.model.Route;
+import eu.derzauberer.pis.entity.Route;
 import eu.derzauberer.pis.service.RouteService;
 import eu.derzauberer.pis.util.Collectable;
 

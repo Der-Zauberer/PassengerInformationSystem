@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import eu.derzauberer.pis.dto.ListDto;
-import eu.derzauberer.pis.model.Line;
-import eu.derzauberer.pis.model.Station;
+import eu.derzauberer.pis.entity.Line;
+import eu.derzauberer.pis.entity.Station;
 import eu.derzauberer.pis.model.StationTrafficEntry;
 import eu.derzauberer.pis.service.LineService;
 import eu.derzauberer.pis.service.StationService;

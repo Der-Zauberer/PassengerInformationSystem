@@ -2,9 +2,9 @@ package eu.derzauberer.pis.dto;
 
 import java.time.LocalDateTime;
 
+import eu.derzauberer.pis.entity.Entity;
+import eu.derzauberer.pis.entity.User;
 import eu.derzauberer.pis.enums.UserRole;
-import eu.derzauberer.pis.model.Entity;
-import eu.derzauberer.pis.model.User;
 
 public class UserDto implements Entity<User> {
 

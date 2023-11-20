@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.components.IdentificationComponent;
 import eu.derzauberer.pis.components.SearchComponent;
+import eu.derzauberer.pis.entity.User;
 import eu.derzauberer.pis.enums.UserRole;
-import eu.derzauberer.pis.model.User;
 import eu.derzauberer.pis.repository.EntityRepository;
 import eu.derzauberer.pis.util.Collectable;
 

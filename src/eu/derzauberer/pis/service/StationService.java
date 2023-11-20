@@ -11,7 +11,7 @@ import eu.derzauberer.pis.components.SearchComponent;
 import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.model.StationTraffic;
 import eu.derzauberer.pis.model.StationTrafficEntry;
-import eu.derzauberer.pis.repositories.EntityRepository;
+import eu.derzauberer.pis.repository.EntityRepository;
 import eu.derzauberer.pis.util.Collectable;
 import eu.derzauberer.pis.util.SearchComparator;
 

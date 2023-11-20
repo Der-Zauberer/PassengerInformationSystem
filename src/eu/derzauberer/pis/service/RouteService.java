@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.components.SearchComponent;
 import eu.derzauberer.pis.model.Route;
-import eu.derzauberer.pis.repositories.EntityRepository;
+import eu.derzauberer.pis.repository.EntityRepository;
 import eu.derzauberer.pis.util.Collectable;
 
 @Service

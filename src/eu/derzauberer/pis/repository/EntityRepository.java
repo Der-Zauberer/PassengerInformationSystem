@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.repositories;
+package eu.derzauberer.pis.repository;
 
 import java.io.File;
 import java.io.IOException;

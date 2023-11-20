@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 
 import eu.derzauberer.pis.model.Entity;
 import eu.derzauberer.pis.model.NameEntity;
-import eu.derzauberer.pis.repositories.EntityRepository;
+import eu.derzauberer.pis.repository.EntityRepository;
 import eu.derzauberer.pis.util.Collectable;
 
 public abstract class EntityService<T extends Entity<T> & NameEntity> implements Collectable<T> {

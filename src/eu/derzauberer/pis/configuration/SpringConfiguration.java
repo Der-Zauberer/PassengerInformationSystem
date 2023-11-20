@@ -45,9 +45,9 @@ import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.model.StationTraffic;
 import eu.derzauberer.pis.model.TransportationType;
 import eu.derzauberer.pis.model.User;
-import eu.derzauberer.pis.repositories.EntityRepository;
-import eu.derzauberer.pis.repositories.FileEntityRepository;
-import eu.derzauberer.pis.repositories.MemoryEntityRepository;
+import eu.derzauberer.pis.repository.EntityRepository;
+import eu.derzauberer.pis.repository.FileEntityRepository;
+import eu.derzauberer.pis.repository.MemoryEntityRepository;
 
 @Configuration
 public class SpringConfiguration implements ApplicationContextAware, WebMvcConfigurer {

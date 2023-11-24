@@ -45,9 +45,7 @@ public class StudioUserController {
 	
 	@GetMapping("/edit")
 	public String editUser(@RequestParam(value = "id", required = false) String id, Model model) {
-		final UserForm user = userService.getById(id)
-				.map(userFormConverter::convertToForm)
-				.orElseGet(() -> new UserForm());
+		final UserForm user = userService.getById(id).map(userFormConverter::convertToForm).orElseGet(() -> new UserForm());
 		model.addAttribute("user", user);
 		model.addAttribute("roles", UserRole.values());
 		model.addAttribute("defaultRole", UserRole.USER);
@@ -58,9 +56,6 @@ public class StudioUserController {
 	public String editUser(@RequestParam(value = "entity", required = false) String id, Model model, UserForm userForm) {
 		final User user = userService.getById(id).orElseGet(() -> new User(userForm.getId(), userForm.getName()));
 		userFormConverter.convertToModel(user, userForm);
-		if (userForm.getPassword() != null && !userForm.getPassword().isEmpty()) {
-			user.setPassword(userService.hashPassword(userForm.getPassword()));
-		}
 		userService.save(user);
 		return "redirect:/studio/users";
 	}

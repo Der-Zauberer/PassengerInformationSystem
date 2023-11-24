@@ -57,9 +57,7 @@ public class UserController {
 	
 	@GetMapping("{id}")
 	public UserData getUser(@PathVariable("id") String id) {
-		return userService.getById(id)
-				.map(userDataConverter::convert)
-				.orElseThrow(() -> getNotFoundException(id));
+		return userService.getById(id).map(userDataConverter::convert).orElseThrow(() -> getNotFoundException(id));
 	}
 	
 	@PostMapping

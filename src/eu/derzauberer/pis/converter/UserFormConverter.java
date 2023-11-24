@@ -1,5 +1,7 @@
 package eu.derzauberer.pis.converter;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import eu.derzauberer.pis.form.UserForm;
@@ -7,6 +9,9 @@ import eu.derzauberer.pis.model.User;
 
 @Component
 public class UserFormConverter implements FormConverter<User, UserForm> {
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public UserForm convertToForm(User user) {
@@ -31,6 +36,7 @@ public class UserFormConverter implements FormConverter<User, UserForm> {
 		user.setName(userForm.getName());
 		user.setEmail(userForm.getEmail());
 		user.setEnabled(userForm.isEnabled());
+		if (userForm.getPassword() != null) user.setPassword(passwordEncoder.encode(userForm.getPassword()));
 		user.setPasswordChangeRequired(userForm.isPasswordChangeRequired());
 		user.setRole(userForm.getRole());
 		return user;

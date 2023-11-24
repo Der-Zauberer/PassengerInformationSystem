@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import eu.derzauberer.pis.dto.ListDto;
-import eu.derzauberer.pis.entity.Station;
+import eu.derzauberer.pis.model.Station;
 import eu.derzauberer.pis.service.StationService;
-import eu.derzauberer.pis.util.Collectable;
+import eu.derzauberer.pis.util.Result;
+import eu.derzauberer.pis.util.ResultListDto;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -35,14 +35,14 @@ public class StationController {
 	private ModelMapper modelMapper;
 	
 	@GetMapping
-	public ListDto<Station> getStations(
+	public ResultListDto<Station> getStations(
 			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
-		final Collectable<Station> collectable = hasSearch ? stationService.search(search) : stationService;
-		return collectable.getList(offset, limit == -1 ? collectable.size() : limit);
+		final Result<Station> result = hasSearch ? stationService.search(search) : stationService;
+		return result.getList(offset, limit == -1 ? result.size() : limit);
 	}
 	
 	@GetMapping("{id}")

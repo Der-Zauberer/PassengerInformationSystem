@@ -1,6 +1,6 @@
-package eu.derzauberer.pis.dto;
+package eu.derzauberer.pis.form;
 
-public class LoginDto {
+public class LoginForm {
 	
 	private String username;
 	private String password;

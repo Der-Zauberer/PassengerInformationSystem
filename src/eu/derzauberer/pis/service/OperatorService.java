@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.components.SearchComponent;
-import eu.derzauberer.pis.entity.Operator;
+import eu.derzauberer.pis.model.Operator;
 import eu.derzauberer.pis.repository.EntityRepository;
-import eu.derzauberer.pis.util.Collectable;
+import eu.derzauberer.pis.util.Result;
 
 @Service
 public class OperatorService extends EntityService<Operator> {
@@ -19,7 +19,7 @@ public class OperatorService extends EntityService<Operator> {
 		this.searchComponent = new SearchComponent<>(this);
 	}
 	
-	public Collectable<Operator> search(String name) {
+	public Result<Operator> search(String name) {
 		return searchComponent.search(name);
 	}
 

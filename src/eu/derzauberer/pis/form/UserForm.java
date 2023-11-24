@@ -1,38 +1,25 @@
-package eu.derzauberer.pis.entity;
-
-import java.beans.ConstructorProperties;
-import java.time.LocalDateTime;
+package eu.derzauberer.pis.form;
 
 import eu.derzauberer.pis.enums.UserRole;
 
-public class User implements Entity<User>, NameEntity {
+public class UserForm {
 	
-	private final String id;
+	private String id;
 	private String name;
 	private String email;
 	private String password;
 	private boolean enabled;
 	private boolean passwordChangeRequired;
-	private LocalDateTime created;
-	private LocalDateTime lastLogin;
 	private UserRole role;
 	
-	@ConstructorProperties({ "id", "name" })
-	public User(String id, String name) {
-		this.id = id;
-		this.name = name;
-		this.enabled = true;
-		this.passwordChangeRequired = false;
-		created = LocalDateTime.now();
-		this.role = UserRole.USER;
-	}
-	
-	@Override
 	public String getId() {
 		return id;
 	}
 	
-	@Override
+	public void setId(String id) {
+		this.id = id;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -43,7 +30,7 @@ public class User implements Entity<User>, NameEntity {
 	
 	public String getEmail() {
 		return email;
-	}	
+	}
 	
 	public void setEmail(String email) {
 		this.email = email;
@@ -73,18 +60,6 @@ public class User implements Entity<User>, NameEntity {
 		this.passwordChangeRequired = passwordChangeRequired;
 	}
 	
-	public LocalDateTime getCreated() {
-		return created;
-	}
-	
-	public LocalDateTime getLastLogin() {
-		return lastLogin;
-	}
-	
-	public void setLastLogin(LocalDateTime lastLogin) {
-		this.lastLogin = lastLogin;
-	}
-	
 	public void setRole(UserRole role) {
 		this.role = role;
 	}
@@ -92,5 +67,5 @@ public class User implements Entity<User>, NameEntity {
 	public UserRole getRole() {
 		return role;
 	}
-	
+
 }

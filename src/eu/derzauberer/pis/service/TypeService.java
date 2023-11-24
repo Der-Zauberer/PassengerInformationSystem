@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.components.SearchComponent;
-import eu.derzauberer.pis.entity.TransportationType;
+import eu.derzauberer.pis.model.TransportationType;
 import eu.derzauberer.pis.repository.EntityRepository;
-import eu.derzauberer.pis.util.Collectable;
+import eu.derzauberer.pis.util.Result;
 
 @Service
 public class TypeService extends EntityService<TransportationType> {
@@ -20,7 +20,7 @@ public class TypeService extends EntityService<TransportationType> {
 	}
 	
 	@Override
-	public Collectable<TransportationType> search(String search) {
+	public Result<TransportationType> search(String search) {
 		return searchComponent.search(search);
 	}
 

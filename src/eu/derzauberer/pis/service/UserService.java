@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.components.IdentificationComponent;
 import eu.derzauberer.pis.components.SearchComponent;
-import eu.derzauberer.pis.entity.User;
 import eu.derzauberer.pis.enums.UserRole;
+import eu.derzauberer.pis.model.User;
 import eu.derzauberer.pis.repository.EntityRepository;
-import eu.derzauberer.pis.util.Collectable;
+import eu.derzauberer.pis.util.Result;
 
 @Service
 public class UserService extends EntityService<User> {
@@ -63,7 +63,7 @@ public class UserService extends EntityService<User> {
 		return super.getById(id).or(() -> emailIdentification.getByIdentification(id));
 	}
 	
-	public Collectable<User> search(String search) {
+	public Result<User> search(String search) {
 		return this.search.search(search);
 	}
 	

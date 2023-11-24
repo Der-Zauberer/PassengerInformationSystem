@@ -1,9 +1,6 @@
-package eu.derzauberer.pis.entity;
+package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
-
-import eu.derzauberer.pis.model.Address;
-import eu.derzauberer.pis.model.ApiInformation;
 
 public class Operator implements Entity<Operator>, NameEntity {
 

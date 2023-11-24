@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import eu.derzauberer.pis.entity.Entity;
-import eu.derzauberer.pis.entity.NameEntity;
+import eu.derzauberer.pis.model.Entity;
+import eu.derzauberer.pis.model.NameEntity;
 import eu.derzauberer.pis.repository.EntityRepository;
-import eu.derzauberer.pis.util.Collectable;
 import eu.derzauberer.pis.util.RemoveEvent;
+import eu.derzauberer.pis.util.Result;
 import eu.derzauberer.pis.util.SaveEvent;
 
-public abstract class EntityService<T extends Entity<T> & NameEntity> implements Collectable<T> {
+public abstract class EntityService<T extends Entity<T> & NameEntity> implements Result<T> {
 	
 	private final EntityRepository<T> repository;
 	private List<Consumer<SaveEvent<T>>> onSave = new ArrayList<>();
@@ -63,7 +63,7 @@ public abstract class EntityService<T extends Entity<T> & NameEntity> implements
 		return repository.getById(id);
 	}
 	
-	public abstract Collectable<T> search(String search);
+	public abstract Result<T> search(String search);
 	
 	@Override
 	public List<T> getAll() {

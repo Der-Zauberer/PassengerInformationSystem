@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import eu.derzauberer.pis.entity.Line;
+import eu.derzauberer.pis.model.Line;
 import eu.derzauberer.pis.service.LineService;
-import eu.derzauberer.pis.util.Collectable;
+import eu.derzauberer.pis.util.Result;
 
 @Controller
 @RequestMapping("/studio/lines")
@@ -25,8 +25,8 @@ public class StudioLineController {
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
-		final Collectable<Line> collectable = hasSearch ? lineService.search(search) : lineService;
-		model.addAttribute("page", collectable.getPage(page, pageSize));
+		final Result<Line> result = hasSearch ? lineService.search(search) : lineService;
+		model.addAttribute("page", result.getPage(page, pageSize));
 		return "studio/lines.html";
 	}
 

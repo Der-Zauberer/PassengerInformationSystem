@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
-import eu.derzauberer.pis.dto.LoginDto;
-import eu.derzauberer.pis.dto.PasswordDto;
-import eu.derzauberer.pis.dto.UserProfileEditDto;
-import eu.derzauberer.pis.entity.User;
+import eu.derzauberer.pis.form.LoginForm;
+import eu.derzauberer.pis.form.PasswordForm;
+import eu.derzauberer.pis.form.UserProfileForm;
+import eu.derzauberer.pis.model.User;
 import eu.derzauberer.pis.service.AuthenticationService;
 import eu.derzauberer.pis.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,22 +36,22 @@ public class AuthenticationController {
 
 	@GetMapping("/login")
 	public String login(Model model) {
-		model.addAttribute("login", new LoginDto());
+		model.addAttribute("login", new LoginForm());
 		return "authentication/login.html";
 	}
 	
 	@GetMapping("/password/change")
 	public String changePassword(@RequestParam(name = "user") String username, Model model) {
 		model.addAttribute("user", username);
-		model.addAttribute("password", new PasswordDto());
+		model.addAttribute("password", new PasswordForm());
 		return "authentication/password_change.html";
 	}
 	
 	@PostMapping("/password/change")
-	public String changePassword(@RequestParam(name = "user") String username, PasswordDto passwordDto, Model model) {
+	public String changePassword(@RequestParam(name = "user") String username, PasswordForm passwordForm, Model model) {
 		final User user = userService.getById(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Station with id " + username + " does not exist!"));
-		if (userService.matchPassword(passwordDto.getOldPassword(), user)) {
-			user.setPassword(userService.hashPassword(passwordDto.getNewPassword()));
+		if (userService.matchPassword(passwordForm.getOldPassword(), user)) {
+			user.setPassword(userService.hashPassword(passwordForm.getNewPassword()));
 			userService.save(user);
 			return "redirect:/studio";
 		} else {
@@ -64,29 +64,29 @@ public class AuthenticationController {
 	public String resetPassword(@RequestParam(name = "user") String username, @RequestParam(name = "token") String token, Model model) {
 		model.addAttribute("user", username);
 		model.addAttribute("token", token);
-		model.addAttribute("password", new PasswordDto());
+		model.addAttribute("password", new PasswordForm());
 		return "authentication/password_reset.html";
 	}
 	
 	@PostMapping("/password/reset")
-	public String resetPassword(@RequestParam(name = "user") String username, @RequestParam(name = "token") String token, PasswordDto passwordDto) {
+	public String resetPassword(@RequestParam(name = "user") String username, @RequestParam(name = "token") String token, PasswordForm passwordForm) {
 		return "redirect:/studio";
 	}
 	
 	@GetMapping("/account")
 	public String getAccount(Model model, Principal principal) {
 		final User user = userService.getById(principal.getName()).get();
-		final UserProfileEditDto userDto = modelMapper.map(user, UserProfileEditDto.class);
-		model.addAttribute("user", userDto);
-		model.addAttribute("password", new PasswordDto());
+		final UserProfileForm userForm = modelMapper.map(user, UserProfileForm.class);
+		model.addAttribute("user", userForm);
+		model.addAttribute("password", new PasswordForm());
 		return "authentication/account.html";
 	}
 	
 	@PostMapping("/account")
-	public String setAccount(Model model, Principal principal, HttpServletRequest request, UserProfileEditDto userDto) {
+	public String setAccount(Model model, Principal principal, HttpServletRequest request, UserProfileForm userForm) {
 		final User user = userService.getById(principal.getName()).get();
-		user.setName(userDto.getName());
-		user.setEmail(userDto.getEmail());
+		user.setName(userForm.getName());
+		user.setEmail(userForm.getEmail());
 		userService.save(user);
 		authenticationService.updateSession(request.getSession());
 		model.addAttribute("accountSuccess", true);
@@ -94,10 +94,10 @@ public class AuthenticationController {
 	}
 	
 	@PostMapping("/account/password")
-	public String setAccountPassword(Model model, Principal principal, PasswordDto passwordDto) {
+	public String setAccountPassword(Model model, Principal principal, PasswordForm passwordForm) {
 		final User user = userService.getById(principal.getName()).get();
-		if (userService.matchPassword(passwordDto.getOldPassword(), user)) {
-			user.setPassword(userService.hashPassword(passwordDto.getNewPassword()));
+		if (userService.matchPassword(passwordForm.getOldPassword(), user)) {
+			user.setPassword(userService.hashPassword(passwordForm.getNewPassword()));
 			userService.save(user);
 			model.addAttribute("passwordSuccess", true);
 		} else {

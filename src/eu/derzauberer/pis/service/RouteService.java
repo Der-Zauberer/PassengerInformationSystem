@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.components.SearchComponent;
-import eu.derzauberer.pis.entity.Route;
+import eu.derzauberer.pis.model.Route;
 import eu.derzauberer.pis.repository.EntityRepository;
-import eu.derzauberer.pis.util.Collectable;
+import eu.derzauberer.pis.util.Result;
 
 @Service
 public class RouteService extends EntityService<Route> {
@@ -20,7 +20,7 @@ public class RouteService extends EntityService<Route> {
 	}
 	
 	@Override
-	public Collectable<Route> search(String search) {
+	public Result<Route> search(String search) {
 		return searchComponent.search(search);
 	}
 	

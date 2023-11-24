@@ -37,14 +37,14 @@ import eu.derzauberer.pis.configuration.SerializationConfiguration.DateTimeSeria
 import eu.derzauberer.pis.configuration.SerializationConfiguration.PrettyPrinter;
 import eu.derzauberer.pis.configuration.SerializationConfiguration.TimeDeserializer;
 import eu.derzauberer.pis.configuration.SerializationConfiguration.TimeSerializer;
-import eu.derzauberer.pis.dto.UserEditDto;
-import eu.derzauberer.pis.entity.Line;
-import eu.derzauberer.pis.entity.Operator;
-import eu.derzauberer.pis.entity.Route;
-import eu.derzauberer.pis.entity.Station;
-import eu.derzauberer.pis.entity.StationTraffic;
-import eu.derzauberer.pis.entity.TransportationType;
-import eu.derzauberer.pis.entity.User;
+import eu.derzauberer.pis.form.UserForm;
+import eu.derzauberer.pis.model.Line;
+import eu.derzauberer.pis.model.Operator;
+import eu.derzauberer.pis.model.Route;
+import eu.derzauberer.pis.model.Station;
+import eu.derzauberer.pis.model.StationTraffic;
+import eu.derzauberer.pis.model.TransportationType;
+import eu.derzauberer.pis.model.User;
 import eu.derzauberer.pis.repository.EntityRepository;
 import eu.derzauberer.pis.repository.FileEntityRepository;
 import eu.derzauberer.pis.repository.MemoryEntityRepository;
@@ -143,15 +143,15 @@ public class SpringConfiguration implements ApplicationContextAware, WebMvcConfi
 	}
 	
 	@Bean
-	public TypeMap<User, UserEditDto> getUserEditDtoModelMapper() {
-		final TypeMap<User, UserEditDto> userModelMapper = getModelMapper().createTypeMap(User.class, UserEditDto.class);
-		userModelMapper.addMappings(mapper -> mapper.skip(UserEditDto::setPassword));
+	public TypeMap<User, UserForm> getUserEditDtoModelMapper() {
+		final TypeMap<User, UserForm> userModelMapper = getModelMapper().createTypeMap(User.class, UserForm.class);
+		userModelMapper.addMappings(mapper -> mapper.skip(UserForm::setPassword));
 		return userModelMapper;
 	}
 	
 	@Bean
-	public TypeMap<UserEditDto, User> getUserModelMapper() {
-		final TypeMap<UserEditDto, User> userModelMapper = getModelMapper().createTypeMap(UserEditDto.class, User.class);
+	public TypeMap<UserForm, User> getUserModelMapper() {
+		final TypeMap<UserForm, User> userModelMapper = getModelMapper().createTypeMap(UserForm.class, User.class);
 		userModelMapper.addMappings(mapper -> mapper.skip(User::setPassword));
 		return userModelMapper;
 	}

@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.components.SearchComponent;
-import eu.derzauberer.pis.entity.Station;
-import eu.derzauberer.pis.entity.StationTraffic;
+import eu.derzauberer.pis.model.Station;
+import eu.derzauberer.pis.model.StationTraffic;
 import eu.derzauberer.pis.model.StationTrafficEntry;
 import eu.derzauberer.pis.repository.EntityRepository;
-import eu.derzauberer.pis.util.Collectable;
+import eu.derzauberer.pis.util.Result;
 import eu.derzauberer.pis.util.SearchComparator;
 
 @Service
@@ -28,7 +28,7 @@ public class StationService extends EntityService<Station> {
 		this.searchComponent = new SearchComponent<>(this, getStationSearchComperator());
 	}
 	
-	public Collectable<Station> search(String search) {
+	public Result<Station> search(String search) {
 		return searchComponent.search(search);
 	}
 	

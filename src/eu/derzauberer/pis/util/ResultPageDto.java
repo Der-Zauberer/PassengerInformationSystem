@@ -1,8 +1,8 @@
-package eu.derzauberer.pis.dto;
+package eu.derzauberer.pis.util;
 
 import java.util.List;
 
-public class PageDto<T> {
+public class ResultPageDto<T> {
 	
 	private int page;
     private int pageSize;

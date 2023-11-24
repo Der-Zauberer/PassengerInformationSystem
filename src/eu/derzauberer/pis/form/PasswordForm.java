@@ -1,6 +1,6 @@
-package eu.derzauberer.pis.dto;
+package eu.derzauberer.pis.form;
 
-public class PasswordDto {
+public class PasswordForm {
 	
 	private String oldPassword;
 	private String newPassword;

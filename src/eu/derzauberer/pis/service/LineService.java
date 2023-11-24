@@ -10,14 +10,14 @@ import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.components.SearchComponent;
 import eu.derzauberer.pis.configuration.SpringConfiguration;
-import eu.derzauberer.pis.entity.Line;
-import eu.derzauberer.pis.entity.Station;
-import eu.derzauberer.pis.entity.StationTraffic;
+import eu.derzauberer.pis.model.Line;
 import eu.derzauberer.pis.model.LineStop;
+import eu.derzauberer.pis.model.Station;
+import eu.derzauberer.pis.model.StationTraffic;
 import eu.derzauberer.pis.model.StationTrafficEntry;
 import eu.derzauberer.pis.repository.EntityRepository;
-import eu.derzauberer.pis.util.Collectable;
 import eu.derzauberer.pis.util.ProgressStatus;
+import eu.derzauberer.pis.util.Result;
 
 @Service
 public class LineService extends EntityService<Line> {
@@ -57,7 +57,7 @@ public class LineService extends EntityService<Line> {
 	}
 	
 	@Override
-	public Collectable<Line> search(String search) {
+	public Result<Line> search(String search) {
 		return searchComponent.search(search);
 	}
 	

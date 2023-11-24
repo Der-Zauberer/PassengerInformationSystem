@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.entity;
+package eu.derzauberer.pis.model;
 
 import org.apache.commons.lang3.StringUtils;
 

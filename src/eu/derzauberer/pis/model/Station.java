@@ -1,14 +1,8 @@
-package eu.derzauberer.pis.entity;
+package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
 import java.util.Set;
 import java.util.TreeSet;
-
-import eu.derzauberer.pis.model.Address;
-import eu.derzauberer.pis.model.ApiInformation;
-import eu.derzauberer.pis.model.Location;
-import eu.derzauberer.pis.model.Platform;
-import eu.derzauberer.pis.model.StationServices;
 
 public class Station implements Entity<Station>, NameEntity {
 	

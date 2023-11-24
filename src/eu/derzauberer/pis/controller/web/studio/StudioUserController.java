@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import eu.derzauberer.pis.dto.UserDto;
-import eu.derzauberer.pis.dto.UserEditDto;
-import eu.derzauberer.pis.entity.User;
+import eu.derzauberer.pis.data.UserData;
 import eu.derzauberer.pis.enums.UserRole;
+import eu.derzauberer.pis.form.UserForm;
+import eu.derzauberer.pis.model.User;
 import eu.derzauberer.pis.service.UserService;
-import eu.derzauberer.pis.util.Collectable;
+import eu.derzauberer.pis.util.Result;
 
 @Controller
 @RequestMapping("/studio/users")
@@ -28,10 +28,10 @@ public class StudioUserController {
 	private ModelMapper modelMapper;
 	
 	@Autowired
-	private TypeMap<User, UserEditDto> userEditDtoModelMapper;
+	private TypeMap<User, UserForm> userFormModelMapper;
 
 	@Autowired
-	private TypeMap<UserEditDto, User> userModelMapper;
+	private TypeMap<UserForm, User> userModelMapper;
 	
 	
 	@GetMapping
@@ -41,16 +41,16 @@ public class StudioUserController {
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
-		final Collectable<User> collectable = hasSearch ? userService.search(search) : userService;
-		model.addAttribute("page", collectable.map(user -> modelMapper.map(user, UserDto.class)).getPage(page, pageSize));
+		final Result<User> result = hasSearch ? userService.search(search) : userService;
+		model.addAttribute("page", result.map(user -> modelMapper.map(user, UserData.class)).getPage(page, pageSize));
 		return "studio/users.html";
 	}
 	
 	@GetMapping("/edit")
 	public String editUser(@RequestParam(value = "id", required = false) String id, Model model) {
-		final UserEditDto user = userService.getById(id)
-				.map(userEditDtoModelMapper::map)
-				.orElseGet(() -> new UserEditDto());
+		final UserForm user = userService.getById(id)
+				.map(userFormModelMapper::map)
+				.orElseGet(() -> new UserForm());
 		model.addAttribute("user", user);
 		model.addAttribute("roles", UserRole.values());
 		model.addAttribute("defaultRole", UserRole.USER);
@@ -58,11 +58,11 @@ public class StudioUserController {
 	}
 	
 	@PostMapping("/edit")
-	public String editUser(@RequestParam(value = "entity", required = false) String id, Model model, UserEditDto userDto) {
-		final User user = userService.getById(id).orElseGet(() -> new User(userDto.getId(), userDto.getName()));
-		userModelMapper.map(userDto, user);
-		if (userDto.getPassword() != null && !userDto.getPassword().isEmpty()) {
-			user.setPassword(userService.hashPassword(userDto.getPassword()));
+	public String editUser(@RequestParam(value = "entity", required = false) String id, Model model, UserForm userForm) {
+		final User user = userService.getById(id).orElseGet(() -> new User(userForm.getId(), userForm.getName()));
+		userModelMapper.map(userForm, user);
+		if (userForm.getPassword() != null && !userForm.getPassword().isEmpty()) {
+			user.setPassword(userService.hashPassword(userForm.getPassword()));
 		}
 		userService.save(user);
 		return "redirect:/studio/users";

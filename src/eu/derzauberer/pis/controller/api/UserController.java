@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import eu.derzauberer.pis.dto.ListDto;
-import eu.derzauberer.pis.dto.UserDto;
-import eu.derzauberer.pis.dto.UserEditDto;
-import eu.derzauberer.pis.dto.UserInfoDto;
-import eu.derzauberer.pis.entity.User;
+import eu.derzauberer.pis.data.UserData;
+import eu.derzauberer.pis.data.UserInfoData;
+import eu.derzauberer.pis.form.UserForm;
+import eu.derzauberer.pis.model.User;
 import eu.derzauberer.pis.service.UserService;
-import eu.derzauberer.pis.util.Collectable;
+import eu.derzauberer.pis.util.Result;
+import eu.derzauberer.pis.util.ResultListDto;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -38,37 +38,37 @@ public class UserController {
 	private ModelMapper modelMapper;
 	
 	@GetMapping
-	public ListDto<UserInfoDto> getUsers(
+	public ResultListDto<UserInfoData> getUsers(
 			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
-		final Collectable<User> collectable = hasSearch ? userService.search(search) : userService;
-		return collectable.map((user) -> modelMapper.map(user, UserInfoDto.class)).getList(offset, limit == -1 ? collectable.size() : limit);
+		final Result<User> result = hasSearch ? userService.search(search) : userService;
+		return result.map((user) -> modelMapper.map(user, UserInfoData.class)).getList(offset, limit == -1 ? result.size() : limit);
 	}
 	
 	@GetMapping("{id}")
-	public UserInfoDto getUser(@PathVariable("id") String id) {
+	public UserInfoData getUser(@PathVariable("id") String id) {
 		return userService.getById(id)
-				.map((user) -> modelMapper.map(user, UserInfoDto.class))
+				.map((user) -> modelMapper.map(user, UserInfoData.class))
 				.orElseThrow(() -> getNotFoundException(id));
 	}
 	
 	@PostMapping
-	public UserDto setUser(@RequestBody UserEditDto user) {
+	public UserData setUser(@RequestBody UserForm user) {
 		final User mappedUser = new User(user.getId(), user.getName());
 		modelMapper.map(user, mappedUser);
 		userService.save(mappedUser);
-		return modelMapper.map(mappedUser, UserDto.class);
+		return modelMapper.map(mappedUser, UserData.class);
 	}
 	
 	@PutMapping
-	public UserDto updateUser(@RequestBody UserEditDto user) {
+	public UserData updateUser(@RequestBody UserForm user) {
 		final User existingUser = userService.getById(user.getId()).orElseThrow(() -> getNotFoundException(user.getId()));
 		modelMapper.map(user, existingUser);
 		userService.save(existingUser);
-		return modelMapper.map(existingUser, UserDto.class);
+		return modelMapper.map(existingUser, UserData.class);
 	}
 	
 	@DeleteMapping("{id}")

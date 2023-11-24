@@ -12,11 +12,11 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 
-import eu.derzauberer.pis.entity.Entity;
-import eu.derzauberer.pis.entity.NameEntity;
+import eu.derzauberer.pis.model.Entity;
+import eu.derzauberer.pis.model.NameEntity;
 import eu.derzauberer.pis.service.EntityService;
-import eu.derzauberer.pis.util.Collectable;
-import eu.derzauberer.pis.util.CollectableList;
+import eu.derzauberer.pis.util.Result;
+import eu.derzauberer.pis.util.ResultList;
 import eu.derzauberer.pis.util.SearchComparator;
 
 public class SearchComponent<T extends Entity<T> & NameEntity> extends Component<EntityService<T>, SearchComponent.Index> {
@@ -54,7 +54,7 @@ public class SearchComponent<T extends Entity<T> & NameEntity> extends Component
 		});
 	}
 	
-	public Collectable<T> search(String search) {
+	public Result<T> search(String search) {
 		Objects.requireNonNull(search);
 		final List<T> results = new ArrayList<>();
 		final Set<String> resultIds;
@@ -71,7 +71,7 @@ public class SearchComponent<T extends Entity<T> & NameEntity> extends Component
 		getService().getById(search).ifPresent(entity -> {
 			results.add(0, entity);
 		});
-		return new CollectableList<>(results);
+		return new ResultList<>(results);
 	}
 	
 	private void add(T entity) {

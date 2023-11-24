@@ -2,11 +2,11 @@ package eu.derzauberer.pis.util;
 
 import java.util.List;
 
-public class CollectableList<T> implements Collectable<T> {
+public class ResultList<T> implements Result<T> {
 	
 	private final List<T> list;
 	
-	public CollectableList(List<T> list) {
+	public ResultList(List<T> list) {
 		this.list = list;
 	}
 	

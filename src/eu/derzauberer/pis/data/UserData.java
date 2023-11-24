@@ -1,15 +1,20 @@
-package eu.derzauberer.pis.dto;
+package eu.derzauberer.pis.data;
+
+import java.time.LocalDateTime;
 
 import eu.derzauberer.pis.enums.UserRole;
+import eu.derzauberer.pis.model.Entity;
+import eu.derzauberer.pis.model.User;
 
-public class UserEditDto {
-	
+public class UserData implements Entity<User> {
+
 	private String id;
 	private String name;
 	private String email;
-	private String password;
 	private boolean enabled;
 	private boolean passwordChangeRequired;
+	private LocalDateTime created;
+	private LocalDateTime lastLogin;
 	private UserRole role;
 	
 	public String getId() {
@@ -36,14 +41,6 @@ public class UserEditDto {
 		this.email = email;
 	}
 	
-	public String getPassword() {
-		return password;
-	}
-	
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
 	public boolean isEnabled() {
 		return enabled;
 	}
@@ -60,12 +57,28 @@ public class UserEditDto {
 		this.passwordChangeRequired = passwordChangeRequired;
 	}
 	
-	public void setRole(UserRole role) {
-		this.role = role;
+	public LocalDateTime getCreated() {
+		return created;
+	}
+	
+	public void setCreated(LocalDateTime created) {
+		this.created = created;
+	}
+	
+	public LocalDateTime getLastLogin() {
+		return lastLogin;
+	}
+	
+	public void setLastLogin(LocalDateTime lastLogin) {
+		this.lastLogin = lastLogin;
 	}
 	
 	public UserRole getRole() {
 		return role;
 	}
-
+	
+	public void setRole(UserRole role) {
+		this.role = role;
+	}
+	
 }

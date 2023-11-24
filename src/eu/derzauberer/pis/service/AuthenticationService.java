@@ -20,8 +20,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Service;
 
-import eu.derzauberer.pis.dto.UserDto;
-import eu.derzauberer.pis.entity.User;
+import eu.derzauberer.pis.data.UserData;
+import eu.derzauberer.pis.model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -68,7 +68,7 @@ public class AuthenticationService implements AuthenticationProvider, UserDetail
 		final HttpSession session = request.getSession();
 		if (session != null) {
 			session.setAttribute("user", true);
-			userService.getById(authentication.getName()).map(user -> modelmapper.map(user, UserDto.class)).ifPresent(user -> {
+			userService.getById(authentication.getName()).map(user -> modelmapper.map(user, UserData.class)).ifPresent(user -> {
 				session.setAttribute("user", user);
 			});
 		}
@@ -76,15 +76,15 @@ public class AuthenticationService implements AuthenticationProvider, UserDetail
 	}
 	
     public void updateSession(HttpSession session) {
-		if (session != null && session.getAttribute("user") != null && session.getAttribute("user") instanceof UserDto) {
-			final UserDto oldUser = (UserDto) session.getAttribute("user");
+		if (session != null && session.getAttribute("user") != null && session.getAttribute("user") instanceof UserData) {
+			final UserData oldUser = (UserData) session.getAttribute("user");
 			if (expiredSessions.remove(oldUser.getId())) {
 				final User user = userService.getById(oldUser.getId()).orElse(null);
 				if (user == null || !user.isEnabled()) {
 					session.invalidate();
 					return;
 				} else {
-					session.setAttribute("user", modelmapper.map(user, UserDto.class));
+					session.setAttribute("user", modelmapper.map(user, UserData.class));
 					if (oldUser.getRole() != user.getRole()) {
 						final Authentication auth = new UsernamePasswordAuthenticationToken(user.getId(), null, user.getRole().getGrantedAuthorities());
 						SecurityContextHolder.getContext().setAuthentication(auth);

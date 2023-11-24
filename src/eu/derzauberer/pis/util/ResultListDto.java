@@ -1,8 +1,8 @@
-package eu.derzauberer.pis.dto;
+package eu.derzauberer.pis.util;
 
 import java.util.List;
 
-public class ListDto<T> {
+public class ResultListDto<T> {
 	
 	private int offset;
     private int limit;

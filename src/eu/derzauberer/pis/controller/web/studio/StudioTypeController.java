@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import eu.derzauberer.pis.entity.TransportationType;
 import eu.derzauberer.pis.enums.TransportationClassification;
 import eu.derzauberer.pis.enums.TransportationVehicle;
+import eu.derzauberer.pis.model.TransportationType;
 import eu.derzauberer.pis.service.TypeService;
-import eu.derzauberer.pis.util.Collectable;
+import eu.derzauberer.pis.util.Result;
 
 @Controller
 @RequestMapping("/studio/types")
@@ -27,8 +27,8 @@ public class StudioTypeController {
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
-		final Collectable<TransportationType> collectable = hasSearch ? typeService.search(search) : typeService;
-		model.addAttribute("page", collectable.getPage(page, pageSize));
+		final Result<TransportationType> result = hasSearch ? typeService.search(search) : typeService;
+		model.addAttribute("page", result.getPage(page, pageSize));
 		return "studio/types.html";
 	}
 	

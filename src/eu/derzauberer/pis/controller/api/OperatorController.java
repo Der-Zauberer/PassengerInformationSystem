@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import eu.derzauberer.pis.dto.ListDto;
-import eu.derzauberer.pis.entity.Operator;
+import eu.derzauberer.pis.model.Operator;
 import eu.derzauberer.pis.service.OperatorService;
-import eu.derzauberer.pis.util.Collectable;
+import eu.derzauberer.pis.util.Result;
+import eu.derzauberer.pis.util.ResultListDto;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -35,14 +35,14 @@ public class OperatorController {
 	private ModelMapper modelMapper;
 	
 	@GetMapping
-	public ListDto<Operator> getOperators(
+	public ResultListDto<Operator> getOperators(
 			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
-		final Collectable<Operator> collectable = hasSearch ? operatorService.search(search) : operatorService;
-		return collectable.getList(offset, limit == -1 ? collectable.size() : limit);
+		final Result<Operator> result = hasSearch ? operatorService.search(search) : operatorService;
+		return result.getList(offset, limit == -1 ? result.size() : limit);
 	}
 	
 	@GetMapping("{id}")

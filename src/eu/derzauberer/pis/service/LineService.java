@@ -42,12 +42,13 @@ public class LineService extends EntityService<Line> {
 	}
 	
 	@Override
-	public void save(Line line) {
-		if (lineRepository.containsById(line.getId())) {
-			removeLineToTrafficIndex(line);
+	public Line save(Line line) {
+		final Line savedLine = super.save(line);
+		if (lineRepository.containsById(savedLine.getId())) {
+			removeLineToTrafficIndex(savedLine);
 		}
-		lineRepository.save(line);
-		addLineToTrafficIndex(line);
+		addLineToTrafficIndex(savedLine);
+		return savedLine;
 	}
 	
 	@Override

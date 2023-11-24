@@ -33,6 +33,9 @@ public class ResultMapping<T, R> implements Result<R>{
 		return collectable.getRange(beginn, end).stream().map(mapping).toList();
 	}
 	
-	
+	@Override
+	public String toString() {
+		return super.toString() + "{" + size() + "}";
+	}
 
 }

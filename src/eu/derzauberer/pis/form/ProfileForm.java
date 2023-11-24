@@ -1,6 +1,6 @@
 package eu.derzauberer.pis.form;
 
-public class UserProfileForm {
+public class ProfileForm {
 	
 	private String id;
 	private String name;

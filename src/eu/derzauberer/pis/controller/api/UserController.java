@@ -2,7 +2,6 @@ package eu.derzauberer.pis.controller.api;
 
 import java.io.IOException;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
@@ -17,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import eu.derzauberer.pis.converter.DataConverter;
+import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.data.UserData;
 import eu.derzauberer.pis.data.UserInfoData;
 import eu.derzauberer.pis.form.UserForm;
@@ -35,7 +36,13 @@ public class UserController {
 	private UserService userService;
 	
 	@Autowired
-	private ModelMapper modelMapper;
+	private DataConverter<User, UserInfoData> userInfoDataConverter;
+	
+	@Autowired
+	private DataConverter<User, UserData> userDataConverter;
+	
+	@Autowired
+	private FormConverter<User, UserForm> userFormConverter;
 	
 	@GetMapping
 	public ResultListDto<UserInfoData> getUsers(
@@ -45,30 +52,27 @@ public class UserController {
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
 		final Result<User> result = hasSearch ? userService.search(search) : userService;
-		return result.map((user) -> modelMapper.map(user, UserInfoData.class)).getList(offset, limit == -1 ? result.size() : limit);
+		return result.map(userInfoDataConverter::convert).getList(offset, limit == -1 ? result.size() : limit);
 	}
 	
 	@GetMapping("{id}")
-	public UserInfoData getUser(@PathVariable("id") String id) {
+	public UserData getUser(@PathVariable("id") String id) {
 		return userService.getById(id)
-				.map((user) -> modelMapper.map(user, UserInfoData.class))
+				.map(userDataConverter::convert)
 				.orElseThrow(() -> getNotFoundException(id));
 	}
 	
 	@PostMapping
-	public UserData setUser(@RequestBody UserForm user) {
-		final User mappedUser = new User(user.getId(), user.getName());
-		modelMapper.map(user, mappedUser);
-		userService.save(mappedUser);
-		return modelMapper.map(mappedUser, UserData.class);
+	public UserData setUser(@RequestBody UserForm userForm) {
+		final User user = userFormConverter.convertToModel(userForm);
+		return userDataConverter.convert(userService.save(user));
 	}
 	
 	@PutMapping
-	public UserData updateUser(@RequestBody UserForm user) {
-		final User existingUser = userService.getById(user.getId()).orElseThrow(() -> getNotFoundException(user.getId()));
-		modelMapper.map(user, existingUser);
-		userService.save(existingUser);
-		return modelMapper.map(existingUser, UserData.class);
+	public UserData updateUser(@RequestBody UserForm userForm) {
+		final User user = userService.getById(userForm.getId()).orElseThrow(() -> getNotFoundException(userForm.getId()));
+		userFormConverter.convertToModel(user, userForm);
+		return userDataConverter.convert(userService.save(user));
 	}
 	
 	@DeleteMapping("{id}")

@@ -26,7 +26,7 @@ public abstract class EntityService<T extends Entity<T> & NameEntity> implements
 		return repository.getName();
 	}
 	
-	public void save(T entity) {
+	public T save(T entity) {
 		if (entity == null) {
 			throw new IllegalArgumentException("Entity must not be null!");
 		}
@@ -40,6 +40,7 @@ public abstract class EntityService<T extends Entity<T> & NameEntity> implements
 		repository.save(entity);
 		final SaveEvent<T> saveEvent = new SaveEvent<>(oldEntity, entity);
 		onSave.forEach(consumer -> consumer.accept(saveEvent));
+		return repository.getById(entity.getId()).orElseThrow(() -> new NullPointerException("Entity was deleted during save!"));
 	}
 	
 	public boolean removeById(String id) {

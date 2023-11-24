@@ -2,7 +2,6 @@ package eu.derzauberer.pis.controller.web.home;
 
 import java.security.Principal;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -13,9 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
+import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.form.LoginForm;
 import eu.derzauberer.pis.form.PasswordForm;
-import eu.derzauberer.pis.form.UserProfileForm;
+import eu.derzauberer.pis.form.ProfileForm;
 import eu.derzauberer.pis.model.User;
 import eu.derzauberer.pis.service.AuthenticationService;
 import eu.derzauberer.pis.service.UserService;
@@ -32,7 +32,7 @@ public class AuthenticationController {
 	private AuthenticationService authenticationService;
 	
 	@Autowired
-	private ModelMapper modelMapper;
+	private FormConverter<User, ProfileForm> profileFormConverter;
 
 	@GetMapping("/login")
 	public String login(Model model) {
@@ -76,17 +76,16 @@ public class AuthenticationController {
 	@GetMapping("/account")
 	public String getAccount(Model model, Principal principal) {
 		final User user = userService.getById(principal.getName()).get();
-		final UserProfileForm userForm = modelMapper.map(user, UserProfileForm.class);
+		final ProfileForm userForm = profileFormConverter.convertToForm(user);
 		model.addAttribute("user", userForm);
 		model.addAttribute("password", new PasswordForm());
 		return "authentication/account.html";
 	}
 	
 	@PostMapping("/account")
-	public String setAccount(Model model, Principal principal, HttpServletRequest request, UserProfileForm userForm) {
+	public String setAccount(Model model, Principal principal, HttpServletRequest request, ProfileForm userForm) {
 		final User user = userService.getById(principal.getName()).get();
-		user.setName(userForm.getName());
-		user.setEmail(userForm.getEmail());
+		profileFormConverter.convertToModel(user, userForm);
 		userService.save(user);
 		authenticationService.updateSession(request.getSession());
 		model.addAttribute("accountSuccess", true);

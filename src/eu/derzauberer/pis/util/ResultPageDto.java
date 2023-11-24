@@ -40,5 +40,10 @@ public class ResultPageDto<T> {
 	public void setResults(List<T> results) {
 		this.results = results;
 	}
+	
+	@Override
+	public String toString() {
+		return results.toString();
+	}
 
 }

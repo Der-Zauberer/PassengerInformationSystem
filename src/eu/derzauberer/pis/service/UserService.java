@@ -35,27 +35,27 @@ public class UserService extends EntityService<User> {
 	}
 	
 	@Override
-	public void save(User entity) {
-		if (entity.getEmail() != null) {
-			getById(entity.getEmail()).ifPresent(existing -> {
-				if (!existing.getId().equals(entity.getId())) {
-					throw new IllegalArgumentException("Identification email " + entity.getEmail() + " already exists as id!");
+	public User save(User user) {
+		if (user.getEmail() != null) {
+			getById(user.getEmail()).ifPresent(existing -> {
+				if (!existing.getId().equals(user.getId())) {
+					throw new IllegalArgumentException("Identification email " + user.getEmail() + " already exists as id!");
 				}
 			});
-			emailIdentification.getByIdentification(entity.getEmail()).ifPresent(existing -> {
-				if (!existing.getId().equals(entity.getId())) {
-					throw new IllegalArgumentException("Identification email " + entity.getEmail() + " already exists as email!");
-				}
-			});
-		}
-		if (entity.getId() != null) {
-			emailIdentification.getByIdentification(entity.getId()).ifPresent(existing -> {
-				if (!existing.getId().equals(entity.getId())) {
-					throw new IllegalArgumentException("Identification id " + entity.getId() + " already exists as email!");
+			emailIdentification.getByIdentification(user.getEmail()).ifPresent(existing -> {
+				if (!existing.getId().equals(user.getId())) {
+					throw new IllegalArgumentException("Identification email " + user.getEmail() + " already exists as email!");
 				}
 			});
 		}
-		super.save(entity);
+		if (user.getId() != null) {
+			emailIdentification.getByIdentification(user.getId()).ifPresent(existing -> {
+				if (!existing.getId().equals(user.getId())) {
+					throw new IllegalArgumentException("Identification id " + user.getId() + " already exists as email!");
+				}
+			});
+		}
+		return super.save(user);
 	}
 	
 	@Override

@@ -29,5 +29,10 @@ public class ResultList<T> implements Result<T> {
 	public List<T> getRange(int beginn, int end) {
 		return list.subList(beginn, end);
 	}
+	
+	@Override
+	public String toString() {
+		return super.toString() + "{" + size() + "}";
+	}
 
 }

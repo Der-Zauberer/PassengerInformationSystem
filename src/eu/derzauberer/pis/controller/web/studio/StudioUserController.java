@@ -1,7 +1,5 @@
 package eu.derzauberer.pis.controller.web.studio;
 
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import eu.derzauberer.pis.converter.DataConverter;
+import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.data.UserData;
 import eu.derzauberer.pis.enums.UserRole;
 import eu.derzauberer.pis.form.UserForm;
@@ -23,15 +23,12 @@ public class StudioUserController {
 	
 	@Autowired
 	private UserService userService;
-	
-	@Autowired
-	private ModelMapper modelMapper;
-	
-	@Autowired
-	private TypeMap<User, UserForm> userFormModelMapper;
 
 	@Autowired
-	private TypeMap<UserForm, User> userModelMapper;
+	private DataConverter<User, UserData> userDataConverter;
+	
+	@Autowired
+	private FormConverter<User, UserForm> userFormConverter;
 	
 	
 	@GetMapping
@@ -42,14 +39,14 @@ public class StudioUserController {
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
 		final Result<User> result = hasSearch ? userService.search(search) : userService;
-		model.addAttribute("page", result.map(user -> modelMapper.map(user, UserData.class)).getPage(page, pageSize));
+		model.addAttribute("page", result.map(userDataConverter::convert).getPage(page, pageSize));
 		return "studio/users.html";
 	}
 	
 	@GetMapping("/edit")
 	public String editUser(@RequestParam(value = "id", required = false) String id, Model model) {
 		final UserForm user = userService.getById(id)
-				.map(userFormModelMapper::map)
+				.map(userFormConverter::convertToForm)
 				.orElseGet(() -> new UserForm());
 		model.addAttribute("user", user);
 		model.addAttribute("roles", UserRole.values());
@@ -60,7 +57,7 @@ public class StudioUserController {
 	@PostMapping("/edit")
 	public String editUser(@RequestParam(value = "entity", required = false) String id, Model model, UserForm userForm) {
 		final User user = userService.getById(id).orElseGet(() -> new User(userForm.getId(), userForm.getName()));
-		userModelMapper.map(userForm, user);
+		userFormConverter.convertToModel(user, userForm);
 		if (userForm.getPassword() != null && !userForm.getPassword().isEmpty()) {
 			user.setPassword(userService.hashPassword(userForm.getPassword()));
 		}

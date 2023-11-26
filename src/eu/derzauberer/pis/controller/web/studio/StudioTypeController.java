@@ -39,8 +39,10 @@ public class StudioTypeController {
 		}, () -> {
 			model.addAttribute("type", new TransportationType(null, null, TransportationVehicle.TRAIN, TransportationClassification.REGIONAL));
 		});
-		model.addAttribute("transportationVehicles", TransportationVehicle.values());
-		model.addAttribute("transportationClassifications", TransportationClassification.values());
+		model.addAttribute("defaultVehicles", TransportationVehicle.TRAIN);
+		model.addAttribute("vehicles", TransportationVehicle.values());
+		model.addAttribute("defaultClassification", TransportationClassification.REGIONAL);
+		model.addAttribute("classifications", TransportationClassification.values());
 		return "studio/edit/edit_type.html";
 	}
 

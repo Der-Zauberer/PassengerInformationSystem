@@ -2,11 +2,11 @@ package eu.derzauberer.pis.enums;
 
 public enum TransportationVehicle {
 	
-	BUS("entity.transportationType.bus"),
-	TRAM("entity.transportationType.tram"),
-	TRAIN("entity.transportationType.train"),
-	PLANE("entity.transportationType.plane"),
-	SHIP("entity.transportationType.ship");
+	BUS("entity.transportationVehicle.bus"),
+	TRAM("entity.transportationVehicle.tram"),
+	TRAIN("entity.transportationVehicle.train"),
+	PLANE("entity.transportationVehicle.plane"),
+	SHIP("entity.transportationVehicle.ship");
 	
 	private final String localization;
 	

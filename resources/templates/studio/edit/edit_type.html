@@ -11,56 +11,62 @@
 			<div class="container-xl">
 				<form class="pis-form" action="#" th:action="@{/studio/types/edit?id={id}(id = ${type.id})}" th:object="${type}" method="post">
 				
-					<h3 class="mg-t-0">General</h3>
+					<h3 class="mg-t-0" th:text=#{entity.general}></h3>
+					
 					<div class="pis-form-grid-2">
 						<div class="input">
-					        <input type="text" th:field="*{id}" required>
-					        <span class="input-name">ID</span>
+					        <input type="text" th:field="*{id}" th:readonly="${type.id != null}" required>
+					        <span class="input-name" th:text="#{entity.id}"></span>
 					        <span class="input-error"></span>
 					    </div>
+					    
 					    <div class="input">
 					        <input type="text" th:field="*{name}" required>
-					        <span class="input-name">Name</span>
+					        <span class="input-name" th:text="#{entity.name}"></span>
 					        <span class="input-error"></span>
 					    </div>
+					    
 					</div>
 					
-					<h3 class="mg-t-0">Transportation</h3>
+					<h3 class="mg-t-0" th:text="#{entity.type.transportation}"></h3>
+					
 					<div class="pis-form-grid-2">
 						<div class="input dropdown">
-					        <input type="text" th:field="*{vehicle}" readonly required>
-					        <span class="input-name">Vehicle</span>
+							<input class="hide" type="text" th:field="*{vehicle}" readonly required>
+							<input type="text" th:value="#{__${type.vehicle != null ? type.vehicle.getLocalization() : defaultVehicle.getLocalization()}__}" readonly required>
+					        <span class="input-name" th:text="#{entity.transportationVehicle}"></span>
 					        <img class="icon input-icon" src="/resources/swd/icons/more_down.svg" onclick="swd.focusDropdown(this)">
 					        <div class="dropdown-content">
-						        <th:block th:each="vehicle : ${transportationVehicles}">
-					        		<a th:text="${vehicle}"></a>
-					        	</th:block>
+					        	<a th:each="selectableVehicle : ${vehicles}" th:value="${selectableVehicle}" th:text="#{__${selectableVehicle.getLocalization()}__}"></a>
 						    </div>
 					        <span class="input-error"></span>
 					    </div>
+					    
 					    <div class="input  dropdown">
-					        <input type="text" th:field="*{classification}" readonly required>
-					        <span class="input-name">Classification</span>
+					    	<input class="hide" type="text" th:field="*{classification}" readonly required>
+							<input type="text" th:value="#{__${type.classification != null ? type.classification.getLocalization() : defaultClassification.getLocalization()}__}" readonly required>
+					        <span class="input-name" th:text="#{entity.transportationClassification}"></span>
 					        <img class="icon input-icon" src="/resources/swd/icons/more_down.svg" onclick="swd.focusDropdown(this)">
 					        <div class="dropdown-content">
-					        	<th:block th:each="classification : ${transportationClassifications}">
-					        		<a th:text="${classification}"></a>
-					        	</th:block>
+								<a th:each="selectableClassification : ${classifications}" th:value="${selectableClassification}" th:text="#{__${selectableClassification.getLocalization()}__}"></a>
 						    </div>
 					        <span class="input-error"></span>
 					    </div>
+					    
 					</div>
 					
-					<h3 class="mg-t-0">Color</h3>
+					<h3 class="mg-t-0" th:text="#{entity.type.color}"></h3>
+					
 					<div class="pis-form-grid-2">
 						<div class="input">
 					        <input type="text" th:field="*{backgroundColor}">
-					        <span class="input-name">Background Color</span>
+					        <span class="input-name" th:text="#{entity.type.color.background}"></span>
 					        <span class="input-error"></span>
 					    </div>
+					    
 					    <div class="input">
 					        <input type="text" th:field="*{textColor}">
-					        <span class="input-name">Text Color</span>
+					        <span class="input-name" th:text="#{entity.type.color.text}"></span>
 					        <span class="input-error"></span>
 					    </div>
 					</div>

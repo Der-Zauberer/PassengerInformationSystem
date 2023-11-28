@@ -138,7 +138,6 @@ public class SpringConfiguration implements ApplicationContextAware, WebMvcConfi
 	public ModelMapper getModelMapper() {
 		final ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setSkipNullEnabled(true);
-		modelMapper.getConfiguration().setDeepCopyEnabled(true);
 		return modelMapper;
 	}
 	

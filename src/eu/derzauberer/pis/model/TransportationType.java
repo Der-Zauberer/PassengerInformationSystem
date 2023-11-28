@@ -11,8 +11,8 @@ public class TransportationType implements Entity<TransportationType>, NameEntit
 	private final String name;
 	private final TransportationVehicle vehicle;
 	private final TransportationClassification classification;
-	private int backgroundColor;
-	private int textColor;
+	private String backgroundColor;
+	private String textColor;
 	private ApiInformation api;
 	
 	@ConstructorProperties({ "id", "name", "vehicle", "classification" })
@@ -21,8 +21,8 @@ public class TransportationType implements Entity<TransportationType>, NameEntit
 		this.name = name;
 		this.vehicle = vehicle;
 		this.classification = classification;
-		this.backgroundColor = 0x000000;
-		this.textColor = 0xffffff;
+		this.backgroundColor = "#000000";
+		this.textColor = "#ffffff";
 	}
 	
 	@Override
@@ -43,19 +43,19 @@ public class TransportationType implements Entity<TransportationType>, NameEntit
 		return classification;
 	}
 	
-	public int getBackgroundColor() {
+	public String getBackgroundColor() {
 		return backgroundColor;
 	}
 	
-	public void setBackgroundColor(int backgroundColor) {
+	public void setBackgroundColor(String backgroundColor) {
 		this.backgroundColor = backgroundColor;
 	}
 	
-	public int getTextColor() {
+	public String getTextColor() {
 		return textColor;
 	}
 	
-	public void setTextColor(int textColor) {
+	public void setTextColor(String textColor) {
 		this.textColor = textColor;
 	}
 	

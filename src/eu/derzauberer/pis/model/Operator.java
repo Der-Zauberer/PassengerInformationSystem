@@ -2,7 +2,7 @@ package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
 
-public class Operator implements Entity<Operator>, NameEntity {
+public class Operator extends Entity<Operator> implements NameEntity {
 
 	private final String id;
 	private String name;

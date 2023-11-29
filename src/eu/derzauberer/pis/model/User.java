@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 import eu.derzauberer.pis.enums.UserRole;
 
-public class User implements Entity<User>, NameEntity {
+public class User extends Entity<User> implements NameEntity {
 	
 	private final String id;
 	private String name;

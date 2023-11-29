@@ -1,12 +1,21 @@
 package eu.derzauberer.pis.model;
 
-public interface Entity<T extends Entity<T>> extends Comparable<T> {
+public abstract class Entity<T extends Entity<T>> implements Comparable<T> {
 	
-	String getId();
+	public abstract String getId();
 	
 	@Override
-	default int compareTo(T o) {
+	public int compareTo(T o) {
 		return getId().compareTo(o.getId());
+	}
+	
+	@Override
+	public String toString() {
+		final StringBuilder string = new StringBuilder(super.toString());
+		string.append("{" + getId());
+		if (this instanceof NameEntity) string.append(", " + ((NameEntity) this).getName());
+		string.append("}");
+		return string.toString();
 	}
 	
 }

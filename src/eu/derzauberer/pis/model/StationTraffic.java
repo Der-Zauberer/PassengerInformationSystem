@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-public class StationTraffic implements Entity<StationTraffic> {
+public class StationTraffic extends Entity<StationTraffic> {
 	
 	private final String id;
 	private final Map<Integer, SortedSet<StationTrafficEntry>> departures = new HashMap<>();

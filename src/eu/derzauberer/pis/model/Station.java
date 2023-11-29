@@ -4,7 +4,7 @@ import java.beans.ConstructorProperties;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class Station implements Entity<Station>, NameEntity {
+public class Station extends Entity<Station> implements NameEntity {
 	
 	private final String id;
 	private final String name;

@@ -5,7 +5,7 @@ import java.beans.ConstructorProperties;
 import eu.derzauberer.pis.enums.TransportationClassification;
 import eu.derzauberer.pis.enums.TransportationVehicle;
 
-public class TransportationType implements Entity<TransportationType>, NameEntity {
+public class TransportationType extends Entity<TransportationType> implements NameEntity {
 
 	private final String id;
 	private final String name;

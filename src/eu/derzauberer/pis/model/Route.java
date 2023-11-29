@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Route implements Entity<Route>, NameEntity {
+public class Route extends Entity<Route> implements NameEntity {
 	
 	private final String id;
 	private String name;

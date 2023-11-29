@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Line implements Entity<Line>, NameEntity {
+public class Line extends Entity<Line> implements NameEntity {
 	
 	private final String id;
 	private final String routeId;

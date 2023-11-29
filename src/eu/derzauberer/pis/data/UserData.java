@@ -3,10 +3,8 @@ package eu.derzauberer.pis.data;
 import java.time.LocalDateTime;
 
 import eu.derzauberer.pis.enums.UserRole;
-import eu.derzauberer.pis.model.Entity;
-import eu.derzauberer.pis.model.User;
 
-public class UserData implements Entity<User> {
+public class UserData {
 
 	private String id;
 	private String name;

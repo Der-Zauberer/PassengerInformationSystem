@@ -2,7 +2,6 @@ package eu.derzauberer.pis.controller.api;
 
 import java.io.IOException;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,9 +28,6 @@ public class StationController {
 	
 	@Autowired
 	private StationService stationService;
-	
-	@Autowired
-	private ModelMapper modelMapper;
 	
 	@GetMapping
 	public ResultListDto<Station> getStations(
@@ -54,14 +49,6 @@ public class StationController {
 	public Station setStation(@RequestBody Station station) {
 		stationService.save(station);
 		return station;
-	}
-	
-	@PutMapping
-	public Station updateStation(@RequestBody Station station) {
-		final Station existingStation = stationService.getById(station.getId()).orElseThrow(() -> getNotFoundException(station.getId()));
-		modelMapper.map(station, existingStation);
-		stationService.save(existingStation);
-		return existingStation;
 	}
 	
 	@DeleteMapping("{id}")

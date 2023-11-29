@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,9 +36,6 @@ public class LineController {
 	
 	@Autowired
 	private StationService stationService;
-	
-	@Autowired
-	private ModelMapper modelMapper;
 	
 	@GetMapping("/{arrivalOrDeparture}/{stationId}/{date}")
 	public ResultListDto<StationTrafficEntry> getArrivals(
@@ -82,14 +77,6 @@ public class LineController {
 	public Line setLine(@RequestBody Line line) {
 		lineService.save(line);
 		return line;
-	}
-	
-	@PutMapping
-	public Line updateLine(@RequestBody Line line) {
-		final Line existingLine = lineService.getById(line.getId()).orElseThrow(() -> getNotFoundException("Line", line.getId()));
-		modelMapper.map(line, existingLine);
-		lineService.save(existingLine);
-		return existingLine;
 	}
 	
 	@DeleteMapping("{id}")

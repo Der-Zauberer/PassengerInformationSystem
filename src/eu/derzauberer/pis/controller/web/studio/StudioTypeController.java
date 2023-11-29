@@ -50,9 +50,7 @@ public class StudioTypeController {
 		}, () -> {
 			model.addAttribute("type", new TransportationTypeForm());
 		});
-		model.addAttribute("defaultVehicle", TransportationVehicle.TRAIN);
 		model.addAttribute("vehicles", TransportationVehicle.values());
-		model.addAttribute("defaultClassification", TransportationClassification.REGIONAL);
 		model.addAttribute("classifications", TransportationClassification.values());
 		return "studio/edit/edit_type.html";
 	}

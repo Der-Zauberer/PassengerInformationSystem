@@ -17,7 +17,6 @@ public class TransportationtypeFormConverter implements FormConverter<Transporta
 		typeForm.setClassification(type.getClassification());
 		typeForm.setBackgroundColor(type.getBackgroundColor());
 		typeForm.setTextColor(type.getTextColor());
-		typeForm.setApi(type.getApiInformation());
 		return typeForm;
 	}
 

@@ -12,6 +12,12 @@ public class UserForm {
 	private boolean passwordChangeRequired;
 	private UserRole role;
 	
+	public UserForm() {
+		enabled = false;
+		passwordChangeRequired = false;
+		role = UserRole.USER;
+	}
+	
 	public String getId() {
 		return id;
 	}

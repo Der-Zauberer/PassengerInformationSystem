@@ -48,14 +48,14 @@ public class StudioUserController {
 		final UserForm user = userService.getById(id).map(userFormConverter::convertToForm).orElseGet(() -> new UserForm());
 		model.addAttribute("user", user);
 		model.addAttribute("roles", UserRole.values());
-		model.addAttribute("defaultRole", UserRole.USER);
 		return "studio/edit/edit_user.html";
 	}
 	
 	@PostMapping("/edit")
 	public String editUser(@RequestParam(value = "entity", required = false) String id, Model model, UserForm userForm) {
-		final User user = userService.getById(id).orElseGet(() -> new User(userForm.getId(), userForm.getName()));
-		userFormConverter.convertToModel(user, userForm);
+		final User user = userService.getById(id)
+				.map(original -> userFormConverter.convertToModel(original, userForm))
+				.orElseGet(() -> userFormConverter.convertToModel(userForm));
 		userService.save(user);
 		return "redirect:/studio/users";
 	}

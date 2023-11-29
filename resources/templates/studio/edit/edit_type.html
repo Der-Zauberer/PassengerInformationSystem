@@ -33,7 +33,7 @@
 					<div class="pis-form-grid-2">
 						<div class="input dropdown">
 							<input class="hide" type="text" th:field="*{vehicle}" readonly required>
-							<input type="text" th:value="#{__${type.vehicle != null ? type.vehicle.getLocalization() : defaultVehicle.getLocalization()}__}" readonly required>
+							<input type="text" th:value="#{__${type.vehicle.getLocalization()}__}" readonly required>
 					        <span class="input-name" th:text="#{entity.transportationVehicle}"></span>
 					        <img class="icon input-icon" src="/resources/swd/icons/more_down.svg" onclick="swd.focusDropdown(this)">
 					        <div class="dropdown-content">
@@ -44,7 +44,7 @@
 					    
 					    <div class="input  dropdown">
 					    	<input class="hide" type="text" th:field="*{classification}" readonly required>
-							<input type="text" th:value="#{__${type.classification != null ? type.classification.getLocalization() : defaultClassification.getLocalization()}__}" readonly required>
+							<input type="text" th:value="#{__${type.classification.getLocalization()}__}" readonly required>
 					        <span class="input-name" th:text="#{entity.transportationClassification}"></span>
 					        <img class="icon input-icon" src="/resources/swd/icons/more_down.svg" onclick="swd.focusDropdown(this)">
 					        <div class="dropdown-content">

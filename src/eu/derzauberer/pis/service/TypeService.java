@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.components.SearchComponent;
-import eu.derzauberer.pis.model.TransportationType;
 import eu.derzauberer.pis.repository.EntityRepository;
+import eu.derzauberer.pis.structure.model.TransportationType;
 import eu.derzauberer.pis.util.Result;
 
 @Service

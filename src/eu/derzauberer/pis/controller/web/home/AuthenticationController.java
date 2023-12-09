@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 import eu.derzauberer.pis.converter.FormConverter;
-import eu.derzauberer.pis.form.LoginForm;
-import eu.derzauberer.pis.form.PasswordForm;
-import eu.derzauberer.pis.form.ProfileForm;
-import eu.derzauberer.pis.model.User;
 import eu.derzauberer.pis.service.AuthenticationService;
 import eu.derzauberer.pis.service.UserService;
+import eu.derzauberer.pis.structure.form.LoginForm;
+import eu.derzauberer.pis.structure.form.PasswordForm;
+import eu.derzauberer.pis.structure.form.ProfileForm;
+import eu.derzauberer.pis.structure.model.User;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller

@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import eu.derzauberer.pis.model.Entity;
-import eu.derzauberer.pis.model.NameEntity;
 import eu.derzauberer.pis.repository.EntityRepository;
+import eu.derzauberer.pis.structure.model.Entity;
+import eu.derzauberer.pis.structure.model.NameEntity;
 import eu.derzauberer.pis.util.RemoveEvent;
 import eu.derzauberer.pis.util.Result;
 import eu.derzauberer.pis.util.SaveEvent;

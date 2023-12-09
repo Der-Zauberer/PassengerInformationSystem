@@ -37,17 +37,17 @@ import eu.derzauberer.pis.configuration.SerializationConfiguration.DateTimeSeria
 import eu.derzauberer.pis.configuration.SerializationConfiguration.PrettyPrinter;
 import eu.derzauberer.pis.configuration.SerializationConfiguration.TimeDeserializer;
 import eu.derzauberer.pis.configuration.SerializationConfiguration.TimeSerializer;
-import eu.derzauberer.pis.form.UserForm;
-import eu.derzauberer.pis.model.Line;
-import eu.derzauberer.pis.model.Operator;
-import eu.derzauberer.pis.model.Route;
-import eu.derzauberer.pis.model.Station;
-import eu.derzauberer.pis.model.StationTraffic;
-import eu.derzauberer.pis.model.TransportationType;
-import eu.derzauberer.pis.model.User;
 import eu.derzauberer.pis.repository.EntityRepository;
 import eu.derzauberer.pis.repository.FileEntityRepository;
 import eu.derzauberer.pis.repository.MemoryEntityRepository;
+import eu.derzauberer.pis.structure.form.UserForm;
+import eu.derzauberer.pis.structure.model.Line;
+import eu.derzauberer.pis.structure.model.Operator;
+import eu.derzauberer.pis.structure.model.Route;
+import eu.derzauberer.pis.structure.model.Station;
+import eu.derzauberer.pis.structure.model.StationTraffic;
+import eu.derzauberer.pis.structure.model.TransportationType;
+import eu.derzauberer.pis.structure.model.User;
 
 @Configuration
 public class SpringConfiguration implements ApplicationContextAware, WebMvcConfigurer {

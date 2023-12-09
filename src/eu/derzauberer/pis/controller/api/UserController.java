@@ -17,11 +17,11 @@ import org.springframework.web.server.ResponseStatusException;
 
 import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
-import eu.derzauberer.pis.data.UserData;
-import eu.derzauberer.pis.data.UserInfoData;
-import eu.derzauberer.pis.form.UserForm;
-import eu.derzauberer.pis.model.User;
 import eu.derzauberer.pis.service.UserService;
+import eu.derzauberer.pis.structrue.data.UserData;
+import eu.derzauberer.pis.structrue.data.UserInfoData;
+import eu.derzauberer.pis.structure.form.UserForm;
+import eu.derzauberer.pis.structure.model.User;
 import eu.derzauberer.pis.util.Result;
 import eu.derzauberer.pis.util.ResultListDto;
 import jakarta.servlet.ServletOutputStream;

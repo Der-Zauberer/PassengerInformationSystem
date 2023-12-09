@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.components.IdentificationComponent;
 import eu.derzauberer.pis.components.SearchComponent;
-import eu.derzauberer.pis.enums.UserRole;
-import eu.derzauberer.pis.model.User;
 import eu.derzauberer.pis.repository.EntityRepository;
+import eu.derzauberer.pis.structure.enums.UserRole;
+import eu.derzauberer.pis.structure.model.User;
 import eu.derzauberer.pis.util.Result;
 
 @Service

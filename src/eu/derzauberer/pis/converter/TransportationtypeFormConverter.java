@@ -2,8 +2,8 @@ package eu.derzauberer.pis.converter;
 
 import org.springframework.stereotype.Component;
 
-import eu.derzauberer.pis.form.TransportationTypeForm;
-import eu.derzauberer.pis.model.TransportationType;
+import eu.derzauberer.pis.structure.form.TransportationTypeForm;
+import eu.derzauberer.pis.structure.model.TransportationType;
 
 @Component
 public class TransportationtypeFormConverter implements FormConverter<TransportationType, TransportationTypeForm> {

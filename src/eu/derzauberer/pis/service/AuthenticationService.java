@@ -20,8 +20,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Service;
 
-import eu.derzauberer.pis.data.UserData;
-import eu.derzauberer.pis.model.User;
+import eu.derzauberer.pis.structrue.data.UserData;
+import eu.derzauberer.pis.structure.model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

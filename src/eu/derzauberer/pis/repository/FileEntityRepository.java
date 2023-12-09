@@ -9,8 +9,8 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.derzauberer.pis.model.Entity;
-import eu.derzauberer.pis.model.NameEntity;
+import eu.derzauberer.pis.structure.model.Entity;
+import eu.derzauberer.pis.structure.model.NameEntity;
 
 public class FileEntityRepository<T extends Entity<T>> extends EntityRepository<T> {
 	

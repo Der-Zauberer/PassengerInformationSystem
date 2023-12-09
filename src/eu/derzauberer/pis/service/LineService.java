@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.components.SearchComponent;
 import eu.derzauberer.pis.configuration.SpringConfiguration;
-import eu.derzauberer.pis.model.Line;
-import eu.derzauberer.pis.model.LineStop;
-import eu.derzauberer.pis.model.Station;
-import eu.derzauberer.pis.model.StationTraffic;
-import eu.derzauberer.pis.model.StationTrafficEntry;
 import eu.derzauberer.pis.repository.EntityRepository;
+import eu.derzauberer.pis.structrue.container.LineStop;
+import eu.derzauberer.pis.structrue.container.StationTrafficEntry;
+import eu.derzauberer.pis.structure.model.Line;
+import eu.derzauberer.pis.structure.model.Station;
+import eu.derzauberer.pis.structure.model.StationTraffic;
 import eu.derzauberer.pis.util.ProgressStatus;
 import eu.derzauberer.pis.util.Result;
 

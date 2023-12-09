@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import eu.derzauberer.pis.form.UserForm;
-import eu.derzauberer.pis.model.User;
+import eu.derzauberer.pis.structure.form.UserForm;
+import eu.derzauberer.pis.structure.model.User;
 
 @Component
 public class UserFormConverter implements FormConverter<User, UserForm> {

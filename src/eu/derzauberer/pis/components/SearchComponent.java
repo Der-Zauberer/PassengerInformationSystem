@@ -12,9 +12,9 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 
-import eu.derzauberer.pis.model.Entity;
-import eu.derzauberer.pis.model.NameEntity;
 import eu.derzauberer.pis.service.EntityService;
+import eu.derzauberer.pis.structure.model.Entity;
+import eu.derzauberer.pis.structure.model.NameEntity;
 import eu.derzauberer.pis.util.Result;
 import eu.derzauberer.pis.util.ResultList;
 import eu.derzauberer.pis.util.SearchComparator;

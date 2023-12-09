@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import eu.derzauberer.pis.model.Line;
-import eu.derzauberer.pis.model.Station;
-import eu.derzauberer.pis.model.StationTrafficEntry;
 import eu.derzauberer.pis.service.LineService;
 import eu.derzauberer.pis.service.StationService;
+import eu.derzauberer.pis.structrue.container.StationTrafficEntry;
+import eu.derzauberer.pis.structure.model.Line;
+import eu.derzauberer.pis.structure.model.Station;
 import eu.derzauberer.pis.util.ResultList;
 import eu.derzauberer.pis.util.ResultListDto;
 import jakarta.servlet.ServletOutputStream;

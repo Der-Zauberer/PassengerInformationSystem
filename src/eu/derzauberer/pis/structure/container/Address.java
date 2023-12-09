@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.structrue.container;
+package eu.derzauberer.pis.structure.container;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 

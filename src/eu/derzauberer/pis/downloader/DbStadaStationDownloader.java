@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import eu.derzauberer.pis.configuration.UserConfiguration;
 import eu.derzauberer.pis.service.StationService;
-import eu.derzauberer.pis.structrue.container.Location;
+import eu.derzauberer.pis.structure.container.Location;
 import eu.derzauberer.pis.structure.model.NameEntity;
 import eu.derzauberer.pis.structure.model.Station;
 import eu.derzauberer.pis.util.HttpRequest;

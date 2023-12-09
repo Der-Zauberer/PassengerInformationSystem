@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.structrue.data;
+package eu.derzauberer.pis.structure.data;
 
 import java.time.LocalDateTime;
 

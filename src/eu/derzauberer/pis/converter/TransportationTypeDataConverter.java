@@ -2,7 +2,7 @@ package eu.derzauberer.pis.converter;
 
 import org.springframework.stereotype.Component;
 
-import eu.derzauberer.pis.structrue.data.TransportationTypeData;
+import eu.derzauberer.pis.structure.data.TransportationTypeData;
 import eu.derzauberer.pis.structure.model.TransportationType;
 
 @Component

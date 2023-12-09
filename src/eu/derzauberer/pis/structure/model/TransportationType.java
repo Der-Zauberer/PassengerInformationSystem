@@ -2,7 +2,7 @@ package eu.derzauberer.pis.structure.model;
 
 import java.beans.ConstructorProperties;
 
-import eu.derzauberer.pis.structrue.container.ApiInformation;
+import eu.derzauberer.pis.structure.container.ApiInformation;
 import eu.derzauberer.pis.structure.enums.TransportationClassification;
 import eu.derzauberer.pis.structure.enums.TransportationVehicle;
 

@@ -2,7 +2,7 @@ package eu.derzauberer.pis.converter;
 
 import org.springframework.stereotype.Component;
 
-import eu.derzauberer.pis.structrue.data.UserInfoData;
+import eu.derzauberer.pis.structure.data.UserInfoData;
 import eu.derzauberer.pis.structure.model.User;
 
 @Component

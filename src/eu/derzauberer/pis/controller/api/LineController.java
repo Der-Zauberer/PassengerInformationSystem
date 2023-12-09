@@ -19,7 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import eu.derzauberer.pis.service.LineService;
 import eu.derzauberer.pis.service.StationService;
-import eu.derzauberer.pis.structrue.container.StationTrafficEntry;
+import eu.derzauberer.pis.structure.container.StationTrafficEntry;
 import eu.derzauberer.pis.structure.model.Line;
 import eu.derzauberer.pis.structure.model.Station;
 import eu.derzauberer.pis.util.ResultList;

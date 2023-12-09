@@ -18,7 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.service.TypeService;
-import eu.derzauberer.pis.structrue.data.TransportationTypeData;
+import eu.derzauberer.pis.structure.data.TransportationTypeData;
 import eu.derzauberer.pis.structure.form.TransportationTypeForm;
 import eu.derzauberer.pis.structure.model.TransportationType;
 import eu.derzauberer.pis.util.Result;

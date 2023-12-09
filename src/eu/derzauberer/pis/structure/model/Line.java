@@ -7,10 +7,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import eu.derzauberer.pis.structrue.container.ApiInformation;
-import eu.derzauberer.pis.structrue.container.Information;
-import eu.derzauberer.pis.structrue.container.LineStop;
-import eu.derzauberer.pis.structrue.container.RouteStop;
+import eu.derzauberer.pis.structure.container.ApiInformation;
+import eu.derzauberer.pis.structure.container.Information;
+import eu.derzauberer.pis.structure.container.LineStop;
+import eu.derzauberer.pis.structure.container.RouteStop;
 
 public class Line extends Entity<Line> implements NameEntity {
 	

@@ -5,11 +5,11 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-import eu.derzauberer.pis.structrue.container.Address;
-import eu.derzauberer.pis.structrue.container.ApiInformation;
-import eu.derzauberer.pis.structrue.container.Location;
-import eu.derzauberer.pis.structrue.container.Platform;
-import eu.derzauberer.pis.structrue.container.StationServices;
+import eu.derzauberer.pis.structure.container.Address;
+import eu.derzauberer.pis.structure.container.ApiInformation;
+import eu.derzauberer.pis.structure.container.Location;
+import eu.derzauberer.pis.structure.container.Platform;
+import eu.derzauberer.pis.structure.container.StationServices;
 
 public class Station extends Entity<Station> implements NameEntity {
 	

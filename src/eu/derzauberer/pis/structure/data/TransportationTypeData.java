@@ -1,6 +1,6 @@
-package eu.derzauberer.pis.structrue.data;
+package eu.derzauberer.pis.structure.data;
 
-import eu.derzauberer.pis.structrue.container.ApiInformation;
+import eu.derzauberer.pis.structure.container.ApiInformation;
 import eu.derzauberer.pis.structure.enums.TransportationClassification;
 import eu.derzauberer.pis.structure.enums.TransportationVehicle;
 

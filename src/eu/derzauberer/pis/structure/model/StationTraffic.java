@@ -10,7 +10,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-import eu.derzauberer.pis.structrue.container.StationTrafficEntry;
+import eu.derzauberer.pis.structure.container.StationTrafficEntry;
 
 public class StationTraffic extends Entity<StationTraffic> {
 	

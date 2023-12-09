@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.structrue.container;
+package eu.derzauberer.pis.structure.container;
 
 import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;

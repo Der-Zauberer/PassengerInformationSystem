@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.service.UserService;
-import eu.derzauberer.pis.structrue.data.UserData;
+import eu.derzauberer.pis.structure.data.UserData;
 import eu.derzauberer.pis.structure.enums.UserRole;
 import eu.derzauberer.pis.structure.form.UserForm;
 import eu.derzauberer.pis.structure.model.User;

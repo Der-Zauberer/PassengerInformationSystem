@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.service.TypeService;
-import eu.derzauberer.pis.structrue.data.TransportationTypeData;
+import eu.derzauberer.pis.structure.data.TransportationTypeData;
 import eu.derzauberer.pis.structure.enums.TransportationClassification;
 import eu.derzauberer.pis.structure.enums.TransportationVehicle;
 import eu.derzauberer.pis.structure.form.TransportationTypeForm;

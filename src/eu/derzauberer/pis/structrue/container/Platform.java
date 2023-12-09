@@ -15,6 +15,12 @@ public class Platform implements Comparable<Platform> {
 		this.name = name;
 	}
 	
+	public Platform(Platform platform) {
+		this.name = platform.name;
+		this.length = platform.length;
+		this.linkedPlattforms.addAll(platform.linkedPlattforms);
+	}
+	
 	public String getName() {
 		return name;
 	}

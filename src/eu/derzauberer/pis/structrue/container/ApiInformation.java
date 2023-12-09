@@ -10,6 +10,13 @@ public class ApiInformation {
 	private Map<String, Object> ids;
 	private Map<String, LocalDate> sources;
 	
+	public ApiInformation() {}
+	
+	public ApiInformation(ApiInformation apiInformation) {
+		if (apiInformation.ids != null) apiInformation.ids.forEach(ids::put);
+		if (apiInformation.ids != null) apiInformation.sources.forEach(sources::put);
+	}
+	
 	public void addId(String name, Object id) {
 		if (ids == null) ids = new HashMap<>();
 		ids.put(name, id);

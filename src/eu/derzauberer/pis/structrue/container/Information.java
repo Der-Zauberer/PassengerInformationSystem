@@ -17,6 +17,12 @@ public class Information implements Comparable<Information> {
 		this.text = text;
 		this.type = type;
 	}
+	
+	public Information(Information information) {
+		this.title = information.title;
+		this.text = information.text;
+		this.type = information.type;
+	}
 
 	public String getTitle() {
 		return title;

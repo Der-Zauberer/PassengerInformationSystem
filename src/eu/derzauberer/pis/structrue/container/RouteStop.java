@@ -27,6 +27,14 @@ public class RouteStop {
 		this.departureMinutesSinceStart = departureMinutesSinceStart;
 	}
 	
+	public RouteStop(RouteStop routeStop) {
+		this.stationId = routeStop.stationId;
+		this.platform = routeStop.platform;
+		this.platfromArea = routeStop.platfromArea;
+		this.arrivalMinutesSinceStart = routeStop.arrivalMinutesSinceStart;
+		this.departureMinutesSinceStart = routeStop.departureMinutesSinceStart;
+	}
+	
 	public String getStationId() {
 		return stationId;
 	}

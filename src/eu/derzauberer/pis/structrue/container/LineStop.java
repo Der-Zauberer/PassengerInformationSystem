@@ -32,6 +32,18 @@ public class LineStop {
 		this.departure = departure;
 	}
 	
+	public LineStop(LineStop lineStop) {
+		this.stationId = lineStop.stationId;
+		this.platform = lineStop.platform;
+		this.changedPlatform = lineStop.changedPlatform;
+		this.platfromArea = lineStop.platfromArea;
+		this.changedPlatfromArea = lineStop.changedPlatfromArea;
+		this.arrival = lineStop.arrival;
+		this.departure = lineStop.departure;
+		this.delay = lineStop.delay;
+		this.cancelled = lineStop.cancelled;
+	}
+	
 	public String getStationId() {
 		return stationId;
 	}

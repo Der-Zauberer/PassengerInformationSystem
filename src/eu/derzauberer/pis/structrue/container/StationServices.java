@@ -15,6 +15,23 @@ public class StationServices {
 	private boolean travelCenter = false;
 	private boolean railwayMission = false;
 	
+	public StationServices() {}
+	
+	public StationServices(StationServices stationServices) {
+		this.parking = stationServices.parking;
+		this.bicycleParking = stationServices.bicycleParking;
+		this.localPublicTransport = stationServices.localPublicTransport;
+		this.publicFacilities = stationServices.publicFacilities;
+		this.taxiRank = stationServices.taxiRank;
+		this.carRental = stationServices.carRental;
+		this.lockerSystem = stationServices.lockerSystem;
+		this.travelNecessities = stationServices.travelNecessities;
+		this.barrierFree = stationServices.barrierFree;
+		this.wifi = stationServices.wifi;
+		this.travelCenter = stationServices.travelCenter;
+		this.railwayMission = stationServices.railwayMission;
+	}
+	
 	public boolean isParking() {
 		return parking;
 	}

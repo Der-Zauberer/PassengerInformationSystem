@@ -14,6 +14,19 @@ public class Address {
 	private Integer telephoneNumber;
 	private String mail;
 	
+	public Address() {}
+	
+	public Address(Address address) {
+		this.name = address.name;
+		this.street = address.street;
+		this.postalCode = address.postalCode;
+		this.city = address.city;
+		this.state = address.state;
+		this.country = address.country;
+		this.telephoneNumber = address.telephoneNumber;
+		this.mail = address.mail;
+	}
+	
 	public String getName() {
 		return name;
 	}

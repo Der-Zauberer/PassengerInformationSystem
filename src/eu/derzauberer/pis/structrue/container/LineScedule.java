@@ -17,8 +17,24 @@ public class LineScedule {
 	private Boolean holiday;
 	private Boolean scoolHoliday;
 	
-	private List<LocalDate> inclusiveDates = new ArrayList<>();
-	private List<LocalDate> exclusiveDates = new ArrayList<>();
+	private final List<LocalDate> inclusiveDates = new ArrayList<>();
+	private final List<LocalDate> exclusiveDates = new ArrayList<>();
+	
+	public LineScedule() {}
+	
+	public LineScedule(LineScedule lineScedule) {
+		this.monday = lineScedule.monday;
+		this.tuesday = lineScedule.tuesday;
+		this.wednesday = lineScedule.wednesday;
+		this.thursday = lineScedule.thursday;
+		this.friday = lineScedule.friday;
+		this.saturday = lineScedule.saturday;
+		this.sunday = lineScedule.sunday;
+		this.holiday = lineScedule.holiday;
+		this.scoolHoliday = lineScedule.scoolHoliday;
+		this.inclusiveDates.addAll(lineScedule.inclusiveDates);
+		this.inclusiveDates.addAll(lineScedule.exclusiveDates);
+	}
 	
 	public boolean isMonday() {
 		return monday;

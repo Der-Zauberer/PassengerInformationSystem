@@ -19,6 +19,13 @@ public class StationTrafficEntry implements Comparable<StationTrafficEntry> {
 		this.lastStation = lastStation;
 	}
 	
+	public StationTrafficEntry(StationTrafficEntry stationTrafficEntry) {
+		this.time = stationTrafficEntry.time;
+		this.lineId = stationTrafficEntry.lineId;
+		this.stationPosition = stationTrafficEntry.stationPosition;
+		this.lastStation = stationTrafficEntry.lastStation;
+	}
+	
 	public LocalTime getTime() {
 		return time;
 	}

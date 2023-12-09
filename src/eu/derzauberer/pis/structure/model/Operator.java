@@ -81,5 +81,15 @@ public class Operator extends Entity<Operator> implements NameEntity {
 	public void setApiInformation(ApiInformation api) {
 		this.api = api;
 	}
+	
+	@Override
+	public Operator copy() {
+		final Operator operator = new Operator(this.id, this.name);
+		if (address != null) operator.address = new Address(this.address);
+		operator.backgorundColor = this.backgorundColor;
+		operator.textColor = this.textColor;
+		if (api != null) operator.api = new ApiInformation(this.api);
+		return operator;
+	}
 
 }

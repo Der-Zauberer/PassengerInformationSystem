@@ -34,14 +34,14 @@ public class StationService extends EntityService<Station> {
 	
 	public SortedSet<StationTrafficEntry> getDeparturesInHour(String stationId, LocalDateTime dateTime) {
 		final StationTraffic stationTraffic = 
-				stationTrafficRepository.getById(StationTraffic.createIdFormNameAndDate(stationId, dateTime.toLocalDate()))
+				stationTrafficRepository.getById(StationTraffic.createIdFromNameAndDate(stationId, dateTime.toLocalDate()))
 				.orElse(new StationTraffic(stationId, dateTime.toLocalDate()));
 		return stationTraffic.getDeparturesInHour(dateTime.getHour());
 	}
 	
 	public Set<StationTrafficEntry> getArrivalsInHour(String stationId, LocalDateTime dateTime) {
 		final StationTraffic stationTraffic = 
-				stationTrafficRepository.getById(StationTraffic.createIdFormNameAndDate(stationId, dateTime.toLocalDate()))
+				stationTrafficRepository.getById(StationTraffic.createIdFromNameAndDate(stationId, dateTime.toLocalDate()))
 				.orElse(new StationTraffic(stationId, dateTime.toLocalDate()));
 		return stationTraffic.getArrivalsInHour(dateTime.getHour());
 	}

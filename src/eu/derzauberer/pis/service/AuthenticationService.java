@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +19,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Service;
 
+import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.structrue.data.UserData;
 import eu.derzauberer.pis.structure.model.User;
 import jakarta.servlet.ServletException;
@@ -31,13 +31,13 @@ import jakarta.servlet.http.HttpSession;
 public class AuthenticationService implements AuthenticationProvider, UserDetailsService {
 
 	private final UserService userService;
-	private final ModelMapper modelmapper;
+	private final DataConverter<User, UserData> userDataConverter;
 	private final Set<String> expiredSessions;
 	
 	@Autowired
-	public AuthenticationService(UserService userService, ModelMapper modelmapper) {
+	public AuthenticationService(UserService userService, DataConverter<User, UserData> userDataConverter) {
 		this.userService = userService;
-		this.modelmapper = modelmapper;
+		this.userDataConverter = userDataConverter;
 		expiredSessions = new HashSet<>();
 		userService.addOnSave(event -> {
 			event.oldEntity().map(User::getId).ifPresent(expiredSessions::add);
@@ -68,9 +68,9 @@ public class AuthenticationService implements AuthenticationProvider, UserDetail
 		final HttpSession session = request.getSession();
 		if (session != null) {
 			session.setAttribute("user", true);
-			userService.getById(authentication.getName()).map(user -> modelmapper.map(user, UserData.class)).ifPresent(user -> {
-				session.setAttribute("user", user);
-			});
+			userService.getById(authentication.getName())
+				.map(userDataConverter::convert)
+				.ifPresent(user -> session.setAttribute("user", user));
 		}
 		new SavedRequestAwareAuthenticationSuccessHandler().onAuthenticationSuccess(request, response, authentication);
 	}
@@ -84,7 +84,7 @@ public class AuthenticationService implements AuthenticationProvider, UserDetail
 					session.invalidate();
 					return;
 				} else {
-					session.setAttribute("user", modelmapper.map(user, UserData.class));
+					session.setAttribute("user", userDataConverter.convert(user));
 					if (oldUser.getRole() != user.getRole()) {
 						final Authentication auth = new UsernamePasswordAuthenticationToken(user.getId(), null, user.getRole().getGrantedAuthorities());
 						SecurityContextHolder.getContext().setAuthentication(auth);

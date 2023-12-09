@@ -8,11 +8,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.TreeMap;
 
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.derzauberer.pis.configuration.SpringConfiguration;
 import eu.derzauberer.pis.structure.model.Entity;
 import eu.derzauberer.pis.structure.model.NameEntity;
 
@@ -20,7 +18,6 @@ public class MemoryEntityRepository<T extends Entity<T>> extends EntityRepositor
 	
 	private final Map<String, T> entities = new TreeMap<>();
 	
-	private static final ModelMapper MODEL_MAPPER = SpringConfiguration.getBean(ModelMapper.class);
 	protected static final Logger LOGGER = LoggerFactory.getLogger(MemoryEntityRepository.class);
 
 	public MemoryEntityRepository(String name, Class<T> type) {
@@ -32,13 +29,12 @@ public class MemoryEntityRepository<T extends Entity<T>> extends EntityRepositor
 		LOGGER.info("Loaded {} {}", size(), name);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public void save(T entity) {
 		Objects.requireNonNull(entity);
 		Objects.requireNonNull(entity.getId());
 		if (entity instanceof NameEntity) Objects.requireNonNull(((NameEntity) entity).getName());
-		final T copy = (T) MODEL_MAPPER.map(entity, entity.getClass());
+		final T copy = entity.copy();
 		entities.put(entity.getId(), copy);
 		saveEntity(copy);
 	}
@@ -59,12 +55,11 @@ public class MemoryEntityRepository<T extends Entity<T>> extends EntityRepositor
 	}
 	
 	@Override
-	@SuppressWarnings("unchecked")
 	public Optional<T> getById(String id) {
 		if (id == null) return Optional.empty();
 		final T entity = entities.get(id);
 		if (entity == null) return Optional.empty();
-		return Optional.of((T) MODEL_MAPPER.map(entities.get(id), entity.getClass()));
+		return Optional.of(entity.copy());
 	}
 	
 	@Override

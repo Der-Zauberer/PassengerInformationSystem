@@ -72,5 +72,14 @@ public class TransportationType extends Entity<TransportationType> implements Na
 	public void setApiInformation(ApiInformation api) {
 		this.api = api;
 	}
+	
+	@Override
+	public TransportationType copy() {
+		final TransportationType type = new TransportationType(this.id, this.name, this.vehicle, this.classification);
+		type.backgroundColor = this.backgroundColor;
+		type.textColor = this.textColor;
+		if (api != null) type.api = new ApiInformation(this.api);
+		return type;
+	}
 
 }

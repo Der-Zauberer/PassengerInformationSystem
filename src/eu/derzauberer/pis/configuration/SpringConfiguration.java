@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeMap;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.web.servlet.server.CookieSameSiteSupplier;
 import org.springframework.context.ApplicationContext;
@@ -40,7 +38,6 @@ import eu.derzauberer.pis.configuration.SerializationConfiguration.TimeSerialize
 import eu.derzauberer.pis.repository.EntityRepository;
 import eu.derzauberer.pis.repository.FileEntityRepository;
 import eu.derzauberer.pis.repository.MemoryEntityRepository;
-import eu.derzauberer.pis.structure.form.UserForm;
 import eu.derzauberer.pis.structure.model.Line;
 import eu.derzauberer.pis.structure.model.Operator;
 import eu.derzauberer.pis.structure.model.Route;
@@ -132,27 +129,6 @@ public class SpringConfiguration implements ApplicationContextAware, WebMvcConfi
 		final ObjectMapper objectMapper = getJsonMapperBuilder().build();
 		objectMapper.setDefaultPrettyPrinter(new PrettyPrinter());
 		return objectMapper;
-	}
-	
-	@Bean
-	public ModelMapper getModelMapper() {
-		final ModelMapper modelMapper = new ModelMapper();
-		modelMapper.getConfiguration().setSkipNullEnabled(true);
-		return modelMapper;
-	}
-	
-	@Bean
-	public TypeMap<User, UserForm> getUserEditDtoModelMapper() {
-		final TypeMap<User, UserForm> userModelMapper = getModelMapper().createTypeMap(User.class, UserForm.class);
-		userModelMapper.addMappings(mapper -> mapper.skip(UserForm::setPassword));
-		return userModelMapper;
-	}
-	
-	@Bean
-	public TypeMap<UserForm, User> getUserModelMapper() {
-		final TypeMap<UserForm, User> userModelMapper = getModelMapper().createTypeMap(UserForm.class, User.class);
-		userModelMapper.addMappings(mapper -> mapper.skip(User::setPassword));
-		return userModelMapper;
 	}
 	
 	@Bean

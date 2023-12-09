@@ -139,7 +139,7 @@ public class LineService extends EntityService<Line> {
 	
 	private StationTraffic getOrCreateStationTraffic(String stationId, LocalDate date) {
 		return stationTrafficRepository
-				.getById(StationTraffic.createIdFormNameAndDate(stationId, date))
+				.getById(StationTraffic.createIdFromNameAndDate(stationId, date))
 				.orElse(new StationTraffic(stationId, date));
 	}
 

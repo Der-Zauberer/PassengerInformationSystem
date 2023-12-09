@@ -104,10 +104,12 @@ public class Route extends Entity<Route> implements NameEntity {
 	}
 	
 	public RouteStop getStop(String stationId) {
+		if (stops == null) return null;
 		return stops.stream().filter(stop -> stop.getStationId().equals(stationId)).findAny().orElse(null);
 	}
 	
 	public RouteStop getStop(int position) {
+		if (stops == null) return null;
 		return stops.get(position);
 	}
 	
@@ -149,10 +151,12 @@ public class Route extends Entity<Route> implements NameEntity {
 	}
 	
 	public Information getInformation(int index) {
+		if (informations == null) return null;
 		return informations.get(index);
 	}
 	
 	public int getInformationIndex(Information information) {
+		if (information == null) return -1;
 		return informations.indexOf(information);
 	}
 	
@@ -172,6 +176,17 @@ public class Route extends Entity<Route> implements NameEntity {
 	
 	public void setApiInformation(ApiInformation api) {
 		this.api = api;
+	}
+	
+	@Override
+	public Route copy() {
+		final Route route = new Route(this.id, this.name, this.type, this.number);
+		route.operatorId = this.operatorId;
+		if (stops != null) route.stops = this.stops.stream().map(RouteStop::new).toList();
+		if (scedule != null) route.scedule = new LineScedule(this.scedule);
+		if (informations != null) route.informations = this.informations.stream().map(Information::new).toList();
+		if (api != null) route.api = new ApiInformation(this.api);
+		return route;
 	}
 
 }

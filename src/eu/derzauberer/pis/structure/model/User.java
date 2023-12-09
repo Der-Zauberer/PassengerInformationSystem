@@ -93,4 +93,17 @@ public class User extends Entity<User> implements NameEntity {
 		return role;
 	}
 	
+	@Override
+	public User copy() {
+		final User user = new User(this.id, this.name);
+		user.email = this.email;
+		user.password = this.password;
+		user.enabled = this.enabled;
+		user.passwordChangeRequired = this.passwordChangeRequired;
+		user.created = this.created;
+		user.lastLogin = this.lastLogin;
+		user.role = this.role;
+		return user;
+	}
+	
 }

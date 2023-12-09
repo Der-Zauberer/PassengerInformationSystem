@@ -4,6 +4,8 @@ public abstract class Entity<T extends Entity<T>> implements Comparable<T> {
 	
 	public abstract String getId();
 	
+	public abstract T copy();
+	
 	@Override
 	public int compareTo(T entity) {
 		return getId().compareTo(entity.getId());

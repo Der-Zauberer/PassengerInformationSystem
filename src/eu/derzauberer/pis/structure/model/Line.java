@@ -34,7 +34,7 @@ public class Line extends Entity<Line> implements NameEntity {
 		this.type = route.getType();
 		this.number = route.getNumber();
 		this.operatorId = route.getOperatorId();
-		this.stops = new ArrayList<>();
+		if (route.getAmountOfStops() > 0) this.stops = new ArrayList<>();
 		for (RouteStop stop : route.getStops()) {
 			final LineStop lineStop = new LineStop(
 					stop.getStationId(), 
@@ -154,10 +154,12 @@ public class Line extends Entity<Line> implements NameEntity {
 	}
 	
 	public LineStop getStop(String stationId) {
+		if (stops == null) return null;
 		return stops.stream().filter(stop -> stop.getStationId().equals(stationId)).findAny().orElse(null);
 	}
 	
 	public LineStop getStop(int position) {
+		if (stops == null) return null;
 		return stops.get(position);
 	}
 	
@@ -195,10 +197,12 @@ public class Line extends Entity<Line> implements NameEntity {
 	}
 	
 	public Information getInformation(int index) {
+		if (informations == null) return null;
 		return informations.get(index);
 	}
 	
 	public int getInformationIndex(Information information) {
+		if (informations == null) return -1;
 		return informations.indexOf(information);
 	}
 	
@@ -218,6 +222,19 @@ public class Line extends Entity<Line> implements NameEntity {
 	
 	public void setApiInformation(ApiInformation api) {
 		this.api = api;
+	}
+	
+	@Override
+	public Line copy() {
+		final Line line = new Line(this.id, this.routeId, this.type, this.number);
+		line.operatorId = this.operatorId;
+		line.driver = this.driver;
+		line.cancelled = this.cancelled;
+		line.position = this.position;
+		if (stops != null) line.stops = this.stops.stream().map(LineStop::new).toList();
+		if (informations != null) line.informations = this.informations.stream().map(Information::new).toList();
+		if (api != null) line.api = new ApiInformation(this.api);
+		return line;
 	}
 
 }

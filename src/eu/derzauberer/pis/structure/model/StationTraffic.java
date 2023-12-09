@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import eu.derzauberer.pis.structrue.container.StationTrafficEntry;
 
@@ -23,7 +24,7 @@ public class StationTraffic extends Entity<StationTraffic> {
 	}
 	
 	public StationTraffic(String stationId, LocalDate date) {
-		this.id = createIdFormNameAndDate(stationId, date);
+		this.id = createIdFromNameAndDate(stationId, date);
 	}
 	
 	@Override
@@ -71,8 +72,26 @@ public class StationTraffic extends Entity<StationTraffic> {
 		return Collections.unmodifiableSortedSet(arrivalSet != null ? arrivalSet : new TreeSet<>());
 	}
 	
-	public static String createIdFormNameAndDate(String stationId, LocalDate date) {
+	public static String createIdFromNameAndDate(String stationId, LocalDate date) {
 		return String.format("%1$s_%2$04d%3$02d%4$02d", stationId, date.getYear(), date.getMonthValue(), date.getDayOfMonth());
+	}
+	
+	@Override
+	public StationTraffic copy() {
+		final StationTraffic stationTraffic = new StationTraffic(this.id);
+		this.departures.forEach((hour, traffic) -> {
+			stationTraffic.departures.put(hour, traffic
+					.stream()
+					.map(StationTrafficEntry::new)
+					.collect(Collectors.toCollection(TreeSet::new)));
+		});
+		this.arrivals.forEach((hour, traffic) -> {
+			stationTraffic.arrivals.put(hour, traffic
+					.stream()
+					.map(StationTrafficEntry::new)
+					.collect(Collectors.toCollection(TreeSet::new)));
+		});
+		return stationTraffic;
 	}
 
 }

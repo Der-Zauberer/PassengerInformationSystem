@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.controller.web.home;
+package eu.derzauberer.pis.controller.home;
 
 import java.security.Principal;
 

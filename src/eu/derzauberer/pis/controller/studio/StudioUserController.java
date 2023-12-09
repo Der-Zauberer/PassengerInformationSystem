@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.controller.web.studio;
+package eu.derzauberer.pis.controller.studio;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

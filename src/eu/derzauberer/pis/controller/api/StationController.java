@@ -15,7 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import eu.derzauberer.pis.converter.DataConverter;
+import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.service.StationService;
+import eu.derzauberer.pis.structure.data.StationData;
+import eu.derzauberer.pis.structure.form.StationForm;
 import eu.derzauberer.pis.structure.model.Station;
 import eu.derzauberer.pis.util.Result;
 import eu.derzauberer.pis.util.ResultListDto;
@@ -29,26 +33,32 @@ public class StationController {
 	@Autowired
 	private StationService stationService;
 	
+	@Autowired
+	private DataConverter<Station, StationData> stationDataConverter;
+	
+	@Autowired
+	private FormConverter<Station, StationForm> stationFormConverter;
+	
 	@GetMapping
-	public ResultListDto<Station> getStations(
+	public ResultListDto<StationData> getStations(
 			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
 		final Result<Station> result = hasSearch ? stationService.search(search) : stationService;
-		return result.getList(offset, limit == -1 ? result.size() : limit);
+		return result.map(stationDataConverter::convert).getList(offset, limit == -1 ? result.size() : limit);
 	}
 	
 	@GetMapping("{id}")
-	public Station getStation(@PathVariable("id") String id) {
-		return stationService.getById(id).orElseThrow(() -> getNotFoundException(id));
+	public StationData getStation(@PathVariable("id") String id) {
+		return stationService.getById(id).map(stationDataConverter::convert).orElseThrow(() -> getNotFoundException(id));
 	}
 	
 	@PostMapping
-	public Station setStation(@RequestBody Station station) {
-		stationService.save(station);
-		return station;
+	public StationData setStation(@RequestBody StationForm stationForm) {
+		final Station station = stationFormConverter.convertToModel(stationForm);
+		return stationDataConverter.convert(stationService.save(station));
 	}
 	
 	@DeleteMapping("{id}")

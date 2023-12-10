@@ -7,7 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import eu.derzauberer.pis.converter.DataConverter;
+import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.service.StationService;
+import eu.derzauberer.pis.structure.data.StationData;
+import eu.derzauberer.pis.structure.form.StationForm;
 import eu.derzauberer.pis.structure.model.Station;
 import eu.derzauberer.pis.util.Result;
 
@@ -18,6 +22,12 @@ public class StudioStationController {
 	@Autowired
 	private StationService stationService;
 	
+	@Autowired
+	private DataConverter<Station, StationData> stationDataConverter;
+	
+	@Autowired
+	private FormConverter<Station, StationForm> stationFormConverter;
+	
 	@GetMapping
 	public String getStations(Model model,
 			@RequestParam(name = "search", required = false) String search,
@@ -26,16 +36,16 @@ public class StudioStationController {
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
 		final Result<Station> result = hasSearch ? stationService.search(search) : stationService;
-		model.addAttribute("page", result.getPage(page, pageSize));
+		model.addAttribute("page", result.map(stationDataConverter::convert).getPage(page, pageSize));
 		return "studio/stations.html";
 	}
 	
 	@GetMapping("/edit")
 	public String editStation(@RequestParam(value = "id", required = false) String id, Model model) {
-		stationService.getById(id).ifPresentOrElse(station -> {
+		stationService.getById(id).map(stationFormConverter::convertToForm).ifPresentOrElse(station -> {
 			model.addAttribute("station", station);
 		}, () -> {
-			model.addAttribute("station", new Station("unnamed", "Unnamed"));
+			model.addAttribute("station", new StationForm());
 		});
 		return "studio/edit/edit_station.html";
 	}

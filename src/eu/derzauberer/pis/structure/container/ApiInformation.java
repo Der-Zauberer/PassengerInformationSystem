@@ -13,8 +13,14 @@ public class ApiInformation {
 	public ApiInformation() {}
 	
 	public ApiInformation(ApiInformation apiInformation) {
-		if (apiInformation.ids != null) apiInformation.ids.forEach(ids::put);
-		if (apiInformation.ids != null) apiInformation.sources.forEach(sources::put);
+		if (apiInformation.ids != null) {
+			this.ids = new HashMap<>();
+			apiInformation.ids.forEach(ids::put);
+		}
+		if (apiInformation.sources != null) {
+			this.sources = new HashMap<>();
+			apiInformation.sources.forEach(sources::put);
+		}
 	}
 	
 	public void addId(String name, Object id) {

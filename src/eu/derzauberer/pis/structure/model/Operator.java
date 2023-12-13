@@ -49,27 +49,27 @@ public class Operator extends Entity<Operator> implements NameEntity {
 		return address;
 	}
 	
-	public void setAdress(Address adress) {
+	public void setAddress(Address adress) {
 		this.address = adress;
 	}
 	
-	public int getPrimaryColor() {
+	public int getBackgorundColor() {
 		return backgorundColor;
 	}
 	
-	public void setPrimaryColor(int primaryColor) {
-		this.backgorundColor = primaryColor;
+	public void setBackgorundColor(int backgorundColor) {
+		this.backgorundColor = backgorundColor;
 	}
 	
-	public int getSecondaryColor() {
+	public int getTextColor() {
 		return textColor;
 	}
 	
-	public void setSecondaryColor(int secondaryColor) {
-		this.textColor = secondaryColor;
+	public void setTextColor(int textColor) {
+		this.textColor = textColor;
 	}
 	
-	public ApiInformation getApi() {
+	public ApiInformation getApiInformation() {
 		return api;
 	}
 	

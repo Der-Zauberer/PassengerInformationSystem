@@ -3,7 +3,6 @@ package eu.derzauberer.pis.structure.form;
 import java.util.SortedSet;
 
 import eu.derzauberer.pis.structure.container.Address;
-import eu.derzauberer.pis.structure.container.ApiInformation;
 import eu.derzauberer.pis.structure.container.Location;
 import eu.derzauberer.pis.structure.container.Platform;
 import eu.derzauberer.pis.structure.container.StationServices;
@@ -16,7 +15,6 @@ public class StationForm {
 	private Address address;
 	private Location location;
 	private StationServices services;
-	private ApiInformation api;
 	
 	public String getId() {
 		return id;
@@ -74,19 +72,6 @@ public class StationForm {
 	
 	public void setServices(StationServices services) {
 		this.services = services;
-	}
-	
-	public ApiInformation getApiInformation() {
-		return api;
-	}
-	
-	public ApiInformation getOrCreateApiInformation() {
-		if (api == null) api = new ApiInformation();
-		return api;
-	}
-	
-	public void setApiInformation(ApiInformation api) {
-		this.api = api;
 	}
 
 }

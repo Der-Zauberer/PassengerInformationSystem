@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.service.OperatorService;
+import eu.derzauberer.pis.structure.data.OperatorData;
 import eu.derzauberer.pis.structure.model.Operator;
 import eu.derzauberer.pis.util.Result;
 
@@ -18,6 +20,9 @@ public class StudioOperatorController {
 	@Autowired
 	private OperatorService operatorService;
 	
+	@Autowired
+	private DataConverter<Operator, OperatorData> operatorDataConverter;
+	
 	@GetMapping
 	public String getOperators(Model model,
 			@RequestParam(name = "search", required = false) String search,
@@ -26,7 +31,7 @@ public class StudioOperatorController {
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
 		final Result<Operator> result = hasSearch ? operatorService.search(search) : operatorService;
-		model.addAttribute("page", result.getPage(page, pageSize));
+		model.addAttribute("page", result.map(operatorDataConverter::convert).getPage(page, pageSize));
 		return "studio/operators.html";
 	}
 

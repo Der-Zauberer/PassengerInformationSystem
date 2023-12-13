@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 import eu.derzauberer.pis.structure.container.Address;
-import eu.derzauberer.pis.structure.container.ApiInformation;
 import eu.derzauberer.pis.structure.container.Location;
 import eu.derzauberer.pis.structure.container.Platform;
 import eu.derzauberer.pis.structure.container.StationServices;
@@ -26,7 +25,6 @@ public class StationFormConverter implements FormConverter<Station, StationForm>
 		if (station.getAddress() != null) stationForm.setAddress(new Address(station.getAddress()));
 		if (station.getLocation() != null) stationForm.setLocation(new Location(station.getLocation()));
 		if (station.getServices() != null) stationForm.setServices(new StationServices(station.getServices()));
-		if (station.getApiInformation() != null) stationForm.setApiInformation(new ApiInformation(station.getApiInformation()));
 		return stationForm;
 	}
 
@@ -42,7 +40,6 @@ public class StationFormConverter implements FormConverter<Station, StationForm>
 		if (stationForm.getAddress() != null) station.setAddress(new Address(stationForm.getAddress()));
 		if (stationForm.getLocation() != null) station.setLocation(new Location(stationForm.getLocation()));
 		if (stationForm.getServices() != null) station.setServices(new StationServices(stationForm.getServices()));
-		if (stationForm.getApiInformation() != null) station.setApiInformation(new ApiInformation(stationForm.getApiInformation()));
 		return station;
 	}
 	

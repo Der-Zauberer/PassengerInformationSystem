@@ -1,17 +1,18 @@
 package eu.derzauberer.pis.structure.model;
 
 import java.beans.ConstructorProperties;
+import java.util.Optional;
 
 import eu.derzauberer.pis.structure.container.Address;
 import eu.derzauberer.pis.structure.container.ApiInformation;
+import eu.derzauberer.pis.structure.container.Color;
 
 public class Operator extends Entity<Operator> implements NameEntity {
 
 	private final String id;
 	private String name;
 	private Address address;
-	private int backgroundColor;
-	private int textColor;
+	private Color color;
 	private ApiInformation api;
 	
 	public Operator(String name) {
@@ -22,8 +23,6 @@ public class Operator extends Entity<Operator> implements NameEntity {
 	public Operator(String id, String name) {
 		this.id = id;
 		this.name = name;
-		this.backgroundColor = 0x000000;
-		this.textColor = 0xffffff;
 	}
 	
 	@Override
@@ -40,11 +39,11 @@ public class Operator extends Entity<Operator> implements NameEntity {
 		this.name = name;
 	}
 	
-	public Address getAddress() {
-		return address;
+	public Optional<Address> getAddress() {
+		return Optional.ofNullable(address);
 	}
 	
-	public Address getOrCreateAdress() {
+	public Address getOrCreateAddress() {
 		if (address == null) address = new Address();
 		return address;
 	}
@@ -53,27 +52,24 @@ public class Operator extends Entity<Operator> implements NameEntity {
 		this.address = adress;
 	}
 	
-	public int getBackgroundColor() {
-		return backgroundColor;
+	public Optional<Color> getColor() {
+		return Optional.ofNullable(color);
 	}
 	
-	public void setBackgroundColor(int backgroundColor) {
-		this.backgroundColor = backgroundColor;
+	public Color getOrCreateColor() {
+		if (color == null) color = new Color();
+		return color;
 	}
 	
-	public int getTextColor() {
-		return textColor;
+	public void setColor(Color color) {
+		this.color = color;
 	}
 	
-	public void setTextColor(int textColor) {
-		this.textColor = textColor;
+	public Optional<ApiInformation> getApiInformation() {
+		return Optional.ofNullable(api);
 	}
 	
-	public ApiInformation getApiInformation() {
-		return api;
-	}
-	
-	public ApiInformation getOrCreateApi() {
+	public ApiInformation getOrCreateApiInformation() {
 		if (api == null) api = new ApiInformation();
 		return api;
 	}
@@ -86,8 +82,7 @@ public class Operator extends Entity<Operator> implements NameEntity {
 	public Operator copy() {
 		final Operator operator = new Operator(this.id, this.name);
 		if (address != null) operator.address = new Address(this.address);
-		operator.backgroundColor = this.backgroundColor;
-		operator.textColor = this.textColor;
+		if (color != null) operator.color = new Color(this.color);
 		if (api != null) operator.api = new ApiInformation(this.api);
 		return operator;
 	}

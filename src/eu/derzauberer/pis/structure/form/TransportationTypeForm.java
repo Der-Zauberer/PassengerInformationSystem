@@ -1,5 +1,6 @@
 package eu.derzauberer.pis.structure.form;
 
+import eu.derzauberer.pis.structure.container.Color;
 import eu.derzauberer.pis.structure.enums.TransportationClassification;
 import eu.derzauberer.pis.structure.enums.TransportationVehicle;
 
@@ -9,14 +10,11 @@ public class TransportationTypeForm {
 	private String name;
 	private TransportationVehicle vehicle;
 	private TransportationClassification classification;
-	private String backgroundColor;
-	private String textColor;
+	private Color color;
 	
 	public TransportationTypeForm() {
 		vehicle = TransportationVehicle.TRAIN;
 		classification = TransportationClassification.REGIONAL;
-		backgroundColor = "#000000";
-		textColor = "#ffffff";
 	}
 	
 	public String getId() {
@@ -51,20 +49,12 @@ public class TransportationTypeForm {
 		this.classification = classification;
 	}
 	
-	public String getBackgroundColor() {
-		return backgroundColor;
+	public Color getColor() {
+		return color;
 	}
 	
-	public void setBackgroundColor(String backgroundColor) {
-		this.backgroundColor = backgroundColor;
-	}
-	
-	public String getTextColor() {
-		return textColor;
-	}
-	
-	public void setTextColor(String textColor) {
-		this.textColor = textColor;
+	public void setColor(Color color) {
+		this.color = color;
 	}
 
 }

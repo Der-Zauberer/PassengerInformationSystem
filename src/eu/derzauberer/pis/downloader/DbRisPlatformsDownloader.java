@@ -45,9 +45,9 @@ public class DbRisPlatformsDownloader {
 		long millis = System.currentTimeMillis();
 		final ProgressStatus progress = new ProgressStatus("Processing", NAME, stations.size());
 		for (Station station : stations) {
-			if (station.getApiInformation() == null || station.getApiInformation().getIds() == null || !station.getApiInformation().getIds().containsKey("eva")) continue;
+			if (station.getApiInformation().isEmpty() || station.getOrCreateApiInformation().getIds() == null || !station.getOrCreateApiInformation().getIds().containsKey("eva")) continue;
 			request.getParameter().put("keyType", "EVA");
-			request.getParameter().put("key", station.getApiInformation().getIds().get("eva").toString());
+			request.getParameter().put("key", station.getOrCreateApiInformation().getIds().get("eva").toString());
 			long wait = System.currentTimeMillis() - millis;
 			try {
 				Thread.sleep(wait < 120 ? 120 - wait : 120);

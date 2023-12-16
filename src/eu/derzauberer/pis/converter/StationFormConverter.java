@@ -22,9 +22,9 @@ public class StationFormConverter implements FormConverter<Station, StationForm>
 		stationForm.setId(station.getId());
 		stationForm.setName(station.getName());
 		if (station.getPlatforms() != null) stationForm.setPlatforms(copyPlatforms(station.getPlatforms()));
-		if (station.getAddress() != null) stationForm.setAddress(new Address(station.getAddress()));
-		if (station.getLocation() != null) stationForm.setLocation(new Location(station.getLocation()));
-		if (station.getServices() != null) stationForm.setServices(new StationServices(station.getServices()));
+		station.getAddress().ifPresent(address -> stationForm.setAddress(new Address(address)));
+		station.getLocation().ifPresent(location -> stationForm.setLocation(new Location(location)));
+		station.getServices().ifPresent(services -> stationForm.setServices(new StationServices(services)));
 		return stationForm;
 	}
 

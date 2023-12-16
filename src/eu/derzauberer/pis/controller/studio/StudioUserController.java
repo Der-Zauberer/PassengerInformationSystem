@@ -48,7 +48,7 @@ public class StudioUserController {
 		final UserForm user = userService.getById(id).map(userFormConverter::convertToForm).orElseGet(() -> new UserForm());
 		model.addAttribute("user", user);
 		model.addAttribute("roles", UserRole.values());
-		return "studio/edit/edit_user.html";
+		return "studio/edit/form/user-form.html";
 	}
 	
 	@PostMapping("/edit")

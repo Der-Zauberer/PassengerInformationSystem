@@ -52,10 +52,10 @@ public class DbStadaStationDownloader {
 		for (JsonNode node : json.withArray("result")) {
 			final String name = node.get("name").asText();
 			final Station station = stationService.getById(NameEntity.nameToId(name)).orElse(new Station(name));
-			station.getOrCreateAdress().setStreet(node.at("/mailingAddress/street").asText());
-			station.getOrCreateAdress().setPostalCode(node.at("/mailingAddress/zipcode").asInt());
-			station.getOrCreateAdress().setCity(node.at("/mailingAddress/city").asText());
-			station.getOrCreateAdress().setCountry("Germany");
+			station.getOrCreateAddress().setStreet(node.at("/mailingAddress/street").asText());
+			station.getOrCreateAddress().setPostalCode(node.at("/mailingAddress/zipcode").asInt());
+			station.getOrCreateAddress().setCity(node.at("/mailingAddress/city").asText());
+			station.getOrCreateAddress().setCountry("Germany");
 			if (!node.get("evaNumbers").isEmpty() && !node.get("evaNumbers").get(0).isEmpty()) {
 				JsonNode eva = node.get("evaNumbers").get(0);
 				station.getOrCreateApiInformation().addId("eva", eva.get("number").asLong());
@@ -68,18 +68,18 @@ public class DbStadaStationDownloader {
 			} else {
 				warns.add("Station " + station.getId() + " does not contain geo-coordinates and an eva-number!");
 			}
-			station.getorCreateServices().setParking(extractBoolean(node, "hasParking"));
-			station.getorCreateServices().setBicycleParking(extractBoolean(node, "hasBicycleParking"));
-			station.getorCreateServices().isLocalPublicTransport(extractBoolean(node, "hasLocalPublicTransport"));
-			station.getorCreateServices().setPublicFacilities(extractBoolean(node, "hasPublicFacilities"));
-			station.getorCreateServices().setLockerSystem(extractBoolean(node, "hasLockerSystem"));
-			station.getorCreateServices().setTaxiRank(extractBoolean(node, "hasTaxiRank"));
-			station.getorCreateServices().setTravelNecessities(extractBoolean(node, "hasTravelNecessities"));
-			station.getorCreateServices().setBarrierFree(extractBoolean(node, "hasSteplessAccess"));
-			station.getorCreateServices().setWifi(extractBoolean(node, "hasWiFi"));
-			station.getorCreateServices().setTravelCenter(extractBoolean(node, "hasTravelCenter"));
-			station.getorCreateServices().setRailwayMission(extractBoolean(node, "hasRailwayMission"));
-			station.getorCreateServices().setCarRental(extractBoolean(node, "hasCarRental"));
+			station.getOrCreateServices().setParking(extractBoolean(node, "hasParking"));
+			station.getOrCreateServices().setBicycleParking(extractBoolean(node, "hasBicycleParking"));
+			station.getOrCreateServices().isLocalPublicTransport(extractBoolean(node, "hasLocalPublicTransport"));
+			station.getOrCreateServices().setPublicFacilities(extractBoolean(node, "hasPublicFacilities"));
+			station.getOrCreateServices().setLockerSystem(extractBoolean(node, "hasLockerSystem"));
+			station.getOrCreateServices().setTaxiRank(extractBoolean(node, "hasTaxiRank"));
+			station.getOrCreateServices().setTravelNecessities(extractBoolean(node, "hasTravelNecessities"));
+			station.getOrCreateServices().setBarrierFree(extractBoolean(node, "hasSteplessAccess"));
+			station.getOrCreateServices().setWifi(extractBoolean(node, "hasWiFi"));
+			station.getOrCreateServices().setTravelCenter(extractBoolean(node, "hasTravelCenter"));
+			station.getOrCreateServices().setRailwayMission(extractBoolean(node, "hasRailwayMission"));
+			station.getOrCreateServices().setCarRental(extractBoolean(node, "hasCarRental"));
 			station.getOrCreateApiInformation().addId("stada", node.get("number").asLong());
 			station.getOrCreateApiInformation().addSource(URL);
 			progress.count();

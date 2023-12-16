@@ -1,0 +1,53 @@
+<th:block th:fragment="address-container">
+	<h3 class="mg-t-0" th:text=#{container.address}></h3>
+
+	<div class="pis-form-grid-2">
+		<div class="input">
+			<input type="text" th:field="*{address.name}">
+			<span class="input-name" th:text=#{container.address.name}></span>
+			<span class="input-error"></span>
+		</div>
+
+		<div class="input">
+			<input type="text" th:field="*{address.street}">
+			<span class="input-name" th:text=#{container.address.street}></span>
+			<span class="input-error"></span>
+		</div>
+
+		<div class="input">
+			<input type="number" th:field="*{address.postalCode}">
+			<span class="input-name" th:text=#{container.address.postalCode}></span>
+			<span class="input-error"></span>
+		</div>
+
+		<div class="input">
+			<input type="text" th:field="*{address.city}">
+			<span class="input-name" th:text=#{container.address.city}></span>
+			<span class="input-error"></span>
+		</div>
+
+		<div class="input">
+			<input type="text" th:field="*{address.state}">
+			<span class="input-name" th:text=#{container.address.state}></span>
+			<span class="input-error"></span>
+		</div>
+
+		<div class="input">
+			<input type="text" th:field="*{address.country}">
+			<span class="input-name" th:text=#{container.address.country}></span>
+			<span class="input-error"></span>
+		</div>
+
+		<div class="input">
+			<input type="tel" th:field="*{address.telephoneNumber}">
+			<span class="input-name" th:text=#{container.address.telephoneNumber}></span>
+			<span class="input-error"></span>
+		</div>
+
+		<div class="input">
+			<input type="email" th:field="*{address.email}">
+			<span class="input-name" th:text=#{container.address.email}></span>
+			<span class="input-error"></span>
+		</div>
+	</div>
+</th:block>

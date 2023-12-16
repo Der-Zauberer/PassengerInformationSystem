@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import eu.derzauberer.pis.structure.container.Address;
 import eu.derzauberer.pis.structure.container.ApiInformation;
+import eu.derzauberer.pis.structure.container.Color;
 import eu.derzauberer.pis.structure.data.OperatorData;
 import eu.derzauberer.pis.structure.model.Operator;
 
@@ -15,10 +16,9 @@ public class OperatorDataConverter implements DataConverter<Operator, OperatorDa
 		final OperatorData operatorData = new OperatorData();
 		operatorData.setId(operator.getId());
 		operatorData.setName(operator.getName());
-		if (operator.getAddress() != null) operatorData.setAddress(new Address(operator.getAddress()));
-		operatorData.setBackgroundColor(operator.getBackgroundColor());
-		operatorData.setTextColor(operator.getTextColor());
-		if (operator.getApiInformation() != null) operatorData.setApiInformation(new ApiInformation(operator.getApiInformation()));
+		operator.getAddress().ifPresent(address -> operatorData.setAddress(new Address(address)));
+		operator.getColor().ifPresent(color -> operatorData.setColor(new Color(color)));
+		operator.getApiInformation().ifPresent(api -> operatorData.setApiInformation(new ApiInformation(api)));
 		return operatorData;
 	}
 

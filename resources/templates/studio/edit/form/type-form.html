@@ -9,7 +9,7 @@
 		<div class="navigation-content">
 		
 			<div class="container-xl">
-				<form class="pis-form" action="#" th:action="@{/studio/types/edit?entity={id}(id = ${type.id})}" th:object="${type}" method="post">
+				<div class="pis-form" action="#" th:action="@{/studio/types/edit?entity={id}(id = ${type.id})}" th:object="${type}" method="post">
 				
 					<h3 class="mg-t-0" th:text=#{entity.general}></h3>
 					
@@ -53,21 +53,7 @@
 					    </div>
 					</div>
 					
-					<h3 class="mg-t-0" th:text="#{entity.type.color}"></h3>
-					
-					<div class="pis-form-grid-2">
-						<div class="input">
-					        <input type="text" th:field="*{backgroundColor}">
-					        <span class="input-name" th:text="#{entity.type.color.background}"></span>
-					        <span class="input-error"></span>
-					    </div>
-					    
-					    <div class="input">
-					        <input type="text" th:field="*{textColor}">
-					        <span class="input-name" th:text="#{entity.type.color.text}"></span>
-					        <span class="input-error"></span>
-					    </div>
-					</div>
+					<div th:replace="~{studio/edit/container/color-container :: color-container}"></div>
 					
 					<div th:replace="~{studio/components/edit-actions :: actions(${type.id}, ${type.name})}"></div>
 				

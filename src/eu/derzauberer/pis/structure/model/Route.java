@@ -4,6 +4,7 @@ import java.beans.ConstructorProperties;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import eu.derzauberer.pis.structure.container.ApiInformation;
@@ -15,7 +16,7 @@ public class Route extends Entity<Route> implements NameEntity {
 	
 	private final String id;
 	private String name;
-	private TransportationType type;
+	private String typeId;
 	private int number;
 	private String operatorId;
 	private List<RouteStop> stops;
@@ -23,11 +24,11 @@ public class Route extends Entity<Route> implements NameEntity {
 	private List<Information> informations;
 	private ApiInformation api;
 	
-	@ConstructorProperties({ "id", "name", "type" , "number"})
-	public Route(String id, String name, TransportationType type, int number) {
+	@ConstructorProperties({ "id", "name", "typeId" , "number"})
+	public Route(String id, String name, String typeId, int number) {
 		this.id = id;
 		this.name = name;
-		this.type = type;
+		this.typeId = typeId;
 		this.number = number;
 		this.scedule = new LineScedule();
 	}
@@ -46,12 +47,12 @@ public class Route extends Entity<Route> implements NameEntity {
 		this.name = name;
 	}
 	
-	public TransportationType getType() {
-		return type;
+	public String getTypeId() {
+		return typeId;
 	}
 	
-	public void setType(TransportationType type) {
-		this.type = type;
+	public void setTypeId(String typeId) {
+		this.typeId = typeId;
 	}
 	
 	public int getNumber() {
@@ -165,11 +166,11 @@ public class Route extends Entity<Route> implements NameEntity {
 		return results.stream().sorted().collect(Collectors.toUnmodifiableList());
 	}
 	
-	public ApiInformation getApiInformation() {
-		return api;
+	public Optional<ApiInformation> getApiInformation() {
+		return Optional.ofNullable(api);
 	}
 	
-	public ApiInformation getOrCreateApiInformtion() {
+	public ApiInformation getOrCreateApiInformation() {
 		if (api == null) api = new ApiInformation();
 		return api;
 	}
@@ -180,7 +181,7 @@ public class Route extends Entity<Route> implements NameEntity {
 	
 	@Override
 	public Route copy() {
-		final Route route = new Route(this.id, this.name, this.type, this.number);
+		final Route route = new Route(this.id, this.name, this.typeId, this.number);
 		route.operatorId = this.operatorId;
 		if (stops != null) route.stops = this.stops.stream().map(RouteStop::new).toList();
 		if (scedule != null) route.scedule = new LineScedule(this.scedule);

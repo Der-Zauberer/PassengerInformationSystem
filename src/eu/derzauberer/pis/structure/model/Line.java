@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import eu.derzauberer.pis.structure.container.ApiInformation;
@@ -17,7 +18,7 @@ public class Line extends Entity<Line> implements NameEntity {
 	private final String id;
 	private final String routeId;
 	private String name;
-	private TransportationType type;
+	private String typeId;
 	private int number;
 	private String operatorId;
 	private String driver;
@@ -31,7 +32,7 @@ public class Line extends Entity<Line> implements NameEntity {
 		this.id = id;
 		this.routeId = route.getId();
 		this.name = route.getName();
-		this.type = route.getType();
+		this.typeId = route.getTypeId();
 		this.number = route.getNumber();
 		this.operatorId = route.getOperatorId();
 		if (route.getAmountOfStops() > 0) this.stops = new ArrayList<>();
@@ -46,11 +47,11 @@ public class Line extends Entity<Line> implements NameEntity {
 		}
 	}
 	
-	@ConstructorProperties({ "id", "routeId", "type", "number" })
-	private Line(String id, String routeId, TransportationType type, int number) {
+	@ConstructorProperties({ "id", "routeId", "typeId", "number" })
+	private Line(String id, String routeId, String typeId, int number) {
 		this.id = id;
 		this.routeId = routeId;
-		this.type = type;
+		this.typeId = typeId;
 		this.number = number;
 	}
 
@@ -72,12 +73,12 @@ public class Line extends Entity<Line> implements NameEntity {
 		this.name = name;
 	}
 	
-	public TransportationType getType() {
-		return type;
+	public String getTypeId() {
+		return typeId;
 	}
-
-	public void setType(TransportationType type) {
-		this.type = type;
+	
+	public void setTypeId(String typeId) {
+		this.typeId = typeId;
 	}
 
 	public int getNumber() {
@@ -211,8 +212,8 @@ public class Line extends Entity<Line> implements NameEntity {
 		return results.stream().sorted().collect(Collectors.toUnmodifiableList());
 	}
 	
-	public ApiInformation getApiInformation() {
-		return api;
+	public Optional<ApiInformation> getApiInformation() {
+		return Optional.ofNullable(api);
 	}
 	
 	public ApiInformation getOrCreateApiInformtion() {
@@ -226,7 +227,7 @@ public class Line extends Entity<Line> implements NameEntity {
 	
 	@Override
 	public Line copy() {
-		final Line line = new Line(this.id, this.routeId, this.type, this.number);
+		final Line line = new Line(this.id, this.routeId, this.typeId, this.number);
 		line.operatorId = this.operatorId;
 		line.driver = this.driver;
 		line.cancelled = this.cancelled;

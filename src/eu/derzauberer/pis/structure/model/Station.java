@@ -1,6 +1,7 @@
 package eu.derzauberer.pis.structure.model;
 
 import java.beans.ConstructorProperties;
+import java.util.Optional;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -49,11 +50,11 @@ public class Station extends Entity<Station> implements NameEntity {
 		this.platforms = platforms;
 	}
 	
-	public Address getAddress() {
-		return address;
+	public Optional<Address> getAddress() {
+		return Optional.ofNullable(address);
 	}
 	
-	public Address getOrCreateAdress() {
+	public Address getOrCreateAddress() {
 		if (address == null) address = new Address();
 		return address;
 	}
@@ -62,7 +63,12 @@ public class Station extends Entity<Station> implements NameEntity {
 		this.address = adress;
 	}
 	
-	public Location getLocation() {
+	public Optional<Location> getLocation() {
+		return Optional.ofNullable(location);
+	}
+	
+	public Location getOrCreateLocation() {
+		if (location == null) location = new Location();
 		return location;
 	}
 	
@@ -70,11 +76,11 @@ public class Station extends Entity<Station> implements NameEntity {
 		this.location = location;
 	}
 	
-	public StationServices getServices() {
-		return services;
+	public Optional<StationServices> getServices() {
+		return Optional.ofNullable(services);
 	}
 	
-	public StationServices getorCreateServices() {
+	public StationServices getOrCreateServices() {
 		if (services == null) services = new StationServices();
 		return services;
 	}
@@ -83,8 +89,8 @@ public class Station extends Entity<Station> implements NameEntity {
 		this.services = services;
 	}
 	
-	public ApiInformation getApiInformation() {
-		return api;
+	public Optional<ApiInformation> getApiInformation() {
+		return Optional.ofNullable(api);
 	}
 	
 	public ApiInformation getOrCreateApiInformation() {

@@ -2,14 +2,14 @@ package eu.derzauberer.pis.structure.data;
 
 import eu.derzauberer.pis.structure.container.Address;
 import eu.derzauberer.pis.structure.container.ApiInformation;
+import eu.derzauberer.pis.structure.container.Color;
 
 public class OperatorData {
 	
 	private String id;
 	private String name;
 	private Address address;
-	private int backgroundColor;
-	private int textColor;
+	private Color color;
 	private ApiInformation api;
 	
 	public String getId() {
@@ -36,20 +36,12 @@ public class OperatorData {
 		this.address = address;
 	}
 	
-	public int getBackgroundColor() {
-		return backgroundColor;
+	public Color getColor() {
+		return color;
 	}
 	
-	public void setBackgroundColor(int backgroundColor) {
-		this.backgroundColor = backgroundColor;
-	}
-	
-	public int getTextColor() {
-		return textColor;
-	}
-	
-	public void setTextColor(int textColor) {
-		this.textColor = textColor;
+	public void setColor(Color color) {
+		this.color = color;
 	}
 	
 	public ApiInformation getApiInformation() {

@@ -18,10 +18,10 @@ public class StationDataConverter implements DataConverter<Station, StationData>
 		stationData.setId(station.getId());
 		stationData.setName(station.getName());
 		if (station.getPlatforms() != null) stationData.setPlatforms(stationData.getPlatforms());
-		if (station.getAddress() != null) stationData.setAddress(new Address(station.getAddress()));
-		if (station.getLocation() != null) stationData.setLocation(new Location(station.getLocation()));
-		if (station.getServices() != null) stationData.setServices(new StationServices(station.getServices()));
-		if (station.getApiInformation() != null) stationData.setApiInformation(new ApiInformation(station.getApiInformation()));
+		station.getAddress().ifPresent(address -> stationData.setAddress(new Address(address)));
+		station.getLocation().ifPresent(location -> stationData.setLocation(new Location(location)));
+		station.getServices().ifPresent(services -> stationData.setServices(new StationServices(services)));
+		station.getApiInformation().ifPresent(api -> stationData.setApiInformation(new ApiInformation(api)));
 		return stationData;
 	}
 

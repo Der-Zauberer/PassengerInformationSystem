@@ -1,8 +1,10 @@
 package eu.derzauberer.pis.structure.model;
 
 import java.beans.ConstructorProperties;
+import java.util.Optional;
 
 import eu.derzauberer.pis.structure.container.ApiInformation;
+import eu.derzauberer.pis.structure.container.Color;
 import eu.derzauberer.pis.structure.enums.TransportationClassification;
 import eu.derzauberer.pis.structure.enums.TransportationVehicle;
 
@@ -12,8 +14,7 @@ public class TransportationType extends Entity<TransportationType> implements Na
 	private final String name;
 	private final TransportationVehicle vehicle;
 	private final TransportationClassification classification;
-	private String backgroundColor;
-	private String textColor;
+	private Color color;
 	private ApiInformation api;
 	
 	@ConstructorProperties({ "id", "name", "vehicle", "classification" })
@@ -22,8 +23,6 @@ public class TransportationType extends Entity<TransportationType> implements Na
 		this.name = name;
 		this.vehicle = vehicle;
 		this.classification = classification;
-		this.backgroundColor = "#000000";
-		this.textColor = "#ffffff";
 	}
 	
 	@Override
@@ -44,24 +43,21 @@ public class TransportationType extends Entity<TransportationType> implements Na
 		return classification;
 	}
 	
-	public String getBackgroundColor() {
-		return backgroundColor;
+	public Optional<Color> getColor() {
+		return Optional.ofNullable(color);
 	}
 	
-	public void setBackgroundColor(String backgroundColor) {
-		this.backgroundColor = backgroundColor;
+	public Color getOrCreateColor() {
+		if (color == null) color = new Color();
+		return color;
 	}
 	
-	public String getTextColor() {
-		return textColor;
+	public void setColor(Color color) {
+		this.color = color;
 	}
 	
-	public void setTextColor(String textColor) {
-		this.textColor = textColor;
-	}
-	
-	public ApiInformation getApiInformation() {
-		return api;
+	public Optional<ApiInformation> getApiInformation() {
+		return Optional.ofNullable(api);
 	}
 	
 	public ApiInformation getOrCreateApiInformation() {
@@ -76,8 +72,7 @@ public class TransportationType extends Entity<TransportationType> implements Na
 	@Override
 	public TransportationType copy() {
 		final TransportationType type = new TransportationType(this.id, this.name, this.vehicle, this.classification);
-		type.backgroundColor = this.backgroundColor;
-		type.textColor = this.textColor;
+		if (color != null) type.color = new Color(this.color);
 		if (api != null) type.api = new ApiInformation(this.api);
 		return type;
 	}

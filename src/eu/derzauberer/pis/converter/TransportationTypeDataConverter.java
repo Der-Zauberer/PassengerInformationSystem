@@ -2,6 +2,8 @@ package eu.derzauberer.pis.converter;
 
 import org.springframework.stereotype.Component;
 
+import eu.derzauberer.pis.structure.container.ApiInformation;
+import eu.derzauberer.pis.structure.container.Color;
 import eu.derzauberer.pis.structure.data.TransportationTypeData;
 import eu.derzauberer.pis.structure.model.TransportationType;
 
@@ -15,9 +17,8 @@ public class TransportationTypeDataConverter implements DataConverter<Transporta
 		typeData.setName(type.getName());
 		typeData.setVehicle(type.getVehicle());
 		typeData.setClassification(type.getClassification());
-		typeData.setBackgroundColor(type.getBackgroundColor());
-		typeData.setTextColor(type.getTextColor());
-		typeData.setApi(type.getApiInformation());
+		type.getColor().ifPresent(color -> typeData.setColor(new Color(color)));
+		type.getApiInformation().ifPresent(api -> typeData.setApiInformation(new ApiInformation(api)));
 		return typeData;
 	}
 

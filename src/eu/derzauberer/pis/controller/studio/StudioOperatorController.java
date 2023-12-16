@@ -47,7 +47,7 @@ public class StudioOperatorController {
 		}, () -> {
 			model.addAttribute("operator", new OperatorForm	());
 		});
-		return "studio/edit/edit_operator.html";
+		return "studio/edit/form/operator-form.html";
 	}
 
 }

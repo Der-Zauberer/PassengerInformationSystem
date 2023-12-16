@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<div th:replace="~{components/head :: head(title='PIS Studio - ' + #{navigation.operators} + ': ' + ${operator.id})}"></div>
+	<body>
+	
+		<div th:replace="~{components/menu :: menu}"></div>
+		
+		<div th:replace="~{studio/components/navigation :: navigation}"></div>
+		<div class="navigation-content">
+		
+			<div class="container-xl">
+				<form class="pis-form" action="#" th:action="@{/studio/operators/edit?id={id}(id = ${operator.id})}" th:object="${operator}" method="post">
+				
+					<h3 class="mg-t-0" th:text=#{entity.general}></h3>
+					
+					<div class="pis-form-grid-2">
+						<div class="input">
+							<input type="text" th:field="*{id}" th:readonly="${operator.id != null}" required>
+							<span class="input-name" th:text="#{entity.id}"></span>
+							<span class="input-error"></span>
+						</div>
+						
+						<div class="input">
+							<input type="text" th:field="*{name}" required>
+							<span class="input-name" th:text="#{entity.name}"></span>
+							<span class="input-error"></span>
+						</div>
+					</div>
+					
+					<div th:replace="~{studio/edit/container/address-container :: address-container}"></div>
+					
+					<div th:replace="~{studio/edit/container/color-container :: color-container}"></div>
+					
+					<div th:replace="~{studio/components/edit-actions :: actions(${operator.id}, ${operator.name})}"></div>
+				
+				</form>
+			</div>
+			
+		</div>
+		
+		<script>
+			pis.initializeLeaveChecker();
+		</script>
+		
+	</body>
+</html>

@@ -2,6 +2,7 @@ package eu.derzauberer.pis.converter;
 
 import org.springframework.stereotype.Component;
 
+import eu.derzauberer.pis.structure.container.Color;
 import eu.derzauberer.pis.structure.form.TransportationTypeForm;
 import eu.derzauberer.pis.structure.model.TransportationType;
 
@@ -15,8 +16,7 @@ public class TransportationtypeFormConverter implements FormConverter<Transporta
 		typeForm.setName(type.getName());
 		typeForm.setVehicle(type.getVehicle());
 		typeForm.setClassification(type.getClassification());
-		typeForm.setBackgroundColor(type.getBackgroundColor());
-		typeForm.setTextColor(type.getTextColor());
+		type.getColor().ifPresent(color -> typeForm.setColor(new Color(color)));
 		return typeForm;
 	}
 
@@ -28,8 +28,7 @@ public class TransportationtypeFormConverter implements FormConverter<Transporta
 
 	@Override
 	public TransportationType convertToModel(TransportationType type, TransportationTypeForm typeForm) {
-		type.setBackgroundColor(typeForm.getBackgroundColor());
-		type.setTextColor(typeForm.getTextColor());
+		if (typeForm.getColor() != null) type.setColor(new Color(typeForm.getColor()));
 		return type;
 	}
 

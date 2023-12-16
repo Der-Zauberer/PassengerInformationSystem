@@ -1,6 +1,7 @@
 package eu.derzauberer.pis.structure.data;
 
 import eu.derzauberer.pis.structure.container.ApiInformation;
+import eu.derzauberer.pis.structure.container.Color;
 import eu.derzauberer.pis.structure.enums.TransportationClassification;
 import eu.derzauberer.pis.structure.enums.TransportationVehicle;
 
@@ -10,8 +11,7 @@ public class TransportationTypeData {
 	private String name;
 	private TransportationVehicle vehicle;
 	private TransportationClassification classification;
-	private String backgroundColor;
-	private String textColor;
+	private Color color;
 	private ApiInformation api;
 	
 	public String getId() {
@@ -46,27 +46,19 @@ public class TransportationTypeData {
 		this.classification = classification;
 	}
 	
-	public String getBackgroundColor() {
-		return backgroundColor;
+	public Color getColor() {
+		return color;
 	}
 	
-	public void setBackgroundColor(String backgroundColor) {
-		this.backgroundColor = backgroundColor;
+	public void setColor(Color color) {
+		this.color = color;
 	}
 	
-	public String getTextColor() {
-		return textColor;
-	}
-	
-	public void setTextColor(String textColor) {
-		this.textColor = textColor;
-	}
-	
-	public ApiInformation getApi() {
+	public ApiInformation getApiInformation() {
 		return api;
 	}
 	
-	public void setApi(ApiInformation api) {
+	public void setApiInformation(ApiInformation api) {
 		this.api = api;
 	}
 

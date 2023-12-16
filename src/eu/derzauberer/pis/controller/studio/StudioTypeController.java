@@ -52,7 +52,7 @@ public class StudioTypeController {
 		});
 		model.addAttribute("vehicles", TransportationVehicle.values());
 		model.addAttribute("classifications", TransportationClassification.values());
-		return "studio/edit/edit_type.html";
+		return "studio/edit/form/type-form.html";
 	}
 	
 	@PostMapping("/edit")

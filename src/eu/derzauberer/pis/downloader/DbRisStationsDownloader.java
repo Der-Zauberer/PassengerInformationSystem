@@ -49,19 +49,19 @@ public class DbRisStationsDownloader {
 			final String name = node.at("/names/DE/name").asText();
 			final Station station = stationService.getById(NameEntity.nameToId(name)).orElse(new Station(name));
 			if (node.at("/owner/name").asText().equalsIgnoreCase("DB S&S")) {
-				station.getOrCreateAdress().setName("DB Station&Service AG");
+				station.getOrCreateAddress().setName("DB Station&Service AG");
 			} else {
-				station.getOrCreateAdress().setName(node.at("/owner/name").asText());
+				station.getOrCreateAddress().setName(node.at("/owner/name").asText());
 			}
-			station.getOrCreateAdress().setStreet(node.at("/address/street").asText() + " " + node.at("/address/houseNumber").asText());
-			station.getOrCreateAdress().setPostalCode(node.at("/address/postalCode").asInt());
-			station.getOrCreateAdress().setCity(node.at("/address/city").asText());
+			station.getOrCreateAddress().setStreet(node.at("/address/street").asText() + " " + node.at("/address/houseNumber").asText());
+			station.getOrCreateAddress().setPostalCode(node.at("/address/postalCode").asInt());
+			station.getOrCreateAddress().setCity(node.at("/address/city").asText());
 			if (node.at("/address/country").asText().equalsIgnoreCase("de")) {
-				station.getOrCreateAdress().setCountry("Germany");
+				station.getOrCreateAddress().setCountry("Germany");
 			} else if (node.at("/address/country").asText().equalsIgnoreCase("ch")) {
-				station.getOrCreateAdress().setCountry("Switzerland");
+				station.getOrCreateAddress().setCountry("Switzerland");
 			} else {
-				station.getOrCreateAdress().setCountry(node.at("/address/country").asText());
+				station.getOrCreateAddress().setCountry(node.at("/address/country").asText());
 			}
 			station.setLocation(new Location(node.at("/position/latitude").asDouble(), node.at("/position/longitude").asDouble()));
 			station.getOrCreateApiInformation().addId("stada", node.get("stationID").asLong());

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -41,13 +42,28 @@ public class StudioOperatorController {
 	}
 	
 	@GetMapping("/edit")
-	public String editType(@RequestParam(value = "id", required = false) String id, Model model) {
+	public String editOperator(@RequestParam(value = "id", required = false) String id, Model model) {
 		operatorService.getById(id).map(operatorFormConverter::convertToForm).ifPresentOrElse(type -> {
 			model.addAttribute("operator", type);
 		}, () -> {
 			model.addAttribute("operator", new OperatorForm	());
 		});
 		return "studio/edit/form/operator-form.html";
+	}
+	
+	@PostMapping("/edit")
+	public String editOperator(@RequestParam(value = "entity", required = false) String id, Model model, OperatorForm operatorForm) {
+		final Operator operator = operatorService.getById(id)
+				.map(original -> operatorFormConverter.convertToModel(original, operatorForm))
+				.orElseGet(() -> operatorFormConverter.convertToModel(operatorForm));
+		operatorService.save(operator);
+		return "redirect:/studio/operators";
+	}
+	
+	@GetMapping("/delete")
+	public String deleteOperator(@RequestParam(value = "id", required = false) String id) {
+		operatorService.removeById(id);
+		return "redirect:/studio/operators";
 	}
 
 }

@@ -9,7 +9,7 @@
 		<div class="navigation-content">
 		
 			<div class="container-xl">
-				<form class="pis-form" action="#" th:action="@{/studio/operators/edit?id={id}(id = ${operator.id})}" th:object="${operator}" method="post">
+				<form class="pis-form" action="#" th:action="@{/studio/operators/edit?entity={id}(id = ${operator.id})}" th:object="${operator}" method="post">
 				
 					<h3 class="mg-t-0" th:text=#{entity.general}></h3>
 					

@@ -15,7 +15,7 @@ public class OperatorFormController implements FormConverter<Operator, OperatorF
 		operatorForm.setId(operator.getId());
 		operatorForm.setName(operator.getName());
 		if (operator.getAddress() != null) operatorForm.setAddress(new Address(operator.getAddress()));
-		operatorForm.setBackgorundColor(operator.getBackgorundColor());
+		operatorForm.setBackgroundColor(operator.getBackgroundColor());
 		operatorForm.setTextColor(operator.getTextColor());
 		return operatorForm;
 	}
@@ -28,7 +28,7 @@ public class OperatorFormController implements FormConverter<Operator, OperatorF
 	@Override
 	public Operator convertToModel(Operator operator, OperatorForm operatorForm) {
 		if (operatorForm.getAddress() != null) operator.setAddress(new Address(operatorForm.getAddress()));
-		operator.setBackgorundColor(operatorForm.getBackgorundColor());
+		operator.setBackgroundColor(operatorForm.getBackgroundColor());
 		operator.setTextColor(operatorForm.getTextColor());
 		return operator;
 	}

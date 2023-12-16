@@ -8,7 +8,7 @@ public class OperatorData {
 	private String id;
 	private String name;
 	private Address address;
-	private int backgorundColor;
+	private int backgroundColor;
 	private int textColor;
 	private ApiInformation api;
 	
@@ -36,12 +36,12 @@ public class OperatorData {
 		this.address = address;
 	}
 	
-	public int getBackgorundColor() {
-		return backgorundColor;
+	public int getBackgroundColor() {
+		return backgroundColor;
 	}
 	
-	public void setBackgorundColor(int backgorundColor) {
-		this.backgorundColor = backgorundColor;
+	public void setBackgroundColor(int backgroundColor) {
+		this.backgroundColor = backgroundColor;
 	}
 	
 	public int getTextColor() {

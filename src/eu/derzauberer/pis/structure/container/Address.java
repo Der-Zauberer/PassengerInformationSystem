@@ -2,7 +2,7 @@ package eu.derzauberer.pis.structure.container;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({ "name", "street", "postalCode", "city", "state", "country", "telephoneNumber", "mail" })
+@JsonPropertyOrder({ "name", "street", "postalCode", "city", "state", "country", "telephoneNumber", "email" })
 public class Address {
 	
 	private String name;
@@ -12,7 +12,7 @@ public class Address {
 	private String state;
 	private String country;
 	private Integer telephoneNumber;
-	private String mail;
+	private String email;
 	
 	public Address() {}
 	
@@ -24,7 +24,7 @@ public class Address {
 		this.state = address.state;
 		this.country = address.country;
 		this.telephoneNumber = address.telephoneNumber;
-		this.mail = address.mail;
+		this.email = address.email;
 	}
 	
 	public String getName() {
@@ -83,12 +83,12 @@ public class Address {
 		this.telephoneNumber = telephoneNumber;
 	}
 	
-	public String getMail() {
-		return mail;
+	public String getEmail() {
+		return email;
 	}
 	
-	public void setMail(String mail) {
-		this.mail = mail;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 }

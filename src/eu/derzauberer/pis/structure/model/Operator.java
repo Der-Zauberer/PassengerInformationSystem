@@ -10,7 +10,7 @@ public class Operator extends Entity<Operator> implements NameEntity {
 	private final String id;
 	private String name;
 	private Address address;
-	private int backgorundColor;
+	private int backgroundColor;
 	private int textColor;
 	private ApiInformation api;
 	
@@ -22,7 +22,7 @@ public class Operator extends Entity<Operator> implements NameEntity {
 	public Operator(String id, String name) {
 		this.id = id;
 		this.name = name;
-		this.backgorundColor = 0x000000;
+		this.backgroundColor = 0x000000;
 		this.textColor = 0xffffff;
 	}
 	
@@ -53,12 +53,12 @@ public class Operator extends Entity<Operator> implements NameEntity {
 		this.address = adress;
 	}
 	
-	public int getBackgorundColor() {
-		return backgorundColor;
+	public int getBackgroundColor() {
+		return backgroundColor;
 	}
 	
-	public void setBackgorundColor(int backgorundColor) {
-		this.backgorundColor = backgorundColor;
+	public void setBackgroundColor(int backgroundColor) {
+		this.backgroundColor = backgroundColor;
 	}
 	
 	public int getTextColor() {
@@ -86,7 +86,7 @@ public class Operator extends Entity<Operator> implements NameEntity {
 	public Operator copy() {
 		final Operator operator = new Operator(this.id, this.name);
 		if (address != null) operator.address = new Address(this.address);
-		operator.backgorundColor = this.backgorundColor;
+		operator.backgroundColor = this.backgroundColor;
 		operator.textColor = this.textColor;
 		if (api != null) operator.api = new ApiInformation(this.api);
 		return operator;

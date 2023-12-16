@@ -7,7 +7,7 @@ public class OperatorForm {
 	private String id;
 	private String name;
 	private Address address;
-	private int backgorundColor;
+	private int backgroundColor;
 	private int textColor;
 	
 	public String getId() {
@@ -34,12 +34,12 @@ public class OperatorForm {
 		this.address = address;
 	}
 	
-	public int getBackgorundColor() {
-		return backgorundColor;
+	public int getBackgroundColor() {
+		return backgroundColor;
 	}
 	
-	public void setBackgorundColor(int backgorundColor) {
-		this.backgorundColor = backgorundColor;
+	public void setBackgroundColor(int backgroundColor) {
+		this.backgroundColor = backgroundColor;
 	}
 	
 	public int getTextColor() {

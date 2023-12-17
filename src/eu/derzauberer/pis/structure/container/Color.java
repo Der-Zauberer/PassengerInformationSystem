@@ -9,7 +9,7 @@ public class Color {
 	
 	public Color() {
 		textColor = "#ffffff";
-		backgroundColor = "#000000";
+		backgroundColor = "#808080";
 	}
 	
 	public Color(String textColor, String backgroundColor) {

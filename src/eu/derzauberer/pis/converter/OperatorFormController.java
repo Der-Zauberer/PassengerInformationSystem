@@ -27,6 +27,7 @@ public class OperatorFormController implements FormConverter<Operator, OperatorF
 
 	@Override
 	public Operator convertToModel(Operator operator, OperatorForm operatorForm) {
+		operator.setName(operatorForm.getName());
 		if (operatorForm.getAddress() != null) operator.setAddress(new Address(operatorForm.getAddress()));
 		if (operatorForm.getColor() != null) operator.setColor(new Color(operatorForm.getColor()));
 		return operator;

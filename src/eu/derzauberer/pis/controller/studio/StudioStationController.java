@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -48,6 +49,21 @@ public class StudioStationController {
 			model.addAttribute("station", new StationForm());
 		});
 		return "studio/edit/form/station-form.html";
+	}
+	
+	@PostMapping("/edit")
+	public String editStation(@RequestParam(value = "entity", required = false) String id, Model model, StationForm stationForm) {
+		final Station station = stationService.getById(id)
+				.map(original -> stationFormConverter.convertToModel(original, stationForm))
+				.orElseGet(() -> stationFormConverter.convertToModel(stationForm));
+		stationService.save(station);
+		return "redirect:/studio/stations";
+	}
+	
+	@GetMapping("/delete")
+	public String deleteStation(@RequestParam(value = "id", required = false) String id) {
+		stationService.removeById(id);
+		return "redirect:/studio/stations";
 	}
 	
 }

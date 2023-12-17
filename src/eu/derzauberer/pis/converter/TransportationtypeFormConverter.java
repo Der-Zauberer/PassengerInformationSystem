@@ -29,6 +29,7 @@ public class TransportationtypeFormConverter implements FormConverter<Transporta
 
 	@Override
 	public TransportationType convertToModel(TransportationType type, TransportationTypeForm typeForm) {
+		type.setName(typeForm.getName());
 		type.setDescription(typeForm.getDescription());
 		type.setVehicle(typeForm.getVehicle());
 		type.setClassification(typeForm.getClassification());

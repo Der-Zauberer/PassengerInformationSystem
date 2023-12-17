@@ -15,7 +15,7 @@ import eu.derzauberer.pis.structure.container.StationServices;
 public class Station extends Entity<Station> implements NameEntity {
 	
 	private final String id;
-	private final String name;
+	private String name;
 	private SortedSet<Platform> platforms;
 	private Address address;
 	private Location location;
@@ -40,6 +40,10 @@ public class Station extends Entity<Station> implements NameEntity {
 	@Override
 	public String getName() {
 		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	public SortedSet<Platform> getPlatforms() {

@@ -36,6 +36,7 @@ public class StationFormConverter implements FormConverter<Station, StationForm>
 
 	@Override
 	public Station convertToModel(Station station, StationForm stationForm) {
+		station.setName(stationForm.getName());
 		if (stationForm.getPlatforms() != null) station.setPlatforms(copyPlatforms(stationForm.getPlatforms()));
 		if (stationForm.getAddress() != null) station.setAddress(new Address(stationForm.getAddress()));
 		if (stationForm.getLocation() != null) station.setLocation(new Location(stationForm.getLocation()));

@@ -35,6 +35,9 @@ import eu.derzauberer.pis.configuration.SerializationConfiguration.DateTimeSeria
 import eu.derzauberer.pis.configuration.SerializationConfiguration.PrettyPrinter;
 import eu.derzauberer.pis.configuration.SerializationConfiguration.TimeDeserializer;
 import eu.derzauberer.pis.configuration.SerializationConfiguration.TimeSerializer;
+import eu.derzauberer.pis.interceptor.FilterInterceptor;
+import eu.derzauberer.pis.interceptor.HistoryInterceptor;
+import eu.derzauberer.pis.interceptor.SessionUpdateInterceptor;
 import eu.derzauberer.pis.repository.EntityRepository;
 import eu.derzauberer.pis.repository.FileEntityRepository;
 import eu.derzauberer.pis.repository.MemoryEntityRepository;
@@ -48,6 +51,8 @@ import eu.derzauberer.pis.structure.model.User;
 
 @Configuration
 public class SpringConfiguration implements ApplicationContextAware, WebMvcConfigurer {
+	
+	private static final String[] DEFAULT_EXCLUSION_PATTERN = { "/api/**","/resources/**" };
 	
 	public static boolean caching = true;
 	public static boolean indexing = true;
@@ -65,13 +70,26 @@ public class SpringConfiguration implements ApplicationContextAware, WebMvcConfi
 	
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(localeChangeInterceptor()).excludePathPatterns("/api/**","/resources/**");
-        registry.addInterceptor(somePageInterceptor()).excludePathPatterns("/api/**","/resources/**");
+    	
+        registry.addInterceptor(localeChangeInterceptor()).excludePathPatterns(DEFAULT_EXCLUSION_PATTERN);
+        registry.addInterceptor(sessionUpdateInterceptor()).excludePathPatterns(DEFAULT_EXCLUSION_PATTERN);
+        registry.addInterceptor(filterInterceptor()).addPathPatterns("/studio/*");
+        registry.addInterceptor(historyInterceptor()).excludePathPatterns(DEFAULT_EXCLUSION_PATTERN);
     }
     
     @Bean
-    public HomePageInterceptor somePageInterceptor() {
-        return new HomePageInterceptor();
+    public SessionUpdateInterceptor sessionUpdateInterceptor() {
+        return new SessionUpdateInterceptor();
+    }
+    
+    @Bean
+    public FilterInterceptor filterInterceptor() {
+        return new FilterInterceptor();
+    }
+    
+    @Bean
+    public HistoryInterceptor historyInterceptor() {
+        return new HistoryInterceptor();
     }
 	
 	@Bean

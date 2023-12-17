@@ -22,7 +22,7 @@
 					<div class="pis-table-row" th:each="type : ${page.results}">
 						<div class="pis-table-mobile-wrapper">
 							<div><label class="blue-transparent" th:text="${type.id}"></label></div>
-							<div><span th:text="${type.name}"></span></div>
+							<div th:include="~{components/label :: label(${type})}"></div>	
 						</div>
 						<div class="pis-table-mobile-wrapper pis-table-mobile-actions">
 							<div><a class="button" th:text="#{action.edit}" th:href="@{/studio/types/edit?id={id}(id = ${type.id})}"></a></div>

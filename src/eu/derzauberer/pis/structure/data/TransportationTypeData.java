@@ -50,11 +50,21 @@ public class TransportationTypeData {
 		return color;
 	}
 	
+	public Color getOrCreateColor() {
+		if (color == null) color = new Color();
+		return color;
+	}
+	
 	public void setColor(Color color) {
 		this.color = color;
 	}
 	
 	public ApiInformation getApiInformation() {
+		return api;
+	}
+	
+	public ApiInformation getOrCreateApiInformation() {
+		if (api == null) api = new ApiInformation();
 		return api;
 	}
 	

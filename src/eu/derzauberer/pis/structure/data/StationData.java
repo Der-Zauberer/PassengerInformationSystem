@@ -46,7 +46,7 @@ public class StationData {
 		return address;
 	}
 	
-	public Address getOrCreateAdress() {
+	public Address getOrCreateAddress() {
 		if (address == null) address = new Address();
 		return address;
 	}
@@ -59,6 +59,11 @@ public class StationData {
 		return location;
 	}
 	
+	public Location getOrCreateLocation() {
+		if (location == null) location = new Location();
+		return location;
+	}
+	
 	public void setLocation(Location location) {
 		this.location = location;
 	}
@@ -67,7 +72,7 @@ public class StationData {
 		return services;
 	}
 	
-	public StationServices getorCreateServices() {
+	public StationServices getOrCreateServices() {
 		if (services == null) services = new StationServices();
 		return services;
 	}

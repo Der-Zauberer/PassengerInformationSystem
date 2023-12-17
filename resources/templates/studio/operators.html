@@ -22,7 +22,7 @@
 					<div class="pis-table-row" th:each="operator : ${page.results}">
 						<div class="pis-table-mobile-wrapper">
 							<div><label class="blue-transparent" th:text="${operator.id}"></label></div>
-							<div><span th:text="${operator.name}"></span></div>							
+							<div th:include="~{components/label :: label(${operator})}"></div>							
 						</div>
 						<div class="pis-table-mobile-wrapper pis-table-mobile-actions">
 							<div><a class="button" th:text="#{action.edit}" th:href="@{/studio/operators/edit?id={id}(id = ${operator.id})}"></a></div>

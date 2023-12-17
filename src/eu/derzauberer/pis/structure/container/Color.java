@@ -3,16 +3,16 @@ package eu.derzauberer.pis.structure.container;
 
 public class Color {
 	
-	private int textColor ;
-	private int backgroundColor;
+	private String textColor ;
+	private String backgroundColor;
 	
 	
 	public Color() {
-		textColor = 0xffffff;
-		backgroundColor = 0;
+		textColor = "#ffffff";
+		backgroundColor = "#000000";
 	}
 	
-	public Color(int textColor, int backgroundColor) {
+	public Color(String textColor, String backgroundColor) {
 		this.textColor = textColor;
 		this.backgroundColor = backgroundColor;
 	}
@@ -22,19 +22,19 @@ public class Color {
 		this.backgroundColor = color.backgroundColor;
 	}
 	
-	public int getTextColor() {
+	public String getTextColor() {
 		return textColor;
 	}
 
-	public void setTextColor(int textColor) {
+	public void setTextColor(String textColor) {
 		this.textColor = textColor;
 	}
 	
-	public int getBackgroundColor() {
+	public String getBackgroundColor() {
 		return backgroundColor;
 	}
 	
-	public void setBackgroundColor(int backgroundColor) {
+	public void setBackgroundColor(String backgroundColor) {
 		this.backgroundColor = backgroundColor;
 	}
 

@@ -40,6 +40,11 @@ public class OperatorData {
 		return color;
 	}
 	
+	public Color getOrCreateColor() {
+		if (color == null) color = new Color();
+		return color;
+	}
+	
 	public void setColor(Color color) {
 		this.color = color;
 	}

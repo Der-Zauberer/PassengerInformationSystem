@@ -13,16 +13,18 @@
 				<h2 th:text="#{navigation.types}"></h2>
 				<div th:replace="~{studio/components/table-actions :: actions('types')}"></div>
 				
-				<div class="pis-table">
+				<div class="pis-table" style="grid-template-columns: minmax(min-content, 200px) minmax(min-content, 200px) auto fit-content(0);">
 					<div class="pis-table-row pis-table-headline">
 						<div th:text="#{entity.id}"></div>
 						<div th:text="#{entity.name}"></div>
+						<div th:text="#{entity.description}"></div>
 						<div></div>
 					</div>
 					<div class="pis-table-row" th:each="type : ${page.results}">
 						<div class="pis-table-mobile-wrapper">
 							<div><label class="blue-transparent" th:text="${type.id}"></label></div>
-							<div th:include="~{components/label :: label(${type})}"></div>	
+							<div th:insert="~{components/label :: label(${type})}"></div>
+							<div><span class="grey-text" th:text="${type.description}"></span></div>
 						</div>
 						<div class="pis-table-mobile-wrapper pis-table-mobile-actions">
 							<div><a class="button" th:text="#{action.edit}" th:href="@{/studio/types/edit?id={id}(id = ${type.id})}"></a></div>

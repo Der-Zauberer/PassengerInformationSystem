@@ -25,6 +25,12 @@
 					        <span class="input-name" th:text="#{entity.name}"></span>
 					        <span class="input-error"></span>
 					    </div>
+					    
+					    <div class="input">
+					        <input type="text" th:field="*{description}" required>
+					        <span class="input-name" th:text="#{entity.description}"></span>
+					        <span class="input-error"></span>
+					    </div>
 					</div>
 					
 					<h3 class="mg-t-0" th:text="#{entity.type.transportation}"></h3>

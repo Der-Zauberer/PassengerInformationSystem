@@ -2,7 +2,7 @@
 
 .pis-table {
 	display: grid;
-	grid-template-columns: minmax(min-content, 200px) auto fit-content(0);
+	grid-template-columns: minmax(min-content, 150px) auto fit-content(0);
 	gap: 3px 0px;
 	padding: 3px;
 	font-size: 16px;

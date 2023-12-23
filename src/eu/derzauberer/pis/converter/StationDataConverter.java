@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import eu.derzauberer.pis.structure.container.Address;
 import eu.derzauberer.pis.structure.container.ApiInformation;
 import eu.derzauberer.pis.structure.container.Location;
-import eu.derzauberer.pis.structure.container.StationServices;
+import eu.derzauberer.pis.structure.container.Services;
 import eu.derzauberer.pis.structure.data.StationData;
 import eu.derzauberer.pis.structure.model.Station;
 
@@ -20,7 +20,7 @@ public class StationDataConverter implements DataConverter<Station, StationData>
 		if (station.getPlatforms() != null) stationData.setPlatforms(stationData.getPlatforms());
 		station.getAddress().ifPresent(address -> stationData.setAddress(new Address(address)));
 		station.getLocation().ifPresent(location -> stationData.setLocation(new Location(location)));
-		station.getServices().ifPresent(services -> stationData.setServices(new StationServices(services)));
+		station.getServices().ifPresent(services -> stationData.setServices(new Services(services)));
 		station.getApiInformation().ifPresent(api -> stationData.setApiInformation(new ApiInformation(api)));
 		return stationData;
 	}

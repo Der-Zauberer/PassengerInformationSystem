@@ -6,7 +6,7 @@ import eu.derzauberer.pis.structure.container.Address;
 import eu.derzauberer.pis.structure.container.ApiInformation;
 import eu.derzauberer.pis.structure.container.Location;
 import eu.derzauberer.pis.structure.container.Platform;
-import eu.derzauberer.pis.structure.container.StationServices;
+import eu.derzauberer.pis.structure.container.Services;
 
 public class StationData {
 	
@@ -15,7 +15,7 @@ public class StationData {
 	private SortedSet<Platform> platforms;
 	private Address address;
 	private Location location;
-	private StationServices services;
+	private Services services;
 	private ApiInformation api;
 	
 	public String getId() {
@@ -68,16 +68,16 @@ public class StationData {
 		this.location = location;
 	}
 	
-	public StationServices getServices() {
+	public Services getServices() {
 		return services;
 	}
 	
-	public StationServices getOrCreateServices() {
-		if (services == null) services = new StationServices();
+	public Services getOrCreateServices() {
+		if (services == null) services = new Services();
 		return services;
 	}
 	
-	public void setServices(StationServices services) {
+	public void setServices(Services services) {
 		this.services = services;
 	}
 	

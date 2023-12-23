@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import eu.derzauberer.pis.structure.container.Address;
 import eu.derzauberer.pis.structure.container.Location;
 import eu.derzauberer.pis.structure.container.Platform;
-import eu.derzauberer.pis.structure.container.StationServices;
+import eu.derzauberer.pis.structure.container.Services;
 import eu.derzauberer.pis.structure.form.StationForm;
 import eu.derzauberer.pis.structure.model.Station;
 
@@ -24,7 +24,7 @@ public class StationFormConverter implements FormConverter<Station, StationForm>
 		if (station.getPlatforms() != null) stationForm.setPlatforms(copyPlatforms(station.getPlatforms()));
 		station.getAddress().ifPresent(address -> stationForm.setAddress(new Address(address)));
 		station.getLocation().ifPresent(location -> stationForm.setLocation(new Location(location)));
-		station.getServices().ifPresent(services -> stationForm.setServices(new StationServices(services)));
+		station.getServices().ifPresent(services -> stationForm.setServices(new Services(services)));
 		return stationForm;
 	}
 
@@ -40,7 +40,7 @@ public class StationFormConverter implements FormConverter<Station, StationForm>
 		if (stationForm.getPlatforms() != null) station.setPlatforms(copyPlatforms(stationForm.getPlatforms()));
 		if (stationForm.getAddress() != null) station.setAddress(new Address(stationForm.getAddress()));
 		if (stationForm.getLocation() != null) station.setLocation(new Location(stationForm.getLocation()));
-		if (stationForm.getServices() != null) station.setServices(new StationServices(stationForm.getServices()));
+		if (stationForm.getServices() != null) station.setServices(new Services(stationForm.getServices()));
 		return station;
 	}
 	

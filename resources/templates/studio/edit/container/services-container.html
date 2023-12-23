@@ -1,0 +1,81 @@
+<th:block th:fragment="services-container">
+
+	<h3 class="mg-t-0" th:text=#{container.services}></h3>
+
+	<div class="pis-form-grid-2">
+	
+		<div class="input">
+			<input type="text" th:field="*{services.parking}">
+			<span class="input-name" th:text="#{container.services.parking}"></span>
+			<span class="input-error"></span>
+		</div>
+		
+		<div class="input">
+			<input type="text" th:field="*{services.bicycleParking}">
+			<span class="input-name" th:text="#{container.services.bicycleParking}"></span>
+			<span class="input-error"></span>
+		</div>
+		
+		<div class="input">
+			<input type="text" th:field="*{services.localPublicTransport}">
+			<span class="input-name" th:text="#{container.services.localPublicTransport}"></span>
+			<span class="input-error"></span>
+		</div>
+		
+		<div class="input">
+			<input type="text" th:field="*{services.publicFacilities}">
+			<span class="input-name" th:text="#{container.services.publicFacilities}"></span>
+			<span class="input-error"></span>
+		</div>
+		
+		<div class="input">
+			<input type="text" th:field="*{services.taxiRank}">
+			<span class="input-name" th:text="#{container.services.taxiRank}"></span>
+			<span class="input-error"></span>
+		</div>
+		
+		<div class="input">
+			<input type="text" th:field="*{services.carRental}">
+			<span class="input-name" th:text="#{container.services.carRental}"></span>
+			<span class="input-error"></span>
+		</div>
+					
+		<div class="input">
+			<input type="text" th:field="*{services.lockerSystem}">
+			<span class="input-name" th:text="#{container.services.lockerSystem}"></span>
+			<span class="input-error"></span>
+		</div>
+		
+		<div class="input">
+			<input type="text" th:field="*{services.travelNecessities}">
+			<span class="input-name" th:text="#{container.services.travelNecessities}"></span>
+			<span class="input-error"></span>
+		</div>
+		
+		<div class="input">
+			<input type="text" th:field="*{services.barrierFree}">
+			<span class="input-name" th:text="#{container.services.barrierFree}"></span>
+			<span class="input-error"></span>
+		</div>
+		
+		<div class="input">
+			<input type="text" th:field="*{services.wifi}">
+			<span class="input-name" th:text="#{container.services.wifi}"></span>
+			<span class="input-error"></span>
+		</div>
+		
+		<div class="input">
+			<input type="text" th:field="*{services.travelCenter}">
+			<span class="input-name" th:text="#{container.services.travelCenter}"></span>
+			<span class="input-error"></span>
+		</div>
+		
+		<div class="input">
+			<input type="text" th:field="*{services.railwayMission}">
+			<span class="input-name" th:text="#{container.services.railwayMission}"></span>
+			<span class="input-error"></span>
+		</div>
+		
+	</div>
+	
+</th:block>

@@ -10,7 +10,7 @@ import eu.derzauberer.pis.structure.container.Address;
 import eu.derzauberer.pis.structure.container.ApiInformation;
 import eu.derzauberer.pis.structure.container.Location;
 import eu.derzauberer.pis.structure.container.Platform;
-import eu.derzauberer.pis.structure.container.StationServices;
+import eu.derzauberer.pis.structure.container.Services;
 
 public class Station extends Entity<Station> implements NameEntity {
 	
@@ -19,7 +19,7 @@ public class Station extends Entity<Station> implements NameEntity {
 	private SortedSet<Platform> platforms;
 	private Address address;
 	private Location location;
-	private StationServices services;
+	private Services services;
 	private ApiInformation api;
 	
 	public Station(String name) {
@@ -80,16 +80,16 @@ public class Station extends Entity<Station> implements NameEntity {
 		this.location = location;
 	}
 	
-	public Optional<StationServices> getServices() {
+	public Optional<Services> getServices() {
 		return Optional.ofNullable(services);
 	}
 	
-	public StationServices getOrCreateServices() {
-		if (services == null) services = new StationServices();
+	public Services getOrCreateServices() {
+		if (services == null) services = new Services();
 		return services;
 	}
 	
-	public void setServices(StationServices services) {
+	public void setServices(Services services) {
 		this.services = services;
 	}
 	
@@ -112,7 +112,7 @@ public class Station extends Entity<Station> implements NameEntity {
 		if (platforms != null) station.platforms = this.platforms.stream().map(Platform::new).collect(Collectors.toCollection(TreeSet::new));
 		if (address != null) station.address = new Address(this.address);
 		if (location != null) station.location = new Location(this.location);
-		if (services != null) station.services = new StationServices(this.services);
+		if (services != null) station.services = new Services(this.services);
 		if (api != null) station.api = new ApiInformation(this.api);
 		return station;
 	}

@@ -1,6 +1,6 @@
 package eu.derzauberer.pis.structure.container;
 
-public class StationServices {
+public class Services {
 	
 	private boolean parking = false;
 	private boolean bicycleParking = false;
@@ -15,9 +15,9 @@ public class StationServices {
 	private boolean travelCenter = false;
 	private boolean railwayMission = false;
 	
-	public StationServices() {}
+	public Services() {}
 	
-	public StationServices(StationServices stationServices) {
+	public Services(Services stationServices) {
 		this.parking = stationServices.parking;
 		this.bicycleParking = stationServices.bicycleParking;
 		this.localPublicTransport = stationServices.localPublicTransport;

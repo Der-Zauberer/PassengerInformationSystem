@@ -5,7 +5,7 @@ import java.util.SortedSet;
 import eu.derzauberer.pis.structure.container.Address;
 import eu.derzauberer.pis.structure.container.Location;
 import eu.derzauberer.pis.structure.container.Platform;
-import eu.derzauberer.pis.structure.container.StationServices;
+import eu.derzauberer.pis.structure.container.Services;
 
 public class StationForm {
 	
@@ -14,7 +14,7 @@ public class StationForm {
 	private SortedSet<Platform> platforms;
 	private Address address;
 	private Location location;
-	private StationServices services;
+	private Services services;
 	
 	public String getId() {
 		return id;
@@ -61,16 +61,16 @@ public class StationForm {
 		this.location = location;
 	}
 	
-	public StationServices getServices() {
+	public Services getServices() {
 		return services;
 	}
 	
-	public StationServices getorCreateServices() {
-		if (services == null) services = new StationServices();
+	public Services getorCreateServices() {
+		if (services == null) services = new Services();
 		return services;
 	}
 	
-	public void setServices(StationServices services) {
+	public void setServices(Services services) {
 		this.services = services;
 	}
 

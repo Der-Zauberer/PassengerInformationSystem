@@ -1,7 +1,9 @@
 <th:block th:fragment="color-container">
+
 	<h3 class="mg-t-0" th:text="#{container.color}"></h3>
 
 	<div class="pis-form-grid-2">
+	
 		<div class="input">
 			<input type="color" th:field="*{color.textColor}">
 			<span class="input-name" th:text="#{container.color.textColor}"></span>
@@ -13,5 +15,7 @@
 			<span class="input-name" th:text="#{container.color.backgroundColor}"></span>
 			<span class="input-error"></span>
 		</div>
+		
 	</div>
+	
 </th:block>

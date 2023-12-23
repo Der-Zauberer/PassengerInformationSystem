@@ -1,7 +1,9 @@
 <th:block th:fragment="address-container">
+
 	<h3 class="mg-t-0" th:text=#{container.address}></h3>
 
 	<div class="pis-form-grid-2">
+	
 		<div class="input">
 			<input type="text" th:field="*{address.name}">
 			<span class="input-name" th:text=#{container.address.name}></span>
@@ -49,5 +51,7 @@
 			<span class="input-name" th:text=#{container.address.email}></span>
 			<span class="input-error"></span>
 		</div>
+		
 	</div>
+	
 </th:block>

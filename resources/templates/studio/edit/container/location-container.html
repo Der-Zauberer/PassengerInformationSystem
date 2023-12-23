@@ -1,0 +1,21 @@
+<th:block th:fragment="location-container">
+
+	<h3 class="mg-t-0" th:text=#{container.location}></h3>
+
+	<div class="pis-form-grid-2">
+	
+		<div class="input">
+			<input type="text" th:field="*{location.latitude}">
+			<span class="input-name" th:text=#{container.location.latitude}></span>
+			<span class="input-error"></span>
+		</div>
+		
+		<div class="input">
+			<input type="text" th:field="*{location.longitude}">
+			<span class="input-name" th:text=#{container.location.longitude}></span>
+			<span class="input-error"></span>
+		</div>
+		
+	</div>
+	
+</th:block>

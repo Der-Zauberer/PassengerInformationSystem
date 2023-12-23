@@ -11,64 +11,27 @@
 			<div class="container-xl">
 				<form class="pis-form" action="#" th:action="@{/studio/stations/edit?entity={id}(id = ${station.id})}" th:object="${station}" method="post">
 				
-					<h3 class="mg-t-0">General</h3>
+					<h3 class="mg-t-0" th:text=#{entity.general}></h3>
+					
 					<div class="pis-form-grid-2">
 						<div class="input">
-					        <input type="text" th:field="*{id}" required>
-					        <span class="input-name">ID</span>
+					        <input type="text" th:field="*{id}" th:readonly="${station.id != null}" required>
+					        <span class="input-name" th:text="#{entity.id}"></span>
 					        <span class="input-error"></span>
 					    </div>
+					    
 					    <div class="input">
 					        <input type="text" th:field="*{name}" required>
-					        <span class="input-name">Name</span>
+					        <span class="input-name" th:text="#{entity.name}"></span>
 					        <span class="input-error"></span>
 					    </div>
 					</div>
 					
 					<h3 class="mg-t-0">Platforms</h3>
 					
-					<h3 class="mg-t-0">Address</h3>
-					<div class="pis-form-grid-2">
-						<div class="input">
-					        <input type="text" th:field="*{address.name}">
-					        <span class="input-name">Name</span>
-					        <span class="input-error"></span>
-					    </div>
-					    <div class="input">
-					        <input type="text" th:field="*{address.street}">
-					        <span class="input-name">Street</span>
-					        <span class="input-error"></span>
-					    </div>
-					    <div class="input">
-					        <input type="number" th:field="*{address.postalCode}">
-					        <span class="input-name">Postal Code</span>
-					        <span class="input-error"></span>
-					    </div>
-					    <div class="input">
-					        <input type="text" th:field="*{address.city}">
-					        <span class="input-name">City</span>
-					        <span class="input-error"></span>
-					    </div>
-					    <div class="input">
-					        <input type="text" th:field="*{address.country}">
-					        <span class="input-name">Country</span>
-					        <span class="input-error"></span>
-					    </div>
-					</div>
+					<div th:replace="~{studio/edit/container/address-container :: address-container}"></div>
 					
-					<h3 class="mg-t-0">Geolacation</h3>
-					<div class="pis-form-grid-2">
-						<div class="input">
-					        <input type="text" th:field="*{location.latitude}">
-					        <span class="input-name">Latitude</span>
-					        <span class="input-error"></span>
-					    </div>
-					    <div class="input">
-					        <input type="text" th:field="*{location.longitude}">
-					        <span class="input-name">Longitude</span>
-					        <span class="input-error"></span>
-					    </div>
-					</div>
+					<div th:replace="~{studio/edit/container/location-container :: location-container}"></div>
 					
 					<h3 class="mg-t-0">Services</h3>
 					<div class="pis-form-grid-2">

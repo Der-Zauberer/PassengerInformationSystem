@@ -22,7 +22,8 @@ public class OperatorFormController implements FormConverter<Operator, OperatorF
 
 	@Override
 	public Operator convertToModel(OperatorForm operatorForm) {
-		return new Operator(operatorForm.getId(), operatorForm.getName());
+		final Operator operator = new Operator(operatorForm.getId(), operatorForm.getName());
+		return convertToModel(operator, operatorForm);
 	}
 
 	@Override

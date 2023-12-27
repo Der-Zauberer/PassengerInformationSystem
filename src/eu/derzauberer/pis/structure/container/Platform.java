@@ -7,7 +7,7 @@ import java.util.TreeSet;
 public class Platform implements Comparable<Platform> {
 	
 	private final String name;
-	private Integer length;
+	private int length;
 	private final TreeSet<String> linkedPlattforms = new TreeSet<>();
 	
 	@ConstructorProperties({ "name" })

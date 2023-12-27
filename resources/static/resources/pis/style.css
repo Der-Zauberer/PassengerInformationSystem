@@ -98,6 +98,19 @@
 	margin-top: var(--theme-element-spacing);
 }
 
+.pis-form-platform-table {
+	display: grid;
+	grid-template-columns: repeat(3, auto) fit-content(0px);
+	column-gap: var(--theme-element-spacing);
+}
+
+@media screen and (max-width: 768px) {
+	.pis-form-platform-table {
+		grid-template-columns: calc(55% - calc(var(--theme-element-spacing) / 2)) calc(45% - calc(var(--theme-element-spacing) / 2));
+		margin-bottom: var(--theme-element-spacing);
+	}
+}
+
 /* authentication */
 
 .pis-authentication {

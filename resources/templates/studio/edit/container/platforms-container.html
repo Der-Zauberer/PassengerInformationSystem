@@ -1,0 +1,31 @@
+<th:block th:fragment="platforms-container">
+
+	<h3 class="mg-t-0" th:text=#{container.platforms}></h3>
+
+	<div class="pis-form-platform-table" th:each="platform, status : *{platforms}">
+		
+		<div class="input">
+			<input type="text" th:field="*{platforms[__${status.index}__].name}">
+			<span class="input-name" th:text=#{container.platform.name}></span>
+			<span class="input-error"></span>
+		</div>
+		
+		<div class="input">
+			<input type="text" th:field="*{platforms[__${status.index}__].length}">
+			<span class="input-name" th:text=#{container.platform.length}></span>
+			<span class="input-error"></span>
+		</div>
+		
+		<div class="input">
+			<input type="text" th:field="*{platforms[__${status.index}__].linkedPlattforms}">
+			<span class="input-name" th:text=#{container.platform.linkedPlattforms}></span>
+			<span class="input-error"></span>
+		</div>
+		
+		<a class="button" style="max-height: 40px" href="#" th:text="#{action.remove}"></a>
+	
+	</div>
+	
+	<a class="button" style="margin-left: auto" href="#" th:text="#{action.add}"></a>
+	
+</th:block>

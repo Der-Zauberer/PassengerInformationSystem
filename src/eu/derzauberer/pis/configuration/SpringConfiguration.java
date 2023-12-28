@@ -70,7 +70,6 @@ public class SpringConfiguration implements ApplicationContextAware, WebMvcConfi
 	
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-    	
         registry.addInterceptor(localeChangeInterceptor()).excludePathPatterns(DEFAULT_EXCLUSION_PATTERN);
         registry.addInterceptor(sessionUpdateInterceptor()).excludePathPatterns(DEFAULT_EXCLUSION_PATTERN);
         registry.addInterceptor(filterInterceptor()).addPathPatterns("/studio/*");

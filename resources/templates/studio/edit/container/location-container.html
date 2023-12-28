@@ -5,13 +5,13 @@
 	<div class="pis-form-grid-2">
 	
 		<div class="input">
-			<input type="text" th:field="*{location.latitude}">
+			<input type="number" th:field="*{location.latitude}">
 			<span class="input-name" th:text=#{container.location.latitude}></span>
 			<span class="input-error"></span>
 		</div>
 		
 		<div class="input">
-			<input type="text" th:field="*{location.longitude}">
+			<input type="number" th:field="*{location.longitude}">
 			<span class="input-name" th:text=#{container.location.longitude}></span>
 			<span class="input-error"></span>
 		</div>

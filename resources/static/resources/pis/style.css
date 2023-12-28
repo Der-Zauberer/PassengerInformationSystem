@@ -111,6 +111,12 @@
 	}
 }
 
+/* form list */
+
+.pis-list-item-template {
+	display: none;
+}
+
 /* authentication */
 
 .pis-authentication {

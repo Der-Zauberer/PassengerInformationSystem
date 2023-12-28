@@ -2,30 +2,58 @@
 
 	<h3 class="mg-t-0" th:text=#{container.platforms}></h3>
 
-	<div class="pis-form-platform-table" th:each="platform, status : *{platforms}">
+	<div class="pis-list-root" id="platform-list-root">
+	
+		<div class="pis-list-item pis-list-item-template pis-form-platform-table" index="INDEX">
 		
-		<div class="input">
-			<input type="text" th:field="*{platforms[__${status.index}__].name}">
-			<span class="input-name" th:text=#{container.platform.name}></span>
-			<span class="input-error"></span>
+			<div class="input">
+				<input type="text" id="platformsINDEX.name" name="platforms[INDEX].name">
+				<span class="input-name" th:text=#{container.platform.name}></span>
+				<span class="input-error"></span>
+			</div>
+			
+			<div class="input">
+				<input type="number" id="platformsINDEX.length" name="platforms[INDEX].length">
+				<span class="input-name" th:text=#{container.platform.length}></span>
+				<span class="input-error"></span>
+			</div>
+			
+			<div class="input">
+				<input type="text" id="platformsINDEX.linkedPlattforms" name="platforms[INDEX].linkedPlatforms">
+				<span class="input-name" th:text=#{container.platform.linkedPlatforms}></span>
+				<span class="input-error"></span>
+			</div>
+			
+			<a class="button" style="max-height: 40px" tabindex="0" th:text="#{action.remove}" onclick="pis.removeListItem(document.getElementById('platform-list-root'), 'INDEX')" ></a>
+		
 		</div>
+	
+		<div class="pis-list-item pis-form-platform-table" th:each="platform, status : *{platforms}" th:attrappend="index=${status.index}">
+			
+			<div class="input">
+				<input type="text" th:field="*{platforms[__${status.index}__].name}">
+				<span class="input-name" th:text=#{container.platform.name}></span>
+				<span class="input-error"></span>
+			</div>
+			
+			<div class="input">
+				<input type="number" th:field="*{platforms[__${status.index}__].length}">
+				<span class="input-name" th:text=#{container.platform.length}></span>
+				<span class="input-error"></span>
+			</div>
+			
+			<div class="input">
+				<input type="text" th:field="*{platforms[__${status.index}__].linkedPlatforms}">
+				<span class="input-name" th:text=#{container.platform.linkedPlatforms}></span>
+				<span class="input-error"></span>
+			</div>
+			
+			<a class="button" style="max-height: 40px" tabindex="0" th:text="#{action.remove}" th:attr="onclick=|pis.removeListItem(document.getElementById('platform-list-root'), '${status.index}')|" ></a>
 		
-		<div class="input">
-			<input type="text" th:field="*{platforms[__${status.index}__].length}">
-			<span class="input-name" th:text=#{container.platform.length}></span>
-			<span class="input-error"></span>
 		</div>
-		
-		<div class="input">
-			<input type="text" th:field="*{platforms[__${status.index}__].linkedPlattforms}">
-			<span class="input-name" th:text=#{container.platform.linkedPlattforms}></span>
-			<span class="input-error"></span>
-		</div>
-		
-		<a class="button" style="max-height: 40px" href="#" th:text="#{action.remove}"></a>
 	
 	</div>
 	
-	<a class="button" style="margin-left: auto" href="#" th:text="#{action.add}"></a>
+	<a class="button" style="margin-left: auto" tabindex="0" th:text="#{action.add}" onclick="pis.addListItem(document.getElementById('platform-list-root'))"></a>
 	
 </th:block>

@@ -2,23 +2,26 @@ package eu.derzauberer.pis.structure.container;
 
 import java.beans.ConstructorProperties;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 public class Platform implements Comparable<Platform> {
 	
 	private final String name;
 	private int length;
-	private final TreeSet<String> linkedPlattforms = new TreeSet<>();
+	private final SortedSet<String> linkedPlatforms;
 	
 	@ConstructorProperties({ "name" })
 	public Platform(String name) {
 		this.name = name;
+		this.length = 0;
+		this.linkedPlatforms = new TreeSet<>();
 	}
 	
 	public Platform(Platform platform) {
 		this.name = platform.name;
 		this.length = platform.length;
-		this.linkedPlattforms.addAll(platform.linkedPlattforms);
+		this.linkedPlatforms = new TreeSet<>(platform.linkedPlatforms);
 	}
 	
 	public String getName() {
@@ -33,13 +36,13 @@ public class Platform implements Comparable<Platform> {
 		this.length = length;
 	}
 	
-	public Set<String> getLinkedPlattforms() {
-		return linkedPlattforms;
+	public Set<String> getLinkedPlatforms() {
+		return linkedPlatforms;
 	}
 
 	@Override
-	public int compareTo(Platform o) {
-		return this.name.compareTo(o.getName());
+	public int compareTo(Platform platform) {
+		return this.name.compareTo(platform.getName());
 	}
 	
 }

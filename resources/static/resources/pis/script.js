@@ -55,6 +55,49 @@ class PIS {
 	}
 	
 	/*******************/
+	/* Form List       */
+	/*******************/
+	
+	addListItem(listRoot) {
+		const template = listRoot.getElementsByClassName('pis-list-item-template')[0]
+		const newListItem = template.cloneNode(true);
+		newListItem.classList.remove('pis-list-item-template');
+		this.#changeIndex(newListItem, listRoot.getElementsByClassName('pis-list-item').length - 1);
+		listRoot.appendChild(newListItem);
+	}
+	
+	removeListItem(listRoot, index) {
+		let removed = false;
+		let currentIndex = index;
+		console.log(index);
+		const listItems = [...listRoot.getElementsByClassName('pis-list-item')];
+		for (const listItem of listItems) {
+			if (!removed && listItem.hasAttribute('index') && listItem.getAttribute('index') == index) {
+				listRoot.removeChild(listItem);
+				removed = true;
+			} else if (removed) {
+				this.#changeIndex(listItem, currentIndex++);
+			}
+		}
+	}
+	
+	removeListItemTemplates() {
+		Array.from(document.getElementsByClassName('pis-list-item-template')).forEach(element => element.remove());
+	}
+	
+	#changeIndex(element, index) {
+		const oldIndex = element.getAttribute('index');
+		console.log(oldIndex + " " + index);
+		element.setAttribute('index', index);
+		for (const subElement of element.getElementsByTagName('*')) {
+			for (const attribute of subElement.attributes) {
+				if (attribute.name !== 'id' && attribute.name !== 'name' && attribute.name !== 'onclick') continue;
+				subElement.setAttribute(attribute.name, attribute.value.replace(oldIndex, index));
+			}
+		}
+	}
+	
+	/*******************/
 	/* Import / Export */
 	/*******************/
 	

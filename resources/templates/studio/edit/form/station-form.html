@@ -9,7 +9,7 @@
 		<div class="navigation-content">
 		
 			<div class="container-xl">
-				<form class="pis-form" action="#" th:action="@{/studio/stations/edit?entity={id}(id = ${station.id})}" th:object="${station}" method="post">
+				<form class="pis-form" action="#" th:action="@{/studio/stations/edit?entity={id}(id = ${station.id})}" th:object="${station}" method="post" onsubmit="pis.removeListItemTemplates()">
 				
 					<h3 class="mg-t-0" th:text=#{entity.general}></h3>
 					
@@ -27,7 +27,7 @@
 					    </div>
 					</div>
 					
-					<h3 class="mg-t-0">Platforms</h3>
+					<div th:replace="~{studio/edit/container/platforms-container :: platforms-container}"></div>
 					
 					<div th:replace="~{studio/edit/container/address-container :: address-container}"></div>
 					

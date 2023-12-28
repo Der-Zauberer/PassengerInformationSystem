@@ -4,7 +4,6 @@ import java.beans.ConstructorProperties;
 import java.util.Optional;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 import eu.derzauberer.pis.structure.container.Address;
 import eu.derzauberer.pis.structure.container.ApiInformation;
@@ -16,7 +15,7 @@ public class Station extends Entity<Station> implements NameEntity {
 	
 	private final String id;
 	private String name;
-	private SortedSet<Platform> platforms;
+	private final SortedSet<Platform> platforms;
 	private Address address;
 	private Location location;
 	private Services services;
@@ -30,6 +29,7 @@ public class Station extends Entity<Station> implements NameEntity {
 	public Station(String id, String name) {
 		this.id = id;
 		this.name = name;
+		platforms = new TreeSet<>();
 	}
 	
 	@Override
@@ -48,10 +48,6 @@ public class Station extends Entity<Station> implements NameEntity {
 	
 	public SortedSet<Platform> getPlatforms() {
 		return platforms;
-	}
-	
-	public void setPlatforms(SortedSet<Platform> platforms) {
-		this.platforms = platforms;
 	}
 	
 	public Optional<Address> getAddress() {
@@ -109,7 +105,7 @@ public class Station extends Entity<Station> implements NameEntity {
 	@Override
 	public Station copy() {
 		final Station station = new Station(this.id, this.name);
-		if (platforms != null) station.platforms = this.platforms.stream().map(Platform::new).collect(Collectors.toCollection(TreeSet::new));
+		if (platforms != null) this.platforms.stream().map(Platform::new).forEach(station.getPlatforms()::add);
 		if (address != null) station.address = new Address(this.address);
 		if (location != null) station.location = new Location(this.location);
 		if (services != null) station.services = new Services(this.services);

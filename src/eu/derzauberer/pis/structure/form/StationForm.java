@@ -1,17 +1,16 @@
 package eu.derzauberer.pis.structure.form;
 
-import java.util.SortedSet;
+import java.util.List;
 
 import eu.derzauberer.pis.structure.container.Address;
 import eu.derzauberer.pis.structure.container.Location;
-import eu.derzauberer.pis.structure.container.Platform;
 import eu.derzauberer.pis.structure.container.Services;
 
 public class StationForm {
 	
 	private String id;
 	private String name;
-	private SortedSet<Platform> platforms;
+	private List<PlatformForm> platforms;
 	private Address address;
 	private Location location;
 	private Services services;
@@ -32,20 +31,15 @@ public class StationForm {
 		this.name = name;
 	}
 	
-	public SortedSet<Platform> getPlatforms() {
+	public List<PlatformForm> getPlatforms() {
 		return platforms;
 	}
 	
-	public void setPlatforms(SortedSet<Platform> platforms) {
+	public void setPlatforms(List<PlatformForm> platforms) {
 		this.platforms = platforms;
 	}
 	
 	public Address getAddress() {
-		return address;
-	}
-	
-	public Address getOrCreateAdress() {
-		if (address == null) address = new Address();
 		return address;
 	}
 	
@@ -62,11 +56,6 @@ public class StationForm {
 	}
 	
 	public Services getServices() {
-		return services;
-	}
-	
-	public Services getorCreateServices() {
-		if (services == null) services = new Services();
 		return services;
 	}
 	

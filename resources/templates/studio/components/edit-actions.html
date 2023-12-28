@@ -1,7 +1,7 @@
 <th:block th:fragment="actions(id, name)">
 
 	<div class="pis-form-actions">
-		<div><a class="button red dark-red-hover mg-r" th:text="#{action.delete}" th:if="${id}" onclick="swd.toggleDialog('delete-dialog')" href="#"></a></div>
+		<div><a class="button red dark-red-hover mg-r" th:text="#{action.delete}" th:if="${id}" onclick="swd.toggleDialog('delete-dialog')" tabindex="0"></a></div>
 		<input type="submit" th:value="#{action.save}">
 	</div>
 	
@@ -11,7 +11,7 @@
 			<p th:text=#{action.delete.areYouSure}></p>
 			<p class="text-overflow"><label class="blue-transparent" th:text="${id}"></label>&nbsp;&nbsp;<span th:text="${name}"></span></p>
 			<div class="dialog-button">
-				<a class="button width-100 grey dark-grey-hover" th:text="#{action.cancel}" onclick="swd.toggleDialog('delete-dialog');" href="#"></a>
+				<a class="button width-100 grey dark-grey-hover" th:text="#{action.cancel}" onclick="swd.toggleDialog('delete-dialog');" tabindex="0"></a>
 				<a class="button width-100 red dark-red-hover" th:text="#{action.delete}" th:href="@{delete?id={id}(id = ${id})}"></a>
 			</div>
 		</div>

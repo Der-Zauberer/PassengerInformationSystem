@@ -1,6 +1,7 @@
 package eu.derzauberer.pis.structure.model;
 
 import java.beans.ConstructorProperties;
+import java.util.Objects;
 import java.util.Optional;
 
 import eu.derzauberer.pis.structure.container.ApiInformation;
@@ -28,6 +29,7 @@ public class TransportationType extends Entity<TransportationType> implements Na
 		this.name = name;
 		this.vehicle = TransportationVehicle.TRAIN;
 		this.classification = TransportationClassification.REGIONAL;
+		this.color = new Color();
 	}
 	
 	@Override
@@ -67,16 +69,12 @@ public class TransportationType extends Entity<TransportationType> implements Na
 		this.classification = classification;
 	}
 	
-	public Optional<Color> getColor() {
-		return Optional.ofNullable(color);
-	}
-	
-	public Color getOrCreateColor() {
-		if (color == null) color = new Color();
+	public Color getColor() {
 		return color;
 	}
 	
 	public void setColor(Color color) {
+		Objects.nonNull(color);
 		this.color = color;
 	}
 	
@@ -99,7 +97,7 @@ public class TransportationType extends Entity<TransportationType> implements Na
 		type.description = this.description;
 		type.vehicle = this.vehicle;
 		type.classification = this.classification;
-		if (color != null) type.color = new Color(this.color);
+		type.color = new Color(this.color);
 		if (api != null) type.api = new ApiInformation(this.api);
 		return type;
 	}

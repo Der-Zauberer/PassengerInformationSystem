@@ -23,6 +23,7 @@ public class Operator extends Entity<Operator> implements NameEntity {
 	public Operator(String id, String name) {
 		this.id = id;
 		this.name = name;
+		this.color = new Color();
 	}
 	
 	@Override
@@ -52,12 +53,7 @@ public class Operator extends Entity<Operator> implements NameEntity {
 		this.address = adress;
 	}
 	
-	public Optional<Color> getColor() {
-		return Optional.ofNullable(color);
-	}
-	
-	public Color getOrCreateColor() {
-		if (color == null) color = new Color();
+	public Color getColor() {
 		return color;
 	}
 	
@@ -82,7 +78,7 @@ public class Operator extends Entity<Operator> implements NameEntity {
 	public Operator copy() {
 		final Operator operator = new Operator(this.id, this.name);
 		if (address != null) operator.address = new Address(this.address);
-		if (color != null) operator.color = new Color(this.color);
+		operator.color = new Color(this.color);
 		if (api != null) operator.api = new ApiInformation(this.api);
 		return operator;
 	}

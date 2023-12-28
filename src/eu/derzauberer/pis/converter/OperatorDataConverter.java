@@ -17,7 +17,7 @@ public class OperatorDataConverter implements DataConverter<Operator, OperatorDa
 		operatorData.setId(operator.getId());
 		operatorData.setName(operator.getName());
 		operator.getAddress().ifPresent(address -> operatorData.setAddress(new Address(address)));
-		operator.getColor().ifPresent(color -> operatorData.setColor(new Color(color)));
+		operatorData.setColor(new Color(operator.getColor()));
 		operator.getApiInformation().ifPresent(api -> operatorData.setApiInformation(new ApiInformation(api)));
 		return operatorData;
 	}

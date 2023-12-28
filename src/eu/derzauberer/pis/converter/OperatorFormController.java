@@ -16,7 +16,7 @@ public class OperatorFormController implements FormConverter<Operator, OperatorF
 		operatorForm.setId(operator.getId());
 		operatorForm.setName(operator.getName());
 		operator.getAddress().ifPresent(address -> operatorForm.setAddress(new Address(address)));
-		operator.getColor().ifPresent(color -> operatorForm.setColor(new Color(color)));
+		operatorForm.setColor(new Color(operator.getColor()));
 		return operatorForm;
 	}
 

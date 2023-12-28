@@ -18,7 +18,7 @@ public class TransportationTypeDataConverter implements DataConverter<Transporta
 		typeData.setDescription(type.getDescription());
 		typeData.setVehicle(type.getVehicle());
 		typeData.setClassification(type.getClassification());
-		type.getColor().ifPresent(color -> typeData.setColor(new Color(color)));
+		typeData.setColor(new Color(type.getColor()));
 		type.getApiInformation().ifPresent(api -> typeData.setApiInformation(new ApiInformation(api)));
 		return typeData;
 	}

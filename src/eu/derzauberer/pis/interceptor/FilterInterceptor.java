@@ -14,6 +14,9 @@ public class FilterInterceptor implements HandlerInterceptor {
 	
 	private static final HashSet<String> parametersToObserve = new HashSet<>();
 	
+	private static final String FILTER = "filter";
+	private static final String HISTORY = "history";
+	
 	static {
 		parametersToObserve.add("search");
 		parametersToObserve.add("page");
@@ -30,22 +33,22 @@ public class FilterInterceptor implements HandlerInterceptor {
 		.filter(entry -> parametersToObserve.contains(entry.getKey()))
 		.toList();
 		if (parameters.isEmpty() && matchParameters(session, request)) {
-			String parameterString = session.getAttribute("filter").toString().split("\\?")[1];
+			String parameterString = session.getAttribute(FILTER).toString().split("\\?")[1];
 			if (request.getQueryString() != null && !request.getQueryString().isBlank()) parameterString = request.getQueryString() + "&" +parameterString;
 			response.sendRedirect(request.getRequestURI() + "?" + parameterString);
 		} else if (!parameters.isEmpty()) {
 			final StringBuilder parameterString = new StringBuilder();
 			parameters.forEach(parameter -> parameterString.append(parameter.getKey() + "=" + parameter.getValue()[0] + "&"));
 			parameterString.deleteCharAt(parameterString.length() - 1);
-			session.setAttribute("filter", request.getRequestURI() + "?" + parameterString);
+			session.setAttribute(FILTER, request.getRequestURI() + "?" + parameterString);
 		}
 		return true;
 	}
 	
 	private boolean matchParameters(HttpSession session, HttpServletRequest request) {
-		if (session.getAttribute("filter") == null) return false;
-		final String url = session.getAttribute("filter").toString().split("\\?")[0];
-		if (session.getAttribute("history") != null && session.getAttribute("history").equals(url)) return false;
+		if (session.getAttribute(FILTER) == null) return false;
+		final String url = session.getAttribute(FILTER).toString().split("\\?")[0];
+		if (session.getAttribute(FILTER) != null && session.getAttribute(HISTORY).equals(url)) return false;
 		return url.equals(request.getRequestURI());
 	}
 

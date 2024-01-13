@@ -504,6 +504,16 @@ input:disabled {
 input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0;}
 input[type=number] {appearance: textfield;}
 
+input[type=checkbox], input[type=radio] {
+    display: inline-block;
+    min-height: initial;
+    accent-color: var(--theme-primary);
+    height: 20px;
+    width: 20px;
+    padding: 0px;
+    margin: 0px;
+}
+
 .button {
     font-size: 18px;
     line-height: 35px;
@@ -576,6 +586,17 @@ input:focus + .input-name, textarea:focus + .input-name {
 
 input:invalid[dirty] + .input-name, textarea:invalid[dirty] + .input-name {
     color: #e60000;
+}
+
+.input input[type=checkbox], .input input[type=radio] {
+    display: inline-block;
+    min-height: initial;
+    accent-color: var(--theme-primary);
+    height: 20px;
+    width: 20px;
+    padding: 0px;
+    margin: 0px;
+    margin-right: 5px;
 }
 
 .input-error {

@@ -1,5 +1,8 @@
 package eu.derzauberer.pis.converter;
 
+import java.util.Arrays;
+import java.util.Iterator;
+
 import org.springframework.stereotype.Component;
 
 import eu.derzauberer.pis.structure.container.Platform;
@@ -13,7 +16,13 @@ public class PlatformFormConverter implements FormConverter<Platform, PlatformFo
 		final PlatformForm platformForm = new PlatformForm();
 		platformForm.setName(platform.getName());
 		platformForm.setLength(platform.getLength());
-		platformForm.setLinkedPlatforms(platform.getLinkedPlatforms().stream().toList());
+		final Iterator<String> platforms = platform.getLinkedPlatforms().iterator();
+		final StringBuilder string = new StringBuilder();
+		while(platforms.hasNext()) {
+			string.append(platforms.next());
+			if (platforms.hasNext()) string.append(", ");
+		}
+		platformForm.setLinkedPlatforms(string.toString());
 		return platformForm;
 	}
 
@@ -26,7 +35,10 @@ public class PlatformFormConverter implements FormConverter<Platform, PlatformFo
 	@Override
 	public Platform convertToModel(Platform platform, PlatformForm platformForm) {
 		platform.setLength(platformForm.getLength());
-		platformForm.getLinkedPlatforms().forEach(platform.getLinkedPlatforms()::add);
+		if (platformForm.getLinkedPlatforms() != null) {
+			final String platforms[] = platformForm.getLinkedPlatforms().split(",");
+			Arrays.stream(platforms).map(link -> link.trim()).forEach(platform.getLinkedPlatforms()::add);
+		}
 		return platform;
 	}
 

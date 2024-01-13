@@ -1,12 +1,10 @@
 package eu.derzauberer.pis.structure.form;
 
-import java.util.List;
-
 public class PlatformForm {
 	
 	private String name;
 	private int length;
-	private List<String> linkedPlatforms;
+	private String linkedPlatforms;
 	
 	public String getName() {
 		return name;
@@ -24,11 +22,11 @@ public class PlatformForm {
 		this.length = length;
 	}
 	
-	public List<String> getLinkedPlatforms() {
+	public String getLinkedPlatforms() {
 		return linkedPlatforms;
 	}
 	
-	public void setLinkedPlatforms(List<String> linkedPlattforms) {
+	public void setLinkedPlatforms(String linkedPlattforms) {
 		this.linkedPlatforms = linkedPlattforms;
 	}
 

@@ -22,9 +22,7 @@ public class StationFormConverter implements FormConverter<Station, StationForm>
 		final StationForm stationForm = new StationForm();
 		stationForm.setId(station.getId());
 		stationForm.setName(station.getName());
-		if (station.getPlatforms() != null) {
-			stationForm.setPlatforms(station.getPlatforms().stream().map(platformFormConverter::convertToForm).toList());
-		}
+		stationForm.setPlatforms(station.getPlatforms().stream().map(platformFormConverter::convertToForm).toList());
 		station.getAddress().ifPresent(address -> stationForm.setAddress(new Address(address)));
 		station.getLocation().ifPresent(location -> stationForm.setLocation(new Location(location)));
 		station.getServices().ifPresent(services -> stationForm.setServices(new Services(services)));
@@ -41,6 +39,7 @@ public class StationFormConverter implements FormConverter<Station, StationForm>
 	public Station convertToModel(Station station, StationForm stationForm) {
 		station.setName(stationForm.getName());
 		if (stationForm.getPlatforms() != null) {
+			station.getPlatforms().clear();
 			stationForm.getPlatforms().stream().map(platformFormConverter::convertToModel).forEach(station.getPlatforms()::add);
 		}
 		if (stationForm.getAddress() != null) station.setAddress(new Address(stationForm.getAddress()));

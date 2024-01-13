@@ -51,28 +51,6 @@
 					
 					<h3 class="mg-t-0" th:text="#{entity.user.permissions}"></h3>
 					<div class="pis-form-grid-2">
-
-					    <div class="input dropdown">
-							<input type="text" th:field="*{enabled}" readonly required>
-							<span class="input-name" th:text="#{entity.user.enabled}"></span>
-							<img class="icon input-icon" src="/resources/swd/icons/more_down.svg" onclick="swd.focusDropdown(this)">
-							<div class="dropdown-content">
-								<a>true</a>
-								<a>false</a>
-						    </div>
-							<span class="input-error"></span>
-					    </div>
-					    
-					    <div class="input dropdown">
-							<input type="text" th:field="*{passwordChangeRequired}" readonly required>
-							<span class="input-name" th:text="#{entity.user.passwordChangeRequired}"></span>
-							<img class="icon input-icon" src="/resources/swd/icons/more_down.svg" onclick="swd.focusDropdown(this)">
-							<div class="dropdown-content">
-								<a>true</a>
-								<a>false</a>
-						    </div>
-							<span class="input-error"></span>
-					    </div>
 					    
 						<div class="input dropdown">
 							<input class="hide" type="text" th:field="*{role}" readonly required>
@@ -84,6 +62,18 @@
 						    </div>
 							<span class="input-error"></span>
 					    </div>
+					    
+					    <div></div>
+					    
+					    <div class="input">
+							<input type="checkbox" th:field="*{enabled}">
+							<span th:text="#{entity.user.enabled}"></span>
+						</div>
+						
+						<div class="input">
+							<input type="checkbox" th:field="*{passwordChangeRequired}">
+							<span th:text="#{entity.user.passwordChangeRequired}"></span>
+						</div>
 					    
 					</div>
 					

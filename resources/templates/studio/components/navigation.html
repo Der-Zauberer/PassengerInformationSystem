@@ -1,12 +1,12 @@
 <th:block th:fragment="navigation">
-	<div class="navigation" th:with="url=${#ctx.springRequestContext.requestUri}">
+	<div class="navigation">
 		<h2 class="menu-title">PIS Studio</h2>
-		<a href="/studio" th:text="#{navigation.dashboard}" th:classappend="${url == '/studio' ? 'menu-active' : ''}"></a>
-		<a href="/studio/stations" th:text="#{navigation.stations}" th:classappend="${url.startsWith('/studio/stations') ? 'menu-active' : ''}"></a>
-		<a href="/studio/lines" th:text="#{navigation.lines}" th:classappend="${url.startsWith('/studio/lines') ? 'menu-active' : ''}"></a>
-		<a href="/studio/routes" th:text="#{navigation.routes}" th:classappend="${url.startsWith('/studio/routes') ? 'menu-active' : ''}"></a>
-		<a href="/studio/types" th:text="#{navigation.types}" th:classappend="${url.startsWith('/studio/types') ? 'menu-active' : ''}"></a>
-		<a href="/studio/operators" th:text="#{navigation.operators}" th:classappend="${url.startsWith('/studio/operators') ? 'menu-active' : ''}"></a>
-		<a href="/studio/users" th:text="#{navigation.users}" th:classappend="${url.startsWith('/studio/users') ? 'menu-active' : ''}"></a>
+		<a href="/studio" th:text="#{navigation.dashboard}" th:classappend="${uri == '/studio' ? 'menu-active' : ''}"></a>
+		<a href="/studio/stations" th:text="#{navigation.stations}" th:classappend="${uri.startsWith('/studio/stations') ? 'menu-active' : ''}"></a>
+		<a href="/studio/lines" th:text="#{navigation.lines}" th:classappend="${uri.startsWith('/studio/lines') ? 'menu-active' : ''}"></a>
+		<a href="/studio/routes" th:text="#{navigation.routes}" th:classappend="${uri.startsWith('/studio/routes') ? 'menu-active' : ''}"></a>
+		<a href="/studio/types" th:text="#{navigation.types}" th:classappend="${uri.startsWith('/studio/types') ? 'menu-active' : ''}"></a>
+		<a href="/studio/operators" th:text="#{navigation.operators}" th:classappend="${uri.startsWith('/studio/operators') ? 'menu-active' : ''}"></a>
+		<a href="/studio/users" th:text="#{navigation.users}" th:classappend="${uri.startsWith('/studio/users') ? 'menu-active' : ''}"></a>
 	</div>
 </th:block>

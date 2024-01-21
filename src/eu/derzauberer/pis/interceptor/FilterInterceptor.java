@@ -27,29 +27,45 @@ public class FilterInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		final HttpSession session = request.getSession();
 		if (session == null) return true;
+		
 		final List<Entry<String, String[]>> parameters = request.getParameterMap()
-		.entrySet()
-		.stream()
-		.filter(entry -> parametersToObserve.contains(entry.getKey()))
-		.toList();
-		if (parameters.isEmpty() && matchParameters(session, request)) {
-			String parameterString = session.getAttribute(FILTER).toString().split("\\?")[1];
-			if (request.getQueryString() != null && !request.getQueryString().isBlank()) parameterString = request.getQueryString() + "&" +parameterString;
-			response.sendRedirect(request.getRequestURI() + "?" + parameterString);
+			.entrySet()
+			.stream()
+			.filter(entry -> parametersToObserve.contains(entry.getKey()))
+			.toList();
+		
+		final String filter = (String) session.getAttribute(FILTER);
+		final String history = (String) session.getAttribute(HISTORY);
+		
+		if (parameters.isEmpty() && filter != null && history != null && matchParameters(filter, history , request)) {
+			response.sendRedirect(request.getRequestURI() + "?" + buildParametersFromFilter(filter, request));
 		} else if (!parameters.isEmpty()) {
-			final StringBuilder parameterString = new StringBuilder();
-			parameters.forEach(parameter -> parameterString.append(parameter.getKey() + "=" + parameter.getValue()[0] + "&"));
-			parameterString.deleteCharAt(parameterString.length() - 1);
-			session.setAttribute(FILTER, request.getRequestURI() + "?" + parameterString);
+			session.setAttribute(FILTER, request.getRequestURI() + "?" + buildParametersForFilter(parameters, request));
 		}
 		return true;
 	}
 	
-	private boolean matchParameters(HttpSession session, HttpServletRequest request) {
-		if (session.getAttribute(FILTER) == null) return false;
-		final String url = session.getAttribute(FILTER).toString().split("\\?")[0];
-		if (session.getAttribute(FILTER) != null && session.getAttribute(HISTORY).equals(url)) return false;
+	private boolean matchParameters(final String filter, String history, HttpServletRequest request) {
+		final String url = filter.split("\\?")[0];
+		if (history.equals(url)) return false;
 		return url.equals(request.getRequestURI());
+	}
+	
+	private String buildParametersFromFilter(String filter, HttpServletRequest request) {
+		String parameters = filter.split("\\?")[1];
+		if (request.getQueryString() != null && !request.getQueryString().isBlank()) {
+			parameters = request.getQueryString() + "&" + parameters;
+		}
+		return parameters;
+	}
+	
+	private String buildParametersForFilter(List<Entry<String, String[]>> parameters, HttpServletRequest request) {
+		final StringBuilder parameterString = new StringBuilder();
+		for (final Entry<String, String[]> parameter : parameters) {
+			parameterString.append(parameter.getKey() + "=" + parameter.getValue()[0] + "&");
+		}
+		parameterString.deleteCharAt(parameterString.length() - 1);
+		return parameterString.toString();
 	}
 
 }

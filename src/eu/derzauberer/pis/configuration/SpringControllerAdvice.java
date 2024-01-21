@@ -6,8 +6,11 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.server.ResponseStatusException;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @ControllerAdvice
 public class SpringControllerAdvice {
@@ -26,5 +29,11 @@ public class SpringControllerAdvice {
 	public void handleConflict(RuntimeException exception) {
 		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.getMessage());
 	}
+	
+    @ModelAttribute("uri")
+    String getRequestServletPath(HttpServletRequest request) {
+        return request.getRequestURI();
+    }
+
 
 }

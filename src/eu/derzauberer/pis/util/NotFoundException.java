@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class NotFoundException extends RuntimeException {
 	
 	public NotFoundException(String type, Object id) {
-		super(type + "with id " + id + " does not exist!");
+		super(type + " with id " + id + " does not exist!");
 	}
 
 }

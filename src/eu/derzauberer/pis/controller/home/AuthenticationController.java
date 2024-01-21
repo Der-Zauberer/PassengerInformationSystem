@@ -65,8 +65,7 @@ public class AuthenticationController {
 			
 			return "redirect:/studio";
 		} else {
-			model.addAttribute("passwordError", true);
-			return changePassword(username, model);
+			return "redirect:/password/change?user="+ username + "&error";
 		}
 	}
 	

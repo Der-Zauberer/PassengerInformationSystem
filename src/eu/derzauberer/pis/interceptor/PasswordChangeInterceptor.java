@@ -17,16 +17,18 @@ public class PasswordChangeInterceptor implements HandlerInterceptor {
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		if (request.getMethod().equals("POST") && request.getRequestURI().equals(passwordChange)) return true;
+		if (request.getRequestURI().equals(passwordChange)) return true;
+		
 		final HttpSession session = request.getSession();
 		if (session == null || session.getAttribute(passwordChangeReqired) == null) return true;
 		session.removeAttribute(passwordChangeReqired);
-		
+			
 		String url = request.getRequestURI();
 		if (request.getQueryString() != null) url += ("?" + request.getQueryString());
 		final SavedRequest savedRequest = new SimpleSavedRequest(url);
 		session.setAttribute(passwordChangeRequest, savedRequest);
 		response.sendRedirect(passwordChange + "?user=" + ((UserData) session.getAttribute("user")).getId());
+		
 		return true;
 	}
 

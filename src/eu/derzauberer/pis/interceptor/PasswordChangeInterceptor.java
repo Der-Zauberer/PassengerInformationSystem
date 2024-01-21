@@ -22,7 +22,9 @@ public class PasswordChangeInterceptor implements HandlerInterceptor {
 		if (session == null || session.getAttribute(passwordChangeReqired) == null) return true;
 		session.removeAttribute(passwordChangeReqired);
 		
-		final SavedRequest savedRequest = new SimpleSavedRequest(request.getRequestURI() + "?" + request.getQueryString());
+		String url = request.getRequestURI();
+		if (request.getQueryString() != null) url += ("?" + request.getQueryString());
+		final SavedRequest savedRequest = new SimpleSavedRequest(url);
 		session.setAttribute(passwordChangeRequest, savedRequest);
 		response.sendRedirect(passwordChange + "?user=" + ((UserData) session.getAttribute("user")).getId());
 		return true;

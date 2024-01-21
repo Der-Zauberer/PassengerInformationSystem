@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.springframework.security.web.savedrequest.SavedRequest;
+import org.springframework.security.web.savedrequest.SimpleSavedRequest;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,29 +36,23 @@ public class FilterInterceptor implements HandlerInterceptor {
 			.filter(entry -> parametersToObserve.contains(entry.getKey()))
 			.toList();
 		
-		final String filter = (String) session.getAttribute(FILTER);
-		final String history = (String) session.getAttribute(HISTORY);
+		final SavedRequest filter = (SavedRequest) session.getAttribute(FILTER);
+		final SavedRequest history = (SavedRequest) session.getAttribute(HISTORY);
 		
 		if (parameters.isEmpty() && filter != null && history != null && matchParameters(filter, history , request)) {
-			response.sendRedirect(request.getRequestURI() + "?" + buildParametersFromFilter(filter, request));
+			response.sendRedirect(filter.getRedirectUrl());
 		} else if (!parameters.isEmpty()) {
-			session.setAttribute(FILTER, request.getRequestURI() + "?" + buildParametersForFilter(parameters, request));
+			final SavedRequest savedRequest = new SimpleSavedRequest(request.getRequestURI() + "?" + buildParametersForFilter(parameters, request));
+			session.setAttribute(FILTER, savedRequest);
 		}
 		return true;
 	}
 	
-	private boolean matchParameters(final String filter, String history, HttpServletRequest request) {
-		final String url = filter.split("\\?")[0];
-		if (history.equals(url)) return false;
-		return url.equals(request.getRequestURI());
-	}
-	
-	private String buildParametersFromFilter(String filter, HttpServletRequest request) {
-		String parameters = filter.split("\\?")[1];
-		if (request.getQueryString() != null && !request.getQueryString().isBlank()) {
-			parameters = request.getQueryString() + "&" + parameters;
-		}
-		return parameters;
+	private boolean matchParameters(final SavedRequest filter, SavedRequest history, HttpServletRequest request) {
+		final String filterPath = filter.getRedirectUrl().split("\\?")[0];
+		final String historyPath = history.getRedirectUrl().split("\\?")[0];
+		if (filterPath.equals(historyPath)) return false;
+		return filterPath.equals(request.getRequestURI());
 	}
 	
 	private String buildParametersForFilter(List<Entry<String, String[]>> parameters, HttpServletRequest request) {

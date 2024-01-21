@@ -1,8 +1,10 @@
 package eu.derzauberer.pis.controller.home;
 
+import java.io.IOException;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,7 @@ import eu.derzauberer.pis.structure.form.ProfileForm;
 import eu.derzauberer.pis.structure.model.User;
 import eu.derzauberer.pis.util.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/")
@@ -47,11 +50,19 @@ public class AuthenticationController {
 	}
 	
 	@PostMapping("/password/change")
-	public String changePassword(@RequestParam(name = "user") String username, PasswordForm passwordForm, Model model) {
+	public String changePassword(@RequestParam(name = "user") String username, PasswordForm passwordForm, Model model, HttpSession session) throws IOException {
 		final User user = userService.getById(username).orElseThrow(() -> new NotFoundException("User", username));
 		if (userService.matchPassword(passwordForm.getOldPassword(), user)) {
+			
 			user.setPassword(userService.hashPassword(passwordForm.getNewPassword()));
+			user.setPasswordChangeRequired(false);
 			userService.save(user);
+			
+			if (session != null) {
+				final SavedRequest savedRequest = (SavedRequest) session.getAttribute("passwordChangeRequest");
+				if (savedRequest != null) return "redirect:" + savedRequest.getRedirectUrl();
+			}
+			
 			return "redirect:/studio";
 		} else {
 			model.addAttribute("passwordError", true);
@@ -94,6 +105,7 @@ public class AuthenticationController {
 	@PostMapping("/account/password")
 	public String setAccountPassword(Model model, Principal principal, PasswordForm passwordForm) {
 		final User user = userService.getById(principal.getName()).get();
+		
 		if (userService.matchPassword(passwordForm.getOldPassword(), user)) {
 			user.setPassword(userService.hashPassword(passwordForm.getNewPassword()));
 			userService.save(user);
@@ -101,6 +113,7 @@ public class AuthenticationController {
 		} else {
 			model.addAttribute("passwordError", true);
 		}
+		
 		return getAccount(model, principal);
 	}
 	

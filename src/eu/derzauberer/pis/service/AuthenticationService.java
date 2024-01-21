@@ -70,7 +70,10 @@ public class AuthenticationService implements AuthenticationProvider, UserDetail
 			session.setAttribute("user", true);
 			userService.getById(authentication.getName())
 				.map(userDataConverter::convert)
-				.ifPresent(user -> session.setAttribute("user", user));
+				.ifPresent(user -> {
+					session.setAttribute("user", user);
+					if (user.isPasswordChangeRequired()) session.setAttribute("passwordChangeReqired", "true");
+				});
 		}
 		new SavedRequestAwareAuthenticationSuccessHandler().onAuthenticationSuccess(request, response, authentication);
 	}
@@ -85,6 +88,7 @@ public class AuthenticationService implements AuthenticationProvider, UserDetail
 					return;
 				} else {
 					session.setAttribute("user", userDataConverter.convert(user));
+					if (user.isPasswordChangeRequired()) session.setAttribute("passwordChangeReqired", "true");
 					if (oldUser.getRole() != user.getRole()) {
 						final Authentication auth = new UsernamePasswordAuthenticationToken(user.getId(), null, user.getRole().getGrantedAuthorities());
 						SecurityContextHolder.getContext().setAuthentication(auth);

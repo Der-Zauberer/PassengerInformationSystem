@@ -37,6 +37,7 @@ import eu.derzauberer.pis.configuration.SerializationConfiguration.TimeDeseriali
 import eu.derzauberer.pis.configuration.SerializationConfiguration.TimeSerializer;
 import eu.derzauberer.pis.interceptor.FilterInterceptor;
 import eu.derzauberer.pis.interceptor.HistoryInterceptor;
+import eu.derzauberer.pis.interceptor.PasswordChangeInterceptor;
 import eu.derzauberer.pis.interceptor.SessionUpdateInterceptor;
 import eu.derzauberer.pis.repository.EntityRepository;
 import eu.derzauberer.pis.repository.FileEntityRepository;
@@ -72,6 +73,7 @@ public class SpringConfiguration implements ApplicationContextAware, WebMvcConfi
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor()).excludePathPatterns(DEFAULT_EXCLUSION_PATTERN);
         registry.addInterceptor(sessionUpdateInterceptor()).excludePathPatterns(DEFAULT_EXCLUSION_PATTERN);
+        registry.addInterceptor(passwordChangeInterceptor()).excludePathPatterns(DEFAULT_EXCLUSION_PATTERN);
         registry.addInterceptor(filterInterceptor()).addPathPatterns("/studio/*");
         registry.addInterceptor(historyInterceptor()).excludePathPatterns(DEFAULT_EXCLUSION_PATTERN);
     }
@@ -79,6 +81,10 @@ public class SpringConfiguration implements ApplicationContextAware, WebMvcConfi
     @Bean
     public SessionUpdateInterceptor sessionUpdateInterceptor() {
         return new SessionUpdateInterceptor();
+    }
+    
+    @Bean PasswordChangeInterceptor passwordChangeInterceptor() {
+    	return new PasswordChangeInterceptor();
     }
     
     @Bean

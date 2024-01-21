@@ -3,14 +3,12 @@ package eu.derzauberer.pis.controller.home;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.server.ResponseStatusException;
 
 import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.service.AuthenticationService;
@@ -19,6 +17,7 @@ import eu.derzauberer.pis.structure.form.LoginForm;
 import eu.derzauberer.pis.structure.form.PasswordForm;
 import eu.derzauberer.pis.structure.form.ProfileForm;
 import eu.derzauberer.pis.structure.model.User;
+import eu.derzauberer.pis.util.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
@@ -49,7 +48,7 @@ public class AuthenticationController {
 	
 	@PostMapping("/password/change")
 	public String changePassword(@RequestParam(name = "user") String username, PasswordForm passwordForm, Model model) {
-		final User user = userService.getById(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Station with id " + username + " does not exist!"));
+		final User user = userService.getById(username).orElseThrow(() -> new NotFoundException("User", username));
 		if (userService.matchPassword(passwordForm.getOldPassword(), user)) {
 			user.setPassword(userService.hashPassword(passwordForm.getNewPassword()));
 			userService.save(user);

@@ -3,7 +3,6 @@ package eu.derzauberer.pis.controller.api;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
@@ -22,6 +20,7 @@ import eu.derzauberer.pis.structure.data.UserData;
 import eu.derzauberer.pis.structure.data.UserInfoData;
 import eu.derzauberer.pis.structure.form.UserForm;
 import eu.derzauberer.pis.structure.model.User;
+import eu.derzauberer.pis.util.NotFoundException;
 import eu.derzauberer.pis.util.Result;
 import eu.derzauberer.pis.util.ResultListDto;
 import jakarta.servlet.ServletOutputStream;
@@ -56,7 +55,7 @@ public class UserController {
 	
 	@GetMapping("{id}")
 	public UserData getUser(@PathVariable("id") String id) {
-		return userService.getById(id).map(userDataConverter::convert).orElseThrow(() -> getNotFoundException(id));
+		return userService.getById(id).map(userDataConverter::convert).orElseThrow(() -> new NotFoundException("User", id));
 	}
 	
 	@PostMapping
@@ -67,7 +66,7 @@ public class UserController {
 	
 	@DeleteMapping("{id}")
 	public void deleteUser(@PathVariable("id") String id) {
-		if (!userService.removeById(id)) throw getNotFoundException(id);
+		if (!userService.removeById(id)) throw new NotFoundException("User", id);
 	}
 	
 	@PostMapping("/import")
@@ -91,10 +90,6 @@ public class UserController {
 		} else {
 			return userService.getAll();
 		}
-	}
-	
-	private ResponseStatusException getNotFoundException(String id) {
-		return new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id " + id + " does not exist!");
 	}
 
 }

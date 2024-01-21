@@ -3,7 +3,6 @@ package eu.derzauberer.pis.controller.api;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import eu.derzauberer.pis.service.OperatorService;
 import eu.derzauberer.pis.structure.model.Operator;
+import eu.derzauberer.pis.util.NotFoundException;
 import eu.derzauberer.pis.util.Result;
 import eu.derzauberer.pis.util.ResultListDto;
 import jakarta.servlet.ServletOutputStream;
@@ -42,7 +41,7 @@ public class OperatorController {
 	
 	@GetMapping("{id}")
 	public Operator getOperator(@PathVariable("id") String id) {
-		return operatorService.getById(id).orElseThrow(() -> getNotFoundException(id));
+		return operatorService.getById(id).orElseThrow(() -> new NotFoundException("Operator", id));
 	}
 	
 	@PostMapping
@@ -53,7 +52,7 @@ public class OperatorController {
 	
 	@DeleteMapping("{id}")
 	public void deleteOperator(@PathVariable("id") String id) {
-		if (!operatorService.removeById(id)) throw getNotFoundException(id);
+		if (!operatorService.removeById(id)) throw new NotFoundException("Operator", id);
 	}
 	
 	@PostMapping("/import")
@@ -77,10 +76,6 @@ public class OperatorController {
 		} else {
 			return operatorService.getAll();
 		}
-	}
-	
-	private ResponseStatusException getNotFoundException(String id) {
-		return new ResponseStatusException(HttpStatus.NOT_FOUND, "Operator with id " + id + " does not exist!");
 	}
 
 }

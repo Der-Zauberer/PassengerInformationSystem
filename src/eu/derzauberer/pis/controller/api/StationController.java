@@ -3,7 +3,6 @@ package eu.derzauberer.pis.controller.api;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
@@ -21,6 +19,7 @@ import eu.derzauberer.pis.service.StationService;
 import eu.derzauberer.pis.structure.data.StationData;
 import eu.derzauberer.pis.structure.form.StationForm;
 import eu.derzauberer.pis.structure.model.Station;
+import eu.derzauberer.pis.util.NotFoundException;
 import eu.derzauberer.pis.util.Result;
 import eu.derzauberer.pis.util.ResultListDto;
 import jakarta.servlet.ServletOutputStream;
@@ -52,7 +51,7 @@ public class StationController {
 	
 	@GetMapping("{id}")
 	public StationData getStation(@PathVariable("id") String id) {
-		return stationService.getById(id).map(stationDataConverter::convert).orElseThrow(() -> getNotFoundException(id));
+		return stationService.getById(id).map(stationDataConverter::convert).orElseThrow(() -> new NotFoundException("Station", id));
 	}
 	
 	@PostMapping
@@ -63,7 +62,7 @@ public class StationController {
 	
 	@DeleteMapping("{id}")
 	public void deleteStation(@PathVariable("id") String id) {
-		if (!stationService.removeById(id)) throw getNotFoundException(id);
+		if (!stationService.removeById(id)) throw new NotFoundException("Station", id);
 	}
 	
 	@PostMapping("/import")
@@ -87,10 +86,6 @@ public class StationController {
 		} else {
 			return stationService.getAll();
 		}
-	}
-
-	private ResponseStatusException getNotFoundException(String id) {
-		return new ResponseStatusException(HttpStatus.NOT_FOUND, "Station with id " + id + " does not exist!");
 	}
 	
 }

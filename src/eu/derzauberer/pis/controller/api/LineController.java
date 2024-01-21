@@ -22,6 +22,7 @@ import eu.derzauberer.pis.service.StationService;
 import eu.derzauberer.pis.structure.container.StationTrafficEntry;
 import eu.derzauberer.pis.structure.model.Line;
 import eu.derzauberer.pis.structure.model.Station;
+import eu.derzauberer.pis.util.NotFoundException;
 import eu.derzauberer.pis.util.ResultList;
 import eu.derzauberer.pis.util.ResultListDto;
 import jakarta.servlet.ServletOutputStream;
@@ -60,7 +61,7 @@ public class LineController {
 	}
 	
 	private ResultListDto<StationTrafficEntry> getTraffic(boolean arrival, String stationId, String date, int hour, int offset, int limit) {
-		final Station station = stationService.getById(stationId).orElseThrow(() -> getNotFoundException("Station", stationId));
+		final Station station = stationService.getById(stationId).orElseThrow(() -> new NotFoundException("Station", stationId));
 		if (!date.matches("^\\d{8}$")) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date format " + date + " is invalid, it has to be YYYYMMDD");
 		final LocalDateTime dateTime = LocalDateTime.of(Integer.parseInt(date.substring(0, 4)), Integer.parseInt(date.substring(4, 6)), Integer.parseInt(date.substring(6, 8)), hour, 0);
 		final List<StationTrafficEntry> entries = (!arrival ? lineService.findArrivalsSinceHour(station, dateTime, limit) : lineService.findDeparturesSinceHour(station, dateTime, limit)).stream().toList();
@@ -70,7 +71,7 @@ public class LineController {
 	
 	@GetMapping("{id}")
 	public Line getLine(@PathVariable("id") String id) {
-		return lineService.getById(id).orElseThrow(() -> getNotFoundException("Line", id));
+		return lineService.getById(id).orElseThrow(() -> new NotFoundException("Line", id));
 	}
 	
 	@PostMapping
@@ -81,7 +82,7 @@ public class LineController {
 	
 	@DeleteMapping("{id}")
 	public void deleteLine(@PathVariable("id") String id) {
-		if (!lineService.removeById(id)) throw getNotFoundException("Line", id);
+		if (!lineService.removeById(id)) throw new NotFoundException("Line", id);
 	}
 	
 	@PostMapping("/import")
@@ -105,10 +106,6 @@ public class LineController {
 		} else {
 			return lineService.getAll();
 		}
-	}
-	
-	private ResponseStatusException getNotFoundException(String entity, String id) {
-		return new ResponseStatusException(HttpStatus.NOT_FOUND, entity + " with id " + id + " does not exist!");
 	}
 
 }

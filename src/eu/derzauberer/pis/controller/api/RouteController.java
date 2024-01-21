@@ -3,7 +3,6 @@ package eu.derzauberer.pis.controller.api;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import eu.derzauberer.pis.service.RouteService;
 import eu.derzauberer.pis.structure.model.Route;
+import eu.derzauberer.pis.util.NotFoundException;
 import eu.derzauberer.pis.util.Result;
 import eu.derzauberer.pis.util.ResultListDto;
 import jakarta.servlet.ServletOutputStream;
@@ -42,7 +41,7 @@ public class RouteController {
 	
 	@GetMapping("{id}")
 	public Route getRoute(@PathVariable("id") String id) {
-		return routeService.getById(id).orElseThrow(() -> getNotFoundException(id));
+		return routeService.getById(id).orElseThrow(() -> new NotFoundException("Route", id));
 	}
 	
 	@PostMapping
@@ -53,7 +52,7 @@ public class RouteController {
 	
 	@DeleteMapping("{id}")
 	public void deleteRoute(@PathVariable("id") String id) {
-		if (!routeService.removeById(id)) throw getNotFoundException(id);
+		if (!routeService.removeById(id)) throw new NotFoundException("Route", id);
 	}
 	
 	@PostMapping("/import")
@@ -77,10 +76,6 @@ public class RouteController {
 		} else {
 			return routeService.getAll();
 		}
-	}
-	
-	private ResponseStatusException getNotFoundException(String id) {
-		return new ResponseStatusException(HttpStatus.NOT_FOUND, "Route with id " + id + " does not exist!");
 	}
 
 }

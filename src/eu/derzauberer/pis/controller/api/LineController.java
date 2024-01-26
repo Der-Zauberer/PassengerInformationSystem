@@ -19,9 +19,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import eu.derzauberer.pis.service.LineService;
 import eu.derzauberer.pis.service.StationService;
-import eu.derzauberer.pis.structure.container.StationTrafficEntry;
-import eu.derzauberer.pis.structure.model.Line;
-import eu.derzauberer.pis.structure.model.Station;
+import eu.derzauberer.pis.structure.model.LineModel;
+import eu.derzauberer.pis.structure.model.StationModel;
+import eu.derzauberer.pis.structure.model.StationTrafficEntryModel;
 import eu.derzauberer.pis.util.NotFoundException;
 import eu.derzauberer.pis.util.ResultList;
 import eu.derzauberer.pis.util.ResultListDto;
@@ -39,7 +39,7 @@ public class LineController {
 	private StationService stationService;
 	
 	@GetMapping("/{arrivalOrDeparture}/{stationId}/{date}")
-	public ResultListDto<StationTrafficEntry> getArrivals(
+	public ResultListDto<StationTrafficEntryModel> getArrivals(
 			@PathVariable("stationId") String stationId,
 			@PathVariable("date") String date,
 			@RequestParam(name = "hour", required = false, defaultValue = "0") int hour,
@@ -50,7 +50,7 @@ public class LineController {
 	}
 	
 	@GetMapping("/departures/{stationId}/{date}")
-	public ResultListDto<StationTrafficEntry> getDepartures(
+	public ResultListDto<StationTrafficEntryModel> getDepartures(
 			@PathVariable("stationId") String stationId,
 			@PathVariable("date") String date,
 			@RequestParam(name = "hour", required = false, defaultValue = "0") int hour,
@@ -60,22 +60,22 @@ public class LineController {
 		return getTraffic(true, stationId, date, hour, offset, limit);
 	}
 	
-	private ResultListDto<StationTrafficEntry> getTraffic(boolean arrival, String stationId, String date, int hour, int offset, int limit) {
-		final Station station = stationService.getById(stationId).orElseThrow(() -> new NotFoundException("Station", stationId));
+	private ResultListDto<StationTrafficEntryModel> getTraffic(boolean arrival, String stationId, String date, int hour, int offset, int limit) {
+		final StationModel station = stationService.getById(stationId).orElseThrow(() -> new NotFoundException("Station", stationId));
 		if (!date.matches("^\\d{8}$")) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date format " + date + " is invalid, it has to be YYYYMMDD");
 		final LocalDateTime dateTime = LocalDateTime.of(Integer.parseInt(date.substring(0, 4)), Integer.parseInt(date.substring(4, 6)), Integer.parseInt(date.substring(6, 8)), hour, 0);
-		final List<StationTrafficEntry> entries = (!arrival ? lineService.findArrivalsSinceHour(station, dateTime, limit) : lineService.findDeparturesSinceHour(station, dateTime, limit)).stream().toList();
+		final List<StationTrafficEntryModel> entries = (!arrival ? lineService.findArrivalsSinceHour(station, dateTime, limit) : lineService.findDeparturesSinceHour(station, dateTime, limit)).stream().toList();
 		//final int total = !arrival ? lineService.getAmountOfArrivalsSinceHour(station, dateTime, limit) : lineService.getAmountOfDeparturesSinceHour(station, dateTime, limit);
-		return new ResultList<StationTrafficEntry>(entries).getList(offset, limit == -1 ? entries.size() : limit);
+		return new ResultList<StationTrafficEntryModel>(entries).getList(offset, limit == -1 ? entries.size() : limit);
 	}
 	
 	@GetMapping("{id}")
-	public Line getLine(@PathVariable("id") String id) {
+	public LineModel getLine(@PathVariable("id") String id) {
 		return lineService.getById(id).orElseThrow(() -> new NotFoundException("Line", id));
 	}
 	
 	@PostMapping
-	public Line setLine(@RequestBody Line line) {
+	public LineModel setLine(@RequestBody LineModel line) {
 		lineService.save(line);
 		return line;
 	}

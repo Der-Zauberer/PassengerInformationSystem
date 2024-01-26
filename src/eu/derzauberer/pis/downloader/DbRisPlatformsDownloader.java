@@ -11,8 +11,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import eu.derzauberer.pis.configuration.UserConfiguration;
 import eu.derzauberer.pis.service.StationService;
-import eu.derzauberer.pis.structure.container.Platform;
-import eu.derzauberer.pis.structure.model.Station;
+import eu.derzauberer.pis.structure.model.PlatformModel;
+import eu.derzauberer.pis.structure.model.StationModel;
 import eu.derzauberer.pis.util.HttpRequest;
 import eu.derzauberer.pis.util.ProgressStatus;
 
@@ -39,11 +39,11 @@ public class DbRisPlatformsDownloader {
 		request.getHeader().put("DB-Client-Id", config.getDbClientId());
 		request.getHeader().put("DB-Api-Key", config.getDbApiKey());
 		request.setExceptionAction(exception -> LOGGER.error("Downloading {} from {} failed: {} {}", stationService.getName(), NAME, exception.getClass().getSimpleName(), exception.getMessage()));
-		final List<Station> stations = stationService.getAll();
+		final List<StationModel> stations = stationService.getAll();
 		int counter = 0;
 		long millis = System.currentTimeMillis();
 		final ProgressStatus progress = new ProgressStatus("Processing", NAME, stations.size());
-		for (Station station : stations) {
+		for (StationModel station : stations) {
 			if (station.getApiInformation().isEmpty() || station.getOrCreateApiInformation().getIds() == null || !station.getOrCreateApiInformation().getIds().containsKey("eva")) continue;
 			request.getParameter().put("keyType", "EVA");
 			request.getParameter().put("key", station.getOrCreateApiInformation().getIds().get("eva").toString());
@@ -59,9 +59,9 @@ public class DbRisPlatformsDownloader {
 		LOGGER.info("Downloaded {} stations platforms from {}", counter, NAME, URL);
 	}
 	
-	private void save(Station station, ObjectNode json) {
+	private void save(StationModel station, ObjectNode json) {
 		for (JsonNode node : json.withArray("platforms")) {
-			final Platform platfrom = new Platform(node.get("name").asText().toUpperCase());
+			final PlatformModel platfrom = new PlatformModel(node.get("name").asText().toUpperCase());
 			station.getPlatforms().stream().filter(entry -> entry.getName().equalsIgnoreCase(platfrom.getName())).findAny().ifPresent(station.getPlatforms()::remove);
 			station.getPlatforms().add(platfrom);
 			if (node.get("length") != null) platfrom.setLength(node.get("length").asInt());

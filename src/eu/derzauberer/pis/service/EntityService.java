@@ -6,13 +6,13 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import eu.derzauberer.pis.repository.EntityRepository;
-import eu.derzauberer.pis.structure.model.Entity;
-import eu.derzauberer.pis.structure.model.NameEntity;
+import eu.derzauberer.pis.structure.model.EntityModel;
+import eu.derzauberer.pis.structure.model.NameEntityModel;
 import eu.derzauberer.pis.util.RemoveEvent;
 import eu.derzauberer.pis.util.Result;
 import eu.derzauberer.pis.util.SaveEvent;
 
-public abstract class EntityService<T extends Entity<T> & NameEntity> implements Result<T> {
+public abstract class EntityService<T extends EntityModel<T> & NameEntityModel> implements Result<T> {
 	
 	private final EntityRepository<T> repository;
 	private List<Consumer<SaveEvent<T>>> onSave = new ArrayList<>();

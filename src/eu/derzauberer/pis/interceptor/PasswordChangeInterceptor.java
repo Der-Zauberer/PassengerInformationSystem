@@ -4,7 +4,7 @@ import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.security.web.savedrequest.SimpleSavedRequest;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import eu.derzauberer.pis.structure.data.UserData;
+import eu.derzauberer.pis.structure.dto.UserData;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;

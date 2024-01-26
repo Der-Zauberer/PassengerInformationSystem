@@ -9,10 +9,10 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.derzauberer.pis.structure.model.Entity;
-import eu.derzauberer.pis.structure.model.NameEntity;
+import eu.derzauberer.pis.structure.model.EntityModel;
+import eu.derzauberer.pis.structure.model.NameEntityModel;
 
-public class FileEntityRepository<T extends Entity<T>> extends EntityRepository<T> {
+public class FileEntityRepository<T extends EntityModel<T>> extends EntityRepository<T> {
 	
 	protected static final Logger LOGGER = LoggerFactory.getLogger(FileEntityRepository.class);
 
@@ -25,7 +25,7 @@ public class FileEntityRepository<T extends Entity<T>> extends EntityRepository<
 	public void save(T entity) {
 		Objects.requireNonNull(entity);
 		Objects.requireNonNull(entity.getId());
-		if (entity instanceof NameEntity) Objects.requireNonNull(((NameEntity) entity).getName());
+		if (entity instanceof NameEntityModel) Objects.requireNonNull(((NameEntityModel) entity).getName());
 		saveEntity(entity);
 	}
 

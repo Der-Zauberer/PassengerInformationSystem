@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import eu.derzauberer.pis.service.OperatorService;
-import eu.derzauberer.pis.structure.model.Operator;
+import eu.derzauberer.pis.structure.model.OperatorModel;
 import eu.derzauberer.pis.util.NotFoundException;
 import eu.derzauberer.pis.util.Result;
 import eu.derzauberer.pis.util.ResultListDto;
@@ -29,23 +29,23 @@ public class OperatorController {
 	private OperatorService operatorService;
 	
 	@GetMapping
-	public ResultListDto<Operator> getOperators(
+	public ResultListDto<OperatorModel> getOperators(
 			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
-		final Result<Operator> result = hasSearch ? operatorService.search(search) : operatorService;
+		final Result<OperatorModel> result = hasSearch ? operatorService.search(search) : operatorService;
 		return result.getList(offset, limit == -1 ? result.size() : limit);
 	}
 	
 	@GetMapping("{id}")
-	public Operator getOperator(@PathVariable("id") String id) {
+	public OperatorModel getOperator(@PathVariable("id") String id) {
 		return operatorService.getById(id).orElseThrow(() -> new NotFoundException("Operator", id));
 	}
 	
 	@PostMapping
-	public Operator setOperator(@RequestBody Operator operator) {
+	public OperatorModel setOperator(@RequestBody OperatorModel operator) {
 		operatorService.save(operator);
 		return operator;
 	}

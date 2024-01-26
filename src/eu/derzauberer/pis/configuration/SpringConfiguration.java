@@ -42,13 +42,13 @@ import eu.derzauberer.pis.interceptor.SessionUpdateInterceptor;
 import eu.derzauberer.pis.repository.EntityRepository;
 import eu.derzauberer.pis.repository.FileEntityRepository;
 import eu.derzauberer.pis.repository.MemoryEntityRepository;
-import eu.derzauberer.pis.structure.model.Line;
-import eu.derzauberer.pis.structure.model.Operator;
-import eu.derzauberer.pis.structure.model.Route;
-import eu.derzauberer.pis.structure.model.Station;
-import eu.derzauberer.pis.structure.model.StationTraffic;
-import eu.derzauberer.pis.structure.model.TransportationType;
-import eu.derzauberer.pis.structure.model.User;
+import eu.derzauberer.pis.structure.model.LineModel;
+import eu.derzauberer.pis.structure.model.OperatorModel;
+import eu.derzauberer.pis.structure.model.RouteModel;
+import eu.derzauberer.pis.structure.model.StationModel;
+import eu.derzauberer.pis.structure.model.StationTrafficModel;
+import eu.derzauberer.pis.structure.model.TransportationTypeModel;
+import eu.derzauberer.pis.structure.model.UserModel;
 
 @Configuration
 public class SpringConfiguration implements ApplicationContextAware, WebMvcConfigurer {
@@ -160,38 +160,38 @@ public class SpringConfiguration implements ApplicationContextAware, WebMvcConfi
 	}
 	
 	@Bean
-	public EntityRepository<Line> getLineRepository() {
-		return new FileEntityRepository<>("lines", Line.class);
+	public EntityRepository<LineModel> getLineRepository() {
+		return new FileEntityRepository<>("lines", LineModel.class);
 	}
 	
 	@Bean
-	public EntityRepository<Operator> getOperatorRepository() {
-		return caching ? new MemoryEntityRepository<>("operators", Operator.class) : new FileEntityRepository<>("operators", Operator.class);
+	public EntityRepository<OperatorModel> getOperatorRepository() {
+		return caching ? new MemoryEntityRepository<>("operators", OperatorModel.class) : new FileEntityRepository<>("operators", OperatorModel.class);
 	}
 	
 	@Bean
-	public EntityRepository<Route> getRouteRepository() {
-		return caching ? new MemoryEntityRepository<>("routes", Route.class) : new FileEntityRepository<>("routes", Route.class);
+	public EntityRepository<RouteModel> getRouteRepository() {
+		return caching ? new MemoryEntityRepository<>("routes", RouteModel.class) : new FileEntityRepository<>("routes", RouteModel.class);
 	}
 	
 	@Bean
-	public EntityRepository<Station> getStationRepository() {
-		return caching ? new MemoryEntityRepository<>("stations", Station.class) : new FileEntityRepository<>("stations", Station.class);
+	public EntityRepository<StationModel> getStationRepository() {
+		return caching ? new MemoryEntityRepository<>("stations", StationModel.class) : new FileEntityRepository<>("stations", StationModel.class);
 	}
 	
 	@Bean
-	public EntityRepository<StationTraffic> getStationTrafficRepository() {
-		return new FileEntityRepository<>("station_traffic_indices", StationTraffic.class);
+	public EntityRepository<StationTrafficModel> getStationTrafficRepository() {
+		return new FileEntityRepository<>("station_traffic_indices", StationTrafficModel.class);
 	}
 	
 	@Bean
-	public EntityRepository<TransportationType> getTypeRepository() {
-		return caching ? new MemoryEntityRepository<>("types", TransportationType.class) : new FileEntityRepository<>("types", TransportationType.class);
+	public EntityRepository<TransportationTypeModel> getTypeRepository() {
+		return caching ? new MemoryEntityRepository<>("types", TransportationTypeModel.class) : new FileEntityRepository<>("types", TransportationTypeModel.class);
 	}
 	
 	@Bean
-	public EntityRepository<User> getUserRepository() {
-		return caching ? new MemoryEntityRepository<>("users", User.class) : new FileEntityRepository<>("users", User.class);
+	public EntityRepository<UserModel> getUserRepository() {
+		return caching ? new MemoryEntityRepository<>("users", UserModel.class) : new FileEntityRepository<>("users", UserModel.class);
 	}
 	
 }

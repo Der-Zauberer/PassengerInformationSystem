@@ -10,24 +10,24 @@ import eu.derzauberer.pis.components.IdentificationComponent;
 import eu.derzauberer.pis.components.SearchComponent;
 import eu.derzauberer.pis.repository.EntityRepository;
 import eu.derzauberer.pis.structure.enums.UserRole;
-import eu.derzauberer.pis.structure.model.User;
+import eu.derzauberer.pis.structure.model.UserModel;
 import eu.derzauberer.pis.util.Result;
 
 @Service
-public class UserService extends EntityService<User> {
+public class UserService extends EntityService<UserModel> {
 	
 	private final PasswordEncoder passwordEncoder;
-	private final IdentificationComponent<User> emailIdentification;
-	private final SearchComponent<User> search;
+	private final IdentificationComponent<UserModel> emailIdentification;
+	private final SearchComponent<UserModel> search;
 	
 	@Autowired
-	public UserService(EntityRepository<User> userRepository, PasswordEncoder passwordEncoder) {
+	public UserService(EntityRepository<UserModel> userRepository, PasswordEncoder passwordEncoder) {
 		super(userRepository);
 		this.passwordEncoder = passwordEncoder;
 		this.search = new SearchComponent<>(this);
-		this.emailIdentification = new IdentificationComponent<>(this, User::getEmail);
+		this.emailIdentification = new IdentificationComponent<>(this, UserModel::getEmail);
 		if (isEmpty()) {
-			final User admin = new User("admin", "Admin");
+			final UserModel admin = new UserModel("admin", "Admin");
 			admin.setPassword(hashPassword("admin"));
 			admin.setRole(UserRole.ADMIN);
 			save(admin);
@@ -35,7 +35,7 @@ public class UserService extends EntityService<User> {
 	}
 	
 	@Override
-	public User save(User user) {
+	public UserModel save(UserModel user) {
 		if (user.getEmail() != null) {
 			getById(user.getEmail()).ifPresent(existing -> {
 				if (!existing.getId().equals(user.getId())) {
@@ -59,11 +59,11 @@ public class UserService extends EntityService<User> {
 	}
 	
 	@Override
-	public Optional<User> getById(String id) {
+	public Optional<UserModel> getById(String id) {
 		return super.getById(id).or(() -> emailIdentification.getByIdentification(id));
 	}
 	
-	public Result<User> search(String search) {
+	public Result<UserModel> search(String search) {
 		return this.search.search(search);
 	}
 	
@@ -71,7 +71,7 @@ public class UserService extends EntityService<User> {
 		return passwordEncoder.encode(password);
 	}
 	
-	public boolean matchPassword(String password, User user) {
+	public boolean matchPassword(String password, UserModel user) {
 		if (user.getPassword() == null || user.getPassword().isEmpty()) return false;
 		return passwordEncoder.matches(password, user.getPassword());
 	}

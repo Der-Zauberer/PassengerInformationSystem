@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.service.TypeService;
-import eu.derzauberer.pis.structure.data.TransportationTypeData;
-import eu.derzauberer.pis.structure.form.TransportationTypeForm;
-import eu.derzauberer.pis.structure.model.TransportationType;
+import eu.derzauberer.pis.structure.dto.TransportationTypeData;
+import eu.derzauberer.pis.structure.dto.TransportationTypeForm;
+import eu.derzauberer.pis.structure.model.TransportationTypeModel;
 import eu.derzauberer.pis.util.NotFoundException;
 import eu.derzauberer.pis.util.Result;
 import eu.derzauberer.pis.util.ResultListDto;
@@ -33,10 +33,10 @@ public class TypeController {
 	private TypeService typeService;
 	
 	@Autowired 
-	private DataConverter<TransportationType, TransportationTypeData> typeDataConverter;
+	private DataConverter<TransportationTypeModel, TransportationTypeData> typeDataConverter;
 	
 	@Autowired
-	private FormConverter<TransportationType, TransportationTypeForm> typeFormConverter;
+	private FormConverter<TransportationTypeModel, TransportationTypeForm> typeFormConverter;
 	
 	@GetMapping
 	public ResultListDto<TransportationTypeData> getTypes(
@@ -45,7 +45,7 @@ public class TypeController {
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
-		final Result<TransportationType> result = hasSearch ? typeService.search(search) : typeService;
+		final Result<TransportationTypeModel> result = hasSearch ? typeService.search(search) : typeService;
 		return result.map(typeDataConverter::convert).getList(offset, limit == -1 ? result.size() : limit);
 	}
 
@@ -56,7 +56,7 @@ public class TypeController {
 	
 	@PostMapping
 	public TransportationTypeData setType(@RequestBody TransportationTypeForm typeForm) {
-		final TransportationType type = typeFormConverter.convertToModel(typeForm);
+		final TransportationTypeModel type = typeFormConverter.convertToModel(typeForm);
 		return typeDataConverter.convert(typeService.save(type));
 	}
 	

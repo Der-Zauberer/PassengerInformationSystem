@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.service.OperatorService;
-import eu.derzauberer.pis.structure.data.OperatorData;
-import eu.derzauberer.pis.structure.form.OperatorForm;
-import eu.derzauberer.pis.structure.model.Operator;
+import eu.derzauberer.pis.structure.dto.OperatorData;
+import eu.derzauberer.pis.structure.dto.OperatorForm;
+import eu.derzauberer.pis.structure.model.OperatorModel;
 import eu.derzauberer.pis.util.Result;
 
 @Controller
@@ -24,10 +24,10 @@ public class StudioOperatorController {
 	private OperatorService operatorService;
 	
 	@Autowired
-	private DataConverter<Operator, OperatorData> operatorDataConverter;
+	private DataConverter<OperatorModel, OperatorData> operatorDataConverter;
 	
 	@Autowired
-	private FormConverter<Operator, OperatorForm> operatorFormConverter;
+	private FormConverter<OperatorModel, OperatorForm> operatorFormConverter;
 	
 	@GetMapping
 	public String getOperators(Model model,
@@ -36,7 +36,7 @@ public class StudioOperatorController {
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
-		final Result<Operator> result = hasSearch ? operatorService.search(search) : operatorService;
+		final Result<OperatorModel> result = hasSearch ? operatorService.search(search) : operatorService;
 		model.addAttribute("page", result.map(operatorDataConverter::convert).getPage(page, pageSize));
 		return "studio/operators.html";
 	}
@@ -53,7 +53,7 @@ public class StudioOperatorController {
 	
 	@PostMapping("/edit")
 	public String editOperator(@RequestParam(value = "entity", required = false) String id, Model model, OperatorForm operatorForm) {
-		final Operator operator = operatorService.getById(id)
+		final OperatorModel operator = operatorService.getById(id)
 				.map(original -> operatorFormConverter.convertToModel(original, operatorForm))
 				.orElseGet(() -> operatorFormConverter.convertToModel(operatorForm));
 		operatorService.save(operator);

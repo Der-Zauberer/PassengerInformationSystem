@@ -8,10 +8,10 @@ import java.util.function.Function;
 import org.slf4j.LoggerFactory;
 
 import eu.derzauberer.pis.service.EntityService;
-import eu.derzauberer.pis.structure.model.Entity;
-import eu.derzauberer.pis.structure.model.NameEntity;
+import eu.derzauberer.pis.structure.model.EntityModel;
+import eu.derzauberer.pis.structure.model.NameEntityModel;
 
-public class IdentificationComponent<T extends Entity<T> & NameEntity> extends Component<EntityService<T>, IdentificationComponent.Index> {
+public class IdentificationComponent<T extends EntityModel<T> & NameEntityModel> extends Component<EntityService<T>, IdentificationComponent.Index> {
 	
 	private Index index;
 	private boolean generateIndex = false;

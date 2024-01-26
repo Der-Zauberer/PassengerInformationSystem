@@ -5,22 +5,22 @@ import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.components.SearchComponent;
 import eu.derzauberer.pis.repository.EntityRepository;
-import eu.derzauberer.pis.structure.model.Route;
+import eu.derzauberer.pis.structure.model.RouteModel;
 import eu.derzauberer.pis.util.Result;
 
 @Service
-public class RouteService extends EntityService<Route> {
+public class RouteService extends EntityService<RouteModel> {
 
-	private final SearchComponent<Route> searchComponent;
+	private final SearchComponent<RouteModel> searchComponent;
 	
 	@Autowired
-	public RouteService(EntityRepository<Route> repository) {
+	public RouteService(EntityRepository<RouteModel> repository) {
 		super(repository);
 		searchComponent = new SearchComponent<>(this);
 	}
 	
 	@Override
-	public Result<Route> search(String search) {
+	public Result<RouteModel> search(String search) {
 		return searchComponent.search(search);
 	}
 	

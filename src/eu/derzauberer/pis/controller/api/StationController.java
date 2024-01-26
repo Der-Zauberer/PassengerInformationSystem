@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.service.StationService;
-import eu.derzauberer.pis.structure.data.StationData;
-import eu.derzauberer.pis.structure.form.StationForm;
-import eu.derzauberer.pis.structure.model.Station;
+import eu.derzauberer.pis.structure.dto.StationData;
+import eu.derzauberer.pis.structure.dto.StationForm;
+import eu.derzauberer.pis.structure.model.StationModel;
 import eu.derzauberer.pis.util.NotFoundException;
 import eu.derzauberer.pis.util.Result;
 import eu.derzauberer.pis.util.ResultListDto;
@@ -33,10 +33,10 @@ public class StationController {
 	private StationService stationService;
 	
 	@Autowired
-	private DataConverter<Station, StationData> stationDataConverter;
+	private DataConverter<StationModel, StationData> stationDataConverter;
 	
 	@Autowired
-	private FormConverter<Station, StationForm> stationFormConverter;
+	private FormConverter<StationModel, StationForm> stationFormConverter;
 	
 	@GetMapping
 	public ResultListDto<StationData> getStations(
@@ -45,7 +45,7 @@ public class StationController {
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
-		final Result<Station> result = hasSearch ? stationService.search(search) : stationService;
+		final Result<StationModel> result = hasSearch ? stationService.search(search) : stationService;
 		return result.map(stationDataConverter::convert).getList(offset, limit == -1 ? result.size() : limit);
 	}
 	
@@ -56,7 +56,7 @@ public class StationController {
 	
 	@PostMapping
 	public StationData setStation(@RequestBody StationForm stationForm) {
-		final Station station = stationFormConverter.convertToModel(stationForm);
+		final StationModel station = stationFormConverter.convertToModel(stationForm);
 		return stationDataConverter.convert(stationService.save(station));
 	}
 	

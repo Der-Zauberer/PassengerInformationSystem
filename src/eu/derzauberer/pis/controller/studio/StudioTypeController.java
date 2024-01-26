@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.service.TypeService;
-import eu.derzauberer.pis.structure.data.TransportationTypeData;
+import eu.derzauberer.pis.structure.dto.TransportationTypeData;
+import eu.derzauberer.pis.structure.dto.TransportationTypeForm;
 import eu.derzauberer.pis.structure.enums.TransportationClassification;
 import eu.derzauberer.pis.structure.enums.TransportationVehicle;
-import eu.derzauberer.pis.structure.form.TransportationTypeForm;
-import eu.derzauberer.pis.structure.model.TransportationType;
+import eu.derzauberer.pis.structure.model.TransportationTypeModel;
 import eu.derzauberer.pis.util.Result;
 
 @Controller
@@ -26,10 +26,10 @@ public class StudioTypeController {
 	private TypeService typeService;
 	
 	@Autowired
-	private DataConverter<TransportationType, TransportationTypeData> typeDataConverter;
+	private DataConverter<TransportationTypeModel, TransportationTypeData> typeDataConverter;
 	
 	@Autowired
-	private FormConverter<TransportationType, TransportationTypeForm> typeFormConverter;
+	private FormConverter<TransportationTypeModel, TransportationTypeForm> typeFormConverter;
 	
 	@GetMapping
 	public String getTypes(Model model,
@@ -38,7 +38,7 @@ public class StudioTypeController {
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
-		final Result<TransportationType> result = hasSearch ? typeService.search(search) : typeService;
+		final Result<TransportationTypeModel> result = hasSearch ? typeService.search(search) : typeService;
 		model.addAttribute("page", result.map(typeDataConverter::convert).getPage(page, pageSize));
 		return "studio/types.html";
 	}
@@ -57,7 +57,7 @@ public class StudioTypeController {
 	
 	@PostMapping("/edit")
 	public String editUser(@RequestParam(value = "entity", required = false) String id, Model model, TransportationTypeForm typeForm) {
-		final TransportationType type = typeService.getById(id)
+		final TransportationTypeModel type = typeService.getById(id)
 				.map(original -> typeFormConverter.convertToModel(original, typeForm))
 				.orElseGet(() -> typeFormConverter.convertToModel(typeForm));
 		typeService.save(type);

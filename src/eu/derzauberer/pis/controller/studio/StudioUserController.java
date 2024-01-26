@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.service.UserService;
-import eu.derzauberer.pis.structure.data.UserData;
+import eu.derzauberer.pis.structure.dto.UserData;
+import eu.derzauberer.pis.structure.dto.UserForm;
 import eu.derzauberer.pis.structure.enums.UserRole;
-import eu.derzauberer.pis.structure.form.UserForm;
-import eu.derzauberer.pis.structure.model.User;
+import eu.derzauberer.pis.structure.model.UserModel;
 import eu.derzauberer.pis.util.Result;
 
 @Controller
@@ -25,10 +25,10 @@ public class StudioUserController {
 	private UserService userService;
 
 	@Autowired
-	private DataConverter<User, UserData> userDataConverter;
+	private DataConverter<UserModel, UserData> userDataConverter;
 	
 	@Autowired
-	private FormConverter<User, UserForm> userFormConverter;
+	private FormConverter<UserModel, UserForm> userFormConverter;
 	
 	
 	@GetMapping
@@ -38,7 +38,7 @@ public class StudioUserController {
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
-		final Result<User> result = hasSearch ? userService.search(search) : userService;
+		final Result<UserModel> result = hasSearch ? userService.search(search) : userService;
 		model.addAttribute("page", result.map(userDataConverter::convert).getPage(page, pageSize));
 		return "studio/users.html";
 	}
@@ -53,7 +53,7 @@ public class StudioUserController {
 	
 	@PostMapping("/edit")
 	public String editUser(@RequestParam(value = "entity", required = false) String id, Model model, UserForm userForm) {
-		final User user = userService.getById(id)
+		final UserModel user = userService.getById(id)
 				.map(original -> userFormConverter.convertToModel(original, userForm))
 				.orElseGet(() -> userFormConverter.convertToModel(userForm));
 		userService.save(user);

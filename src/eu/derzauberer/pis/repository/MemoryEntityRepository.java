@@ -11,10 +11,10 @@ import java.util.TreeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.derzauberer.pis.structure.model.Entity;
-import eu.derzauberer.pis.structure.model.NameEntity;
+import eu.derzauberer.pis.structure.model.EntityModel;
+import eu.derzauberer.pis.structure.model.NameEntityModel;
 
-public class MemoryEntityRepository<T extends Entity<T>> extends EntityRepository<T>{
+public class MemoryEntityRepository<T extends EntityModel<T>> extends EntityRepository<T>{
 	
 	private final Map<String, T> entities = new TreeMap<>();
 	
@@ -33,7 +33,7 @@ public class MemoryEntityRepository<T extends Entity<T>> extends EntityRepositor
 	public void save(T entity) {
 		Objects.requireNonNull(entity);
 		Objects.requireNonNull(entity.getId());
-		if (entity instanceof NameEntity) Objects.requireNonNull(((NameEntity) entity).getName());
+		if (entity instanceof NameEntityModel) Objects.requireNonNull(((NameEntityModel) entity).getName());
 		final T copy = entity.copy();
 		entities.put(entity.getId(), copy);
 		saveEntity(copy);

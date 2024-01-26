@@ -9,44 +9,44 @@ import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.components.SearchComponent;
 import eu.derzauberer.pis.repository.EntityRepository;
-import eu.derzauberer.pis.structure.container.StationTrafficEntry;
-import eu.derzauberer.pis.structure.model.Station;
-import eu.derzauberer.pis.structure.model.StationTraffic;
+import eu.derzauberer.pis.structure.model.StationModel;
+import eu.derzauberer.pis.structure.model.StationTrafficModel;
+import eu.derzauberer.pis.structure.model.StationTrafficEntryModel;
 import eu.derzauberer.pis.util.Result;
 import eu.derzauberer.pis.util.SearchComparator;
 
 @Service
-public class StationService extends EntityService<Station> {
+public class StationService extends EntityService<StationModel> {
 	
-	private final EntityRepository<StationTraffic> stationTrafficRepository;
-	private final SearchComponent<Station> searchComponent;
+	private final EntityRepository<StationTrafficModel> stationTrafficRepository;
+	private final SearchComponent<StationModel> searchComponent;
 	
 	@Autowired
-	public StationService(EntityRepository<Station> stationRepository, EntityRepository<StationTraffic> stationTrafficRepository) {
+	public StationService(EntityRepository<StationModel> stationRepository, EntityRepository<StationTrafficModel> stationTrafficRepository) {
 		super(stationRepository);
 		this.stationTrafficRepository = stationTrafficRepository;
 		this.searchComponent = new SearchComponent<>(this, getStationSearchComperator());
 	}
 	
-	public Result<Station> search(String search) {
+	public Result<StationModel> search(String search) {
 		return searchComponent.search(search);
 	}
 	
-	public SortedSet<StationTrafficEntry> getDeparturesInHour(String stationId, LocalDateTime dateTime) {
-		final StationTraffic stationTraffic = 
-				stationTrafficRepository.getById(StationTraffic.createIdFromNameAndDate(stationId, dateTime.toLocalDate()))
-				.orElse(new StationTraffic(stationId, dateTime.toLocalDate()));
+	public SortedSet<StationTrafficEntryModel> getDeparturesInHour(String stationId, LocalDateTime dateTime) {
+		final StationTrafficModel stationTraffic = 
+				stationTrafficRepository.getById(StationTrafficModel.createIdFromNameAndDate(stationId, dateTime.toLocalDate()))
+				.orElse(new StationTrafficModel(stationId, dateTime.toLocalDate()));
 		return stationTraffic.getDeparturesInHour(dateTime.getHour());
 	}
 	
-	public Set<StationTrafficEntry> getArrivalsInHour(String stationId, LocalDateTime dateTime) {
-		final StationTraffic stationTraffic = 
-				stationTrafficRepository.getById(StationTraffic.createIdFromNameAndDate(stationId, dateTime.toLocalDate()))
-				.orElse(new StationTraffic(stationId, dateTime.toLocalDate()));
+	public Set<StationTrafficEntryModel> getArrivalsInHour(String stationId, LocalDateTime dateTime) {
+		final StationTrafficModel stationTraffic = 
+				stationTrafficRepository.getById(StationTrafficModel.createIdFromNameAndDate(stationId, dateTime.toLocalDate()))
+				.orElse(new StationTrafficModel(stationId, dateTime.toLocalDate()));
 		return stationTraffic.getArrivalsInHour(dateTime.getHour());
 	}
 	
-	private SearchComparator<Station> getStationSearchComperator() {
+	private SearchComparator<StationModel> getStationSearchComperator() {
 		return (search, station1, station2) -> {
 			final boolean station1startsWithName = station1.getName().toLowerCase().startsWith(search.toLowerCase());
 			final boolean station2startsWithName = station2.getName().toLowerCase().startsWith(search.toLowerCase());

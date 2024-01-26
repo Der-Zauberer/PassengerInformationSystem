@@ -11,30 +11,30 @@ import org.springframework.stereotype.Service;
 import eu.derzauberer.pis.components.SearchComponent;
 import eu.derzauberer.pis.configuration.SpringConfiguration;
 import eu.derzauberer.pis.repository.EntityRepository;
-import eu.derzauberer.pis.structure.container.LineStop;
-import eu.derzauberer.pis.structure.container.StationTrafficEntry;
-import eu.derzauberer.pis.structure.model.Line;
-import eu.derzauberer.pis.structure.model.Station;
-import eu.derzauberer.pis.structure.model.StationTraffic;
+import eu.derzauberer.pis.structure.model.LineModel;
+import eu.derzauberer.pis.structure.model.LineStopModel;
+import eu.derzauberer.pis.structure.model.StationModel;
+import eu.derzauberer.pis.structure.model.StationTrafficModel;
+import eu.derzauberer.pis.structure.model.StationTrafficEntryModel;
 import eu.derzauberer.pis.util.ProgressStatus;
 import eu.derzauberer.pis.util.Result;
 
 @Service
-public class LineService extends EntityService<Line> {
+public class LineService extends EntityService<LineModel> {
 	
-	private final EntityRepository<Line> lineRepository;
-	private final EntityRepository<StationTraffic> stationTrafficRepository;
-	private final SearchComponent<Line> searchComponent;
+	private final EntityRepository<LineModel> lineRepository;
+	private final EntityRepository<StationTrafficModel> stationTrafficRepository;
+	private final SearchComponent<LineModel> searchComponent;
 	
 	@Autowired
-	public LineService(EntityRepository<Line> lineRepository, EntityRepository<StationTraffic> stationTrafficRepository) throws InterruptedException {
+	public LineService(EntityRepository<LineModel> lineRepository, EntityRepository<StationTrafficModel> stationTrafficRepository) throws InterruptedException {
 		super(lineRepository);
 		this.lineRepository = lineRepository;
 		this.stationTrafficRepository = stationTrafficRepository;
 		searchComponent = new SearchComponent<>(this);
 		if (SpringConfiguration.indexing) {
 			ProgressStatus progress = new ProgressStatus("Indexing", lineRepository.getName(), lineRepository.size());
-			for (Line line : lineRepository.getAll()) {
+			for (LineModel line : lineRepository.getAll()) {
 				addLineToTrafficIndex(line);
 				progress.count();
 			}
@@ -42,8 +42,8 @@ public class LineService extends EntityService<Line> {
 	}
 	
 	@Override
-	public Line save(Line line) {
-		final Line savedLine = super.save(line);
+	public LineModel save(LineModel line) {
+		final LineModel savedLine = super.save(line);
 		if (lineRepository.containsById(savedLine.getId())) {
 			removeLineToTrafficIndex(savedLine);
 		}
@@ -58,16 +58,16 @@ public class LineService extends EntityService<Line> {
 	}
 	
 	@Override
-	public Result<Line> search(String search) {
+	public Result<LineModel> search(String search) {
 		return searchComponent.search(search);
 	}
 	
-	public SortedSet<StationTrafficEntry> findArrivalsSinceHour(Station station, LocalDateTime dateTime, int limit) {
-		final StationTraffic traffic = getOrCreateStationTraffic(station.getId(), dateTime.toLocalDate());
-		final SortedSet<StationTrafficEntry> results = new TreeSet<>();
+	public SortedSet<StationTrafficEntryModel> findArrivalsSinceHour(StationModel station, LocalDateTime dateTime, int limit) {
+		final StationTrafficModel traffic = getOrCreateStationTraffic(station.getId(), dateTime.toLocalDate());
+		final SortedSet<StationTrafficEntryModel> results = new TreeSet<>();
 		int i = 0;
 		for (int j = dateTime.getHour(); j < 23; j++) {
-			for (StationTrafficEntry entry : traffic.getArrivalsInHour(j)) {
+			for (StationTrafficEntryModel entry : traffic.getArrivalsInHour(j)) {
 				results.add(entry);
 				if (i++ >= limit) {
 					return results;
@@ -77,8 +77,8 @@ public class LineService extends EntityService<Line> {
 		return results;
 	}
 	
-	public int getAmountOfArrivalsSinceHour(Station station, LocalDateTime dateTime, int limit) {
-		final StationTraffic traffic = getOrCreateStationTraffic(station.getId(), dateTime.toLocalDate());
+	public int getAmountOfArrivalsSinceHour(StationModel station, LocalDateTime dateTime, int limit) {
+		final StationTrafficModel traffic = getOrCreateStationTraffic(station.getId(), dateTime.toLocalDate());
 		int i = 0;
 		for (int j = dateTime.getHour(); j < 23; j++) {
 			i += traffic.getArrivalsInHour(j).size();
@@ -86,12 +86,12 @@ public class LineService extends EntityService<Line> {
 		return i;
 	}
 	
-	public SortedSet<StationTrafficEntry> findDeparturesSinceHour(Station station, LocalDateTime dateTime, int limit) {
-		final StationTraffic traffic = getOrCreateStationTraffic(station.getId(), dateTime.toLocalDate());
-		final SortedSet<StationTrafficEntry> results = new TreeSet<>();
+	public SortedSet<StationTrafficEntryModel> findDeparturesSinceHour(StationModel station, LocalDateTime dateTime, int limit) {
+		final StationTrafficModel traffic = getOrCreateStationTraffic(station.getId(), dateTime.toLocalDate());
+		final SortedSet<StationTrafficEntryModel> results = new TreeSet<>();
 		int i = 0;
 		for (int j = dateTime.getHour(); j < 23; j++) {
-			for (StationTrafficEntry entry : traffic.getDeparturesInHour(j)) {
+			for (StationTrafficEntryModel entry : traffic.getDeparturesInHour(j)) {
 				results.add(entry);
 				if (i++ >= limit) {
 					return results;
@@ -101,8 +101,8 @@ public class LineService extends EntityService<Line> {
 		return results;
 	}
 	
-	public int getAmountOfDeparturesSinceHour(Station station, LocalDateTime dateTime, int limit) {
-		final StationTraffic traffic = getOrCreateStationTraffic(station.getId(), dateTime.toLocalDate());
+	public int getAmountOfDeparturesSinceHour(StationModel station, LocalDateTime dateTime, int limit) {
+		final StationTrafficModel traffic = getOrCreateStationTraffic(station.getId(), dateTime.toLocalDate());
 		int i = 0;
 		for (int j = dateTime.getHour(); j < 23; j++) {
 			i += traffic.getDeparturesInHour(j).size();
@@ -114,33 +114,33 @@ public class LineService extends EntityService<Line> {
 		return String.format("%08x", Long.valueOf(System.nanoTime()).toString().hashCode());
 	}
 	
-	private void addLineToTrafficIndex(Line line) {
+	private void addLineToTrafficIndex(LineModel line) {
 		int i = 0;
-		for (LineStop stop : line.getStops()) {
-			final StationTraffic arrivalStationTraffic = getOrCreateStationTraffic(stop.getStationId(), stop.getDeparture().toLocalDate());
-			arrivalStationTraffic.addArrival(new StationTrafficEntry(stop.getArrival().toLocalTime(), line.getId(), i, stop.getPlatform(), stop.getPlatfromArea(), line.getLastStop().equals(stop) ? true : false));
+		for (LineStopModel stop : line.getStops()) {
+			final StationTrafficModel arrivalStationTraffic = getOrCreateStationTraffic(stop.getStationId(), stop.getDeparture().toLocalDate());
+			arrivalStationTraffic.addArrival(new StationTrafficEntryModel(stop.getArrival().toLocalTime(), line.getId(), i, stop.getPlatform(), stop.getPlatfromArea(), line.getLastStop().equals(stop) ? true : false));
 			stationTrafficRepository.save(arrivalStationTraffic);
-			final StationTraffic departureStationTraffic = getOrCreateStationTraffic(stop.getStationId(), stop.getArrival().toLocalDate());
-			departureStationTraffic.addDeparture(new StationTrafficEntry(stop.getDeparture().toLocalTime(), line.getId(), i++, stop.getPlatform(), stop.getPlatfromArea(), line.getLastStop().equals(stop) ? true : false));
+			final StationTrafficModel departureStationTraffic = getOrCreateStationTraffic(stop.getStationId(), stop.getArrival().toLocalDate());
+			departureStationTraffic.addDeparture(new StationTrafficEntryModel(stop.getDeparture().toLocalTime(), line.getId(), i++, stop.getPlatform(), stop.getPlatfromArea(), line.getLastStop().equals(stop) ? true : false));
 			stationTrafficRepository.save(departureStationTraffic);
 		}
 	}
 	
-	private void removeLineToTrafficIndex(Line line) {
-		for (LineStop stop : line.getStops()) {
-			final StationTraffic arrivalStationTraffic = getOrCreateStationTraffic(stop.getStationId(), stop.getDeparture().toLocalDate());
+	private void removeLineToTrafficIndex(LineModel line) {
+		for (LineStopModel stop : line.getStops()) {
+			final StationTrafficModel arrivalStationTraffic = getOrCreateStationTraffic(stop.getStationId(), stop.getDeparture().toLocalDate());
 			arrivalStationTraffic.removeArrival(stop.getArrival().toLocalTime(), line.getId());
 			stationTrafficRepository.save(arrivalStationTraffic);
-			final StationTraffic departureStationTraffic = getOrCreateStationTraffic(stop.getStationId(), stop.getArrival().toLocalDate());
+			final StationTrafficModel departureStationTraffic = getOrCreateStationTraffic(stop.getStationId(), stop.getArrival().toLocalDate());
 			departureStationTraffic.removeDeparture(stop.getDeparture().toLocalTime(), line.getId());
 			stationTrafficRepository.save(departureStationTraffic);
 		}
 	}
 	
-	private StationTraffic getOrCreateStationTraffic(String stationId, LocalDate date) {
+	private StationTrafficModel getOrCreateStationTraffic(String stationId, LocalDate date) {
 		return stationTrafficRepository
-				.getById(StationTraffic.createIdFromNameAndDate(stationId, date))
-				.orElse(new StationTraffic(stationId, date));
+				.getById(StationTrafficModel.createIdFromNameAndDate(stationId, date))
+				.orElse(new StationTrafficModel(stationId, date));
 	}
 
 }

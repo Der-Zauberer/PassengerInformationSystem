@@ -2,14 +2,14 @@ package eu.derzauberer.pis.converter;
 
 import org.springframework.stereotype.Component;
 
-import eu.derzauberer.pis.structure.data.UserData;
-import eu.derzauberer.pis.structure.model.User;
+import eu.derzauberer.pis.structure.dto.UserData;
+import eu.derzauberer.pis.structure.model.UserModel;
 
 @Component
-public class UserDataConverter implements DataConverter<User, UserData> {
+public class UserDataConverter implements DataConverter<UserModel, UserData> {
 
 	@Override
-	public UserData convert(User user) {
+	public UserData convert(UserModel user) {
 		final UserData userData = new UserData();
 		userData.setId(user.getId());
 		userData.setName(user.getName());

@@ -4,17 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import eu.derzauberer.pis.structure.form.UserForm;
-import eu.derzauberer.pis.structure.model.User;
+import eu.derzauberer.pis.structure.dto.UserForm;
+import eu.derzauberer.pis.structure.model.UserModel;
 
 @Component
-public class UserFormConverter implements FormConverter<User, UserForm> {
+public class UserFormConverter implements FormConverter<UserModel, UserForm> {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	@Override
-	public UserForm convertToForm(User user) {
+	public UserForm convertToForm(UserModel user) {
 		final UserForm userForm = new UserForm();
 		userForm.setId(user.getId());
 		userForm.setName(user.getName());
@@ -26,13 +26,13 @@ public class UserFormConverter implements FormConverter<User, UserForm> {
 	}
 
 	@Override
-	public User convertToModel(UserForm userForm) {
-		final User user = new User(userForm.getId(), userForm.getName());
+	public UserModel convertToModel(UserForm userForm) {
+		final UserModel user = new UserModel(userForm.getId(), userForm.getName());
 		return convertToModel(user, userForm);
 	}
 
 	@Override
-	public User convertToModel(User user, UserForm userForm) {
+	public UserModel convertToModel(UserModel user, UserForm userForm) {
 		user.setName(userForm.getName());
 		user.setEmail(userForm.getEmail());
 		user.setEnabled(userForm.isEnabled());

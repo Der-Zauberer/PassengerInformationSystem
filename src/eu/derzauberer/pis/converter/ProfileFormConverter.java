@@ -2,14 +2,14 @@ package eu.derzauberer.pis.converter;
 
 import org.springframework.stereotype.Component;
 
-import eu.derzauberer.pis.structure.form.ProfileForm;
-import eu.derzauberer.pis.structure.model.User;
+import eu.derzauberer.pis.structure.dto.ProfileForm;
+import eu.derzauberer.pis.structure.model.UserModel;
 
 @Component
-public class ProfileFormConverter implements FormConverter<User, ProfileForm> {
+public class ProfileFormConverter implements FormConverter<UserModel, ProfileForm> {
 
 	@Override
-	public ProfileForm convertToForm(User user) {
+	public ProfileForm convertToForm(UserModel user) {
 		final ProfileForm profileForm = new ProfileForm();
 		profileForm.setId(user.getId());
 		profileForm.setName(user.getName());
@@ -18,13 +18,13 @@ public class ProfileFormConverter implements FormConverter<User, ProfileForm> {
 	}
 
 	@Override
-	public User convertToModel(ProfileForm userForm) {
-		final User user = new User(userForm.getId(), userForm.getName());
+	public UserModel convertToModel(ProfileForm userForm) {
+		final UserModel user = new UserModel(userForm.getId(), userForm.getName());
 		return convertToModel(user, userForm);
 	}
 
 	@Override
-	public User convertToModel(User user, ProfileForm userForm) {
+	public UserModel convertToModel(UserModel user, ProfileForm userForm) {
 		user.setName(userForm.getName());
 		user.setEmail(userForm.getEmail());
 		return user;

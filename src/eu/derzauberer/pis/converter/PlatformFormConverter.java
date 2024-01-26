@@ -5,14 +5,14 @@ import java.util.Iterator;
 
 import org.springframework.stereotype.Component;
 
-import eu.derzauberer.pis.structure.container.Platform;
-import eu.derzauberer.pis.structure.form.PlatformForm;
+import eu.derzauberer.pis.structure.dto.PlatformForm;
+import eu.derzauberer.pis.structure.model.PlatformModel;
 
 @Component
-public class PlatformFormConverter implements FormConverter<Platform, PlatformForm> {
+public class PlatformFormConverter implements FormConverter<PlatformModel, PlatformForm> {
 
 	@Override
-	public PlatformForm convertToForm(Platform platform) {
+	public PlatformForm convertToForm(PlatformModel platform) {
 		final PlatformForm platformForm = new PlatformForm();
 		platformForm.setName(platform.getName());
 		platformForm.setLength(platform.getLength());
@@ -27,13 +27,13 @@ public class PlatformFormConverter implements FormConverter<Platform, PlatformFo
 	}
 
 	@Override
-	public Platform convertToModel(PlatformForm platformForm) {
-		final Platform platform = new Platform(platformForm.getName());
+	public PlatformModel convertToModel(PlatformForm platformForm) {
+		final PlatformModel platform = new PlatformModel(platformForm.getName());
 		return convertToModel(platform, platformForm);
 	}
 
 	@Override
-	public Platform convertToModel(Platform platform, PlatformForm platformForm) {
+	public PlatformModel convertToModel(PlatformModel platform, PlatformForm platformForm) {
 		platform.setLength(platformForm.getLength());
 		if (platformForm.getLinkedPlatforms() != null) {
 			final String platforms[] = platformForm.getLinkedPlatforms().split(",");

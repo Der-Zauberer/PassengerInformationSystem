@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import eu.derzauberer.pis.service.RouteService;
-import eu.derzauberer.pis.structure.model.Route;
+import eu.derzauberer.pis.structure.model.RouteModel;
 import eu.derzauberer.pis.util.Result;
 
 @Controller
@@ -25,7 +25,7 @@ public class StudioRouteController {
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
-		final Result<Route> result = hasSearch ? routeService.search(search) : routeService;
+		final Result<RouteModel> result = hasSearch ? routeService.search(search) : routeService;
 		model.addAttribute("page", result.getPage(page, pageSize));
 		return "studio/routes.html";
 	}

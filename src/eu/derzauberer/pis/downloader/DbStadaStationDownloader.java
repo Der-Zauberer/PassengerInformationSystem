@@ -13,9 +13,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import eu.derzauberer.pis.configuration.UserConfiguration;
 import eu.derzauberer.pis.service.StationService;
-import eu.derzauberer.pis.structure.container.Location;
-import eu.derzauberer.pis.structure.model.NameEntity;
-import eu.derzauberer.pis.structure.model.Station;
+import eu.derzauberer.pis.structure.model.LocationModel;
+import eu.derzauberer.pis.structure.model.NameEntityModel;
+import eu.derzauberer.pis.structure.model.StationModel;
 import eu.derzauberer.pis.util.HttpRequest;
 import eu.derzauberer.pis.util.ProgressStatus;
 
@@ -51,7 +51,7 @@ public class DbStadaStationDownloader {
 		int counter = 0;
 		for (JsonNode node : json.withArray("result")) {
 			final String name = node.get("name").asText();
-			final Station station = stationService.getById(NameEntity.nameToId(name)).orElse(new Station(name));
+			final StationModel station = stationService.getById(NameEntityModel.nameToId(name)).orElse(new StationModel(name));
 			station.getOrCreateAddress().setStreet(node.at("/mailingAddress/street").asText());
 			station.getOrCreateAddress().setPostalCode(node.at("/mailingAddress/zipcode").asInt());
 			station.getOrCreateAddress().setCity(node.at("/mailingAddress/city").asText());
@@ -61,7 +61,7 @@ public class DbStadaStationDownloader {
 				station.getOrCreateApiInformation().addId("eva", eva.get("number").asLong());
 				final JsonNode location = eva.at("/geographicCoordinates/coordinates");
 				if (!location.isEmpty()) {
-					station.setLocation(new Location(location.get(1).asDouble(), location.get(0).asDouble()));
+					station.setLocation(new LocationModel(location.get(1).asDouble(), location.get(0).asDouble()));
 				} else {
 					warns.add("Station " + station.getId() + " does not contain geo-coordinates!");
 				}

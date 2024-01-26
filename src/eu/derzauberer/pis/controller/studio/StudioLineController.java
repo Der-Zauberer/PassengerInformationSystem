@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import eu.derzauberer.pis.service.LineService;
-import eu.derzauberer.pis.structure.model.Line;
+import eu.derzauberer.pis.structure.model.LineModel;
 import eu.derzauberer.pis.util.Result;
 
 @Controller
@@ -25,7 +25,7 @@ public class StudioLineController {
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
-		final Result<Line> result = hasSearch ? lineService.search(search) : lineService;
+		final Result<LineModel> result = hasSearch ? lineService.search(search) : lineService;
 		model.addAttribute("page", result.getPage(page, pageSize));
 		return "studio/lines.html";
 	}

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import eu.derzauberer.pis.service.RouteService;
-import eu.derzauberer.pis.structure.model.Route;
+import eu.derzauberer.pis.structure.model.RouteModel;
 import eu.derzauberer.pis.util.NotFoundException;
 import eu.derzauberer.pis.util.Result;
 import eu.derzauberer.pis.util.ResultListDto;
@@ -29,23 +29,23 @@ public class RouteController {
 	private RouteService routeService;
 	
 	@GetMapping
-	public ResultListDto<Route> getRoutes(
+	public ResultListDto<RouteModel> getRoutes(
 			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
-		final Result<Route> result = hasSearch ? routeService.search(search) : routeService;
+		final Result<RouteModel> result = hasSearch ? routeService.search(search) : routeService;
 		return result.getList(offset, limit == -1 ? result.size() : limit);
 	}
 	
 	@GetMapping("{id}")
-	public Route getRoute(@PathVariable("id") String id) {
+	public RouteModel getRoute(@PathVariable("id") String id) {
 		return routeService.getById(id).orElseThrow(() -> new NotFoundException("Route", id));
 	}
 	
 	@PostMapping
-	public Route setRoute(@RequestBody Route operator) {
+	public RouteModel setRoute(@RequestBody RouteModel operator) {
 		routeService.save(operator);
 		return operator;
 	}

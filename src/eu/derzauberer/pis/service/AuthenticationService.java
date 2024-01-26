@@ -20,8 +20,8 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.converter.DataConverter;
-import eu.derzauberer.pis.structure.data.UserData;
-import eu.derzauberer.pis.structure.model.User;
+import eu.derzauberer.pis.structure.dto.UserData;
+import eu.derzauberer.pis.structure.model.UserModel;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,16 +31,16 @@ import jakarta.servlet.http.HttpSession;
 public class AuthenticationService implements AuthenticationProvider, UserDetailsService {
 
 	private final UserService userService;
-	private final DataConverter<User, UserData> userDataConverter;
+	private final DataConverter<UserModel, UserData> userDataConverter;
 	private final Set<String> expiredSessions;
 	
 	@Autowired
-	public AuthenticationService(UserService userService, DataConverter<User, UserData> userDataConverter) {
+	public AuthenticationService(UserService userService, DataConverter<UserModel, UserData> userDataConverter) {
 		this.userService = userService;
 		this.userDataConverter = userDataConverter;
 		expiredSessions = new HashSet<>();
 		userService.addOnSave(event -> {
-			event.oldEntity().map(User::getId).ifPresent(expiredSessions::add);
+			event.oldEntity().map(UserModel::getId).ifPresent(expiredSessions::add);
 		});
 		userService.addOnRemove(event -> expiredSessions.add(event.oldEntity().getId()));
 	}
@@ -55,8 +55,8 @@ public class AuthenticationService implements AuthenticationProvider, UserDetail
 		String username = authentication.getPrincipal().toString();
         String password = authentication.getCredentials().toString();
         if (username == null || username.isEmpty()) throw new IllegalArgumentException("Username must not be null or empty!");
-		final User user = userService.getById(username)
-			.filter(User::isEnabled)
+		final UserModel user = userService.getById(username)
+			.filter(UserModel::isEnabled)
 			.filter(processingUser -> userService.matchPassword(password, processingUser))
 			.orElseThrow(() -> new AuthenticationException("Your credentials aren't correct, please try again!") {});
 		user.setLastLogin(LocalDateTime.now());
@@ -82,7 +82,7 @@ public class AuthenticationService implements AuthenticationProvider, UserDetail
 		if (session != null && session.getAttribute("user") != null && session.getAttribute("user") instanceof UserData) {
 			final UserData oldUser = (UserData) session.getAttribute("user");
 			if (expiredSessions.remove(oldUser.getId())) {
-				final User user = userService.getById(oldUser.getId()).orElse(null);
+				final UserModel user = userService.getById(oldUser.getId()).orElse(null);
 				if (user == null || !user.isEnabled()) {
 					session.invalidate();
 					return;
@@ -107,7 +107,7 @@ public class AuthenticationService implements AuthenticationProvider, UserDetail
 	}
 	
 	@SuppressWarnings("serial")
-	private UserDetails convertUserDetails(User user) {
+	private UserDetails convertUserDetails(UserModel user) {
 		return new UserDetails() {
 			@Override public boolean isEnabled() { return !user.isEnabled(); }
 			@Override public boolean isCredentialsNonExpired() { return true; }

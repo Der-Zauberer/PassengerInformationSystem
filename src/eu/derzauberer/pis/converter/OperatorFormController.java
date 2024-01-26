@@ -2,35 +2,35 @@ package eu.derzauberer.pis.converter;
 
 import org.springframework.stereotype.Component;
 
-import eu.derzauberer.pis.structure.container.Address;
-import eu.derzauberer.pis.structure.container.Color;
-import eu.derzauberer.pis.structure.form.OperatorForm;
-import eu.derzauberer.pis.structure.model.Operator;
+import eu.derzauberer.pis.structure.dto.OperatorForm;
+import eu.derzauberer.pis.structure.model.AddressModel;
+import eu.derzauberer.pis.structure.model.ColorModel;
+import eu.derzauberer.pis.structure.model.OperatorModel;
 
 @Component
-public class OperatorFormController implements FormConverter<Operator, OperatorForm>{
+public class OperatorFormController implements FormConverter<OperatorModel, OperatorForm>{
 
 	@Override
-	public OperatorForm convertToForm(Operator operator) {
+	public OperatorForm convertToForm(OperatorModel operator) {
 		final OperatorForm operatorForm = new OperatorForm();
 		operatorForm.setId(operator.getId());
 		operatorForm.setName(operator.getName());
-		operator.getAddress().ifPresent(address -> operatorForm.setAddress(new Address(address)));
-		operatorForm.setColor(new Color(operator.getColor()));
+		operator.getAddress().ifPresent(address -> operatorForm.setAddress(new AddressModel(address)));
+		operatorForm.setColor(new ColorModel(operator.getColor()));
 		return operatorForm;
 	}
 
 	@Override
-	public Operator convertToModel(OperatorForm operatorForm) {
-		final Operator operator = new Operator(operatorForm.getId(), operatorForm.getName());
+	public OperatorModel convertToModel(OperatorForm operatorForm) {
+		final OperatorModel operator = new OperatorModel(operatorForm.getId(), operatorForm.getName());
 		return convertToModel(operator, operatorForm);
 	}
 
 	@Override
-	public Operator convertToModel(Operator operator, OperatorForm operatorForm) {
+	public OperatorModel convertToModel(OperatorModel operator, OperatorForm operatorForm) {
 		operator.setName(operatorForm.getName());
-		if (operatorForm.getAddress() != null) operator.setAddress(new Address(operatorForm.getAddress()));
-		if (operatorForm.getColor() != null) operator.setColor(new Color(operatorForm.getColor()));
+		if (operatorForm.getAddress() != null) operator.setAddress(new AddressModel(operatorForm.getAddress()));
+		if (operatorForm.getColor() != null) operator.setColor(new ColorModel(operatorForm.getColor()));
 		return operator;
 	}
 

@@ -9,9 +9,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import eu.derzauberer.pis.configuration.UserConfiguration;
 import eu.derzauberer.pis.service.StationService;
-import eu.derzauberer.pis.structure.container.Location;
-import eu.derzauberer.pis.structure.model.NameEntity;
-import eu.derzauberer.pis.structure.model.Station;
+import eu.derzauberer.pis.structure.model.LocationModel;
+import eu.derzauberer.pis.structure.model.NameEntityModel;
+import eu.derzauberer.pis.structure.model.StationModel;
 import eu.derzauberer.pis.util.HttpRequest;
 import eu.derzauberer.pis.util.ProgressStatus;
 
@@ -47,7 +47,7 @@ public class DbRisStationsDownloader {
 		int counter = 0;
 		for (JsonNode node : json.withArray("stations")) {
 			final String name = node.at("/names/DE/name").asText();
-			final Station station = stationService.getById(NameEntity.nameToId(name)).orElse(new Station(name));
+			final StationModel station = stationService.getById(NameEntityModel.nameToId(name)).orElse(new StationModel(name));
 			if (node.at("/owner/name").asText().equalsIgnoreCase("DB S&S")) {
 				station.getOrCreateAddress().setName("DB Station&Service AG");
 			} else {
@@ -63,7 +63,7 @@ public class DbRisStationsDownloader {
 			} else {
 				station.getOrCreateAddress().setCountry(node.at("/address/country").asText());
 			}
-			station.setLocation(new Location(node.at("/position/latitude").asDouble(), node.at("/position/longitude").asDouble()));
+			station.setLocation(new LocationModel(node.at("/position/latitude").asDouble(), node.at("/position/longitude").asDouble()));
 			station.getOrCreateApiInformation().addId("stada", node.get("stationID").asLong());
 			station.getOrCreateApiInformation().addSource(URL);
 			progress.count();

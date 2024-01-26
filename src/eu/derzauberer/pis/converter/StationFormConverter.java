@@ -3,48 +3,48 @@ package eu.derzauberer.pis.converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import eu.derzauberer.pis.structure.container.Address;
-import eu.derzauberer.pis.structure.container.Location;
-import eu.derzauberer.pis.structure.container.Platform;
-import eu.derzauberer.pis.structure.container.Services;
-import eu.derzauberer.pis.structure.form.PlatformForm;
-import eu.derzauberer.pis.structure.form.StationForm;
-import eu.derzauberer.pis.structure.model.Station;
+import eu.derzauberer.pis.structure.dto.PlatformForm;
+import eu.derzauberer.pis.structure.dto.StationForm;
+import eu.derzauberer.pis.structure.model.AddressModel;
+import eu.derzauberer.pis.structure.model.LocationModel;
+import eu.derzauberer.pis.structure.model.PlatformModel;
+import eu.derzauberer.pis.structure.model.ServicesModel;
+import eu.derzauberer.pis.structure.model.StationModel;
 
 @Component
-public class StationFormConverter implements FormConverter<Station, StationForm> {
+public class StationFormConverter implements FormConverter<StationModel, StationForm> {
 	
 	@Autowired
-	private FormConverter<Platform, PlatformForm> platformFormConverter;
+	private FormConverter<PlatformModel, PlatformForm> platformFormConverter;
 
 	@Override
-	public StationForm convertToForm(Station station) {
+	public StationForm convertToForm(StationModel station) {
 		final StationForm stationForm = new StationForm();
 		stationForm.setId(station.getId());
 		stationForm.setName(station.getName());
 		stationForm.setPlatforms(station.getPlatforms().stream().map(platformFormConverter::convertToForm).toList());
-		station.getAddress().ifPresent(address -> stationForm.setAddress(new Address(address)));
-		station.getLocation().ifPresent(location -> stationForm.setLocation(new Location(location)));
-		station.getServices().ifPresent(services -> stationForm.setServices(new Services(services)));
+		station.getAddress().ifPresent(address -> stationForm.setAddress(new AddressModel(address)));
+		station.getLocation().ifPresent(location -> stationForm.setLocation(new LocationModel(location)));
+		station.getServices().ifPresent(services -> stationForm.setServices(new ServicesModel(services)));
 		return stationForm;
 	}
 
 	@Override
-	public Station convertToModel(StationForm stationForm) {
-		final Station station = new Station(stationForm.getId(), stationForm.getName());
+	public StationModel convertToModel(StationForm stationForm) {
+		final StationModel station = new StationModel(stationForm.getId(), stationForm.getName());
 		return convertToModel(station, stationForm);
 	}
 
 	@Override
-	public Station convertToModel(Station station, StationForm stationForm) {
+	public StationModel convertToModel(StationModel station, StationForm stationForm) {
 		station.setName(stationForm.getName());
 		if (stationForm.getPlatforms() != null) {
 			station.getPlatforms().clear();
 			stationForm.getPlatforms().stream().map(platformFormConverter::convertToModel).forEach(station.getPlatforms()::add);
 		}
-		if (stationForm.getAddress() != null) station.setAddress(new Address(stationForm.getAddress()));
-		if (stationForm.getLocation() != null) station.setLocation(new Location(stationForm.getLocation()));
-		if (stationForm.getServices() != null) station.setServices(new Services(stationForm.getServices()));
+		if (stationForm.getAddress() != null) station.setAddress(new AddressModel(stationForm.getAddress()));
+		if (stationForm.getLocation() != null) station.setLocation(new LocationModel(stationForm.getLocation()));
+		if (stationForm.getServices() != null) station.setServices(new ServicesModel(stationForm.getServices()));
 		return station;
 	}
 

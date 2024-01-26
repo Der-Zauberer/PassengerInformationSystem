@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.service.StationService;
-import eu.derzauberer.pis.structure.data.StationData;
-import eu.derzauberer.pis.structure.form.StationForm;
-import eu.derzauberer.pis.structure.model.Station;
+import eu.derzauberer.pis.structure.dto.StationData;
+import eu.derzauberer.pis.structure.dto.StationForm;
+import eu.derzauberer.pis.structure.model.StationModel;
 import eu.derzauberer.pis.util.Result;
 
 @Controller
@@ -24,10 +24,10 @@ public class StudioStationController {
 	private StationService stationService;
 	
 	@Autowired
-	private DataConverter<Station, StationData> stationDataConverter;
+	private DataConverter<StationModel, StationData> stationDataConverter;
 	
 	@Autowired
-	private FormConverter<Station, StationForm> stationFormConverter;
+	private FormConverter<StationModel, StationForm> stationFormConverter;
 	
 	@GetMapping
 	public String getStations(Model model,
@@ -36,7 +36,7 @@ public class StudioStationController {
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
-		final Result<Station> result = hasSearch ? stationService.search(search) : stationService;
+		final Result<StationModel> result = hasSearch ? stationService.search(search) : stationService;
 		model.addAttribute("page", result.map(stationDataConverter::convert).getPage(page, pageSize));
 		return "studio/stations.html";
 	}
@@ -53,7 +53,7 @@ public class StudioStationController {
 	
 	@PostMapping("/edit")
 	public String editStation(@RequestParam(value = "entity", required = false) String id, Model model, StationForm stationForm) {
-		final Station station = stationService.getById(id)
+		final StationModel station = stationService.getById(id)
 				.map(original -> stationFormConverter.convertToModel(original, stationForm))
 				.orElseGet(() -> stationFormConverter.convertToModel(stationForm));
 		stationService.save(station);

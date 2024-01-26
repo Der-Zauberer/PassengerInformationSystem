@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.service.UserService;
-import eu.derzauberer.pis.structure.data.UserData;
-import eu.derzauberer.pis.structure.data.UserInfoData;
-import eu.derzauberer.pis.structure.form.UserForm;
-import eu.derzauberer.pis.structure.model.User;
+import eu.derzauberer.pis.structure.dto.UserData;
+import eu.derzauberer.pis.structure.dto.UserForm;
+import eu.derzauberer.pis.structure.dto.UserInfoData;
+import eu.derzauberer.pis.structure.model.UserModel;
 import eu.derzauberer.pis.util.NotFoundException;
 import eu.derzauberer.pis.util.Result;
 import eu.derzauberer.pis.util.ResultListDto;
@@ -34,13 +34,13 @@ public class UserController {
 	private UserService userService;
 	
 	@Autowired
-	private DataConverter<User, UserInfoData> userInfoDataConverter;
+	private DataConverter<UserModel, UserInfoData> userInfoDataConverter;
 	
 	@Autowired
-	private DataConverter<User, UserData> userDataConverter;
+	private DataConverter<UserModel, UserData> userDataConverter;
 	
 	@Autowired
-	private FormConverter<User, UserForm> userFormConverter;
+	private FormConverter<UserModel, UserForm> userFormConverter;
 	
 	@GetMapping
 	public ResultListDto<UserInfoData> getUsers(
@@ -49,7 +49,7 @@ public class UserController {
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
-		final Result<User> result = hasSearch ? userService.search(search) : userService;
+		final Result<UserModel> result = hasSearch ? userService.search(search) : userService;
 		return result.map(userInfoDataConverter::convert).getList(offset, limit == -1 ? result.size() : limit);
 	}
 	
@@ -60,7 +60,7 @@ public class UserController {
 	
 	@PostMapping
 	public UserData setUser(@RequestBody UserForm userForm) {
-		final User user = userFormConverter.convertToModel(userForm);
+		final UserModel user = userFormConverter.convertToModel(userForm);
 		return userDataConverter.convert(userService.save(user));
 	}
 	

@@ -14,11 +14,6 @@ public class ResultList<T> implements Result<T> {
 	public int size() {
 		return list.size();
 	}
-	
-	@Override
-	public boolean isEmpty() {
-		return list.isEmpty();
-	}
 
 	@Override
 	public List<T> getAll() {

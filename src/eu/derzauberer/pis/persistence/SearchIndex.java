@@ -1,4 +1,4 @@
-package eu.derzauberer.pis.components;
+package eu.derzauberer.pis.persistence;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.derzauberer.pis.service.EntityService;
@@ -19,38 +20,48 @@ import eu.derzauberer.pis.util.Result;
 import eu.derzauberer.pis.util.ResultList;
 import eu.derzauberer.pis.util.SearchComparator;
 
-public class SearchComponent<T extends EntityModel<T> & NameEntityModel> extends Component<EntityService<T>, SearchComponent.Index> {
+public class SearchIndex<T extends EntityModel<T> & NameEntityModel> {
 
-	private final Index index;
+	private final EntityService<T> service;
+	private final JsonFileHandler<SearchIndexContent> fileHandler;
+	private final SearchIndexContent index;
 	private final SearchComparator<T> comparator;
 	private boolean generateIndex = false;
 	
-	public SearchComponent(EntityService<T> service) {
+	private static final String FILE_NAME = "search";
+	
+	public SearchIndex(EntityService<T> service) {
 		this(service, null);
 	}
 	
-	public SearchComponent(EntityService<T> service, SearchComparator<T> comparator) {
-		super("search", service, LoggerFactory.getLogger(SearchComponent.class));
+	public SearchIndex(EntityService<T> service, SearchComparator<T> comparator) {
+		final Logger logger = LoggerFactory.getLogger(SearchIndex.class);
+		fileHandler = new JsonFileHandler<>("search index", service.getName(), SearchIndexContent.class, logger);
+		this.service = service;
 		this.comparator = comparator;
-		index = loadAsOptional(Index.class).orElseGet(() -> {
+		
+		index = fileHandler.loadAsOptional(FILE_NAME).orElseGet(() -> {
 			generateIndex = true;
-			return new Index(new HashMap<>());
+			return new SearchIndexContent(new HashMap<>());
 		});
+		
 		if (generateIndex) {
-			getService().getAll().forEach(this::add);
-			save(index);
+			service.getAll().forEach(this::add);
+			fileHandler.save(FILE_NAME, index);
 		}
-		getService().addOnSave(event -> {
+		
+		service.addOnSave(event -> {
 			final boolean newIndexRequired = event.oldEntity().filter(oldEntity -> oldEntity.getName().equals(event.newEntity().getName())).isEmpty();
 			if (newIndexRequired) {
 				event.oldEntity().ifPresent(this::remove);
 				add(event.newEntity());
-				save(index);
+				fileHandler.save(FILE_NAME, index);
 			}
 		});
-		getService().addOnRemove(event -> {
+		
+		service.addOnRemove(event -> {
 			remove(event.oldEntity());
-			save(index);
+			fileHandler.save(FILE_NAME, index);
 		});
 	}
 	
@@ -60,7 +71,7 @@ public class SearchComponent<T extends EntityModel<T> & NameEntityModel> extends
 		final Set<String> resultIds;
 		if ((resultIds = index.entries().get(normalizeSearchString(search).replaceAll("\\s", ""))) != null) {
 			for (String id : resultIds) {
-				getService().getById(id).filter(entity -> !entity.getId().equals(search)).ifPresent(results::add);
+				service.getById(id).filter(entity -> !entity.getId().equals(search)).ifPresent(results::add);
 			}
 			if (comparator != null) {
 				Collections.sort(results, (o1, o2) -> comparator.compare(search, o1, o2));
@@ -68,7 +79,7 @@ public class SearchComponent<T extends EntityModel<T> & NameEntityModel> extends
 				Collections.sort(results, (o1, o2) -> o1.getName().compareTo(o2.getName()));
 			}
 		}
-		getService().getById(search).ifPresent(entity -> {
+		service.getById(search).ifPresent(entity -> {
 			results.add(0, entity);
 		});
 		return new ResultList<>(results);
@@ -101,7 +112,7 @@ public class SearchComponent<T extends EntityModel<T> & NameEntityModel> extends
 				}
 			}
 		}
-		save(index);
+		fileHandler.save(FILE_NAME, index);
 	}
 	
 	private String normalizeSearchString(String string) {
@@ -122,6 +133,6 @@ public class SearchComponent<T extends EntityModel<T> & NameEntityModel> extends
 		return searchStrings;
 	}
 	
-	public record Index(Map<String, Set<String>> entries) {}
+	public record SearchIndexContent(Map<String, Set<String>> entries) {}
 
 }

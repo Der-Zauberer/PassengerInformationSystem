@@ -3,20 +3,20 @@ package eu.derzauberer.pis.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import eu.derzauberer.pis.components.SearchComponent;
-import eu.derzauberer.pis.repository.EntityRepository;
+import eu.derzauberer.pis.persistence.EntityRepository;
+import eu.derzauberer.pis.persistence.SearchIndex;
 import eu.derzauberer.pis.structure.model.RouteModel;
 import eu.derzauberer.pis.util.Result;
 
 @Service
 public class RouteService extends EntityService<RouteModel> {
 
-	private final SearchComponent<RouteModel> searchComponent;
+	private final SearchIndex<RouteModel> searchComponent;
 	
 	@Autowired
 	public RouteService(EntityRepository<RouteModel> repository) {
 		super(repository);
-		searchComponent = new SearchComponent<>(this);
+		searchComponent = new SearchIndex<>(this);
 	}
 	
 	@Override

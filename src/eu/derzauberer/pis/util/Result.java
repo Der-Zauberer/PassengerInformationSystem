@@ -5,8 +5,6 @@ import java.util.function.Function;
 
 public interface Result<T> {
 	
-	boolean isEmpty();
-	
 	int size();
 	
 	List<T> getAll();

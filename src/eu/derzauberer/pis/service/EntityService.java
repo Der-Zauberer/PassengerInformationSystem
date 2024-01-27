@@ -1,11 +1,25 @@
 package eu.derzauberer.pis.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import eu.derzauberer.pis.repository.EntityRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import eu.derzauberer.pis.configuration.SpringConfiguration;
+import eu.derzauberer.pis.persistence.EntityRepository;
+import eu.derzauberer.pis.persistence.LazyFile;
 import eu.derzauberer.pis.structure.model.EntityModel;
 import eu.derzauberer.pis.structure.model.NameEntityModel;
 import eu.derzauberer.pis.util.RemoveEvent;
@@ -17,6 +31,9 @@ public abstract class EntityService<T extends EntityModel<T> & NameEntityModel> 
 	private final EntityRepository<T> repository;
 	private List<Consumer<SaveEvent<T>>> onSave = new ArrayList<>();
 	private List<Consumer<RemoveEvent<T>>> onRemove = new ArrayList<>();
+	
+	private static final ObjectMapper OBJECT_MAPPER = SpringConfiguration.getBean(ObjectMapper.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(EntityService.class);
 
 	public EntityService(EntityRepository<T> repository) {
 		this.repository = repository;
@@ -68,12 +85,12 @@ public abstract class EntityService<T extends EntityModel<T> & NameEntityModel> 
 	
 	@Override
 	public List<T> getAll() {
-		return repository.getAll();
+		return repository.stream().map(LazyFile::load).toList();
 	}
 	
 	@Override
 	public List<T> getRange(int beginn, int end) {
-		return repository.getRange(beginn, end);
+		return repository.stream().skip(beginn).limit(end - beginn).map(LazyFile::load).toList();
 	}
 	
 	@Override
@@ -81,17 +98,36 @@ public abstract class EntityService<T extends EntityModel<T> & NameEntityModel> 
 		return repository.size();
 	}
 	
-	@Override
-	public boolean isEmpty() {
-		return repository.isEmpty();
-	}
-	
 	public String exportEntities() {
-		return repository.exportEntities();
+		try {
+			final HashMap<String, Collection<T>> types = new HashMap<>();
+			final List<T> entities = getAll();
+			types.put(getName(), entities);
+			String json = OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(types);
+			LOGGER.info("Exported {} {}", entities.size(), getName());
+			return json;
+		} catch (JsonProcessingException exception) {
+			LOGGER.error("Couldn't export {}: {} {}", getName(), exception.getClass().getSimpleName(), exception.getMessage());
+			return null;
+		}
 	}
 	
 	public void importEntities(String json) {
-		repository.importEntities(json);
+		try {
+			final ObjectNode jsonTypes = new ObjectMapper().readValue(json, ObjectNode.class);
+			final ArrayNode jsonEntities = (ArrayNode) jsonTypes.get(getName());
+			int i = 0;
+			if (jsonEntities != null) {
+				for (JsonNode jsonEntity : jsonEntities) {
+					final T entity = OBJECT_MAPPER.readValue(jsonEntity.toString(), repository.getType());
+					save(entity);
+					i++;
+				}
+			}
+			LOGGER.info("Imported {} {}", i, getName());
+		} catch (IOException exception) {
+			LOGGER.error("Couldn't import {}: {} {}", getName(), exception.getClass().getSimpleName(), exception.getMessage());
+		}
 	}
 	
 	public void addOnSave(Consumer<SaveEvent<T>> event) {

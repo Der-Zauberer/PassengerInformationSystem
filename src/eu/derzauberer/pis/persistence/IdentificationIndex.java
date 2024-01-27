@@ -1,37 +1,47 @@
-package eu.derzauberer.pis.components;
+package eu.derzauberer.pis.persistence;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.derzauberer.pis.service.EntityService;
 import eu.derzauberer.pis.structure.model.EntityModel;
 import eu.derzauberer.pis.structure.model.NameEntityModel;
 
-public class IdentificationComponent<T extends EntityModel<T> & NameEntityModel> extends Component<EntityService<T>, IdentificationComponent.Index> {
+public class IdentificationIndex<T extends EntityModel<T> & NameEntityModel> {
 	
-	private Index index;
+	private final EntityService<T> service;
+	private final JsonFileHandler<IdentificationIndexContent> fileHandler;
+	private final IdentificationIndexContent index;
 	private boolean generateIndex = false;
 	
-	public IdentificationComponent(EntityService<T> service, Function<T, String> attribute) {
-		super("identification", service, LoggerFactory.getLogger(SearchComponent.class));
-		index = loadAsOptional(Index.class).orElseGet(() -> {
+	private static final String FILE_NAME = "ids";
+	
+	public IdentificationIndex(EntityService<T> service, Function<T, String> attribute) {
+		final Logger logger = LoggerFactory.getLogger(IdentificationIndex.class);
+		fileHandler = new JsonFileHandler<>("id index", service.getName(), IdentificationIndexContent.class, logger);
+		this.service = service;
+		
+		index = fileHandler.loadAsOptional(FILE_NAME).orElseGet(() -> {
 			generateIndex = true;
-			return new Index(new HashMap<>());
+			return new IdentificationIndexContent(new HashMap<>());
 		});
+		
 		if (generateIndex) {
-			getService().getAll().forEach(entity -> {
+			service.getAll().forEach(entity -> {
 				final String identification = attribute.apply(entity);
 				if (identification != null && !identification.isEmpty()) {
 					index.entries().put(identification, entity.getId());
 				}
 			});
-			save(index);
+			fileHandler.save(FILE_NAME, index);
 		}
-		getService().addOnSave(event -> {
+		
+		service.addOnSave(event -> {
 			final String newIdentification = attribute.apply(event.newEntity());
 			final boolean newIndexRequired = event.oldEntity().map(attribute::apply).filter(identification -> identification.equals(newIdentification)).isEmpty();
 			if (newIndexRequired) {
@@ -39,21 +49,22 @@ public class IdentificationComponent<T extends EntityModel<T> & NameEntityModel>
 				if (newIdentification != null && !newIdentification.isEmpty()) {
 					index.entries().put(newIdentification, event.newEntity().getId());
 				}
-				save(index);
+				fileHandler.save(FILE_NAME, index);
 			}
 		});
-		getService().addOnRemove(event -> {
+		
+		service.addOnRemove(event -> {
 			index.entries().remove(attribute.apply(event.oldEntity()));
-			save(index);
+			fileHandler.save(FILE_NAME, index);
 		});
 	}
 	
 	public Optional<T> getByIdentification(String identification) {
 		final String id = index.entries().get(identification);
 		if (id == null) return Optional.empty();
-		return getService().getById(id);
+		return service.getById(id);
 	}
 	
-	public record Index(Map<String, String> entries) {}
+	public record IdentificationIndexContent(Map<String, String> entries) {}
 
 }

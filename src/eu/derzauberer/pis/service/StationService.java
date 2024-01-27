@@ -7,8 +7,8 @@ import java.util.SortedSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import eu.derzauberer.pis.components.SearchComponent;
-import eu.derzauberer.pis.repository.EntityRepository;
+import eu.derzauberer.pis.persistence.EntityRepository;
+import eu.derzauberer.pis.persistence.SearchIndex;
 import eu.derzauberer.pis.structure.model.StationModel;
 import eu.derzauberer.pis.structure.model.StationTrafficModel;
 import eu.derzauberer.pis.structure.model.StationTrafficEntryModel;
@@ -19,13 +19,13 @@ import eu.derzauberer.pis.util.SearchComparator;
 public class StationService extends EntityService<StationModel> {
 	
 	private final EntityRepository<StationTrafficModel> stationTrafficRepository;
-	private final SearchComponent<StationModel> searchComponent;
+	private final SearchIndex<StationModel> searchComponent;
 	
 	@Autowired
 	public StationService(EntityRepository<StationModel> stationRepository, EntityRepository<StationTrafficModel> stationTrafficRepository) {
 		super(stationRepository);
 		this.stationTrafficRepository = stationTrafficRepository;
-		this.searchComponent = new SearchComponent<>(this, getStationSearchComperator());
+		this.searchComponent = new SearchIndex<>(this, getStationSearchComperator());
 	}
 	
 	public Result<StationModel> search(String search) {

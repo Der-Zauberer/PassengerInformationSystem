@@ -8,9 +8,10 @@ import java.util.TreeSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import eu.derzauberer.pis.components.SearchComponent;
 import eu.derzauberer.pis.configuration.SpringConfiguration;
-import eu.derzauberer.pis.repository.EntityRepository;
+import eu.derzauberer.pis.persistence.EntityRepository;
+import eu.derzauberer.pis.persistence.LazyFile;
+import eu.derzauberer.pis.persistence.SearchIndex;
 import eu.derzauberer.pis.structure.model.LineModel;
 import eu.derzauberer.pis.structure.model.LineStopModel;
 import eu.derzauberer.pis.structure.model.StationModel;
@@ -24,17 +25,17 @@ public class LineService extends EntityService<LineModel> {
 	
 	private final EntityRepository<LineModel> lineRepository;
 	private final EntityRepository<StationTrafficModel> stationTrafficRepository;
-	private final SearchComponent<LineModel> searchComponent;
+	private final SearchIndex<LineModel> searchComponent;
 	
 	@Autowired
 	public LineService(EntityRepository<LineModel> lineRepository, EntityRepository<StationTrafficModel> stationTrafficRepository) throws InterruptedException {
 		super(lineRepository);
 		this.lineRepository = lineRepository;
 		this.stationTrafficRepository = stationTrafficRepository;
-		searchComponent = new SearchComponent<>(this);
+		searchComponent = new SearchIndex<>(this);
 		if (SpringConfiguration.indexing) {
 			ProgressStatus progress = new ProgressStatus("Indexing", lineRepository.getName(), lineRepository.size());
-			for (LineModel line : lineRepository.getAll()) {
+			for (LineModel line : lineRepository.stream().map(LazyFile::load).toList()) {
 				addLineToTrafficIndex(line);
 				progress.count();
 			}

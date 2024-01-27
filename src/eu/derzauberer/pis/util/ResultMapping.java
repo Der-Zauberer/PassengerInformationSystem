@@ -14,11 +14,6 @@ public class ResultMapping<T, R> implements Result<R>{
 	}
 
 	@Override
-	public boolean isEmpty() {
-		return collectable.isEmpty();
-	}
-
-	@Override
 	public int size() {
 		return collectable.size();
 	}

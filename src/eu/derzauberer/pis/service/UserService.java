@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import eu.derzauberer.pis.components.IdentificationComponent;
-import eu.derzauberer.pis.components.SearchComponent;
-import eu.derzauberer.pis.repository.EntityRepository;
+import eu.derzauberer.pis.persistence.EntityRepository;
+import eu.derzauberer.pis.persistence.IdentificationIndex;
+import eu.derzauberer.pis.persistence.SearchIndex;
 import eu.derzauberer.pis.structure.enums.UserRole;
 import eu.derzauberer.pis.structure.model.UserModel;
 import eu.derzauberer.pis.util.Result;
@@ -17,16 +17,16 @@ import eu.derzauberer.pis.util.Result;
 public class UserService extends EntityService<UserModel> {
 	
 	private final PasswordEncoder passwordEncoder;
-	private final IdentificationComponent<UserModel> emailIdentification;
-	private final SearchComponent<UserModel> search;
+	private final IdentificationIndex<UserModel> emailIdentification;
+	private final SearchIndex<UserModel> search;
 	
 	@Autowired
 	public UserService(EntityRepository<UserModel> userRepository, PasswordEncoder passwordEncoder) {
 		super(userRepository);
 		this.passwordEncoder = passwordEncoder;
-		this.search = new SearchComponent<>(this);
-		this.emailIdentification = new IdentificationComponent<>(this, UserModel::getEmail);
-		if (isEmpty()) {
+		this.search = new SearchIndex<>(this);
+		this.emailIdentification = new IdentificationIndex<>(this, UserModel::getEmail);
+		if (userRepository.isEmpty()) {
 			final UserModel admin = new UserModel("admin", "Admin");
 			admin.setPassword(hashPassword("admin"));
 			admin.setRole(UserRole.ADMIN);

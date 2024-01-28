@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.configuration.SpringConfiguration;
-import eu.derzauberer.pis.persistence.EntityRepository;
+import eu.derzauberer.pis.persistence.Repository;
 import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.persistence.SearchIndex;
 import eu.derzauberer.pis.structure.model.LineModel;
@@ -23,12 +23,12 @@ import eu.derzauberer.pis.util.Result;
 @Service
 public class LineService extends EntityService<LineModel> {
 	
-	private final EntityRepository<LineModel> lineRepository;
-	private final EntityRepository<StationTrafficModel> stationTrafficRepository;
+	private final Repository<LineModel> lineRepository;
+	private final Repository<StationTrafficModel> stationTrafficRepository;
 	private final SearchIndex<LineModel> searchComponent;
 	
 	@Autowired
-	public LineService(EntityRepository<LineModel> lineRepository, EntityRepository<StationTrafficModel> stationTrafficRepository) throws InterruptedException {
+	public LineService(Repository<LineModel> lineRepository, Repository<StationTrafficModel> stationTrafficRepository) throws InterruptedException {
 		super(lineRepository);
 		this.lineRepository = lineRepository;
 		this.stationTrafficRepository = stationTrafficRepository;

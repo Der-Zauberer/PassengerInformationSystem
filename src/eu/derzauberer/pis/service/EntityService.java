@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import eu.derzauberer.pis.configuration.SpringConfiguration;
-import eu.derzauberer.pis.persistence.EntityRepository;
+import eu.derzauberer.pis.persistence.Repository;
 import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.structure.model.EntityModel;
 import eu.derzauberer.pis.structure.model.NameEntityModel;
@@ -28,14 +28,14 @@ import eu.derzauberer.pis.util.SaveEvent;
 
 public abstract class EntityService<T extends EntityModel<T> & NameEntityModel> implements Result<T> {
 	
-	private final EntityRepository<T> repository;
+	private final Repository<T> repository;
 	private List<Consumer<SaveEvent<T>>> onSave = new ArrayList<>();
 	private List<Consumer<RemoveEvent<T>>> onRemove = new ArrayList<>();
 	
 	private static final ObjectMapper OBJECT_MAPPER = SpringConfiguration.getBean(ObjectMapper.class);
 	private static final Logger LOGGER = LoggerFactory.getLogger(EntityService.class);
 
-	public EntityService(EntityRepository<T> repository) {
+	public EntityService(Repository<T> repository) {
 		this.repository = repository;
 	}
 	

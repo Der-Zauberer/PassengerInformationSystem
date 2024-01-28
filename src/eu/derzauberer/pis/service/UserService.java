@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import eu.derzauberer.pis.persistence.EntityRepository;
+import eu.derzauberer.pis.persistence.Repository;
 import eu.derzauberer.pis.persistence.IdentificationIndex;
 import eu.derzauberer.pis.persistence.SearchIndex;
 import eu.derzauberer.pis.structure.enums.UserRole;
@@ -21,7 +21,7 @@ public class UserService extends EntityService<UserModel> {
 	private final SearchIndex<UserModel> search;
 	
 	@Autowired
-	public UserService(EntityRepository<UserModel> userRepository, PasswordEncoder passwordEncoder) {
+	public UserService(Repository<UserModel> userRepository, PasswordEncoder passwordEncoder) {
 		super(userRepository);
 		this.passwordEncoder = passwordEncoder;
 		this.search = new SearchIndex<>(this);

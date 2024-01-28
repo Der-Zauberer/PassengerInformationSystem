@@ -51,7 +51,7 @@ public class JsonFileHandler<T> {
 	
 	public Stream<Lazy<T>> stream() {
 		try {
-			return Files.list(Paths.get(directory)).map(path -> (() -> load(path)));
+			return Files.list(Paths.get(directory)).map(path -> new Lazy<>(getFileNameFromPath(path), () -> load(path)));
 		} catch (IOException exception) {
 			logger.error("Couldn't load {}: {} {}", this.name, exception.getClass().getSimpleName(), exception.getMessage());
 			return new ArrayList<Lazy<T>>().stream();
@@ -104,6 +104,10 @@ public class JsonFileHandler<T> {
 	
 	private Path getPath(String name) {
 		return Paths.get(directory, name + FILE_TYPE);
+	}
+	
+	private String getFileNameFromPath(Path path) {
+		return path.getFileName().toString().replaceFirst("[.][^.]+$", "");
 	}
 
 }

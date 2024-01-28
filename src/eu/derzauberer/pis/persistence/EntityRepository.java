@@ -1,28 +1,105 @@
 package eu.derzauberer.pis.persistence;
 
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.TreeMap;
 import java.util.stream.Stream;
 
-public interface EntityRepository<T> {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-	String getName();
+import eu.derzauberer.pis.structure.model.EntityModel;
+import eu.derzauberer.pis.structure.model.NameEntityModel;
+import eu.derzauberer.pis.util.ProgressStatus;
+
+public class EntityRepository<T extends EntityModel<T>> implements Repository<T> {
 	
-	Class<T> getType();
+	private final String name;
+	private final Class<T> type;
+	private final boolean eagerLoading;
+	private final JsonFileHandler<T> fileHandler;
+	private final Map<String, Lazy<T>> entities;
 	
-	Optional<T> getById(String id);
+	protected static final Logger LOGGER = LoggerFactory.getLogger(Repository.class);
 	
-	boolean containsById(String id);
-	
-	int size();
-	
-	default boolean isEmpty() {
-		return size() == 0;
+	public EntityRepository(String name, Class<T> type, boolean eagerLoading) {
+		this.name = name;
+		this.type = type;
+		this.eagerLoading = eagerLoading;
+		this.fileHandler = new JsonFileHandler<>(name, name + "/entities", type, LOGGER);
+		this.entities = new TreeMap<>();
+		
+		final ProgressStatus progress = new ProgressStatus(name, fileHandler.size());
+		if (eagerLoading) {
+			fileHandler.stream()
+			.map(Lazy::get)
+			.map(entity -> {progress.count(); return entity;})
+			.forEach(entity -> this.entities.put(entity.getId(), new Lazy<>(entity.getId(), () -> entity)));
+		} else {
+			fileHandler.stream().forEach(lazy -> this.entities.put(lazy.getId(), lazy));
+		}
+		
+		LOGGER.info("Loaded {} {}", entities.size(), name);
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public Class<T> getType() {
+		return type;
+	}
+
+	@Override
+	public Optional<T> getById(String id) {
+		if (id == null) return Optional.empty();
+		final Lazy<T> entity = entities.get(id);
+		if (entity == null) return Optional.empty();
+		return Optional.of(entity.get().copy());
 	}
 	
-	Stream<Lazy<T>> stream();
+	@Override
+	public boolean containsById(String id) {
+		Objects.requireNonNull(id);
+		return entities.containsKey(id);
+	}
 	
-	void save(T entity);
+	@Override
+	public int size() {
+		return entities.size();
+	}
 	
-	boolean removeById(String id);
+	@Override
+	public Stream<Lazy<T>> stream() {
+		return entities.values().stream();
+	}
 	
+	@Override
+	public void save(T entity) {
+		Objects.requireNonNull(entity);
+		Objects.requireNonNull(entity.getId());
+		if (entity instanceof NameEntityModel) Objects.requireNonNull(((NameEntityModel) entity).getName());
+		
+		fileHandler.save(entity.getId(), entity);
+		
+		if (eagerLoading) {
+			final T copy = entity.copy();
+			entities.put(entity.getId(), new Lazy<>(entity.getId(), () -> copy));
+		} else {
+			entities.put(entity.getId(), new Lazy<>(entity.getId(), () -> fileHandler.load(entity.getId())));
+		}
+	}
+	
+	@Override
+	public boolean removeById(String id) {
+		Objects.requireNonNull(id);
+		final boolean exist = entities.containsKey(id);
+		entities.remove(id);
+		fileHandler.delete(id);
+		return exist;
+	}
+
 }

@@ -49,12 +49,12 @@ public class JsonFileHandler<T> {
 		return Optional.ofNullable(load(getPath(name)));
 	}
 	
-	public Stream<LazyFile<T>> stream() {
+	public Stream<Lazy<T>> stream() {
 		try {
-			return Files.list(Paths.get(directory)).map(path -> new LazyFile<>(path, this::load));
+			return Files.list(Paths.get(directory)).map(path -> (() -> load(path)));
 		} catch (IOException exception) {
 			logger.error("Couldn't load {}: {} {}", this.name, exception.getClass().getSimpleName(), exception.getMessage());
-			return new ArrayList<LazyFile<T>>().stream();
+			return new ArrayList<Lazy<T>>().stream();
 		}
 	}
 	

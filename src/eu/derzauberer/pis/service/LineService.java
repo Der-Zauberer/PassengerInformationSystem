@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.configuration.SpringConfiguration;
 import eu.derzauberer.pis.persistence.EntityRepository;
-import eu.derzauberer.pis.persistence.LazyFile;
+import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.persistence.SearchIndex;
 import eu.derzauberer.pis.structure.model.LineModel;
 import eu.derzauberer.pis.structure.model.LineStopModel;
@@ -35,7 +35,7 @@ public class LineService extends EntityService<LineModel> {
 		searchComponent = new SearchIndex<>(this);
 		if (SpringConfiguration.indexing) {
 			ProgressStatus progress = new ProgressStatus("Indexing", lineRepository.getName(), lineRepository.size());
-			for (LineModel line : lineRepository.stream().map(LazyFile::load).toList()) {
+			for (LineModel line : lineRepository.stream().map(Lazy::get).toList()) {
 				addLineToTrafficIndex(line);
 				progress.count();
 			}

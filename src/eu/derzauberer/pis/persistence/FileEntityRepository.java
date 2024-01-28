@@ -53,7 +53,7 @@ public class FileEntityRepository<T extends EntityModel<T>> implements EntityRep
 	}
 
 	@Override
-	public Stream<LazyFile<T>> stream() {
+	public Stream<Lazy<T>> stream() {
 		return fileHandler.stream();
 	}
 	

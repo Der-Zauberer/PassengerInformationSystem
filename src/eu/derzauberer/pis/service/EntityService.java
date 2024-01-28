@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import eu.derzauberer.pis.configuration.SpringConfiguration;
 import eu.derzauberer.pis.persistence.EntityRepository;
-import eu.derzauberer.pis.persistence.LazyFile;
+import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.structure.model.EntityModel;
 import eu.derzauberer.pis.structure.model.NameEntityModel;
 import eu.derzauberer.pis.util.RemoveEvent;
@@ -85,12 +85,12 @@ public abstract class EntityService<T extends EntityModel<T> & NameEntityModel> 
 	
 	@Override
 	public List<T> getAll() {
-		return repository.stream().map(LazyFile::load).toList();
+		return repository.stream().map(Lazy::get).toList();
 	}
 	
 	@Override
 	public List<T> getRange(int beginn, int end) {
-		return repository.stream().skip(beginn).limit(end - beginn).map(LazyFile::load).toList();
+		return repository.stream().skip(beginn).limit(end - beginn).map(Lazy::get).toList();
 	}
 	
 	@Override

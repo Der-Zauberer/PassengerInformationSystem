@@ -1,6 +1,5 @@
 package eu.derzauberer.pis.persistence;
 
-import java.nio.file.Path;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -31,7 +30,7 @@ public class MemoryEntityRepository<T extends EntityModel<T>> implements EntityR
 		
 		final ProgressStatus progress = new ProgressStatus(name, fileHandler.size());
 		fileHandler.stream()
-				.map(LazyFile::load)
+				.map(Lazy::get)
 				.map(entity -> {progress.count(); return entity;})
 				.forEach(entity -> this.entities.put(entity.getId(), entity));
 		LOGGER.info("Loaded {} {}", entities.size(), name);
@@ -67,8 +66,8 @@ public class MemoryEntityRepository<T extends EntityModel<T>> implements EntityR
 	}
 	
 	@Override
-	public Stream<LazyFile<T>> stream() {
-		return entities.values().stream().map(entity -> new LazyFile<>(Path.of(fileHandler.getDirectory(), entity.getId()), path -> entity));
+	public Stream<Lazy<T>> stream() {
+		return entities.values().stream().map(entity -> (() -> entity));
 	}
 	
 	@Override

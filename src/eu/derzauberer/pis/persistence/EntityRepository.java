@@ -19,7 +19,7 @@ public interface EntityRepository<T> {
 		return size() == 0;
 	}
 	
-	Stream<LazyFile<T>> stream();
+	Stream<Lazy<T>> stream();
 	
 	void save(T entity);
 	

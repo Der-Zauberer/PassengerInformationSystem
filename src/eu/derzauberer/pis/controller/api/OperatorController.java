@@ -1,6 +1,7 @@
 package eu.derzauberer.pis.controller.api;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -13,11 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import eu.derzauberer.pis.converter.DataConverter;
+import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.service.OperatorService;
+import eu.derzauberer.pis.structure.dto.OperatorData;
+import eu.derzauberer.pis.structure.dto.ResultListDto;
 import eu.derzauberer.pis.structure.model.OperatorModel;
 import eu.derzauberer.pis.util.NotFoundException;
-import eu.derzauberer.pis.util.Result;
-import eu.derzauberer.pis.util.ResultListDto;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -28,15 +31,18 @@ public class OperatorController {
 	@Autowired
 	private OperatorService operatorService;
 	
+	@Autowired
+	private DataConverter<OperatorModel, OperatorData> operatorDataConverter;
+	
 	@GetMapping
-	public ResultListDto<OperatorModel> getOperators(
+	public ResultListDto<OperatorData> getOperators(
 			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
-		final Result<OperatorModel> result = hasSearch ? operatorService.search(search) : operatorService;
-		return result.getList(offset, limit == -1 ? result.size() : limit);
+		final Collection<Lazy<OperatorModel>> result = hasSearch ? operatorService.search(search) : operatorService.getAll();
+		return new ResultListDto<>(offset, limit, result.stream().map(lazy -> lazy.map(operatorDataConverter::convert)).toList());
 	}
 	
 	@GetMapping("{id}")

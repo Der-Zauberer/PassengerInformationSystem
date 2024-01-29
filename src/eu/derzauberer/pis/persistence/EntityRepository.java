@@ -1,10 +1,10 @@
 package eu.derzauberer.pis.persistence;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,8 +73,8 @@ public class EntityRepository<T extends EntityModel<T>> implements Repository<T>
 	}
 	
 	@Override
-	public Stream<Lazy<T>> stream() {
-		return entities.values().stream();
+	public Collection<Lazy<T>> getAll() {
+		return entities.values();
 	}
 	
 	@Override

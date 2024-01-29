@@ -1,18 +1,19 @@
 package eu.derzauberer.pis.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.persistence.Repository;
 import eu.derzauberer.pis.persistence.SearchIndex;
 import eu.derzauberer.pis.structure.model.StationModel;
-import eu.derzauberer.pis.structure.model.StationTrafficModel;
 import eu.derzauberer.pis.structure.model.StationTrafficEntryModel;
-import eu.derzauberer.pis.util.Result;
+import eu.derzauberer.pis.structure.model.StationTrafficModel;
 import eu.derzauberer.pis.util.SearchComparator;
 
 @Service
@@ -28,7 +29,7 @@ public class StationService extends EntityService<StationModel> {
 		this.searchComponent = new SearchIndex<>(this, getStationSearchComperator());
 	}
 	
-	public Result<StationModel> search(String search) {
+	public List<Lazy<StationModel>> search(String search) {
 		return searchComponent.search(search);
 	}
 	

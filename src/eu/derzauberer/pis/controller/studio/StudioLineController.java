@@ -1,5 +1,7 @@
 package eu.derzauberer.pis.controller.studio;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,9 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.service.LineService;
+import eu.derzauberer.pis.structure.dto.ResultPageDto;
 import eu.derzauberer.pis.structure.model.LineModel;
-import eu.derzauberer.pis.util.Result;
 
 @Controller
 @RequestMapping("/studio/lines")
@@ -25,8 +28,8 @@ public class StudioLineController {
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
-		final Result<LineModel> result = hasSearch ? lineService.search(search) : lineService;
-		model.addAttribute("page", result.getPage(page, pageSize));
+		final Collection<Lazy<LineModel>> result = hasSearch ? lineService.search(search) : lineService.getAll();
+		model.addAttribute("page", new ResultPageDto<>(page, pageSize, result));
 		return "studio/lines.html";
 	}
 

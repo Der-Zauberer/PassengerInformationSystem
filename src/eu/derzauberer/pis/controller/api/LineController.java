@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.service.LineService;
 import eu.derzauberer.pis.service.StationService;
+import eu.derzauberer.pis.structure.dto.ResultListDto;
 import eu.derzauberer.pis.structure.model.LineModel;
 import eu.derzauberer.pis.structure.model.StationModel;
 import eu.derzauberer.pis.structure.model.StationTrafficEntryModel;
 import eu.derzauberer.pis.util.NotFoundException;
-import eu.derzauberer.pis.util.ResultList;
-import eu.derzauberer.pis.util.ResultListDto;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -66,7 +66,7 @@ public class LineController {
 		final LocalDateTime dateTime = LocalDateTime.of(Integer.parseInt(date.substring(0, 4)), Integer.parseInt(date.substring(4, 6)), Integer.parseInt(date.substring(6, 8)), hour, 0);
 		final List<StationTrafficEntryModel> entries = (!arrival ? lineService.findArrivalsSinceHour(station, dateTime, limit) : lineService.findDeparturesSinceHour(station, dateTime, limit)).stream().toList();
 		//final int total = !arrival ? lineService.getAmountOfArrivalsSinceHour(station, dateTime, limit) : lineService.getAmountOfDeparturesSinceHour(station, dateTime, limit);
-		return new ResultList<StationTrafficEntryModel>(entries).getList(offset, limit == -1 ? entries.size() : limit);
+		return new ResultListDto<>(offset, limit == -1 ? entries.size() : limit, entries.stream().map(entry -> new Lazy<>(null, () -> entry)).toList());
 	}
 	
 	@GetMapping("{id}")

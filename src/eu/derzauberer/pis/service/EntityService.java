@@ -18,15 +18,14 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import eu.derzauberer.pis.configuration.SpringConfiguration;
-import eu.derzauberer.pis.persistence.Repository;
 import eu.derzauberer.pis.persistence.Lazy;
+import eu.derzauberer.pis.persistence.Repository;
 import eu.derzauberer.pis.structure.model.EntityModel;
 import eu.derzauberer.pis.structure.model.NameEntityModel;
 import eu.derzauberer.pis.util.RemoveEvent;
-import eu.derzauberer.pis.util.Result;
 import eu.derzauberer.pis.util.SaveEvent;
 
-public abstract class EntityService<T extends EntityModel<T> & NameEntityModel> implements Result<T> {
+public abstract class EntityService<T extends EntityModel<T> & NameEntityModel> {
 	
 	private final Repository<T> repository;
 	private List<Consumer<SaveEvent<T>>> onSave = new ArrayList<>();
@@ -81,27 +80,16 @@ public abstract class EntityService<T extends EntityModel<T> & NameEntityModel> 
 		return repository.getById(id);
 	}
 	
-	public abstract Result<T> search(String search);
+	public abstract List<Lazy<T>> search(String search);
 	
-	@Override
-	public List<T> getAll() {
-		return repository.stream().map(Lazy::get).toList();
-	}
-	
-	@Override
-	public List<T> getRange(int beginn, int end) {
-		return repository.stream().skip(beginn).limit(end - beginn).map(Lazy::get).toList();
-	}
-	
-	@Override
-	public int size() {
-		return repository.size();
+	public Collection<Lazy<T>> getAll() {
+		return repository.getAll();
 	}
 	
 	public String exportEntities() {
 		try {
 			final HashMap<String, Collection<T>> types = new HashMap<>();
-			final List<T> entities = getAll();
+			final List<T> entities = getAll().stream().map(Lazy::get).toList();
 			types.put(getName(), entities);
 			String json = OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(types);
 			LOGGER.info("Exported {} {}", entities.size(), getName());

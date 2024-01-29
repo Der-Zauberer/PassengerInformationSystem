@@ -1,5 +1,7 @@
 package eu.derzauberer.pis.controller.studio;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,12 +12,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
+import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.service.UserService;
+import eu.derzauberer.pis.structure.dto.ResultPageDto;
 import eu.derzauberer.pis.structure.dto.UserData;
 import eu.derzauberer.pis.structure.dto.UserForm;
 import eu.derzauberer.pis.structure.enums.UserRole;
 import eu.derzauberer.pis.structure.model.UserModel;
-import eu.derzauberer.pis.util.Result;
 
 @Controller
 @RequestMapping("/studio/users")
@@ -38,8 +41,8 @@ public class StudioUserController {
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
-		final Result<UserModel> result = hasSearch ? userService.search(search) : userService;
-		model.addAttribute("page", result.map(userDataConverter::convert).getPage(page, pageSize));
+		final Collection<Lazy<UserModel>> result = hasSearch ? userService.search(search) : userService.getAll();
+		model.addAttribute("page", new ResultPageDto<>(page, pageSize, result.stream().map(lazy -> lazy.map(userDataConverter::convert)).toList()));
 		return "studio/users.html";
 	}
 	

@@ -1,12 +1,14 @@
 package eu.derzauberer.pis.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.persistence.Repository;
 import eu.derzauberer.pis.persistence.SearchIndex;
 import eu.derzauberer.pis.structure.model.OperatorModel;
-import eu.derzauberer.pis.util.Result;
 
 @Service
 public class OperatorService extends EntityService<OperatorModel> {
@@ -19,7 +21,7 @@ public class OperatorService extends EntityService<OperatorModel> {
 		this.searchComponent = new SearchIndex<>(this);
 	}
 	
-	public Result<OperatorModel> search(String name) {
+	public List<Lazy<OperatorModel>> search(String name) {
 		return searchComponent.search(name);
 	}
 

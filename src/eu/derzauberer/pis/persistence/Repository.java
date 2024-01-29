@@ -1,7 +1,7 @@
 package eu.derzauberer.pis.persistence;
 
+import java.util.Collection;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 public interface Repository<T> {
 
@@ -19,7 +19,7 @@ public interface Repository<T> {
 		return size() == 0;
 	}
 	
-	Stream<Lazy<T>> stream();
+	Collection<Lazy<T>> getAll();
 	
 	void save(T entity);
 	

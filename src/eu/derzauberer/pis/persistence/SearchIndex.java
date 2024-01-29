@@ -16,8 +16,6 @@ import org.slf4j.LoggerFactory;
 import eu.derzauberer.pis.service.EntityService;
 import eu.derzauberer.pis.structure.model.EntityModel;
 import eu.derzauberer.pis.structure.model.NameEntityModel;
-import eu.derzauberer.pis.util.Result;
-import eu.derzauberer.pis.util.ResultList;
 import eu.derzauberer.pis.util.SearchComparator;
 
 public class SearchIndex<T extends EntityModel<T> & NameEntityModel> {
@@ -46,7 +44,7 @@ public class SearchIndex<T extends EntityModel<T> & NameEntityModel> {
 		});
 		
 		if (generateIndex) {
-			service.getAll().forEach(this::add);
+			service.getAll().stream().map(Lazy::get).forEach(this::add);
 			fileHandler.save(FILE_NAME, index);
 		}
 		
@@ -65,7 +63,7 @@ public class SearchIndex<T extends EntityModel<T> & NameEntityModel> {
 		});
 	}
 	
-	public Result<T> search(String search) {
+	public List<Lazy<T>> search(String search) {
 		Objects.requireNonNull(search);
 		final List<T> results = new ArrayList<>();
 		final Set<String> resultIds;
@@ -82,7 +80,7 @@ public class SearchIndex<T extends EntityModel<T> & NameEntityModel> {
 		service.getById(search).ifPresent(entity -> {
 			results.add(0, entity);
 		});
-		return new ResultList<>(results);
+		return results.stream().map(entity -> new Lazy<>(entity.getId(), () -> entity)).toList();
 	}
 	
 	private void add(T entity) {

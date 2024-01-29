@@ -1,6 +1,7 @@
 package eu.derzauberer.pis.controller.api;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -15,13 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
+import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.service.TypeService;
+import eu.derzauberer.pis.structure.dto.ResultListDto;
 import eu.derzauberer.pis.structure.dto.TransportationTypeData;
 import eu.derzauberer.pis.structure.dto.TransportationTypeForm;
 import eu.derzauberer.pis.structure.model.TransportationTypeModel;
 import eu.derzauberer.pis.util.NotFoundException;
-import eu.derzauberer.pis.util.Result;
-import eu.derzauberer.pis.util.ResultListDto;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -45,8 +46,8 @@ public class TypeController {
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
-		final Result<TransportationTypeModel> result = hasSearch ? typeService.search(search) : typeService;
-		return result.map(typeDataConverter::convert).getList(offset, limit == -1 ? result.size() : limit);
+		final Collection<Lazy<TransportationTypeModel>> result = hasSearch ? typeService.search(search) : typeService.getAll();
+		return new ResultListDto<>(offset, limit, result.stream().map(lazy -> lazy.map(typeDataConverter::convert)).toList());
 	}
 
 	@GetMapping("{id}")

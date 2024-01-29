@@ -1,6 +1,7 @@
 package eu.derzauberer.pis.controller.api;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -13,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.service.RouteService;
+import eu.derzauberer.pis.structure.dto.ResultListDto;
 import eu.derzauberer.pis.structure.model.RouteModel;
 import eu.derzauberer.pis.util.NotFoundException;
-import eu.derzauberer.pis.util.Result;
-import eu.derzauberer.pis.util.ResultListDto;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -35,8 +36,8 @@ public class RouteController {
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
-		final Result<RouteModel> result = hasSearch ? routeService.search(search) : routeService;
-		return result.getList(offset, limit == -1 ? result.size() : limit);
+		final Collection<Lazy<RouteModel>> result = hasSearch ? routeService.search(search) : routeService.getAll();
+		return new ResultListDto<>(offset, limit, result);
 	}
 	
 	@GetMapping("{id}")

@@ -1,5 +1,7 @@
 package eu.derzauberer.pis.controller.studio;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,11 +12,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
+import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.service.OperatorService;
 import eu.derzauberer.pis.structure.dto.OperatorData;
 import eu.derzauberer.pis.structure.dto.OperatorForm;
+import eu.derzauberer.pis.structure.dto.ResultPageDto;
 import eu.derzauberer.pis.structure.model.OperatorModel;
-import eu.derzauberer.pis.util.Result;
 
 @Controller
 @RequestMapping("/studio/operators")
@@ -36,8 +39,8 @@ public class StudioOperatorController {
 			@RequestParam(name = "pageSize", defaultValue = "100") int pageSize
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
-		final Result<OperatorModel> result = hasSearch ? operatorService.search(search) : operatorService;
-		model.addAttribute("page", result.map(operatorDataConverter::convert).getPage(page, pageSize));
+		final Collection<Lazy<OperatorModel>> result = hasSearch ? operatorService.search(search) : operatorService.getAll();
+		model.addAttribute("page", new ResultPageDto<>(page, pageSize, result.stream().map(lazy -> lazy.map(operatorDataConverter::convert)).toList()));
 		return "studio/operators.html";
 	}
 	

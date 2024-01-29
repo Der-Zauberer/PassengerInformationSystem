@@ -1,17 +1,18 @@
 package eu.derzauberer.pis.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import eu.derzauberer.pis.persistence.Repository;
 import eu.derzauberer.pis.persistence.IdentificationIndex;
+import eu.derzauberer.pis.persistence.Lazy;
+import eu.derzauberer.pis.persistence.Repository;
 import eu.derzauberer.pis.persistence.SearchIndex;
 import eu.derzauberer.pis.structure.enums.UserRole;
 import eu.derzauberer.pis.structure.model.UserModel;
-import eu.derzauberer.pis.util.Result;
 
 @Service
 public class UserService extends EntityService<UserModel> {
@@ -63,7 +64,7 @@ public class UserService extends EntityService<UserModel> {
 		return super.getById(id).or(() -> emailIdentification.getByIdentification(id));
 	}
 	
-	public Result<UserModel> search(String search) {
+	public List<Lazy<UserModel>> search(String search) {
 		return this.search.search(search);
 	}
 	

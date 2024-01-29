@@ -1,6 +1,7 @@
 package eu.derzauberer.pis.controller.api;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -15,14 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
+import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.service.UserService;
+import eu.derzauberer.pis.structure.dto.ResultListDto;
 import eu.derzauberer.pis.structure.dto.UserData;
 import eu.derzauberer.pis.structure.dto.UserForm;
 import eu.derzauberer.pis.structure.dto.UserInfoData;
 import eu.derzauberer.pis.structure.model.UserModel;
 import eu.derzauberer.pis.util.NotFoundException;
-import eu.derzauberer.pis.util.Result;
-import eu.derzauberer.pis.util.ResultListDto;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -49,8 +50,8 @@ public class UserController {
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
-		final Result<UserModel> result = hasSearch ? userService.search(search) : userService;
-		return result.map(userInfoDataConverter::convert).getList(offset, limit == -1 ? result.size() : limit);
+		final Collection<Lazy<UserModel>> result = hasSearch ? userService.search(search) : userService.getAll();
+		return new ResultListDto<>(offset, limit, result.stream().map(lazy -> lazy.map(userInfoDataConverter::convert)).toList());
 	}
 	
 	@GetMapping("{id}")

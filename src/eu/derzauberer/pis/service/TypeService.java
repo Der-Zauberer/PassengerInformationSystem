@@ -1,12 +1,14 @@
 package eu.derzauberer.pis.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.persistence.Repository;
 import eu.derzauberer.pis.persistence.SearchIndex;
 import eu.derzauberer.pis.structure.model.TransportationTypeModel;
-import eu.derzauberer.pis.util.Result;
 
 @Service
 public class TypeService extends EntityService<TransportationTypeModel> {
@@ -20,7 +22,7 @@ public class TypeService extends EntityService<TransportationTypeModel> {
 	}
 	
 	@Override
-	public Result<TransportationTypeModel> search(String search) {
+	public List<Lazy<TransportationTypeModel>> search(String search) {
 		return searchComponent.search(search);
 	}
 

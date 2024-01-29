@@ -32,7 +32,7 @@ public class IdentificationIndex<T extends EntityModel<T> & NameEntityModel> {
 		});
 		
 		if (generateIndex) {
-			service.getAll().forEach(entity -> {
+			service.getAll().stream().map(Lazy::get).forEach(entity -> {
 				final String identification = attribute.apply(entity);
 				if (identification != null && !identification.isEmpty()) {
 					index.entries().put(identification, entity.getId());

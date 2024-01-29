@@ -2,6 +2,7 @@ package eu.derzauberer.pis.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -9,16 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.configuration.SpringConfiguration;
-import eu.derzauberer.pis.persistence.Repository;
 import eu.derzauberer.pis.persistence.Lazy;
+import eu.derzauberer.pis.persistence.Repository;
 import eu.derzauberer.pis.persistence.SearchIndex;
 import eu.derzauberer.pis.structure.model.LineModel;
 import eu.derzauberer.pis.structure.model.LineStopModel;
 import eu.derzauberer.pis.structure.model.StationModel;
-import eu.derzauberer.pis.structure.model.StationTrafficModel;
 import eu.derzauberer.pis.structure.model.StationTrafficEntryModel;
+import eu.derzauberer.pis.structure.model.StationTrafficModel;
 import eu.derzauberer.pis.util.ProgressStatus;
-import eu.derzauberer.pis.util.Result;
 
 @Service
 public class LineService extends EntityService<LineModel> {
@@ -35,7 +35,7 @@ public class LineService extends EntityService<LineModel> {
 		searchComponent = new SearchIndex<>(this);
 		if (SpringConfiguration.indexing) {
 			ProgressStatus progress = new ProgressStatus("Indexing", lineRepository.getName(), lineRepository.size());
-			for (LineModel line : lineRepository.stream().map(Lazy::get).toList()) {
+			for (LineModel line : lineRepository.getAll().stream().map(Lazy::get).toList()) {
 				addLineToTrafficIndex(line);
 				progress.count();
 			}
@@ -59,7 +59,7 @@ public class LineService extends EntityService<LineModel> {
 	}
 	
 	@Override
-	public Result<LineModel> search(String search) {
+	public List<Lazy<LineModel>> search(String search) {
 		return searchComponent.search(search);
 	}
 	

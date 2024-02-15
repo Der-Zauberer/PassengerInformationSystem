@@ -20,8 +20,8 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.converter.DataConverter;
-import eu.derzauberer.pis.structure.dto.UserData;
-import eu.derzauberer.pis.structure.model.UserModel;
+import eu.derzauberer.pis.dto.UserData;
+import eu.derzauberer.pis.model.UserModel;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

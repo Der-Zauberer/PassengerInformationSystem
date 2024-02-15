@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import eu.derzauberer.pis.dto.ResultPageDto;
+import eu.derzauberer.pis.model.RouteModel;
 import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.service.RouteService;
-import eu.derzauberer.pis.structure.dto.ResultPageDto;
-import eu.derzauberer.pis.structure.model.RouteModel;
 
 @Controller
 @RequestMapping("/studio/routes")

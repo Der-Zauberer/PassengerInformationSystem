@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
+import eu.derzauberer.pis.dto.ResultListDto;
+import eu.derzauberer.pis.dto.TransportationTypeData;
+import eu.derzauberer.pis.dto.TransportationTypeForm;
+import eu.derzauberer.pis.model.TransportationTypeModel;
 import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.service.TypeService;
-import eu.derzauberer.pis.structure.dto.ResultListDto;
-import eu.derzauberer.pis.structure.dto.TransportationTypeData;
-import eu.derzauberer.pis.structure.dto.TransportationTypeForm;
-import eu.derzauberer.pis.structure.model.TransportationTypeModel;
 import eu.derzauberer.pis.util.NotFoundException;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;

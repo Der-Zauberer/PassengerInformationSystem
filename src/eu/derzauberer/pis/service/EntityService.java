@@ -18,10 +18,10 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import eu.derzauberer.pis.configuration.SpringConfiguration;
+import eu.derzauberer.pis.model.EntityModel;
+import eu.derzauberer.pis.model.NameEntityModel;
 import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.persistence.Repository;
-import eu.derzauberer.pis.structure.model.EntityModel;
-import eu.derzauberer.pis.structure.model.NameEntityModel;
 import eu.derzauberer.pis.util.RemoveEvent;
 import eu.derzauberer.pis.util.SaveEvent;
 

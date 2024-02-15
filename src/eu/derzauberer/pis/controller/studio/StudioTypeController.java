@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
+import eu.derzauberer.pis.dto.ResultPageDto;
+import eu.derzauberer.pis.dto.TransportationTypeData;
+import eu.derzauberer.pis.dto.TransportationTypeForm;
+import eu.derzauberer.pis.enums.TransportationClassification;
+import eu.derzauberer.pis.enums.TransportationVehicle;
+import eu.derzauberer.pis.model.TransportationTypeModel;
 import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.service.TypeService;
-import eu.derzauberer.pis.structure.dto.ResultPageDto;
-import eu.derzauberer.pis.structure.dto.TransportationTypeData;
-import eu.derzauberer.pis.structure.dto.TransportationTypeForm;
-import eu.derzauberer.pis.structure.enums.TransportationClassification;
-import eu.derzauberer.pis.structure.enums.TransportationVehicle;
-import eu.derzauberer.pis.structure.model.TransportationTypeModel;
 
 @Controller
 @RequestMapping("/studio/types")

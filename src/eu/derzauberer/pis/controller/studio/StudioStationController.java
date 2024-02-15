@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
+import eu.derzauberer.pis.dto.ResultPageDto;
+import eu.derzauberer.pis.dto.StationData;
+import eu.derzauberer.pis.dto.StationForm;
+import eu.derzauberer.pis.model.StationModel;
 import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.service.StationService;
-import eu.derzauberer.pis.structure.dto.ResultPageDto;
-import eu.derzauberer.pis.structure.dto.StationData;
-import eu.derzauberer.pis.structure.dto.StationForm;
-import eu.derzauberer.pis.structure.model.StationModel;
 
 @Controller
 @RequestMapping("/studio/stations")

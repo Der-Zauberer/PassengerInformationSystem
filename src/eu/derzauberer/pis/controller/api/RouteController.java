@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import eu.derzauberer.pis.dto.ResultListDto;
+import eu.derzauberer.pis.model.RouteModel;
 import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.service.RouteService;
-import eu.derzauberer.pis.structure.dto.ResultListDto;
-import eu.derzauberer.pis.structure.model.RouteModel;
 import eu.derzauberer.pis.util.NotFoundException;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;

@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import eu.derzauberer.pis.dto.ResultPageDto;
+import eu.derzauberer.pis.model.LineModel;
 import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.service.LineService;
-import eu.derzauberer.pis.structure.dto.ResultPageDto;
-import eu.derzauberer.pis.structure.model.LineModel;
 
 @Controller
 @RequestMapping("/studio/lines")

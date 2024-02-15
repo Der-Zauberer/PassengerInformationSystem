@@ -2,11 +2,11 @@ package eu.derzauberer.pis.converter;
 
 import org.springframework.stereotype.Component;
 
-import eu.derzauberer.pis.structure.dto.OperatorData;
-import eu.derzauberer.pis.structure.model.AddressModel;
-import eu.derzauberer.pis.structure.model.ApiInformationModel;
-import eu.derzauberer.pis.structure.model.ColorModel;
-import eu.derzauberer.pis.structure.model.OperatorModel;
+import eu.derzauberer.pis.dto.OperatorData;
+import eu.derzauberer.pis.model.AddressModel;
+import eu.derzauberer.pis.model.ApiInformationModel;
+import eu.derzauberer.pis.model.ColorModel;
+import eu.derzauberer.pis.model.OperatorModel;
 
 @Component
 public class OperatorDataConverter implements DataConverter<OperatorModel, OperatorData> {

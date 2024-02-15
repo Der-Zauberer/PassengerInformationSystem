@@ -8,10 +8,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import eu.derzauberer.pis.configuration.UserConfiguration;
+import eu.derzauberer.pis.model.LocationModel;
+import eu.derzauberer.pis.model.NameEntityModel;
+import eu.derzauberer.pis.model.StationModel;
 import eu.derzauberer.pis.service.StationService;
-import eu.derzauberer.pis.structure.model.LocationModel;
-import eu.derzauberer.pis.structure.model.NameEntityModel;
-import eu.derzauberer.pis.structure.model.StationModel;
 import eu.derzauberer.pis.util.HttpRequest;
 import eu.derzauberer.pis.util.ProgressStatus;
 

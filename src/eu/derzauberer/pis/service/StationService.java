@@ -8,12 +8,12 @@ import java.util.SortedSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import eu.derzauberer.pis.model.StationModel;
+import eu.derzauberer.pis.model.StationTrafficEntryModel;
+import eu.derzauberer.pis.model.StationTrafficModel;
 import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.persistence.Repository;
 import eu.derzauberer.pis.persistence.SearchIndex;
-import eu.derzauberer.pis.structure.model.StationModel;
-import eu.derzauberer.pis.structure.model.StationTrafficEntryModel;
-import eu.derzauberer.pis.structure.model.StationTrafficModel;
 import eu.derzauberer.pis.util.SearchComparator;
 
 @Service

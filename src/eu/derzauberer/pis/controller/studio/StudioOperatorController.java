@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
+import eu.derzauberer.pis.dto.OperatorData;
+import eu.derzauberer.pis.dto.OperatorForm;
+import eu.derzauberer.pis.dto.ResultPageDto;
+import eu.derzauberer.pis.model.OperatorModel;
 import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.service.OperatorService;
-import eu.derzauberer.pis.structure.dto.OperatorData;
-import eu.derzauberer.pis.structure.dto.OperatorForm;
-import eu.derzauberer.pis.structure.dto.ResultPageDto;
-import eu.derzauberer.pis.structure.model.OperatorModel;
 
 @Controller
 @RequestMapping("/studio/operators")

@@ -2,10 +2,10 @@ package eu.derzauberer.pis.converter;
 
 import org.springframework.stereotype.Component;
 
-import eu.derzauberer.pis.structure.dto.TransportationTypeData;
-import eu.derzauberer.pis.structure.model.ApiInformationModel;
-import eu.derzauberer.pis.structure.model.ColorModel;
-import eu.derzauberer.pis.structure.model.TransportationTypeModel;
+import eu.derzauberer.pis.dto.TransportationTypeData;
+import eu.derzauberer.pis.model.ApiInformationModel;
+import eu.derzauberer.pis.model.ColorModel;
+import eu.derzauberer.pis.model.TransportationTypeModel;
 
 @Component
 public class TransportationTypeDataConverter implements DataConverter<TransportationTypeModel, TransportationTypeData> {

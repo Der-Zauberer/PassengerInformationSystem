@@ -1,6 +1,6 @@
 <th:block th:fragment="label(entity)">
 	<label 
-		th:with="color=${entity.getOrCreateColor()}" 
+		th:with="color=${entity.getColor()}" 
 		th:style="'background-color: ' + ${color.backgroundColor} + '; color: ' + ${color.textColor}" 
 		th:text="${entity.name}">
 	</label>

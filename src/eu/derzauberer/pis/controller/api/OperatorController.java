@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import eu.derzauberer.pis.converter.DataConverter;
+import eu.derzauberer.pis.dto.OperatorData;
+import eu.derzauberer.pis.dto.ResultListDto;
+import eu.derzauberer.pis.model.OperatorModel;
 import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.service.OperatorService;
-import eu.derzauberer.pis.structure.dto.OperatorData;
-import eu.derzauberer.pis.structure.dto.ResultListDto;
-import eu.derzauberer.pis.structure.model.OperatorModel;
 import eu.derzauberer.pis.util.NotFoundException;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;

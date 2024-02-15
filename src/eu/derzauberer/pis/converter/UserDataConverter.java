@@ -2,8 +2,8 @@ package eu.derzauberer.pis.converter;
 
 import org.springframework.stereotype.Component;
 
-import eu.derzauberer.pis.structure.dto.UserData;
-import eu.derzauberer.pis.structure.model.UserModel;
+import eu.derzauberer.pis.dto.UserData;
+import eu.derzauberer.pis.model.UserModel;
 
 @Component
 public class UserDataConverter implements DataConverter<UserModel, UserData> {

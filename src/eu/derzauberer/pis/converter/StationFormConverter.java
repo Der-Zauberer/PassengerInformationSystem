@@ -3,13 +3,13 @@ package eu.derzauberer.pis.converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import eu.derzauberer.pis.structure.dto.PlatformForm;
-import eu.derzauberer.pis.structure.dto.StationForm;
-import eu.derzauberer.pis.structure.model.AddressModel;
-import eu.derzauberer.pis.structure.model.LocationModel;
-import eu.derzauberer.pis.structure.model.PlatformModel;
-import eu.derzauberer.pis.structure.model.ServicesModel;
-import eu.derzauberer.pis.structure.model.StationModel;
+import eu.derzauberer.pis.dto.PlatformForm;
+import eu.derzauberer.pis.dto.StationForm;
+import eu.derzauberer.pis.model.AddressModel;
+import eu.derzauberer.pis.model.LocationModel;
+import eu.derzauberer.pis.model.PlatformModel;
+import eu.derzauberer.pis.model.ServicesModel;
+import eu.derzauberer.pis.model.StationModel;
 
 @Component
 public class StationFormConverter implements FormConverter<StationModel, StationForm> {

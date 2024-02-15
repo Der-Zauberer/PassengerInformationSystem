@@ -2,12 +2,12 @@ package eu.derzauberer.pis.converter;
 
 import org.springframework.stereotype.Component;
 
-import eu.derzauberer.pis.structure.dto.StationData;
-import eu.derzauberer.pis.structure.model.AddressModel;
-import eu.derzauberer.pis.structure.model.ApiInformationModel;
-import eu.derzauberer.pis.structure.model.LocationModel;
-import eu.derzauberer.pis.structure.model.ServicesModel;
-import eu.derzauberer.pis.structure.model.StationModel;
+import eu.derzauberer.pis.dto.StationData;
+import eu.derzauberer.pis.model.AddressModel;
+import eu.derzauberer.pis.model.ApiInformationModel;
+import eu.derzauberer.pis.model.LocationModel;
+import eu.derzauberer.pis.model.ServicesModel;
+import eu.derzauberer.pis.model.StationModel;
 
 @Component
 public class StationDataConverter implements DataConverter<StationModel, StationData> {

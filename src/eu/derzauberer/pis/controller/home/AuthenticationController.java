@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import eu.derzauberer.pis.converter.FormConverter;
+import eu.derzauberer.pis.dto.LoginForm;
+import eu.derzauberer.pis.dto.PasswordForm;
+import eu.derzauberer.pis.dto.ProfileForm;
+import eu.derzauberer.pis.model.UserModel;
 import eu.derzauberer.pis.service.AuthenticationService;
 import eu.derzauberer.pis.service.UserService;
-import eu.derzauberer.pis.structure.dto.LoginForm;
-import eu.derzauberer.pis.structure.dto.PasswordForm;
-import eu.derzauberer.pis.structure.dto.ProfileForm;
-import eu.derzauberer.pis.structure.model.UserModel;
 import eu.derzauberer.pis.util.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;

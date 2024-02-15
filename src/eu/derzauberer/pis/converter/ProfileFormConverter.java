@@ -2,8 +2,8 @@ package eu.derzauberer.pis.converter;
 
 import org.springframework.stereotype.Component;
 
-import eu.derzauberer.pis.structure.dto.ProfileForm;
-import eu.derzauberer.pis.structure.model.UserModel;
+import eu.derzauberer.pis.dto.ProfileForm;
+import eu.derzauberer.pis.model.UserModel;
 
 @Component
 public class ProfileFormConverter implements FormConverter<UserModel, ProfileForm> {

@@ -13,9 +13,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import eu.derzauberer.pis.model.EntityModel;
+import eu.derzauberer.pis.model.NameEntityModel;
 import eu.derzauberer.pis.service.EntityService;
-import eu.derzauberer.pis.structure.model.EntityModel;
-import eu.derzauberer.pis.structure.model.NameEntityModel;
 import eu.derzauberer.pis.util.SearchComparator;
 
 public class SearchIndex<T extends EntityModel<T> & NameEntityModel> {

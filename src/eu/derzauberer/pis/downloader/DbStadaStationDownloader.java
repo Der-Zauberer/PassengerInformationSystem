@@ -12,10 +12,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import eu.derzauberer.pis.configuration.UserConfiguration;
+import eu.derzauberer.pis.model.LocationModel;
+import eu.derzauberer.pis.model.NameEntityModel;
+import eu.derzauberer.pis.model.StationModel;
 import eu.derzauberer.pis.service.StationService;
-import eu.derzauberer.pis.structure.model.LocationModel;
-import eu.derzauberer.pis.structure.model.NameEntityModel;
-import eu.derzauberer.pis.structure.model.StationModel;
 import eu.derzauberer.pis.util.HttpRequest;
 import eu.derzauberer.pis.util.ProgressStatus;
 
@@ -70,7 +70,7 @@ public class DbStadaStationDownloader {
 			}
 			station.getOrCreateServices().setParking(extractBoolean(node, "hasParking"));
 			station.getOrCreateServices().setBicycleParking(extractBoolean(node, "hasBicycleParking"));
-			station.getOrCreateServices().isLocalPublicTransport(extractBoolean(node, "hasLocalPublicTransport"));
+			station.getOrCreateServices().setLocalPublicTransport(extractBoolean(node, "hasLocalPublicTransport"));
 			station.getOrCreateServices().setPublicFacilities(extractBoolean(node, "hasPublicFacilities"));
 			station.getOrCreateServices().setLockerSystem(extractBoolean(node, "hasLockerSystem"));
 			station.getOrCreateServices().setTaxiRank(extractBoolean(node, "hasTaxiRank"));

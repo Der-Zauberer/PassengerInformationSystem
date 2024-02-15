@@ -9,8 +9,8 @@ import java.util.TreeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.derzauberer.pis.structure.model.EntityModel;
-import eu.derzauberer.pis.structure.model.NameEntityModel;
+import eu.derzauberer.pis.model.EntityModel;
+import eu.derzauberer.pis.model.NameEntityModel;
 import eu.derzauberer.pis.util.ProgressStatus;
 
 public class EntityRepository<T extends EntityModel<T>> implements Repository<T> {

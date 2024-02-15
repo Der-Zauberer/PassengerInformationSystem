@@ -5,8 +5,8 @@ import java.util.Iterator;
 
 import org.springframework.stereotype.Component;
 
-import eu.derzauberer.pis.structure.dto.PlatformForm;
-import eu.derzauberer.pis.structure.model.PlatformModel;
+import eu.derzauberer.pis.dto.PlatformForm;
+import eu.derzauberer.pis.model.PlatformModel;
 
 @Component
 public class PlatformFormConverter implements FormConverter<PlatformModel, PlatformForm> {

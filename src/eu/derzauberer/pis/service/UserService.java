@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import eu.derzauberer.pis.enums.UserRole;
+import eu.derzauberer.pis.model.UserModel;
 import eu.derzauberer.pis.persistence.IdentificationIndex;
 import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.persistence.Repository;
 import eu.derzauberer.pis.persistence.SearchIndex;
-import eu.derzauberer.pis.structure.enums.UserRole;
-import eu.derzauberer.pis.structure.model.UserModel;
 
 @Service
 public class UserService extends EntityService<UserModel> {

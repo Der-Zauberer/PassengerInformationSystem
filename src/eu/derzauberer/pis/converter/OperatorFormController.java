@@ -2,10 +2,10 @@ package eu.derzauberer.pis.converter;
 
 import org.springframework.stereotype.Component;
 
-import eu.derzauberer.pis.structure.dto.OperatorForm;
-import eu.derzauberer.pis.structure.model.AddressModel;
-import eu.derzauberer.pis.structure.model.ColorModel;
-import eu.derzauberer.pis.structure.model.OperatorModel;
+import eu.derzauberer.pis.dto.OperatorForm;
+import eu.derzauberer.pis.model.AddressModel;
+import eu.derzauberer.pis.model.ColorModel;
+import eu.derzauberer.pis.model.OperatorModel;
 
 @Component
 public class OperatorFormController implements FormConverter<OperatorModel, OperatorForm>{

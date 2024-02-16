@@ -7,7 +7,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class RouteModel extends EntityModel<RouteModel> implements NameEntityModel {
+import eu.derzauberer.pis.persistence.Entity;
+import eu.derzauberer.pis.persistence.Namable;
+
+public class RouteModel extends Entity<RouteModel> implements Namable {
 	
 	private final String id;
 	private String name;

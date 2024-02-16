@@ -8,11 +8,9 @@ import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.derzauberer.pis.model.EntityModel;
-import eu.derzauberer.pis.model.NameEntityModel;
 import eu.derzauberer.pis.service.EntityService;
 
-public class IdentificationIndex<T extends EntityModel<T> & NameEntityModel> {
+public class IdentificationIndex<T extends Entity<T> & Namable> {
 	
 	private final EntityService<T> service;
 	private final JsonFileHandler<IdentificationIndexContent> fileHandler;

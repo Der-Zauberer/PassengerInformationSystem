@@ -9,8 +9,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import eu.derzauberer.pis.configuration.UserConfiguration;
 import eu.derzauberer.pis.model.LocationModel;
-import eu.derzauberer.pis.model.NameEntityModel;
 import eu.derzauberer.pis.model.StationModel;
+import eu.derzauberer.pis.persistence.Namable;
 import eu.derzauberer.pis.service.StationService;
 import eu.derzauberer.pis.util.HttpRequest;
 import eu.derzauberer.pis.util.ProgressStatus;
@@ -47,7 +47,7 @@ public class DbRisStationsDownloader {
 		int counter = 0;
 		for (JsonNode node : json.withArray("stations")) {
 			final String name = node.at("/names/DE/name").asText();
-			final StationModel station = stationService.getById(NameEntityModel.nameToId(name)).orElse(new StationModel(name));
+			final StationModel station = stationService.getById(Namable.nameToId(name)).orElse(new StationModel(name));
 			if (node.at("/owner/name").asText().equalsIgnoreCase("DB S&S")) {
 				station.getOrCreateAddress().setName("DB Station&Service AG");
 			} else {

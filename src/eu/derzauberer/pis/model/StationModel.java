@@ -5,7 +5,10 @@ import java.util.Optional;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-public class StationModel extends EntityModel<StationModel> implements NameEntityModel {
+import eu.derzauberer.pis.persistence.Entity;
+import eu.derzauberer.pis.persistence.Namable;
+
+public class StationModel extends Entity<StationModel> implements Namable {
 	
 	private final String id;
 	private String name;
@@ -16,7 +19,7 @@ public class StationModel extends EntityModel<StationModel> implements NameEntit
 	private ApiInformationModel api;
 	
 	public StationModel(String name) {
-		this(NameEntityModel.nameToId(name), name);
+		this(Namable.nameToId(name), name);
 	}
 	
 	@ConstructorProperties({ "id", "name" })

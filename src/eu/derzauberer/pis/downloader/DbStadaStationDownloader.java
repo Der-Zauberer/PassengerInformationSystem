@@ -13,8 +13,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import eu.derzauberer.pis.configuration.UserConfiguration;
 import eu.derzauberer.pis.model.LocationModel;
-import eu.derzauberer.pis.model.NameEntityModel;
 import eu.derzauberer.pis.model.StationModel;
+import eu.derzauberer.pis.persistence.Namable;
 import eu.derzauberer.pis.service.StationService;
 import eu.derzauberer.pis.util.HttpRequest;
 import eu.derzauberer.pis.util.ProgressStatus;
@@ -51,7 +51,7 @@ public class DbStadaStationDownloader {
 		int counter = 0;
 		for (JsonNode node : json.withArray("result")) {
 			final String name = node.get("name").asText();
-			final StationModel station = stationService.getById(NameEntityModel.nameToId(name)).orElse(new StationModel(name));
+			final StationModel station = stationService.getById(Namable.nameToId(name)).orElse(new StationModel(name));
 			station.getOrCreateAddress().setStreet(node.at("/mailingAddress/street").asText());
 			station.getOrCreateAddress().setPostalCode(node.at("/mailingAddress/zipcode").asInt());
 			station.getOrCreateAddress().setCity(node.at("/mailingAddress/city").asText());

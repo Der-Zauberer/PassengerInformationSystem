@@ -6,8 +6,10 @@ import java.util.Optional;
 
 import eu.derzauberer.pis.enums.TransportationClassification;
 import eu.derzauberer.pis.enums.TransportationVehicle;
+import eu.derzauberer.pis.persistence.Entity;
+import eu.derzauberer.pis.persistence.Namable;
 
-public class TransportationTypeModel extends EntityModel<TransportationTypeModel> implements NameEntityModel {
+public class TransportationTypeModel extends Entity<TransportationTypeModel> implements Namable {
 
 	private final String id;
 	private String name;
@@ -18,7 +20,7 @@ public class TransportationTypeModel extends EntityModel<TransportationTypeModel
 	private ApiInformationModel api;
 	
 	public TransportationTypeModel(String name) {
-		this(NameEntityModel.nameToId(name), name);
+		this(Namable.nameToId(name), name);
 	}
 	
 	@ConstructorProperties({ "id", "name" })

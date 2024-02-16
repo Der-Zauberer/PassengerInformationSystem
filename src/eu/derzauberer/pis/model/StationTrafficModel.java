@@ -10,7 +10,9 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-public class StationTrafficModel extends EntityModel<StationTrafficModel> {
+import eu.derzauberer.pis.persistence.Entity;
+
+public class StationTrafficModel extends Entity<StationTrafficModel> {
 	
 	private final String id;
 	private final Map<Integer, SortedSet<StationTrafficEntryModel>> departures = new HashMap<>();

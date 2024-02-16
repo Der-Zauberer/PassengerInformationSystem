@@ -1,8 +1,8 @@
-package eu.derzauberer.pis.model;
+package eu.derzauberer.pis.persistence;
 
 import org.apache.commons.lang3.StringUtils;
 
-public interface NameEntityModel {
+public interface Namable {
 
 	String getName();
 	

@@ -9,11 +9,9 @@ import java.util.TreeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.derzauberer.pis.model.EntityModel;
-import eu.derzauberer.pis.model.NameEntityModel;
 import eu.derzauberer.pis.util.ProgressStatus;
 
-public class EntityRepository<T extends EntityModel<T>> implements Repository<T> {
+public class EntityRepository<T extends Entity<T>> implements Repository<T> {
 	
 	private final String name;
 	private final Class<T> type;
@@ -81,7 +79,7 @@ public class EntityRepository<T extends EntityModel<T>> implements Repository<T>
 	public void save(T entity) {
 		Objects.requireNonNull(entity);
 		Objects.requireNonNull(entity.getId());
-		if (entity instanceof NameEntityModel) Objects.requireNonNull(((NameEntityModel) entity).getName());
+		if (entity instanceof Namable) Objects.requireNonNull(((Namable) entity).getName());
 		
 		fileHandler.save(entity.getId(), entity);
 		

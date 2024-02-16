@@ -3,7 +3,10 @@ package eu.derzauberer.pis.model;
 import java.beans.ConstructorProperties;
 import java.util.Optional;
 
-public class OperatorModel extends EntityModel<OperatorModel> implements NameEntityModel {
+import eu.derzauberer.pis.persistence.Entity;
+import eu.derzauberer.pis.persistence.Namable;
+
+public class OperatorModel extends Entity<OperatorModel> implements Namable {
 
 	private final String id;
 	private String name;
@@ -12,7 +15,7 @@ public class OperatorModel extends EntityModel<OperatorModel> implements NameEnt
 	private ApiInformationModel api;
 	
 	public OperatorModel(String name) {
-		this(NameEntityModel.nameToId(name), name);
+		this(Namable.nameToId(name), name);
 	}
 	
 	@ConstructorProperties({ "id", "name" })

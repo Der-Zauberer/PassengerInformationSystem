@@ -1,8 +1,6 @@
-package eu.derzauberer.pis.model;
+package eu.derzauberer.pis.persistence;
 
-public abstract class EntityModel<T extends EntityModel<T>> implements Comparable<T> {
-	
-	public abstract String getId();
+public abstract class Entity<T extends Entity<T>> implements Identifiable, Comparable<T> {
 	
 	public abstract T copy();
 	
@@ -15,7 +13,7 @@ public abstract class EntityModel<T extends EntityModel<T>> implements Comparabl
 	public String toString() {
 		final StringBuilder string = new StringBuilder(super.toString());
 		string.append("{" + getId());
-		if (this instanceof NameEntityModel) string.append(", " + ((NameEntityModel) this).getName());
+		if (this instanceof Namable) string.append(", " + ((Namable) this).getName());
 		string.append("}");
 		return string.toString();
 	}

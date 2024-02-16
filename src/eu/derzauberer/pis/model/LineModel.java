@@ -8,7 +8,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class LineModel extends EntityModel<LineModel> implements NameEntityModel {
+import eu.derzauberer.pis.persistence.Entity;
+import eu.derzauberer.pis.persistence.Namable;
+
+public class LineModel extends Entity<LineModel> implements Namable {
 	
 	private final String id;
 	private final String routeId;

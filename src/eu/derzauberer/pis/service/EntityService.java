@@ -18,14 +18,14 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import eu.derzauberer.pis.configuration.SpringConfiguration;
-import eu.derzauberer.pis.model.EntityModel;
-import eu.derzauberer.pis.model.NameEntityModel;
+import eu.derzauberer.pis.persistence.Entity;
 import eu.derzauberer.pis.persistence.Lazy;
+import eu.derzauberer.pis.persistence.Namable;
 import eu.derzauberer.pis.persistence.Repository;
 import eu.derzauberer.pis.util.RemoveEvent;
 import eu.derzauberer.pis.util.SaveEvent;
 
-public abstract class EntityService<T extends EntityModel<T> & NameEntityModel> {
+public abstract class EntityService<T extends Entity<T> & Namable> {
 	
 	private final Repository<T> repository;
 	private List<Consumer<SaveEvent<T>>> onSave = new ArrayList<>();

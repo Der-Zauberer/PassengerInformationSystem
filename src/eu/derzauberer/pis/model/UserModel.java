@@ -4,8 +4,10 @@ import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
 
 import eu.derzauberer.pis.enums.UserRole;
+import eu.derzauberer.pis.persistence.Entity;
+import eu.derzauberer.pis.persistence.Namable;
 
-public class UserModel extends EntityModel<UserModel> implements NameEntityModel {
+public class UserModel extends Entity<UserModel> implements Namable {
 	
 	private final String id;
 	private String name;

@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.model.OperatorModel;
+import eu.derzauberer.pis.persistence.EntityRepository;
 import eu.derzauberer.pis.persistence.Lazy;
-import eu.derzauberer.pis.persistence.Repository;
 import eu.derzauberer.pis.persistence.SearchIndex;
 
 @Service
@@ -16,7 +16,7 @@ public class OperatorService extends EntityService<OperatorModel> {
 	private final SearchIndex<OperatorModel> searchComponent;
 	
 	@Autowired
-	public OperatorService(Repository<OperatorModel> operatorRepository) {
+	public OperatorService(EntityRepository<OperatorModel> operatorRepository) {
 		super(operatorRepository);
 		this.searchComponent = new SearchIndex<>(this);
 	}

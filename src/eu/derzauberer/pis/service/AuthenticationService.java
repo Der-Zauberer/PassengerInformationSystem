@@ -55,7 +55,7 @@ public class AuthenticationService implements AuthenticationProvider, UserDetail
 		String username = authentication.getPrincipal().toString();
         String password = authentication.getCredentials().toString();
         if (username == null || username.isEmpty()) throw new IllegalArgumentException("Username must not be null or empty!");
-		final UserModel user = userService.getById(username)
+		final UserModel user = userService.getByIdOrSecondaryId(username)
 			.filter(UserModel::isEnabled)
 			.filter(processingUser -> userService.matchPassword(password, processingUser))
 			.orElseThrow(() -> new AuthenticationException("Your credentials aren't correct, please try again!") {});

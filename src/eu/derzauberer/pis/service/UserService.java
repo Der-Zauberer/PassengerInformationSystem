@@ -9,24 +9,23 @@ import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.enums.UserRole;
 import eu.derzauberer.pis.model.UserModel;
-import eu.derzauberer.pis.persistence.IdentificationIndex;
+import eu.derzauberer.pis.persistence.EntityRepository;
 import eu.derzauberer.pis.persistence.Lazy;
-import eu.derzauberer.pis.persistence.Repository;
 import eu.derzauberer.pis.persistence.SearchIndex;
 
 @Service
 public class UserService extends EntityService<UserModel> {
 	
+	private final EntityRepository<UserModel> userRepository;
 	private final PasswordEncoder passwordEncoder;
-	private final IdentificationIndex<UserModel> emailIdentification;
 	private final SearchIndex<UserModel> search;
 	
 	@Autowired
-	public UserService(Repository<UserModel> userRepository, PasswordEncoder passwordEncoder) {
+	public UserService(EntityRepository<UserModel> userRepository, PasswordEncoder passwordEncoder) {
 		super(userRepository);
+		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.search = new SearchIndex<>(this);
-		this.emailIdentification = new IdentificationIndex<>(this, UserModel::getEmail);
 		if (userRepository.isEmpty()) {
 			final UserModel admin = new UserModel("admin", "Admin");
 			admin.setPassword(hashPassword("admin"));
@@ -35,33 +34,8 @@ public class UserService extends EntityService<UserModel> {
 		}
 	}
 	
-	@Override
-	public UserModel save(UserModel user) {
-		if (user.getEmail() != null) {
-			getById(user.getEmail()).ifPresent(existing -> {
-				if (!existing.getId().equals(user.getId())) {
-					throw new IllegalArgumentException("Identification email " + user.getEmail() + " already exists as id!");
-				}
-			});
-			emailIdentification.getByIdentification(user.getEmail()).ifPresent(existing -> {
-				if (!existing.getId().equals(user.getId())) {
-					throw new IllegalArgumentException("Identification email " + user.getEmail() + " already exists as email!");
-				}
-			});
-		}
-		if (user.getId() != null) {
-			emailIdentification.getByIdentification(user.getId()).ifPresent(existing -> {
-				if (!existing.getId().equals(user.getId())) {
-					throw new IllegalArgumentException("Identification id " + user.getId() + " already exists as email!");
-				}
-			});
-		}
-		return super.save(user);
-	}
-	
-	@Override
-	public Optional<UserModel> getById(String id) {
-		return super.getById(id).or(() -> emailIdentification.getByIdentification(id));
+	public Optional<UserModel> getByIdOrSecondaryId(String id) {
+		return userRepository.getByIdOrSecondaryId(id);
 	}
 	
 	public List<Lazy<UserModel>> search(String search) {

@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.derzauberer.pis.model.RouteModel;
+import eu.derzauberer.pis.persistence.EntityRepository;
 import eu.derzauberer.pis.persistence.Lazy;
-import eu.derzauberer.pis.persistence.Repository;
 import eu.derzauberer.pis.persistence.SearchIndex;
 
 @Service
@@ -16,7 +16,7 @@ public class RouteService extends EntityService<RouteModel> {
 	private final SearchIndex<RouteModel> searchComponent;
 	
 	@Autowired
-	public RouteService(Repository<RouteModel> repository) {
+	public RouteService(EntityRepository<RouteModel> repository) {
 		super(repository);
 		searchComponent = new SearchIndex<>(this);
 	}

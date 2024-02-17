@@ -19,22 +19,22 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import eu.derzauberer.pis.configuration.SpringConfiguration;
 import eu.derzauberer.pis.persistence.Entity;
+import eu.derzauberer.pis.persistence.EntityRepository;
 import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.persistence.Namable;
-import eu.derzauberer.pis.persistence.Repository;
 import eu.derzauberer.pis.util.RemoveEvent;
 import eu.derzauberer.pis.util.SaveEvent;
 
 public abstract class EntityService<T extends Entity<T> & Namable> {
 	
-	private final Repository<T> repository;
+	private final EntityRepository<T> repository;
 	private List<Consumer<SaveEvent<T>>> onSave = new ArrayList<>();
 	private List<Consumer<RemoveEvent<T>>> onRemove = new ArrayList<>();
 	
 	private static final ObjectMapper OBJECT_MAPPER = SpringConfiguration.getBean(ObjectMapper.class);
 	private static final Logger LOGGER = LoggerFactory.getLogger(EntityService.class);
 
-	public EntityService(Repository<T> repository) {
+	public EntityService(EntityRepository<T> repository) {
 		this.repository = repository;
 	}
 	

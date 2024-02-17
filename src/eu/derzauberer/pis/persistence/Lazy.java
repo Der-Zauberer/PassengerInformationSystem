@@ -30,6 +30,9 @@ public class Lazy<T> implements Comparable<Lazy<T>> {
 		return this.getId().compareTo(lazy.getId());
 	}
 	
-	
+	static <T> T getOrNull(Lazy<T> lazy) {
+		if (lazy != null) return lazy.get();
+		return null;
+	}
 
 }

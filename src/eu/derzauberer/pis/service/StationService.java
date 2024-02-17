@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import eu.derzauberer.pis.model.StationModel;
 import eu.derzauberer.pis.model.StationTrafficEntryModel;
 import eu.derzauberer.pis.model.StationTrafficModel;
+import eu.derzauberer.pis.persistence.EntityRepository;
 import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.persistence.Repository;
 import eu.derzauberer.pis.persistence.SearchIndex;
@@ -23,7 +24,7 @@ public class StationService extends EntityService<StationModel> {
 	private final SearchIndex<StationModel> searchComponent;
 	
 	@Autowired
-	public StationService(Repository<StationModel> stationRepository, Repository<StationTrafficModel> stationTrafficRepository) {
+	public StationService(EntityRepository<StationModel> stationRepository, Repository<StationTrafficModel> stationTrafficRepository) {
 		super(stationRepository);
 		this.stationTrafficRepository = stationTrafficRepository;
 		this.searchComponent = new SearchIndex<>(this, getStationSearchComperator());

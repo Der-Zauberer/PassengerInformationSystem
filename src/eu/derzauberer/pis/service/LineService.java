@@ -15,6 +15,7 @@ import eu.derzauberer.pis.model.LineStopModel;
 import eu.derzauberer.pis.model.StationModel;
 import eu.derzauberer.pis.model.StationTrafficEntryModel;
 import eu.derzauberer.pis.model.StationTrafficModel;
+import eu.derzauberer.pis.persistence.EntityRepository;
 import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.persistence.Repository;
 import eu.derzauberer.pis.persistence.SearchIndex;
@@ -23,12 +24,12 @@ import eu.derzauberer.pis.util.ProgressStatus;
 @Service
 public class LineService extends EntityService<LineModel> {
 	
-	private final Repository<LineModel> lineRepository;
+	private final EntityRepository<LineModel> lineRepository;
 	private final Repository<StationTrafficModel> stationTrafficRepository;
 	private final SearchIndex<LineModel> searchComponent;
 	
 	@Autowired
-	public LineService(Repository<LineModel> lineRepository, Repository<StationTrafficModel> stationTrafficRepository) throws InterruptedException {
+	public LineService(EntityRepository<LineModel> lineRepository, Repository<StationTrafficModel> stationTrafficRepository) throws InterruptedException {
 		super(lineRepository);
 		this.lineRepository = lineRepository;
 		this.stationTrafficRepository = stationTrafficRepository;

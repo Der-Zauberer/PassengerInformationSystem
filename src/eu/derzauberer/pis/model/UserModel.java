@@ -2,6 +2,7 @@ package eu.derzauberer.pis.model;
 
 import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import eu.derzauberer.pis.enums.UserRole;
 import eu.derzauberer.pis.persistence.Entity;
@@ -32,6 +33,11 @@ public class UserModel extends Entity<UserModel> implements Namable {
 	@Override
 	public String getId() {
 		return id;
+	}
+	
+	@Override
+	public Set<String> getSecondaryIds() {
+		return email != null && !email.isEmpty() ? Set.of(email): Set.of();
 	}
 	
 	@Override

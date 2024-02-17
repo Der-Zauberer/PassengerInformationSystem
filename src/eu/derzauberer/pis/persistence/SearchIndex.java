@@ -36,7 +36,7 @@ public class SearchIndex<T extends Entity<T> & Namable> {
 		this.service = service;
 		this.comparator = comparator;
 		
-		index = fileHandler.loadAsOptional(FILE_NAME).orElseGet(() -> {
+		index = fileHandler.load(FILE_NAME).orElseGet(() -> {
 			generateIndex = true;
 			return new SearchIndexContent(new HashMap<>());
 		});

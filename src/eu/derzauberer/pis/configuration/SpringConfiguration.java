@@ -47,7 +47,7 @@ import eu.derzauberer.pis.model.StationTrafficModel;
 import eu.derzauberer.pis.model.TransportationTypeModel;
 import eu.derzauberer.pis.model.UserModel;
 import eu.derzauberer.pis.persistence.EntityRepository;
-import eu.derzauberer.pis.persistence.Repository;
+import eu.derzauberer.pis.persistence.FileEntityRepository;
 
 @Configuration
 public class SpringConfiguration implements ApplicationContextAware, WebMvcConfigurer {
@@ -159,38 +159,38 @@ public class SpringConfiguration implements ApplicationContextAware, WebMvcConfi
 	}
 	
 	@Bean
-	public Repository<LineModel> getLineRepository() {
-		return new EntityRepository<>("lines", LineModel.class, false);
+	public EntityRepository<LineModel> getLineRepository() {
+		return new FileEntityRepository<>("lines", LineModel.class, false);
 	}
 	
 	@Bean
-	public Repository<OperatorModel> getOperatorRepository() {
-		return new EntityRepository<>("operators", OperatorModel.class, caching);
+	public EntityRepository<OperatorModel> getOperatorRepository() {
+		return new FileEntityRepository<>("operators", OperatorModel.class, caching);
 	}
 	
 	@Bean
-	public Repository<RouteModel> getRouteRepository() {
-		return new EntityRepository<>("routes", RouteModel.class, caching);
+	public EntityRepository<RouteModel> getRouteRepository() {
+		return new FileEntityRepository<>("routes", RouteModel.class, caching);
 	}
 	
 	@Bean
-	public Repository<StationModel> getStationRepository() {
-		return new EntityRepository<>("stations", StationModel.class, caching);
+	public EntityRepository<StationModel> getStationRepository() {
+		return new FileEntityRepository<>("stations", StationModel.class, caching);
 	}
 	
 	@Bean
-	public Repository<StationTrafficModel> getStationTrafficRepository() {
-		return new EntityRepository<>("station_traffic_indices", StationTrafficModel.class, false);
+	public EntityRepository<StationTrafficModel> getStationTrafficRepository() {
+		return new FileEntityRepository<>("station_traffic_indices", StationTrafficModel.class, false);
 	}
 	
 	@Bean
-	public Repository<TransportationTypeModel> getTypeRepository() {
-		return new EntityRepository<>("types", TransportationTypeModel.class, caching);
+	public EntityRepository<TransportationTypeModel> getTypeRepository() {
+		return new FileEntityRepository<>("types", TransportationTypeModel.class, caching);
 	}
 	
 	@Bean
-	public Repository<UserModel> getUserRepository() {
-		return new EntityRepository<>("users", UserModel.class, caching);
+	public EntityRepository<UserModel> getUserRepository() {
+		return new FileEntityRepository<>("users", UserModel.class, caching, true);
 	}
 	
 }

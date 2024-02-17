@@ -41,28 +41,32 @@ public class JsonFileHandler<T> {
 		return directory;
 	}
 	
-	public T load(String name) {
-		return load(getPath(name));
+	public Optional<T> load(String name) {
+		return load(name, type);
 	}
 	
-	public Optional<T> loadAsOptional(String name) {
-		return Optional.ofNullable(load(getPath(name)));
+	public <R> Optional<R> load(String name, Class<R> type) {
+		return Optional.ofNullable(load(getPath(name), type));
 	}
 	
 	public Stream<Lazy<T>> stream() {
+		return stream(type);
+	}
+	
+	public <R> Stream<Lazy<R>> stream(Class<R> type) {
 		try {
-			return Files.list(Paths.get(directory)).map(path -> new Lazy<>(getFileNameFromPath(path), () -> load(path)));
+			return Files.list(Paths.get(directory)).map(path -> new Lazy<>(getFileNameFromPath(path), () -> load(path, type)));
 		} catch (IOException exception) {
 			logger.error("Couldn't load {}: {} {}", this.name, exception.getClass().getSimpleName(), exception.getMessage());
-			return new ArrayList<Lazy<T>>().stream();
+			return new ArrayList<Lazy<R>>().stream();
 		}
 	}
 	
-	private T load(Path path) {
+	private <R> R load(Path path, Class<R> type) {
 		try {
 			if (!Files.exists(path)) return null;
 			final String content = Files.readString(path);
-			final T object = OBJECT_MAPPER.readValue(content, type);
+			final R object = OBJECT_MAPPER.readValue(content, type);
 			return object;
 		} catch (IOException exception) {
 			logger.error("Couldn't load {} from {}: {} {}", name, this.name, exception.getClass().getSimpleName(), exception.getMessage());
@@ -70,7 +74,7 @@ public class JsonFileHandler<T> {
 		}
 	}
 	
-	public void save(String name, T object) {
+	public void save(String name, Object object) {
 		try {
 			Files.createDirectories(Paths.get(directory));
 			final String content = OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(object);

@@ -100,6 +100,17 @@ public class StationModel extends Entity<StationModel> implements Namable {
 	}
 	
 	@Override
+	public int compareSearchTo(String search, Namable namable) {
+		final int result = Namable.super.compareSearchTo(search, namable);
+		if (result != 0 || !(namable instanceof StationModel)) return result;
+		final int station1platforms = getPlatforms() != null && !getPlatforms().isEmpty() ? getPlatforms().size() : 1;
+		final int station2platforms = ((StationModel) namable).getPlatforms() != null && !((StationModel) namable).getPlatforms().isEmpty() ? ((StationModel) namable).getPlatforms().size() : 1;
+		if (station1platforms > station2platforms) return -1;
+		if (station1platforms < station2platforms) return 1;
+		return 0;
+	}
+	
+	@Override
 	public StationModel copy() {
 		final StationModel station = new StationModel(this.id, this.name);
 		if (platforms != null) this.platforms.stream().map(PlatformModel::new).forEach(station.getPlatforms()::add);

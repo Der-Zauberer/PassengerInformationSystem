@@ -2,7 +2,6 @@ package eu.derzauberer.pis.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -18,7 +17,6 @@ import eu.derzauberer.pis.model.StationTrafficModel;
 import eu.derzauberer.pis.persistence.EntityRepository;
 import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.persistence.Repository;
-import eu.derzauberer.pis.persistence.SearchIndex;
 import eu.derzauberer.pis.util.ProgressStatus;
 
 @Service
@@ -26,14 +24,12 @@ public class LineService extends EntityService<LineModel> {
 	
 	private final EntityRepository<LineModel> lineRepository;
 	private final Repository<StationTrafficModel> stationTrafficRepository;
-	private final SearchIndex<LineModel> searchComponent;
 	
 	@Autowired
 	public LineService(EntityRepository<LineModel> lineRepository, Repository<StationTrafficModel> stationTrafficRepository) throws InterruptedException {
 		super(lineRepository);
 		this.lineRepository = lineRepository;
 		this.stationTrafficRepository = stationTrafficRepository;
-		searchComponent = new SearchIndex<>(this);
 		if (SpringConfiguration.indexing) {
 			ProgressStatus progress = new ProgressStatus("Indexing", lineRepository.getName(), lineRepository.size());
 			for (LineModel line : lineRepository.getAll().stream().map(Lazy::get).toList()) {
@@ -57,11 +53,6 @@ public class LineService extends EntityService<LineModel> {
 	public boolean removeById(String lineId) {
 		lineRepository.getById(lineId).ifPresent(this::removeLineToTrafficIndex);
 		return lineRepository.removeById(lineId);
-	}
-	
-	@Override
-	public List<Lazy<LineModel>> search(String search) {
-		return searchComponent.search(search);
 	}
 	
 	public SortedSet<StationTrafficEntryModel> findArrivalsSinceHour(StationModel station, LocalDateTime dateTime, int limit) {

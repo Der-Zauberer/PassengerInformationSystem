@@ -80,7 +80,9 @@ public abstract class EntityService<T extends Entity<T> & Namable> {
 		return repository.getById(id);
 	}
 	
-	public abstract List<Lazy<T>> search(String search);
+	public List<Lazy<T>> search(String search) {
+		return repository.search(search);
+	}
 	
 	public Collection<Lazy<T>> getAll() {
 		return repository.getAll();

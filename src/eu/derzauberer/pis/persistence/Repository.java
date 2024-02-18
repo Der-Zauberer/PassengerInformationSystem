@@ -1,7 +1,7 @@
 package eu.derzauberer.pis.persistence;
 
-import java.util.Collection;
 import java.util.Optional;
+import java.util.SortedSet;
 
 public interface Repository<T> {
 
@@ -19,7 +19,7 @@ public interface Repository<T> {
 		return size() == 0;
 	}
 	
-	Collection<Lazy<T>> getAll();
+	SortedSet<Lazy<T>> getAll();
 	
 	void save(T entity);
 	

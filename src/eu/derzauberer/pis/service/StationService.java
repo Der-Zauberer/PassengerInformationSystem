@@ -1,7 +1,6 @@
 package eu.derzauberer.pis.service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 
@@ -12,26 +11,17 @@ import eu.derzauberer.pis.model.StationModel;
 import eu.derzauberer.pis.model.StationTrafficEntryModel;
 import eu.derzauberer.pis.model.StationTrafficModel;
 import eu.derzauberer.pis.persistence.EntityRepository;
-import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.persistence.Repository;
-import eu.derzauberer.pis.persistence.SearchIndex;
-import eu.derzauberer.pis.util.SearchComparator;
 
 @Service
 public class StationService extends EntityService<StationModel> {
 	
 	private final Repository<StationTrafficModel> stationTrafficRepository;
-	private final SearchIndex<StationModel> searchComponent;
 	
 	@Autowired
 	public StationService(EntityRepository<StationModel> stationRepository, Repository<StationTrafficModel> stationTrafficRepository) {
 		super(stationRepository);
 		this.stationTrafficRepository = stationTrafficRepository;
-		this.searchComponent = new SearchIndex<>(this, getStationSearchComperator());
-	}
-	
-	public List<Lazy<StationModel>> search(String search) {
-		return searchComponent.search(search);
 	}
 	
 	public SortedSet<StationTrafficEntryModel> getDeparturesInHour(String stationId, LocalDateTime dateTime) {
@@ -46,20 +36,6 @@ public class StationService extends EntityService<StationModel> {
 				stationTrafficRepository.getById(StationTrafficModel.createIdFromNameAndDate(stationId, dateTime.toLocalDate()))
 				.orElse(new StationTrafficModel(stationId, dateTime.toLocalDate()));
 		return stationTraffic.getArrivalsInHour(dateTime.getHour());
-	}
-	
-	private SearchComparator<StationModel> getStationSearchComperator() {
-		return (search, station1, station2) -> {
-			final boolean station1startsWithName = station1.getName().toLowerCase().startsWith(search.toLowerCase());
-			final boolean station2startsWithName = station2.getName().toLowerCase().startsWith(search.toLowerCase());
-			if (station1startsWithName && !station2startsWithName) return -1;
-			if (!station1startsWithName && station2startsWithName) return 1;
-			final int station1platforms = station1.getPlatforms() != null && !station1.getPlatforms().isEmpty() ? station1.getPlatforms().size() : 1;
-			final int station2platforms = station2.getPlatforms() != null && !station2.getPlatforms().isEmpty() ? station2.getPlatforms().size() : 1;
-			if (station1platforms > station2platforms) return -1;
-			if (station1platforms < station2platforms) return 1;
-			return 0;
-		};
 	}
 
 }

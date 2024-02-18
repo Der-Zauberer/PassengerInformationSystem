@@ -3,8 +3,6 @@ package eu.derzauberer.pis.service;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -32,17 +30,11 @@ public class AuthenticationService implements AuthenticationProvider, UserDetail
 
 	private final UserService userService;
 	private final DataConverter<UserModel, UserData> userDataConverter;
-	private final Set<String> expiredSessions;
 	
 	@Autowired
 	public AuthenticationService(UserService userService, DataConverter<UserModel, UserData> userDataConverter) {
 		this.userService = userService;
 		this.userDataConverter = userDataConverter;
-		expiredSessions = new HashSet<>();
-		userService.addOnSave(event -> {
-			event.oldEntity().map(UserModel::getId).ifPresent(expiredSessions::add);
-		});
-		userService.addOnRemove(event -> expiredSessions.add(event.oldEntity().getId()));
 	}
 	
 	@Override
@@ -81,7 +73,7 @@ public class AuthenticationService implements AuthenticationProvider, UserDetail
     public void updateSession(HttpSession session) {
 		if (session != null && session.getAttribute("user") != null && session.getAttribute("user") instanceof UserData) {
 			final UserData oldUser = (UserData) session.getAttribute("user");
-			if (expiredSessions.remove(oldUser.getId())) {
+			if (userService.hasExpiredSession(oldUser.getId())) {
 				final UserModel user = userService.getById(oldUser.getId()).orElse(null);
 				if (user == null || !user.isEnabled()) {
 					session.invalidate();

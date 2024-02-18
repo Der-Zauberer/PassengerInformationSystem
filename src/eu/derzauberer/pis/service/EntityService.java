@@ -1,12 +1,10 @@
 package eu.derzauberer.pis.service;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,14 +20,10 @@ import eu.derzauberer.pis.persistence.Entity;
 import eu.derzauberer.pis.persistence.EntityRepository;
 import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.persistence.Namable;
-import eu.derzauberer.pis.util.RemoveEvent;
-import eu.derzauberer.pis.util.SaveEvent;
 
 public abstract class EntityService<T extends Entity<T> & Namable> {
 	
 	private final EntityRepository<T> repository;
-	private List<Consumer<SaveEvent<T>>> onSave = new ArrayList<>();
-	private List<Consumer<RemoveEvent<T>>> onRemove = new ArrayList<>();
 	
 	private static final ObjectMapper OBJECT_MAPPER = SpringConfiguration.getBean(ObjectMapper.class);
 	private static final Logger LOGGER = LoggerFactory.getLogger(EntityService.class);
@@ -52,10 +46,7 @@ public abstract class EntityService<T extends Entity<T> & Namable> {
 		if (entity.getName() == null || entity.getName().isEmpty()) {
 			throw new IllegalArgumentException("Entity name must not be null or empty!");
 		}
-		final Optional<T> oldEntity = repository.getById(entity.getId());
 		repository.save(entity);
-		final SaveEvent<T> saveEvent = new SaveEvent<>(oldEntity, entity);
-		onSave.forEach(consumer -> consumer.accept(saveEvent));
 		return repository.getById(entity.getId()).orElseThrow(() -> new NullPointerException("Entity was deleted during save!"));
 	}
 	
@@ -63,13 +54,7 @@ public abstract class EntityService<T extends Entity<T> & Namable> {
 		if (id == null || id.isEmpty()) {
 			throw new IllegalArgumentException("Id must not be null or empty!");
 		}
-		final Optional<T> oldEntity = repository.getById(id);
-		final boolean removed = repository.removeById(id);
-		if (removed) {
-			final RemoveEvent<T> removeEvent = new RemoveEvent<>(oldEntity.orElse(null));
-			onRemove.forEach(consumer -> consumer.accept(removeEvent));
-		}
-		return removed;
+		return repository.removeById(id);
 	}
 	
 	public boolean containsById(String id) {
@@ -118,14 +103,6 @@ public abstract class EntityService<T extends Entity<T> & Namable> {
 		} catch (IOException exception) {
 			LOGGER.error("Couldn't import {}: {} {}", getName(), exception.getClass().getSimpleName(), exception.getMessage());
 		}
-	}
-	
-	public void addOnSave(Consumer<SaveEvent<T>> event) {
-		onSave.add(event);
-	}
-	
-	public void addOnRemove(Consumer<RemoveEvent<T>> event) {
-		onRemove.add(event);
 	}
 	
 }

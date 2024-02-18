@@ -39,7 +39,7 @@ public class FilterInterceptor implements HandlerInterceptor {
 		final SavedRequest filter = (SavedRequest) session.getAttribute(FILTER);
 		final SavedRequest history = (SavedRequest) session.getAttribute(HISTORY);
 		
-		if (parameters.isEmpty() && filter != null && history != null && matchParameters(filter, history , request)) {
+		if (parameters.isEmpty() && filter != null && history != null && matchParameters(filter, history , request, session)) {
 			response.sendRedirect(filter.getRedirectUrl());
 		} else if (!parameters.isEmpty()) {
 			final SavedRequest savedRequest = new SimpleSavedRequest(request.getRequestURI() + "?" + buildParametersForFilter(parameters, request));
@@ -48,10 +48,13 @@ public class FilterInterceptor implements HandlerInterceptor {
 		return true;
 	}
 	
-	private boolean matchParameters(final SavedRequest filter, SavedRequest history, HttpServletRequest request) {
+	private boolean matchParameters(final SavedRequest filter, SavedRequest history, HttpServletRequest request, HttpSession session) {
 		final String filterPath = filter.getRedirectUrl().split("\\?")[0];
 		final String historyPath = history.getRedirectUrl().split("\\?")[0];
-		if (filterPath.equals(historyPath)) return false;
+		if (filterPath.equals(historyPath)) {
+			session.removeAttribute(FILTER);
+			return false;
+		}
 		return filterPath.equals(request.getRequestURI());
 	}
 	

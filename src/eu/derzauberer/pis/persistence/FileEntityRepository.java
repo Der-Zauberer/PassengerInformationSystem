@@ -176,13 +176,15 @@ public class FileEntityRepository<T extends Entity<T>> implements EntityReposito
 			}
 		}
 		
-		final T oldEntity = getById(entity.getId()).orElse(null);
+		final Lazy<T> oldEntityReference = ids.get(entity.getId());
+		final T oldEntity = Lazy.getOrNull(oldEntityReference);
 		
 		final T copy = entity.copy();
 		final Lazy<T> reference = new Lazy<>(entity.getId(), eagerLoading ? () -> copy : () -> entityfileHandler.load(copy.getId()).orElse(null));
 		
 		entityfileHandler.save(copy.getId(), copy);
 		ids.put(copy.getId(), reference);
+		if (oldEntityReference != null) entities.remove(oldEntityReference);
 		entities.add(reference);
 		
 		if (idIndex != null) {

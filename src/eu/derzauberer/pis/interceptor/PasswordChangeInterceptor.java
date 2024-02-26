@@ -4,7 +4,7 @@ import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.security.web.savedrequest.SimpleSavedRequest;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import eu.derzauberer.pis.dto.UserData;
+import eu.derzauberer.pis.model.UserModel;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -27,7 +27,7 @@ public class PasswordChangeInterceptor implements HandlerInterceptor {
 		if (request.getQueryString() != null) url += ("?" + request.getQueryString());
 		final SavedRequest savedRequest = new SimpleSavedRequest(url);
 		session.setAttribute(passwordChangeRequest, savedRequest);
-		response.sendRedirect(passwordChange + "?user=" + ((UserData) session.getAttribute("user")).getId());
+		response.sendRedirect(passwordChange + "?user=" + ((UserModel) session.getAttribute("user")).getId());
 		
 		return true;
 	}

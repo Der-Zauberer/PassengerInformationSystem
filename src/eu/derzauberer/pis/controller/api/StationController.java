@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.dto.ResultListDto;
-import eu.derzauberer.pis.dto.StationData;
 import eu.derzauberer.pis.dto.StationForm;
 import eu.derzauberer.pis.model.StationModel;
 import eu.derzauberer.pis.persistence.Lazy;
@@ -34,31 +32,28 @@ public class StationController {
 	private StationService stationService;
 	
 	@Autowired
-	private DataConverter<StationModel, StationData> stationDataConverter;
-	
-	@Autowired
 	private FormConverter<StationModel, StationForm> stationFormConverter;
 	
 	@GetMapping
-	public ResultListDto<StationData> getStations(
+	public ResultListDto<StationModel> getStations(
 			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
 		final Collection<Lazy<StationModel>> result = hasSearch ? stationService.search(search) : stationService.getAll();
-		return new ResultListDto<>(offset, limit, result.stream().map(lazy -> lazy.map(stationDataConverter::convert)).toList());
+		return new ResultListDto<>(offset, limit, result);
 	}
 	
 	@GetMapping("{id}")
-	public StationData getStation(@PathVariable("id") String id) {
-		return stationService.getById(id).map(stationDataConverter::convert).orElseThrow(() -> new NotFoundException("Station", id));
+	public StationModel getStation(@PathVariable("id") String id) {
+		return stationService.getById(id).orElseThrow(() -> new NotFoundException("Station", id));
 	}
 	
 	@PostMapping
-	public StationData setStation(@RequestBody StationForm stationForm) {
+	public StationModel setStation(@RequestBody StationForm stationForm) {
 		final StationModel station = stationFormConverter.convertToModel(stationForm);
-		return stationDataConverter.convert(stationService.save(station));
+		return station;
 	}
 	
 	@DeleteMapping("{id}")

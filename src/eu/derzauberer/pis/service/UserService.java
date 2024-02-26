@@ -1,5 +1,6 @@
 package eu.derzauberer.pis.service;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import eu.derzauberer.pis.enums.UserRole;
 import eu.derzauberer.pis.model.UserModel;
 import eu.derzauberer.pis.persistence.EntityRepository;
+import eu.derzauberer.pis.persistence.Lazy;
 
 @Service
 public class UserService extends EntityService<UserModel> {
@@ -33,8 +35,22 @@ public class UserService extends EntityService<UserModel> {
 		}
 	}
 	
+	@Override
+	public Optional<UserModel> getById(String id) {
+		return super.getById(id).map(this::removeCredentials);
+	}
+	
 	public Optional<UserModel> getByIdOrSecondaryId(String id) {
+		return userRepository.getByIdOrSecondaryId(id).map(this::removeCredentials);
+	}
+	
+	public Optional<UserModel> getByIdOrSecondaryIdWithPasswordHash(String id) {
 		return userRepository.getByIdOrSecondaryId(id);
+	}
+	
+	@Override
+	public Collection<Lazy<UserModel>> getAll() {
+		return super.getAll().stream().map(lazy -> lazy.map(this::removeCredentials)).toList();
 	}
 	
 	@Override
@@ -61,6 +77,11 @@ public class UserService extends EntityService<UserModel> {
 	
 	public boolean hasExpiredSession(String userId) {
 		return expiredSessions.remove(userId);
+	}
+	
+	private UserModel removeCredentials(UserModel user) {
+		user.setPassword(null);
+		return user;
 	}
 	
 }

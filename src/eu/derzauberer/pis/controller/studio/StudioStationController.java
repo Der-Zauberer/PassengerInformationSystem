@@ -10,10 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.dto.ResultPageDto;
-import eu.derzauberer.pis.dto.StationData;
 import eu.derzauberer.pis.dto.StationForm;
 import eu.derzauberer.pis.model.StationModel;
 import eu.derzauberer.pis.persistence.Lazy;
@@ -27,9 +25,6 @@ public class StudioStationController {
 	private StationService stationService;
 	
 	@Autowired
-	private DataConverter<StationModel, StationData> stationDataConverter;
-	
-	@Autowired
 	private FormConverter<StationModel, StationForm> stationFormConverter;
 	
 	@GetMapping
@@ -40,7 +35,7 @@ public class StudioStationController {
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
 		final Collection<Lazy<StationModel>> result = hasSearch ? stationService.search(search) : stationService.getAll();
-		model.addAttribute("page", new ResultPageDto<>(page, pageSize, result.stream().map(lazy -> lazy.map(stationDataConverter::convert)).toList()));
+		model.addAttribute("page", new ResultPageDto<>(page, pageSize, result));
 		return "studio/stations.html";
 	}
 	

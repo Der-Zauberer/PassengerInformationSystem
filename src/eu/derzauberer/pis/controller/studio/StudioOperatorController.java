@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
-import eu.derzauberer.pis.dto.OperatorData;
 import eu.derzauberer.pis.dto.OperatorForm;
 import eu.derzauberer.pis.dto.ResultPageDto;
 import eu.derzauberer.pis.model.OperatorModel;
@@ -27,9 +25,6 @@ public class StudioOperatorController {
 	private OperatorService operatorService;
 	
 	@Autowired
-	private DataConverter<OperatorModel, OperatorData> operatorDataConverter;
-	
-	@Autowired
 	private FormConverter<OperatorModel, OperatorForm> operatorFormConverter;
 	
 	@GetMapping
@@ -40,7 +35,7 @@ public class StudioOperatorController {
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
 		final Collection<Lazy<OperatorModel>> result = hasSearch ? operatorService.search(search) : operatorService.getAll();
-		model.addAttribute("page", new ResultPageDto<>(page, pageSize, result.stream().map(lazy -> lazy.map(operatorDataConverter::convert)).toList()));
+		model.addAttribute("page", new ResultPageDto<>(page, pageSize, result));
 		return "studio/operators.html";
 	}
 	

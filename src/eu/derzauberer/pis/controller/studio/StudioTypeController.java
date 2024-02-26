@@ -10,10 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.dto.ResultPageDto;
-import eu.derzauberer.pis.dto.TransportationTypeData;
 import eu.derzauberer.pis.dto.TransportationTypeForm;
 import eu.derzauberer.pis.enums.TransportationClassification;
 import eu.derzauberer.pis.enums.TransportationVehicle;
@@ -29,9 +27,6 @@ public class StudioTypeController {
 	private TypeService typeService;
 	
 	@Autowired
-	private DataConverter<TransportationTypeModel, TransportationTypeData> typeDataConverter;
-	
-	@Autowired
 	private FormConverter<TransportationTypeModel, TransportationTypeForm> typeFormConverter;
 	
 	@GetMapping
@@ -42,7 +37,7 @@ public class StudioTypeController {
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
 		final Collection<Lazy<TransportationTypeModel>> result = hasSearch ? typeService.search(search) : typeService.getAll();
-		model.addAttribute("page", new ResultPageDto<>(page, pageSize, result.stream().map(lazy -> lazy.map(typeDataConverter::convert)).toList()));
+		model.addAttribute("page", new ResultPageDto<>(page, pageSize, result));
 		return "studio/types.html";
 	}
 	

@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import eu.derzauberer.pis.converter.DataConverter;
-import eu.derzauberer.pis.dto.OperatorData;
 import eu.derzauberer.pis.dto.ResultListDto;
 import eu.derzauberer.pis.model.OperatorModel;
 import eu.derzauberer.pis.persistence.Lazy;
@@ -31,18 +29,15 @@ public class OperatorController {
 	@Autowired
 	private OperatorService operatorService;
 	
-	@Autowired
-	private DataConverter<OperatorModel, OperatorData> operatorDataConverter;
-	
 	@GetMapping
-	public ResultListDto<OperatorData> getOperators(
+	public ResultListDto<OperatorModel> getOperators(
 			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
 		final Collection<Lazy<OperatorModel>> result = hasSearch ? operatorService.search(search) : operatorService.getAll();
-		return new ResultListDto<>(offset, limit, result.stream().map(lazy -> lazy.map(operatorDataConverter::convert)).toList());
+		return new ResultListDto<>(offset, limit, result);
 	}
 	
 	@GetMapping("{id}")

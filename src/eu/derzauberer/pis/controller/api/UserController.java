@@ -14,12 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.dto.ResultListDto;
-import eu.derzauberer.pis.dto.UserData;
 import eu.derzauberer.pis.dto.UserForm;
-import eu.derzauberer.pis.dto.UserInfoData;
 import eu.derzauberer.pis.model.UserModel;
 import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.service.UserService;
@@ -35,34 +32,28 @@ public class UserController {
 	private UserService userService;
 	
 	@Autowired
-	private DataConverter<UserModel, UserInfoData> userInfoDataConverter;
-	
-	@Autowired
-	private DataConverter<UserModel, UserData> userDataConverter;
-	
-	@Autowired
 	private FormConverter<UserModel, UserForm> userFormConverter;
 	
 	@GetMapping
-	public ResultListDto<UserInfoData> getUsers(
+	public ResultListDto<UserModel> getUsers(
 			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
 		final Collection<Lazy<UserModel>> result = hasSearch ? userService.search(search) : userService.getAll();
-		return new ResultListDto<>(offset, limit, result.stream().map(lazy -> lazy.map(userInfoDataConverter::convert)).toList());
+		return new ResultListDto<>(offset, limit, result);
 	}
 	
 	@GetMapping("{id}")
-	public UserData getUser(@PathVariable("id") String id) {
-		return userService.getById(id).map(userDataConverter::convert).orElseThrow(() -> new NotFoundException("User", id));
+	public UserModel getUser(@PathVariable("id") String id) {
+		return userService.getById(id).orElseThrow(() -> new NotFoundException("User", id));
 	}
 	
 	@PostMapping
-	public UserData setUser(@RequestBody UserForm userForm) {
+	public UserModel setUser(@RequestBody UserForm userForm) {
 		final UserModel user = userFormConverter.convertToModel(userForm);
-		return userDataConverter.convert(userService.save(user));
+		return user;
 	}
 	
 	@DeleteMapping("{id}")

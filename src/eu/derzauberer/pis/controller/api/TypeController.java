@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.dto.ResultListDto;
-import eu.derzauberer.pis.dto.TransportationTypeData;
 import eu.derzauberer.pis.dto.TransportationTypeForm;
 import eu.derzauberer.pis.model.TransportationTypeModel;
 import eu.derzauberer.pis.persistence.Lazy;
@@ -33,32 +31,29 @@ public class TypeController {
 	@Autowired
 	private TypeService typeService;
 	
-	@Autowired 
-	private DataConverter<TransportationTypeModel, TransportationTypeData> typeDataConverter;
-	
 	@Autowired
 	private FormConverter<TransportationTypeModel, TransportationTypeForm> typeFormConverter;
 	
 	@GetMapping
-	public ResultListDto<TransportationTypeData> getTypes(
+	public ResultListDto<TransportationTypeModel> getTypes(
 			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 			@RequestParam(name = "limit", required = false, defaultValue = "-1") int limit
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
 		final Collection<Lazy<TransportationTypeModel>> result = hasSearch ? typeService.search(search) : typeService.getAll();
-		return new ResultListDto<>(offset, limit, result.stream().map(lazy -> lazy.map(typeDataConverter::convert)).toList());
+		return new ResultListDto<>(offset, limit, result);
 	}
 
 	@GetMapping("{id}")
-	public TransportationTypeData getTrainType(@PathVariable("id") String id) {
-		return typeService.getById(id).map(typeDataConverter::convert).orElseThrow(() -> new NotFoundException("Type", id));
+	public TransportationTypeModel getTrainType(@PathVariable("id") String id) {
+		return typeService.getById(id).orElseThrow(() -> new NotFoundException("Type", id));
 	}
 	
 	@PostMapping
-	public TransportationTypeData setType(@RequestBody TransportationTypeForm typeForm) {
+	public TransportationTypeModel setType(@RequestBody TransportationTypeForm typeForm) {
 		final TransportationTypeModel type = typeFormConverter.convertToModel(typeForm);
-		return typeDataConverter.convert(typeService.save(type));
+		return type;
 	}
 	
 	@DeleteMapping("{id}")

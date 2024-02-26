@@ -17,8 +17,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Service;
 
-import eu.derzauberer.pis.converter.DataConverter;
-import eu.derzauberer.pis.dto.UserData;
 import eu.derzauberer.pis.model.UserModel;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,12 +27,10 @@ import jakarta.servlet.http.HttpSession;
 public class AuthenticationService implements AuthenticationProvider, UserDetailsService {
 
 	private final UserService userService;
-	private final DataConverter<UserModel, UserData> userDataConverter;
 	
 	@Autowired
-	public AuthenticationService(UserService userService, DataConverter<UserModel, UserData> userDataConverter) {
+	public AuthenticationService(UserService userService) {
 		this.userService = userService;
-		this.userDataConverter = userDataConverter;
 	}
 	
 	@Override
@@ -47,7 +43,7 @@ public class AuthenticationService implements AuthenticationProvider, UserDetail
 		String username = authentication.getPrincipal().toString();
         String password = authentication.getCredentials().toString();
         if (username == null || username.isEmpty()) throw new IllegalArgumentException("Username must not be null or empty!");
-		final UserModel user = userService.getByIdOrSecondaryId(username)
+		final UserModel user = userService.getByIdOrSecondaryIdWithPasswordHash(username)
 			.filter(UserModel::isEnabled)
 			.filter(processingUser -> userService.matchPassword(password, processingUser))
 			.orElseThrow(() -> new AuthenticationException("Your credentials aren't correct, please try again!") {});
@@ -61,7 +57,6 @@ public class AuthenticationService implements AuthenticationProvider, UserDetail
 		if (session != null) {
 			session.setAttribute("user", true);
 			userService.getById(authentication.getName())
-				.map(userDataConverter::convert)
 				.ifPresent(user -> {
 					session.setAttribute("user", user);
 					if (user.isPasswordChangeRequired()) session.setAttribute("passwordChangeReqired", "true");
@@ -71,15 +66,15 @@ public class AuthenticationService implements AuthenticationProvider, UserDetail
 	}
 	
     public void updateSession(HttpSession session) {
-		if (session != null && session.getAttribute("user") != null && session.getAttribute("user") instanceof UserData) {
-			final UserData oldUser = (UserData) session.getAttribute("user");
+		if (session != null && session.getAttribute("user") != null && session.getAttribute("user") instanceof UserModel) {
+			final UserModel oldUser = (UserModel) session.getAttribute("user");
 			if (userService.hasExpiredSession(oldUser.getId())) {
 				final UserModel user = userService.getById(oldUser.getId()).orElse(null);
 				if (user == null || !user.isEnabled()) {
 					session.invalidate();
 					return;
 				} else {
-					session.setAttribute("user", userDataConverter.convert(user));
+					session.setAttribute("user", user);
 					if (user.isPasswordChangeRequired()) session.setAttribute("passwordChangeReqired", "true");
 					if (oldUser.getRole() != user.getRole()) {
 						final Authentication auth = new UsernamePasswordAuthenticationToken(user.getId(), null, user.getRole().getGrantedAuthorities());

@@ -10,10 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import eu.derzauberer.pis.converter.DataConverter;
 import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.dto.ResultPageDto;
-import eu.derzauberer.pis.dto.UserData;
 import eu.derzauberer.pis.dto.UserForm;
 import eu.derzauberer.pis.enums.UserRole;
 import eu.derzauberer.pis.model.UserModel;
@@ -26,9 +24,6 @@ public class StudioUserController {
 	
 	@Autowired
 	private UserService userService;
-
-	@Autowired
-	private DataConverter<UserModel, UserData> userDataConverter;
 	
 	@Autowired
 	private FormConverter<UserModel, UserForm> userFormConverter;
@@ -42,7 +37,7 @@ public class StudioUserController {
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
 		final Collection<Lazy<UserModel>> result = hasSearch ? userService.search(search) : userService.getAll();
-		model.addAttribute("page", new ResultPageDto<>(page, pageSize, result.stream().map(lazy -> lazy.map(userDataConverter::convert)).toList()));
+		model.addAttribute("page", new ResultPageDto<>(page, pageSize, result));
 		return "studio/users.html";
 	}
 	

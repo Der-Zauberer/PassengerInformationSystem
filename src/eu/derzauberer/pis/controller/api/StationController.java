@@ -42,7 +42,7 @@ public class StationController {
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
 		final Collection<Lazy<StationModel>> result = hasSearch ? stationService.search(search) : stationService.getAll();
-		return new ResultListDto<>(offset, limit, result);
+		return new ResultListDto<>(offset, limit < 1 ? result.size() : limit, result);
 	}
 	
 	@GetMapping("{id}")

@@ -42,7 +42,7 @@ public class UserController {
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
 		final Collection<Lazy<UserModel>> result = hasSearch ? userService.search(search) : userService.getAll();
-		return new ResultListDto<>(offset, limit, result);
+		return new ResultListDto<>(offset, limit < 1 ? result.size() : limit, result);
 	}
 	
 	@GetMapping("{id}")

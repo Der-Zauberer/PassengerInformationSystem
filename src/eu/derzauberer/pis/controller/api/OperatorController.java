@@ -37,7 +37,7 @@ public class OperatorController {
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
 		final Collection<Lazy<OperatorModel>> result = hasSearch ? operatorService.search(search) : operatorService.getAll();
-		return new ResultListDto<>(offset, limit, result);
+		return new ResultListDto<>(offset, limit < 1 ? result.size() : limit, result);
 	}
 	
 	@GetMapping("{id}")

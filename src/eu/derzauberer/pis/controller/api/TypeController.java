@@ -42,7 +42,7 @@ public class TypeController {
 			) {
 		final boolean hasSearch = search != null && !search.isBlank();
 		final Collection<Lazy<TransportationTypeModel>> result = hasSearch ? typeService.search(search) : typeService.getAll();
-		return new ResultListDto<>(offset, limit, result);
+		return new ResultListDto<>(offset, limit < 1 ? result.size() : limit, result);
 	}
 
 	@GetMapping("{id}")

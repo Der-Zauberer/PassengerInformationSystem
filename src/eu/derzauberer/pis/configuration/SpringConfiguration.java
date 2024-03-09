@@ -39,9 +39,7 @@ import eu.derzauberer.pis.interceptor.FilterInterceptor;
 import eu.derzauberer.pis.interceptor.HistoryInterceptor;
 import eu.derzauberer.pis.interceptor.PasswordChangeInterceptor;
 import eu.derzauberer.pis.interceptor.SessionUpdateInterceptor;
-import eu.derzauberer.pis.model.LineModel;
 import eu.derzauberer.pis.model.OperatorModel;
-import eu.derzauberer.pis.model.RouteModel;
 import eu.derzauberer.pis.model.StationModel;
 import eu.derzauberer.pis.model.StationTrafficModel;
 import eu.derzauberer.pis.model.TransportationTypeModel;
@@ -159,18 +157,8 @@ public class SpringConfiguration implements ApplicationContextAware, WebMvcConfi
 	}
 	
 	@Bean
-	public EntityRepository<LineModel> getLineRepository() {
-		return new FileEntityRepository<>("lines", LineModel.class, false);
-	}
-	
-	@Bean
 	public EntityRepository<OperatorModel> getOperatorRepository() {
 		return new FileEntityRepository<>("operators", OperatorModel.class, caching);
-	}
-	
-	@Bean
-	public EntityRepository<RouteModel> getRouteRepository() {
-		return new FileEntityRepository<>("routes", RouteModel.class, caching);
 	}
 	
 	@Bean

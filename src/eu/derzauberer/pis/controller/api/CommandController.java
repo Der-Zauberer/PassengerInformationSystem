@@ -1,8 +1,5 @@
 package eu.derzauberer.pis.controller.api;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +16,6 @@ import eu.derzauberer.pis.downloader.DbRisPlatformsDownloader;
 import eu.derzauberer.pis.downloader.DbRisStationsDownloader;
 import eu.derzauberer.pis.downloader.DbStadaStationDownloader;
 import eu.derzauberer.pis.service.EntityService;
-import eu.derzauberer.pis.service.LineService;
 import eu.derzauberer.pis.service.OperatorService;
 import eu.derzauberer.pis.service.StationService;
 import eu.derzauberer.pis.service.TypeService;
@@ -31,7 +27,6 @@ import eu.derzauberer.pis.service.UserService;
 public class CommandController {
 	
 	private final UserConfiguration config;
-	private final LineService lineService;
 	private final OperatorService operatorService;
 	private final StationService stationService;
 	private final TypeService typeService;
@@ -41,20 +36,17 @@ public class CommandController {
 	@Autowired
 	public CommandController(
 			UserConfiguration config,
-			LineService lineService,
 			OperatorService operatorService,
 			StationService stationService,
 			TypeService typeService,
 			UserService userService
 			) {
 		this.config = config;
-		this.lineService = lineService;
 		this.operatorService = operatorService;
 		this.stationService = stationService;
 		this.typeService = typeService;
 		this.userService = userService;
 		services = new HashMap<>();
-		services.put(lineService.getName(), lineService);
 		services.put(operatorService.getName(), operatorService);
 		services.put(stationService.getName(), stationService);
 		services.put(typeService.getName(), typeService);

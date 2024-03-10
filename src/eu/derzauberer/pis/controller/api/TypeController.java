@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.dto.ResultListDto;
 import eu.derzauberer.pis.dto.TransportationTypeForm;
 import eu.derzauberer.pis.model.TransportationTypeModel;
@@ -23,6 +22,7 @@ import eu.derzauberer.pis.service.TypeService;
 import eu.derzauberer.pis.util.NotFoundException;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/types")
@@ -30,9 +30,6 @@ public class TypeController {
 	
 	@Autowired
 	private TypeService typeService;
-	
-	@Autowired
-	private FormConverter<TransportationTypeModel, TransportationTypeForm> typeFormConverter;
 	
 	@GetMapping
 	public ResultListDto<TransportationTypeModel> getTypes(
@@ -51,8 +48,11 @@ public class TypeController {
 	}
 	
 	@PostMapping
-	public TransportationTypeModel setType(@RequestBody TransportationTypeForm typeForm) {
-		final TransportationTypeModel type = typeFormConverter.convertToModel(typeForm);
+	public TransportationTypeModel setType(@RequestBody @Valid TransportationTypeForm typeForm) {
+		final TransportationTypeModel type = typeService.getById(typeForm.getId())
+				.map(original -> typeForm.toTransportationTypeModel(original))
+				.orElseGet(() -> typeForm.toTransportationTypeModel());
+		typeService.save(type);
 		return type;
 	}
 	
@@ -62,13 +62,13 @@ public class TypeController {
 	}
 	
 	@PostMapping("/import")
-	public String importStations(@RequestBody String content) {
+	public String importTypes(@RequestBody String content) {
 		typeService.importEntities(content);
 		return "Successful imported!";
 	}
 	
 	@GetMapping("/export")
-	public Object importStations(@RequestParam(name = "download", defaultValue = "false") boolean donwload, Model model, HttpServletResponse response) throws IOException {
+	public Object importTypes(@RequestParam(name = "download", defaultValue = "false") boolean donwload, Model model, HttpServletResponse response) throws IOException {
 		if (donwload) {
 			final String content = typeService.exportEntities();
 			response.setContentType("application/octet-stream");

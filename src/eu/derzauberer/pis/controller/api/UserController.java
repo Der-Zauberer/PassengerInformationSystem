@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.dto.ResultListDto;
 import eu.derzauberer.pis.dto.UserForm;
 import eu.derzauberer.pis.model.UserModel;
@@ -23,6 +22,7 @@ import eu.derzauberer.pis.service.UserService;
 import eu.derzauberer.pis.util.NotFoundException;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/users")
@@ -30,9 +30,6 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
-	
-	@Autowired
-	private FormConverter<UserModel, UserForm> userFormConverter;
 	
 	@GetMapping
 	public ResultListDto<UserModel> getUsers(
@@ -51,8 +48,11 @@ public class UserController {
 	}
 	
 	@PostMapping
-	public UserModel setUser(@RequestBody UserForm userForm) {
-		final UserModel user = userFormConverter.convertToModel(userForm);
+	public UserModel setUser(@RequestBody @Valid UserForm userForm) {
+		final UserModel user = userService.getById(userForm.getId())
+				.map(original -> userForm.toUserModel(original))
+				.orElseGet(() -> userForm.toUserModel());
+		userService.save(user);
 		return user;
 	}
 	
@@ -62,13 +62,13 @@ public class UserController {
 	}
 	
 	@PostMapping("/import")
-	public String importStations(@RequestBody String content) {
+	public String importUser(@RequestBody String content) {
 		userService.importEntities(content);
 		return "Successful imported!";
 	}
 	
 	@GetMapping("/export")
-	public Object importStations(@RequestParam(name = "download", defaultValue = "false") boolean donwload, Model model, HttpServletResponse response) throws IOException {
+	public Object importUser(@RequestParam(name = "download", defaultValue = "false") boolean donwload, Model model, HttpServletResponse response) throws IOException {
 		if (donwload) {
 			final String content = userService.exportEntities();
 			response.setContentType("application/octet-stream");

@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.dto.ResultPageDto;
 import eu.derzauberer.pis.dto.StationForm;
 import eu.derzauberer.pis.model.StationModel;
 import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.service.StationService;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/studio/stations")
@@ -23,9 +23,6 @@ public class StudioStationController {
 
 	@Autowired
 	private StationService stationService;
-	
-	@Autowired
-	private FormConverter<StationModel, StationForm> stationFormConverter;
 	
 	@GetMapping
 	public String getStations(Model model,
@@ -41,7 +38,7 @@ public class StudioStationController {
 	
 	@GetMapping("/edit")
 	public String editStation(@RequestParam(value = "id", required = false) String id, Model model) {
-		stationService.getById(id).map(stationFormConverter::convertToForm).ifPresentOrElse(station -> {
+		stationService.getById(id).map(StationForm::new).ifPresentOrElse(station -> {
 			model.addAttribute("station", station);
 		}, () -> {
 			model.addAttribute("station", new StationForm());
@@ -50,10 +47,10 @@ public class StudioStationController {
 	}
 	
 	@PostMapping("/edit")
-	public String editStation(@RequestParam(value = "entity", required = false) String id, Model model, StationForm stationForm) {
+	public String editStation(@RequestParam(value = "entity", required = false) String id, Model model, @Valid StationForm stationForm) {
 		final StationModel station = stationService.getById(id)
-				.map(original -> stationFormConverter.convertToModel(original, stationForm))
-				.orElseGet(() -> stationFormConverter.convertToModel(stationForm));
+				.map(original -> stationForm.toStationModel(original))
+				.orElseGet(() -> stationForm.toStationModel());
 		stationService.save(station);
 		return "redirect:/studio/stations";
 	}

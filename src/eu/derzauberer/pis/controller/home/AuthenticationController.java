@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.dto.LoginForm;
 import eu.derzauberer.pis.dto.PasswordForm;
 import eu.derzauberer.pis.dto.ProfileForm;
@@ -22,6 +21,7 @@ import eu.derzauberer.pis.service.UserService;
 import eu.derzauberer.pis.util.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/")
@@ -32,9 +32,6 @@ public class AuthenticationController {
 	
 	@Autowired
 	private AuthenticationService authenticationService;
-	
-	@Autowired
-	private FormConverter<UserModel, ProfileForm> profileFormConverter;
 
 	@GetMapping("/login")
 	public String login(Model model) {
@@ -50,7 +47,7 @@ public class AuthenticationController {
 	}
 	
 	@PostMapping("/password/change")
-	public String changePassword(@RequestParam(name = "user") String username, PasswordForm passwordForm, Model model, HttpSession session) throws IOException {
+	public String changePassword(@RequestParam(name = "user") String username, @Valid PasswordForm passwordForm, Model model, HttpSession session) throws IOException {
 		final UserModel user = userService.getById(username).orElseThrow(() -> new NotFoundException("User", username));
 		if (userService.matchPassword(passwordForm.getOldPassword(), user)) {
 			
@@ -78,23 +75,25 @@ public class AuthenticationController {
 	}
 	
 	@PostMapping("/password/reset")
-	public String resetPassword(@RequestParam(name = "user") String username, @RequestParam(name = "token") String token, PasswordForm passwordForm) {
+	public String resetPassword(@RequestParam(name = "user") String username, @RequestParam(name = "token") String token, @Valid PasswordForm passwordForm) {
 		return "redirect:/studio";
 	}
 	
 	@GetMapping("/account")
 	public String getAccount(Model model, Principal principal) {
-		final UserModel user = userService.getById(principal.getName()).get();
-		final ProfileForm userForm = profileFormConverter.convertToForm(user);
+		final UserModel user = userService.getById(principal.getName())
+				.orElseThrow(() -> new NotFoundException("user", principal.getName()));
+		final ProfileForm userForm = new ProfileForm(user);
 		model.addAttribute("user", userForm);
 		model.addAttribute("password", new PasswordForm());
 		return "authentication/account.html";
 	}
 	
 	@PostMapping("/account")
-	public String setAccount(Model model, Principal principal, HttpServletRequest request, ProfileForm userForm) {
-		final UserModel user = userService.getById(principal.getName()).get();
-		profileFormConverter.convertToModel(user, userForm);
+	public String setAccount(Model model, Principal principal, HttpServletRequest request, @Valid ProfileForm userForm) {
+		final UserModel user = userService.getById(principal.getName())
+				.map(userForm::toUserModel)
+				.orElseThrow(() -> new NotFoundException("user", principal.getName()));
 		userService.save(user);
 		authenticationService.updateSession(request.getSession());
 		model.addAttribute("accountSuccess", true);
@@ -102,7 +101,7 @@ public class AuthenticationController {
 	}
 	
 	@PostMapping("/account/password")
-	public String setAccountPassword(Model model, Principal principal, PasswordForm passwordForm) {
+	public String setAccountPassword(Model model, Principal principal, @Valid PasswordForm passwordForm) {
 		final UserModel user = userService.getById(principal.getName()).get();
 		
 		if (userService.matchPassword(passwordForm.getOldPassword(), user)) {

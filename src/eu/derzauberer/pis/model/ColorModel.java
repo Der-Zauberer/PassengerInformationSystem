@@ -10,7 +10,6 @@ public class ColorModel {
 	private String textColor ;
 	private String backgroundColor;
 	
-	
 	public ColorModel() {
 		textColor = "#ffffff";
 		backgroundColor = "#808080";

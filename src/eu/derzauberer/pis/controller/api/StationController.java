@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.dto.ResultListDto;
 import eu.derzauberer.pis.dto.StationForm;
 import eu.derzauberer.pis.model.StationModel;
@@ -23,6 +22,7 @@ import eu.derzauberer.pis.service.StationService;
 import eu.derzauberer.pis.util.NotFoundException;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/stations")
@@ -30,9 +30,6 @@ public class StationController {
 	
 	@Autowired
 	private StationService stationService;
-	
-	@Autowired
-	private FormConverter<StationModel, StationForm> stationFormConverter;
 	
 	@GetMapping
 	public ResultListDto<StationModel> getStations(
@@ -51,8 +48,11 @@ public class StationController {
 	}
 	
 	@PostMapping
-	public StationModel setStation(@RequestBody StationForm stationForm) {
-		final StationModel station = stationFormConverter.convertToModel(stationForm);
+	public StationModel setStation(@RequestBody @Valid StationForm stationForm) {
+		final StationModel station = stationService.getById(stationForm.getId())
+				.map(original -> stationForm.toStationModel(original))
+				.orElseGet(() -> stationForm.toStationModel());
+		stationService.save(station);
 		return station;
 	}
 	

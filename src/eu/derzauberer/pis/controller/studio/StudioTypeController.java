@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import eu.derzauberer.pis.converter.FormConverter;
 import eu.derzauberer.pis.dto.ResultPageDto;
 import eu.derzauberer.pis.dto.TransportationTypeForm;
 import eu.derzauberer.pis.enums.TransportationClassification;
@@ -18,6 +17,7 @@ import eu.derzauberer.pis.enums.TransportationVehicle;
 import eu.derzauberer.pis.model.TransportationTypeModel;
 import eu.derzauberer.pis.persistence.Lazy;
 import eu.derzauberer.pis.service.TypeService;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/studio/types")
@@ -25,9 +25,6 @@ public class StudioTypeController {
 	
 	@Autowired
 	private TypeService typeService;
-	
-	@Autowired
-	private FormConverter<TransportationTypeModel, TransportationTypeForm> typeFormConverter;
 	
 	@GetMapping
 	public String getTypes(Model model,
@@ -43,7 +40,7 @@ public class StudioTypeController {
 	
 	@GetMapping("/edit")
 	public String editType(@RequestParam(value = "id", required = false) String id, Model model) {
-		typeService.getById(id).map(typeFormConverter::convertToForm).ifPresentOrElse(type -> {
+		typeService.getById(id).map(TransportationTypeForm::new).ifPresentOrElse(type -> {
 			model.addAttribute("type", type);
 		}, () -> {
 			model.addAttribute("type", new TransportationTypeForm());
@@ -54,10 +51,10 @@ public class StudioTypeController {
 	}
 	
 	@PostMapping("/edit")
-	public String editUser(@RequestParam(value = "entity", required = false) String id, Model model, TransportationTypeForm typeForm) {
+	public String editUser(@RequestParam(value = "entity", required = false) String id, Model model, @Valid TransportationTypeForm typeForm) {
 		final TransportationTypeModel type = typeService.getById(id)
-				.map(original -> typeFormConverter.convertToModel(original, typeForm))
-				.orElseGet(() -> typeFormConverter.convertToModel(typeForm));
+				.map(original -> typeForm.toTransportationTypeModel(original))
+				.orElseGet(() -> typeForm.toTransportationTypeModel());
 		typeService.save(type);
 		return "redirect:/studio/types";
 	}

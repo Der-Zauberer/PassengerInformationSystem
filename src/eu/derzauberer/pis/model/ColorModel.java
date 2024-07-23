@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class ColorModel {
 	
-	private String textColor ;
+	private String textColor;
 	private String backgroundColor;
 	
 	public ColorModel() {
